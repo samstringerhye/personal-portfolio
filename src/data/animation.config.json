@@ -23,6 +23,7 @@
       "sizeStart": 0.1,
       "sizeMid": 1.0,
       "sizeEnd": 0.1,
+      "wavePaused": false,
       "waveSpeed": 1.0,
       "waveFrequency": 0.1,
       "waveAmplitude": 0.5,

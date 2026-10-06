@@ -8,7 +8,13 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   devToolbar: { enabled: false },
   site: 'https://samstringerhye.com',
-  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/work/wab-2026') && !page.includes('/colophon') }), icon()],
+  redirects: {
+    // The contact form was retired for a mailto link in the footer
+    '/contact': '/about',
+    // The work index duplicated the homepage list
+    '/work': '/#work',
+  },
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/work/wab-2026') && !page.includes('/colophon') && !page.includes('/blog') }), icon()],
 
   image: {
     quality: 90,

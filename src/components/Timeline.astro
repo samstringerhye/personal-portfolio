@@ -2,7 +2,8 @@
 import homeData from '../content/home.json'
 import type { HomeContent } from '../types/content'
 
-const home: HomeContent = homeData
+// JSON imports widen fields like headingTag to string; home.schema.json enforces the allowed values
+const home = homeData as HomeContent
 const {
   headline = 'Experience',
   headingTag = 'h2', headingRole = 'display',
@@ -60,9 +61,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
 <section class="experience-section" aria-label="Experience">
   <div class="experience-header">
     <HeadingTag class:list={["experience-heading", `typo-${headingRole}`]} data-reveal>{headline}</HeadingTag>
-    <a href="/resume" class="experience-download" aria-label="View resume">
-      <svg class="experience-download-icon" width="28" height="28" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="80" y1="100" x2="140" y2="100"/><polyline points="115,75 140,100 115,125"/></svg>
-    </a>
   </div>
   <div class="experience-timeline" data-timeline
        style={`--tl-rows: ${yearMarkers.length}`}>
@@ -130,45 +128,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     color: var(--color-text-primary);
     margin: 0;
     padding: var(--content-inset-md);
-  }
-
-  .experience-download {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-primary);
-    transition: background-color var(--duration-medium) ease;
-  }
-
-  /* Left border — draws top to bottom */
-  .experience-download::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: var(--border-width-1);
-    background: var(--color-text-primary);
-    transform: scaleY(var(--border-draw, 1));
-    transform-origin: top;
-  }
-
-  .experience-download-icon {
-    width: 65%;
-    height: 65%;
-    transition: transform var(--duration-medium) cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  @media (hover: hover) {
-    .experience-download:hover .experience-download-icon {
-      transform: scale(1.2) rotate(-5deg);
-      transition: transform 490ms cubic-bezier(0.5, 0, 0, 1);
-    }
   }
 
   /* ── Grid layout: year col + 12-col grid ── */
@@ -267,7 +226,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     position: relative;
     z-index: 1;
     color: var(--color-text-primary);
-    text-wrap: balance;
   }
 
   /* Job info — 3 cols wide (subgrid cols 1–3) */
@@ -287,7 +245,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     z-index: 1;
     visibility: hidden;
     color: var(--color-text-primary);
-    text-wrap: pretty;
   }
 
   /* Mobile year label — hidden on desktop */
@@ -342,10 +299,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     }
 
     .tl-job-year-mobile {
-      display: none;
-    }
-
-    .experience-download {
       display: none;
     }
   }
@@ -460,26 +413,10 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     })
   }
 
-  function initDownloadHover() {
-    if (!window.matchMedia('(hover: hover)').matches) return
-    document.querySelectorAll<HTMLElement>('.experience-download').forEach((el) => {
-      if (el.dataset.hoverBound === 'true') return
-      el.dataset.hoverBound = 'true'
-      el.addEventListener('mouseenter', () => {
-        el.style.backgroundColor = CMY_COLORS[colorIndex++ % CMY_COLORS.length]
-      })
-      el.addEventListener('mouseleave', () => {
-        el.style.backgroundColor = ''
-      })
-    })
-  }
-
   tightenSingleLineHeadings('.experience-heading')
   initTimelineHover()
-  initDownloadHover()
   document.addEventListener('astro:page-load', () => {
     tightenSingleLineHeadings('.experience-heading')
     initTimelineHover()
-    initDownloadHover()
   })
 </script>

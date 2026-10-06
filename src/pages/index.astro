@@ -1,39 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import HeroSection from '../components/HeroSection.astro'
-import BioSection from '../components/BioSection.astro'
-import WorkCarousel from '../components/WorkCarousel.astro'
+import WorkList from '../components/WorkList.astro'
+import Leadership from '../components/Leadership.astro'
 import Timeline from '../components/Timeline.astro'
 import ScrollingInterests from '../components/ScrollingInterests.astro'
 
 import homeData from '../content/home.json'
 import type { HomeContent } from '../types/content'
 
-const home: HomeContent = homeData
+// JSON imports widen fields like headingTag to string; home.schema.json enforces the allowed values
+const home = homeData as HomeContent
 ---
 
-<BaseLayout title="Sam Stringer-Hye | Associate Design Director" description="Design systems and product design for Samsung, CVS, and Frontier. Associate Design Director at Razorfish.">
+<BaseLayout title="Sam Stringer-Hye | Associate Design Director" description="Philadelphia-based Associate Design Director at Razorfish. Sam Stringer-Hye leads design system and product teams for Samsung, Amica, Frontier, and CVS.">
   <HeroSection
     headline={home.hero.headline}
     tag={home.hero.headlineTag}
     role={home.hero.headlineRole}
+    body={home.hero.body}
+    bodyHighlight={home.hero.bodyHighlight}
+    bodyRole={home.hero.bodyRole}
   />
   <hr class="section-rule" />
-  <BioSection
-    headline={home.bio.headline}
-    body={home.bio.body}
-    headlineTag={home.bio.headlineTag}
-    headlineRole={home.bio.headlineRole}
-    bodyTag={home.bio.bodyTag}
-    bodyRole={home.bio.bodyRole}
-  />
-  <hr class="section-rule" />
-  <WorkCarousel
+  <WorkList
     headline={home.work.headline}
     headingTag={home.work.headingTag}
     headingRole={home.work.headingRole}
     cardTitleTag={home.work.cardTitleTag}
     cardTitleRole={home.work.cardTitleRole}
+  />
+  <hr class="section-rule" />
+  <Leadership
+    headline={home.leadership.headline}
+    items={home.leadership.items}
+    headingTag={home.leadership.headingTag}
+    headingRole={home.leadership.headingRole}
+    itemTitleRole={home.leadership.itemTitleRole}
+    itemBodyRole={home.leadership.itemBodyRole}
   />
   <hr class="section-rule" />
   <Timeline />

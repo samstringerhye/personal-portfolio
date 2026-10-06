@@ -27,7 +27,7 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
     <hr class="section-rule" />
     <div class="case-study-cta-content">
       <h2 id="case-study-cta-heading" class="typo-headline-sm">Like what you see?</h2>
-      <a href="/contact" class="case-study-cta-link typo-body-lg">Get in touch</a>
+      <a href="mailto:sam@samstringerhye.com" class="case-study-cta-link typo-body-lg">sam@samstringerhye.com</a>
     </div>
   </section>
 
@@ -537,6 +537,7 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
       padding-block: var(--space-5);
     }
 
+
     .case-study-body > h1,
     .case-study-body > h2,
     .case-study-body > h3,
@@ -667,7 +668,7 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
 
   function sizeImagePairs() {
     const isMobile = mobileQuery.matches
-    document.querySelectorAll('.image-pair').forEach(pair => {
+    document.querySelectorAll<HTMLElement>('.image-pair').forEach(pair => {
       const imgs = pair.querySelectorAll('img')
       if (imgs.length !== 2) return
 
@@ -677,8 +678,8 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
       }
 
       const ratios = Array.from(imgs).map(img => {
-        const w = parseInt(img.getAttribute('width')) || img.naturalWidth
-        const h = parseInt(img.getAttribute('height')) || img.naturalHeight
+        const w = parseInt(img.getAttribute('width') ?? '') || img.naturalWidth
+        const h = parseInt(img.getAttribute('height') ?? '') || img.naturalHeight
         return w && h ? w / h : 0
       })
 

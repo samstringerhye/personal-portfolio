@@ -43,22 +43,10 @@
       "properties": {
         "headline":     { "type": "string", "minLength": 1, "description": "Hero headline text" },
         "headlineTag":  { "$ref": "#/definitions/htmlTag" },
-        "headlineRole": { "$ref": "#/definitions/typographyRole" }
-      },
-      "required": ["headline"],
-      "additionalProperties": false
-    },
-    "bio": {
-      "type": "object",
-      "description": "Bio/about section content",
-      "properties": {
-        "headline":     { "type": "string", "minLength": 1, "description": "Bio section heading" },
-        "headlineTag":  { "$ref": "#/definitions/htmlTag" },
         "headlineRole": { "$ref": "#/definitions/typographyRole" },
-        "body":         { "type": "string", "minLength": 1, "description": "Bio body text" },
-        "bodyTag":      { "$ref": "#/definitions/htmlTag" },
-        "bodyRole":     { "$ref": "#/definitions/typographyRole" },
-        "contentInset": { "$ref": "#/definitions/contentInset" }
+        "body":          { "type": "string", "minLength": 1, "description": "Short bio below the headline" },
+        "bodyHighlight": { "type": "string", "minLength": 1, "description": "Phrase in the bio set in the accent color (the name)" },
+        "bodyRole":      { "$ref": "#/definitions/typographyRole" }
       },
       "required": ["headline", "body"],
       "additionalProperties": false
@@ -75,6 +63,32 @@
         "contentInset": { "$ref": "#/definitions/contentInset" }
       },
       "required": ["headline"],
+      "additionalProperties": false
+    },
+    "leadership": {
+      "type": "object",
+      "description": "Leadership section content",
+      "properties": {
+        "headline":      { "type": "string", "minLength": 1, "description": "Leadership section heading" },
+        "headingTag":    { "$ref": "#/definitions/htmlTag" },
+        "headingRole":   { "$ref": "#/definitions/typographyRole" },
+        "itemTitleRole": { "$ref": "#/definitions/typographyRole" },
+        "itemBodyRole":  { "$ref": "#/definitions/typographyRole" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string", "minLength": 1 },
+              "body":  { "type": "string", "minLength": 1 }
+            },
+            "required": ["title", "body"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["headline", "items"],
       "additionalProperties": false
     },
     "experience": {
@@ -124,6 +138,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["hero", "bio", "work", "experience", "interests"],
+  "required": ["hero", "work", "leadership", "experience", "interests"],
   "additionalProperties": false
 }

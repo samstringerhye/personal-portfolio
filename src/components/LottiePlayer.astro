@@ -81,7 +81,7 @@ try {
     }
 
     destroyLottie()
-    observer = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const el = entry.target as HTMLElement
         if (entry.isIntersecting && !el.dataset.initialized) {
@@ -117,7 +117,8 @@ try {
       })
     }, { threshold: 0.1 })
 
-    players.forEach(p => observer.observe(p))
+    observer = io
+    players.forEach(p => io.observe(p))
   }
 
   function deferLottie() {

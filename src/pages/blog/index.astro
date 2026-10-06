@@ -6,7 +6,7 @@ const allPosts = (await getCollection('blog'))
   .sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime())
 ---
 
-<BaseLayout title="Writing | Sam Stringer-Hye" description="Writing about design decisions, building with AI, and the details people skip.">
+<BaseLayout title="Writing | Sam Stringer-Hye" description="Writing about design decisions, building with AI, and the details people skip." noindex>
   <section class="blog-index" aria-label="Blog posts">
     <h1 class="blog-index-heading typo-display-md">Writing</h1>
 
@@ -100,13 +100,11 @@ const allPosts = (await getCollection('blog'))
   .blog-row-title {
     color: var(--color-text-primary);
     margin: 0 0 var(--space-3);
-    text-wrap: balance;
   }
 
   .blog-row-desc {
     color: var(--color-text-primary);
     margin: 0;
-    text-wrap: pretty;
     max-width: var(--prose-measure);
   }
 

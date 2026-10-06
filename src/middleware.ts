@@ -420,7 +420,7 @@ function passwordPage(caseStudyTitle: string, error: boolean, rateLimited = fals
         <p class="subtitle">This case study is under NDA. Enter the password to view.</p>
         ${formContent}
         <p class="subtitle access">Need access? Email <a href="mailto:sam@samstringerhye.com">sam@samstringerhye.com</a></p>
-        <a href="/work" class="back">&larr; Back to work</a>
+        <a href="/#work" class="back">&larr; Back to work</a>
       </div>
     </main>
   </div>

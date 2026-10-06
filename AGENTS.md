@@ -40,9 +40,9 @@ Portfolio site for Sam Stringer-Hye, an Associate Design Director at Razorfish (
 | --- | --- | --- | --- |
 | Amica.com Design System | Amica | Assoc. Design Director | 2026 |
 | Samsung Bespoke Design Studio | Samsung | Assoc. Design Director | 2024 |
-| MyFrontier App Redesign | Frontier | Assoc. Design Director | 2024 |
-| Samsung.com Redesign | Samsung | Senior Designer | 2021 |
-| CVS Shop Website Redesign | CVS | Assoc. Design Director | 2023 |
+| MyFrontier App Redesign | Frontier | Assoc. Design Director | 2022 |
+| Samsung.com Redesign | Samsung | Senior Designer | 2020 |
+| CVS Shop Website Redesign | CVS | Assoc. Design Director | 2022 |
 
 ## Content Conventions
 

@@ -10,6 +10,7 @@ const aboutJsonLd = {
     "name": "Sam Stringer-Hye",
     "jobTitle": "Associate Design Director",
     "worksFor": { "@type": "Organization", "name": "Razorfish" },
+    "homeLocation": { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Philadelphia", "addressRegion": "PA", "addressCountry": "US" } },
     "url": "https://samstringerhye.com",
     "sameAs": ["https://linkedin.com/in/samstringerhye"],
     "knowsAbout": ["UI/UX Design", "Design Systems", "Motion Design", "Interaction Prototyping"],
@@ -66,8 +67,12 @@ const skills = [
 
     <div class="about-row about-row--links">
       <nav class="about-row-body about-links" aria-label="Contact and resume">
-        <a href="/work" class="about-link typo-body-lg">
+        <a href="/#work" class="about-link typo-body-lg">
           <span>View my work</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M15 5H8M15 5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="mailto:sam@samstringerhye.com" class="about-link typo-body-lg">
+          <span>sam@samstringerhye.com</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M15 5H8M15 5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer" class="about-link typo-body-lg">

@@ -6,9 +6,18 @@ interface Props {
   headline: string
   tag?: HeadingTag
   role?: TypographyRole
+  body?: string
+  bodyHighlight?: string
+  bodyRole?: TypographyRole
 }
 
-const { headline, tag = 'h1', role = 'display-lg' } = Astro.props as Props
+const { headline, tag = 'h1', role = 'display-lg', body, bodyHighlight, bodyRole = 'title-lg' } = Astro.props as Props
+
+// Split the bio around the highlighted phrase so it can take the accent color
+const highlightAt = body && bodyHighlight ? body.indexOf(bodyHighlight) : -1
+const bodyParts = highlightAt >= 0 && body && bodyHighlight
+  ? [body.slice(0, highlightAt), bodyHighlight, body.slice(highlightAt + bodyHighlight.length)]
+  : null
 const HeroTag = tag as any
 const heroRole = `typo-${role}`
 
@@ -22,7 +31,14 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     <canvas style="display:block;width:100%;height:100%"></canvas>
   </div>
   <div class="hero-text">
-    <HeroTag class:list={["hero-block", heroRole]} data-hero-text>{headline}</HeroTag>
+    <div class="hero-copy">
+      <HeroTag class:list={["hero-block", heroRole]} data-hero-text>{headline}</HeroTag>
+      {body && (
+        <p class:list={["hero-bio", "hero-sub", `typo-${bodyRole}`]} data-hero-sub>
+          {bodyParts ? <>{bodyParts[0]}<span class="hero-name">{bodyParts[1]}</span>{bodyParts[2]}</> : body}
+        </p>
+      )}
+    </div>
   </div>
 </section>
 
@@ -70,8 +86,67 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding-inline: var(--content-inset-md);
 
     z-index: var(--z-base, 1);
+  }
+
+  .hero-copy {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  /* Thins the dot field behind the copy so the bio stays readable; dots keep full density at the edges */
+  .hero-copy::before {
+    content: '';
+    position: absolute;
+    inset: calc(var(--space-5) * -1) calc(var(--space-6) * -1);
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(closest-side, var(--color-bg-primary) 60%, transparent);
+  }
+
+  .hero-bio {
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  /* Follows the accent the nav picked for the active tab (Nav.astro sets data-accent) */
+  .hero-name {
+    color: var(--color-accent-text-1);
+  }
+
+  :global([data-accent="2"]) .hero-name {
+    color: var(--color-accent-text-2);
+  }
+
+  :global([data-accent="3"]) .hero-name {
+    color: var(--color-accent-text-3);
+  }
+
+  .hero-bio {
+    max-width: 36em;
+  }
+
+  /* Hidden until the entrance script runs; noscript and reduced motion reset this */
+  .hero-sub {
+    opacity: 0;
+  }
+
+  @media (--2x) {
+    .hero-text {
+      padding-inline: var(--content-inset-sm);
+    }
+
+    /* At title size the bio runs eight centered lines over the dot field */
+    .hero-bio {
+      font-size: var(--text-100);
+      line-height: var(--line-height-normal);
+    }
   }
 
   .hero-block {
@@ -81,6 +156,9 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .hero-sub {
+      opacity: 1;
+    }
     .hero-block {
       opacity: 1;
       transform: none;
@@ -101,6 +179,7 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
   async function animateHero() {
     const els = document.querySelectorAll<HTMLElement>('[data-hero-text]')
     if (!els.length) return
+    const subs = document.querySelectorAll<HTMLElement>('[data-hero-sub]')
 
     heroHandles.forEach(h => h.kill())
     heroHandles = []
@@ -115,6 +194,7 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
 
     if (prefersReduced) {
       gsap.set(els, { opacity: 1, y: 0, filter: 'none', textShadow: 'none' })
+      gsap.set(subs, { opacity: 1 })
       return
     }
 
@@ -128,6 +208,12 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     els.forEach(el => {
       heroHandles.push(createCmyAutoSplitReveal(el, cfg, { delay: startDelay }))
     })
+
+    // Eyebrow and bio follow the headline in, after its first words land
+    gsap.fromTo(subs,
+      { opacity: 0, y: cfg.slideUp },
+      { opacity: 1, y: 0, duration: cfg.duration, ease: cfg.ease, delay: startDelay + 0.4, stagger: 0.1 },
+    )
   }
 
   document.addEventListener('astro:page-load', () => {

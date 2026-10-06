@@ -146,8 +146,8 @@ const { screens } = Astro.props
 <script>
   const INIT_ATTR = 'data-hero-initialized'
   let ctx: { revert: () => void } | null = null
-  let scrollTween: { kill: () => void } | null = null
-  let speedTween: { kill: () => void } | null = null
+  let scrollTween: gsap.core.Tween | null = null
+  let speedTween: gsap.core.Tween | null = null
 
   async function initHeroEntrance() {
     const container = document.querySelector('.hero-phone-scroll') as HTMLElement | null

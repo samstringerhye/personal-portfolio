@@ -20,7 +20,7 @@ let revealCtx: gsap.Context | null = null
  * Spreading the result into a gsap.to() call means visible elements
  * animate immediately while off-screen ones wait for scroll.
  */
-function stVars(trigger: Element | null, start: string = cfg.scrollStart): gsap.TweenVars {
+function stVars(trigger: Element | null, start: string = cfg.scrollStart): Pick<gsap.AnimationVars, 'scrollTrigger'> {
   if (!trigger) return {}
   if ((trigger as HTMLElement).getBoundingClientRect().top < window.innerHeight) return {}
   return {
@@ -245,8 +245,6 @@ function initHomeReveals() {
   const duration = 0.9
   const ease = 'power3.out'
 
-  // ── Work cards: handled by WorkCarousel.astro's own entrance animation ──
-
   // ── Timeline: job card text staggers in (borders stay visible) ──
   const timelineJobTexts = document.querySelectorAll<HTMLElement>('.tl-job-info')
   const timelineTrigger = document.querySelector<HTMLElement>('.experience-timeline')
@@ -270,17 +268,6 @@ function initHomeReveals() {
       stagger: 0.05,
       delay: 0.2,
       ...stVars(timelineTrigger, start),
-    })
-  }
-
-  // ── Timeline: download icon ──
-  const downloadIcon = document.querySelector<HTMLElement>('.experience-download svg')
-  if (downloadIcon) {
-    gsap.set(downloadIcon, { opacity: 0 })
-    gsap.to(downloadIcon, {
-      opacity: 1,
-      duration: 0.7, ease,
-      ...stVars(downloadIcon.closest('.experience-section'), start),
     })
   }
 

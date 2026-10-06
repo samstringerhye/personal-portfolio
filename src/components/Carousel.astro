@@ -145,7 +145,7 @@ const { label, fullBleed = false } = Astro.props
   const carouselObservers = new WeakMap<Element, ResizeObserver>()
 
   function initCarousels() {
-    document.querySelectorAll('.carousel').forEach(carousel => {
+    document.querySelectorAll<HTMLElement>('.carousel').forEach(carousel => {
       if ((carousel as HTMLElement).dataset.carouselInit === 'true') return
       ;(carousel as HTMLElement).dataset.carouselInit = 'true'
 

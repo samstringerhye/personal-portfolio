@@ -3,10 +3,9 @@ const pathname = Astro.url.pathname
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '/work', label: 'Work' },
-  { href: '/blog', label: 'Writing' },
+  { href: '/#work', label: 'Work' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/resume', label: 'Resume' },
 ]
 
 function isActive(href: string) {
@@ -326,11 +325,11 @@ function isActive(href: string) {
     })
 
     // Logo petal animation (skip if user prefers reduced motion)
-    const logo = document.querySelector('.nav-logo')
+    const logo = document.querySelector<HTMLElement>('.nav-logo')
     if (logo && !logo.dataset.petalBound && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       logo.dataset.petalBound = 'true'
       const paths = logo.querySelectorAll<SVGPathElement>('.nav-logo-icon path')
-      const originalFills = Array.from(paths).map(p => p.getAttribute('fill'))
+      const originalFills = Array.from(paths).map(p => p.getAttribute('fill') ?? '')
 
       logo.addEventListener('mouseenter', () => {
         paths.forEach((path, i) => {
@@ -477,12 +476,89 @@ function isActive(href: string) {
       const color = ACTIVE_COLORS[activeColorIndex]
       li.style.backgroundColor = color
       li.dataset.activeBg = color
+      // Lets page accents (like the hero name) match the active tab
+      document.documentElement.dataset.accent = String(activeColorIndex + 1)
       activeColorIndex = (activeColorIndex + 1) % ACTIVE_COLORS.length
     }
   }
 
   setActiveNavColor()
   document.addEventListener('astro:after-swap', setActiveNavColor)
+
+  // On the homepage, the Work tab takes the highlight while the work list sits under the nav.
+  // Visual only: Home keeps aria-current, since this is still the homepage.
+  let removeWorkSpy: (() => void) | null = null
+
+  function initWorkSpy() {
+    removeWorkSpy?.()
+    removeWorkSpy = null
+
+    const section = document.getElementById('work')
+    const nav = document.getElementById('site-nav')
+    const homeLi = document.querySelector<HTMLElement>('.nav-link[href="/"]')?.parentElement
+    const workLi = document.querySelector<HTMLElement>('.nav-link[href="/#work"]')?.parentElement
+    if (location.pathname !== '/' || !section || !nav || !homeLi || !workLi) return
+
+    let inWork = false
+    let frame = 0
+
+    function update() {
+      frame = 0
+      const line = nav!.offsetHeight + 1
+      const rect = section!.getBoundingClientRect()
+      const next = rect.top <= line && rect.bottom > line
+      if (next === inWork) return
+      inWork = next
+
+      const [from, to] = next ? [homeLi!, workLi!] : [workLi!, homeLi!]
+      const color = from.dataset.activeBg || ''
+      from.querySelector('.nav-link')?.classList.remove('active')
+      from.style.backgroundColor = ''
+      delete from.dataset.activeBg
+      to.querySelector('.nav-link')?.classList.add('active')
+      to.style.backgroundColor = color
+      to.dataset.activeBg = color
+    }
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    update()
+
+    removeWorkSpy = () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(frame)
+    }
+  }
+
+  document.addEventListener('astro:page-load', initWorkSpy)
+  document.addEventListener('astro:before-swap', () => removeWorkSpy?.())
+
+  // On the homepage, Work links glide down to the list instead of jumping. Capture phase on
+  // window runs before Astro's router, which skips clicks that are already default-prevented.
+  type SmoothScroller = { scrollTo: (target: HTMLElement, opts: { offset: number; duration: number; easing: (t: number) => number }) => void }
+
+  window.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    const link = (e.target as Element | null)?.closest('a[href="/#work"]')
+    const section = document.getElementById('work')
+    if (!link || !section || location.pathname !== '/') return
+
+    e.preventDefault()
+    history.pushState(null, '', '#work')
+
+    // Lenis only runs when motion is allowed (BaseLayout skips it for reduced motion)
+    const lenis = (window as Window & { __siteLenis?: SmoothScroller | null }).__siteLenis
+    if (lenis) {
+      const navHeight = document.getElementById('site-nav')?.offsetHeight ?? 0
+      lenis.scrollTo(section, { offset: -navHeight, duration: 1, easing: (t) => 1 - Math.pow(1 - t, 4) })
+    } else {
+      // scroll-margin-top on the section clears the nav here
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      section.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })
+    }
+  }, { capture: true })
 </script>
 
 <script>

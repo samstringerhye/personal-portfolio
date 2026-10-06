@@ -6,6 +6,15 @@ function getPath(obj: any, path: string): any {
   return path.split('.').reduce((o, k) => o?.[k], obj)
 }
 
+// A $ref leaf becomes whatever value it points at. JSON imports type the path as a
+// plain string, so the target's type can't be followed statically: resolved leaves
+// are typed `any`, and everything else keeps its JSON shape.
+type Resolved<T> =
+  T extends { $ref: string } ? any
+  : T extends (infer U)[] ? Resolved<U>[]
+  : T extends object ? { [K in keyof T]: Resolved<T[K]> }
+  : T
+
 function resolveRefs(node: any, root: any): any {
   if (node === null || node === undefined) return node
   if (typeof node !== 'object') return node
@@ -18,7 +27,7 @@ function resolveRefs(node: any, root: any): any {
   return out
 }
 
-const resolved = resolveRefs(rawTokens, rawTokens) as typeof rawTokens
+const resolved = resolveRefs(rawTokens, rawTokens) as Resolved<typeof rawTokens>
 
 // New M3-aligned exports
 export const ref = resolved.ref
@@ -29,7 +38,7 @@ export const elementMap = resolved.elementMap
 export const semantic = sys
 export const hover = sys.hover
 
-export const animations = resolveRefs(rawAnimations, resolved) as typeof rawAnimations
+export const animations = resolveRefs(rawAnimations, resolved) as Resolved<typeof rawAnimations>
 
 export const colors = sys.color
 

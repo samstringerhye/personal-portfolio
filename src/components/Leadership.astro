@@ -1,0 +1,137 @@
+---
+import type { HeadingTag, TypographyRole } from '../types/typography'
+
+interface Props {
+  headline: string
+  items: { title: string; body: string }[]
+  headingTag?: HeadingTag
+  headingRole?: TypographyRole
+  itemTitleRole?: TypographyRole
+  itemBodyRole?: TypographyRole
+}
+
+const {
+  headline, items,
+  headingTag = 'h2', headingRole = 'headline-lg',
+  itemTitleRole = 'headline-sm', itemBodyRole = 'body-lg',
+} = Astro.props as Props
+const HeadingTag = headingTag as any
+---
+
+<section class="leadership-section" aria-labelledby="leadership-heading">
+  <div class="leadership-header">
+    <HeadingTag id="leadership-heading" class:list={["leadership-heading", `typo-${headingRole}`]} data-reveal>{headline}</HeadingTag>
+  </div>
+  <ul class="leadership-grid" role="list" data-reveal-group>
+    {items.map((item, i) => (
+      <li class="leadership-cell">
+        <span class="leadership-index typo-ui-caps" data-reveal="fade">{String(i + 1).padStart(2, '0')}</span>
+        <h3 class:list={["leadership-title", `typo-${itemTitleRole}`]} data-reveal="fade">{item.title}</h3>
+        <p class:list={["leadership-body", `typo-${itemBodyRole}`]} data-reveal="fade">{item.body}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .leadership-header {
+    position: relative;
+  }
+
+  .leadership-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--border-width-1);
+    background: var(--color-rule);
+  }
+
+  .leadership-heading {
+    margin: 0;
+    padding: var(--content-inset-md);
+    color: var(--color-text-primary);
+  }
+
+  .leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .leadership-cell {
+    position: relative;
+    padding: var(--space-4);
+  }
+
+  .leadership-cell + .leadership-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--border-width-1);
+    background: var(--color-rule);
+  }
+
+  .leadership-index {
+    display: block;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
+  }
+
+  .leadership-title {
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-primary);
+  }
+
+  .leadership-body {
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  @media (--3x) {
+    .leadership-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Two columns: only the right-hand cell keeps a left rule, and the second row gets a top rule */
+    .leadership-cell:nth-child(odd)::before {
+      display: none;
+    }
+
+    .leadership-cell:nth-child(n + 3) {
+      border-top: var(--border-width-1) solid var(--color-rule);
+    }
+  }
+
+  @media (--2x) {
+    .leadership-header::after {
+      left: calc(var(--page-margin) * -1);
+      right: calc(var(--page-margin) * -1);
+    }
+
+    .leadership-heading {
+      padding: var(--content-inset-sm);
+    }
+
+    .leadership-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .leadership-cell {
+      padding: var(--space-4) var(--content-inset-sm);
+    }
+
+    .leadership-cell::before {
+      display: none;
+    }
+
+    .leadership-cell + .leadership-cell {
+      border-top: var(--border-width-1) solid var(--color-rule);
+    }
+  }
+</style>

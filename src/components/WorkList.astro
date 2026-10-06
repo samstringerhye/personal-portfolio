@@ -1,0 +1,206 @@
+---
+import { getCollection } from 'astro:content'
+import { Image } from 'astro:assets'
+import { Icon } from 'astro-icon/components'
+import type { HeadingTag, TypographyRole } from '../types/typography'
+
+interface Props {
+  headline?: string
+  headingTag?: HeadingTag
+  headingRole?: TypographyRole
+  cardTitleTag?: HeadingTag
+  cardTitleRole?: TypographyRole
+}
+
+const {
+  headline = 'Selected Work',
+  headingTag = 'h2', headingRole = 'headline-lg',
+  cardTitleTag = 'h3', cardTitleRole = 'headline-sm',
+} = Astro.props as Props
+const SectionTag = headingTag as any
+const CardTitleTag = cardTitleTag as any
+
+const featured = (await getCollection('work'))
+  .filter(w => w.data.featured && !w.data.unlisted)
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+---
+
+<section class="work-list-section" id="work" aria-labelledby="work-list-heading">
+  <div class="work-list-intro">
+    <div class="work-list-intro-inner">
+      <SectionTag id="work-list-heading" class={`work-list-heading typo-${headingRole}`} data-reveal>{headline}</SectionTag>
+    </div>
+  </div>
+
+  <ul class="work-list" role="list">
+    {featured.map((entry, i) => (
+      <li class="work-list-item">
+        <a href={`/work/${entry.id}`} class="work-list-card">
+          <div class="work-list-media">
+            <Image
+              src={entry.data.thumbnail}
+              alt={entry.data.thumbnailAlt ?? entry.data.title}
+              layout="full-width"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              format="webp"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+          <div class="work-list-text">
+            <p class="work-list-meta typo-ui-caps">
+              <span>{entry.data.year}</span>
+              {entry.data.passwordProtected && (
+                <span class="work-list-lock">
+                  <Icon name="material-symbols:lock-outline" aria-hidden="true" />
+                  Password protected
+                </span>
+              )}
+            </p>
+            <CardTitleTag class={`work-list-title typo-${cardTitleRole}`}>{entry.data.title}</CardTitleTag>
+            <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  /* The nav's Work link lands here; scroll-margin clears the sticky nav */
+  .work-list-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    scroll-margin-top: var(--nav-height);
+  }
+
+  /* ── Left column: heading pinned under the nav while the cards scroll ── */
+  .work-list-intro {
+    border-right: var(--border-width-1) solid var(--color-rule);
+  }
+
+  .work-list-intro-inner {
+    position: sticky;
+    top: var(--nav-height);
+    padding: var(--content-inset-md);
+  }
+
+  .work-list-heading {
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  /* ── Right column: stacked cards, image above text ── */
+  .work-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .work-list-item + .work-list-item {
+    border-top: var(--border-width-1) solid var(--color-rule);
+  }
+
+  .work-list-card {
+    display: block;
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  /* Thumbnails keep their own ratio (2:1 to 16:10) so none of them lose UI to a crop */
+  .work-list-media {
+    overflow: hidden;
+    border-bottom: var(--border-width-1) solid var(--color-rule);
+  }
+
+  .work-list-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform var(--duration-long) var(--easing-standard, ease);
+  }
+
+  .work-list-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--content-inset-sm);
+  }
+
+  .work-list-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    margin: 0;
+  }
+
+  .work-list-lock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    color: var(--color-text-secondary);
+  }
+
+  .work-list-lock svg {
+    width: 1.1em;
+    height: 1.1em;
+  }
+
+  .work-list-title {
+    margin: 0;
+  }
+
+  .work-list-tagline {
+    margin: 0;
+    max-width: 38em;
+  }
+
+  .work-list-card:focus-visible {
+    outline: none;
+    box-shadow: inset var(--focus-ring);
+  }
+
+  @media (hover: hover) {
+    .work-list-card:hover .work-list-media img {
+      transform: scale(1.02);
+    }
+
+    .work-list-card:hover .work-list-title {
+      animation: cmy-cycle 1.5s steps(1, end) infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-list-media img {
+      transition: none;
+    }
+
+    .work-list-card:hover .work-list-media img {
+      transform: none;
+    }
+
+    .work-list-card:hover .work-list-title {
+      animation: none;
+    }
+  }
+
+  /* ── Tablet and below: heading stacks above the cards ── */
+  @media (--2x) {
+    .work-list-section {
+      grid-template-columns: 1fr;
+    }
+
+    .work-list-intro {
+      border-right: none;
+      border-bottom: var(--border-width-1) solid var(--color-rule);
+      margin-inline: calc(var(--page-margin) * -1);
+      padding-inline: var(--page-margin);
+    }
+
+    .work-list-intro-inner {
+      position: static;
+      padding: var(--content-inset-sm);
+    }
+  }
+</style>
+

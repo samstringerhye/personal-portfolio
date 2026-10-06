@@ -312,7 +312,7 @@ async function initFallback(
     cancelAnimationFrame(frameId)
     observer.disconnect()
     ro.disconnect()
-    meshes.forEach(mesh => (mesh.material as MeshBasicMaterial).dispose())
+    meshes.forEach(mesh => (mesh.material as InstanceType<typeof MeshBasicMaterial>).dispose())
     meshes[0].geometry.dispose()
     renderer.dispose()
   }

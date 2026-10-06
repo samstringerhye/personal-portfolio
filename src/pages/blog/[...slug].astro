@@ -51,6 +51,7 @@ const blogPostLd = {
   title={`${entry.data.title} | Sam Stringer-Hye`}
   description={entry.data.description}
   jsonLd={blogPostLd}
+  noindex
 >
   <article class="blog-post">
     <header class="blog-post-header">
@@ -111,7 +112,6 @@ const blogPostLd = {
   .blog-post-title {
     color: var(--color-text-primary);
     margin: 0 0 var(--space-3);
-    text-wrap: balance;
   }
 
   .blog-post-desc {

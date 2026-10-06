@@ -7,15 +7,9 @@ export interface HomeContent {
     headline: string
     headlineTag: HeadingTag
     headlineRole: TypographyRole
-  }
-  bio: {
-    headline: string
-    headlineTag: HeadingTag
-    headlineRole: TypographyRole
     body: string
-    bodyTag: TextTag
+    bodyHighlight?: string
     bodyRole: TypographyRole
-    contentInset?: ContentInset
   }
   work: {
     headline: string
@@ -24,6 +18,14 @@ export interface HomeContent {
     cardTitleTag: HeadingTag
     cardTitleRole: TypographyRole
     contentInset?: ContentInset
+  }
+  leadership: {
+    headline: string
+    headingTag: HeadingTag
+    headingRole: TypographyRole
+    itemTitleRole: TypographyRole
+    itemBodyRole: TypographyRole
+    items: { title: string; body: string }[]
   }
   experience: ExperienceContent
   interests: {
