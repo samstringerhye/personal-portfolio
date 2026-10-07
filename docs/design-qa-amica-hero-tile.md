@@ -1,6 +1,6 @@
 **Comparison Target**
 
-- Source visual truth: `/Users/samstrin/Library/Application Support/CleanShot/media/media_Z6LMG4QbNX/CleanShot 2026-08-13 at 22.07.10@2x.png`
+- Source visual truth: a local CleanShot capture of the reference component (not committed)
 - Implementation: `src/components/amica/HeroMosaic.astro`, row 1 / item 3
 - Implementation screenshots: `output/playwright/amica-editorial-tile-desktop.png` and `output/playwright/amica-editorial-tile-responsive.png`
 - Combined comparison: `output/playwright/amica-editorial-tile-comparison.png`
