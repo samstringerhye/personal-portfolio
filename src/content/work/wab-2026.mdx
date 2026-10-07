@@ -5,7 +5,10 @@ year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
 tagline: "Design system and production screens for a 900-location QSR brand's mobile app."
-thumbnail: "../../assets/work/wab-2026/wab-thumbnail.jpeg"
+thumbnail: "../../assets/work/wab-2026/wab-thumbnail-32.jpeg"
+thumbnailLayers:
+  subject: "../../assets/work/wab-2026/wab-subject-32.png"
+  background: "#FD7801"
 heroImage: "../../assets/work/wab-2026/hero.png"
 heroImageAlt: "Whataburger mobile app redesign: home screen shown in a device mockup"
 featured: true
@@ -13,10 +16,10 @@ sortOrder: 0
 unlisted: false
 passwordProtected: true
 thumbnailAlt: "Whataburger mobile app screens showing home, menu, and burger customization on an orange background"
+thumbnailText: "light"
 tags: ["Design System", "Design Tokens", "Mobile App", "Visual Design", "Component Architecture"]
 ---
 import { Image } from 'astro:assets'
-import HeroImage from '../../components/HeroImage.astro'
 import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
@@ -56,6 +59,16 @@ import lifestyleAccountSrc from '../../assets/work/wab-2026/lifestyle-account.pn
 import screensGridSrc from '../../assets/work/wab-2026/screens-grid.jpeg'
 import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.png'
 
+<Meta client="Whataburger" role="Associate Design Director" agency="Razorfish" year={2026} />
+
+<ProseGroup>
+
+<p class="cs-intro">The Whataburger app wasn't working. The ordering flow took too many taps and felt dated. The old design lacked brand personality, and the interface was buried under generic QSR patterns. Core features like ordering, rewards, and location finding all existed, but nothing felt connected or felt like Whataburger.</p>
+
+As sole visual designer on the redesign, I ran two parallel tracks: rebuilding the entire design system from scratch, and delivering production-ready visual design for every screen in the app. Late January to May. 258 tokens, 90+ components, every flow.
+
+</ProseGroup>
+
 <HeroPhoneScroll screens={[
   { src: menuFavoritesSrc, alt: "Favorites: quick reorder from saved items" },
   { src: locationsSrc, alt: "Location finder: map view with nearby restaurants" },
@@ -72,18 +85,6 @@ import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.pn
   { src: menuSidesSrc, alt: "Choose your side: meal builder with clear selection states" },
   { src: menuAddToCartSrc, alt: "Add to cart: order confirmation with full customization summary" },
 ]} />
-
-<ProseGroup>
-
-# Redesigning How 900 Locations Order
-
-The Whataburger app wasn't working. The ordering flow took too many taps and felt dated. The old design lacked brand personality, and the interface was buried under generic QSR patterns. Core features like ordering, rewards, and location finding all existed, but nothing felt connected or felt like Whataburger.
-
-As sole visual designer on the redesign, I ran two parallel tracks: rebuilding the entire design system from scratch, and delivering production-ready visual design for every screen in the app. Late January to May. 258 tokens, 90+ components, every flow.
-
-</ProseGroup>
-
-<Meta client="Whataburger" role="Associate Design Director" agency="Razorfish" year={2026} />
 
 <ProseGroup>
 

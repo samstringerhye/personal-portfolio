@@ -184,22 +184,10 @@ const familyToVar = Object.fromEntries(
   Object.entries(ref.font.family).map(([key, val]) => [val, `var(--font-${key})`])
 ) as Record<string, string>
 
-/* Inter Dynamic Metrics: tracking = a + b × e^(c × z) where z = font size in px
-   https://rsms.me/inter/dynmetrics/ */
-const interA = -0.0223, interB = 0.185, interC = -0.1745
-function interTracking(remSize: number): string {
-  const px = remSize * 16
-  const em = interA + interB * Math.exp(interC * px)
-  return `${em.toFixed(4)}em`
-}
-
-const isSans = (family: string) => family === ref.font.family.sans
-
 const roleRules = Object.entries(typescale).map(([name, cfg]) => {
   const fontSize = typeof cfg.scale === 'number' ? `${cfg.scale}rem` : buildClamp(cfg.scale.min, cfg.scale.max)
   const family = familyToVar[cfg.family] ?? cfg.family
-  // Use Inter dynmetrics for sans roles, explicit tracking for others
-  const tracking = isSans(cfg.family) ? interTracking(typeof cfg.scale === 'number' ? cfg.scale : (cfg.scale.min + cfg.scale.max) / 2) : cfg.tracking
+  const tracking = cfg.tracking
   const trackingLine = tracking && tracking !== '0rem' ? `\n    letter-spacing: ${tracking};` : ''
   const transformLine = cfg.textTransform ? `\n    text-transform: ${cfg.textTransform};` : ''
   return `.typo-${name} {
@@ -216,8 +204,8 @@ const elementRules = Object.entries(elementMap).map(([el, roleName]) => {
   if (!cfg) return ''
   const fontSize = typeof cfg.scale === 'number' ? `${cfg.scale}rem` : buildClamp(cfg.scale.min, cfg.scale.max)
   const family = familyToVar[cfg.family] ?? cfg.family
-  const tracking = isSans(cfg.family) ? interTracking(typeof cfg.scale === 'number' ? cfg.scale : (cfg.scale.min + cfg.scale.max) / 2) : ''
-  const trackingLine = tracking ? `\n    letter-spacing: ${tracking};` : ''
+  const tracking = cfg.tracking
+  const trackingLine = tracking && tracking !== '0rem' ? `\n    letter-spacing: ${tracking};` : ''
   return `${el} {
     font-family: ${family};
     font-weight: ${cfg.weight};
@@ -266,8 +254,8 @@ const typoCss = `:root {
     <SEO title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" as="style" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" rel="stylesheet" />
     <link rel="preload" href="/fonts/perfectlynineties-light.woff2" as="font" type="font/woff2" crossorigin />
     <style>
       @font-face {

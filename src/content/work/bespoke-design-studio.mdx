@@ -5,15 +5,18 @@ year: 2024
 role: "Associate Design Director"
 agency: "Razorfish"
 tagline: "An appliance configurator whose shoppers added to cart at 6 to 10 times the rate of standard product pages."
-thumbnail: "../../assets/work/bespoke-design-studio/bespoke-design-studio-thumbnail.jpeg"
+thumbnail: "../../assets/work/bespoke-design-studio/bespoke-design-studio-thumbnail-32.jpeg"
+thumbnailLayers:
+  subject: "../../assets/work/bespoke-design-studio/bespoke-design-studio-subject-32.png"
+  background: "#D7E4EC"
+  heroOffset: 0.023
 heroImageAlt: "iPad and iPhone showing the Bespoke Design Studio configurator: a rendered kitchen beside a Choose Colors panel with finish swatches for all four fridge door zones"
 thumbnailAlt: "iPad and iPhone showing the Bespoke Design Studio appliance configurator in a showroom setting"
 heroImage: "../../assets/work/bespoke-design-studio/scene-2-1.png"
 featured: true
-sortOrder: 1
+sortOrder: 2
 tags: ["Design System", "E-commerce", "Interactive", "Motion Design"]
 ---
-import HeroImage from '../../components/HeroImage.astro'
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
@@ -22,7 +25,6 @@ import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
 import AccentBand from '../../components/AccentBand.astro'
-import heroSrc from '../../assets/work/bespoke-design-studio/scene-2-1.png'
 import desktop06Src from '../../assets/work/bespoke-design-studio/desktop-06.png'
 import mobile06Src from '../../assets/work/bespoke-design-studio/mobile-06.png'
 import desktop03bSrc from '../../assets/work/bespoke-design-studio/desktop-03b.png'
@@ -34,17 +36,13 @@ import kitchenConfiguratorOverviewSrc from '../../assets/work/bespoke-design-stu
 import configuratorColorSelectionSrc from '../../assets/work/bespoke-design-studio/image-2.png'
 import configuratorFullColorPanelSrc from '../../assets/work/bespoke-design-studio/new-design.png'
 
-<HeroImage src={heroSrc} alt="iPad and iPhone showing the Bespoke Design Studio configurator: a rendered kitchen beside a Choose Colors panel with finish swatches for all four fridge door zones" />
+<Meta client="Samsung" role="Associate Design Director" agency="Razorfish" year={2024} />
 
 <ProseGroup>
 
-# Samsung Bespoke Design Studio
-
-Shoppers who used the configurator added to cart at 6 to 10 times the rate of standard product pages, and over 12 months it was credited with nine figures in incremental revenue. Samsung's Bespoke line lets customers configure appliances down to the panel finish, but the online experience wasn't delivering the same sense of control as the showroom floor. I owned visual design for a tool that had to guide users through dozens of decisions without overwhelming them.
+<p class="cs-intro">Shoppers who used the configurator added to cart at 6 to 10 times the rate of standard product pages, and over 12 months it was credited with nine figures in incremental revenue. Samsung's Bespoke line lets customers configure appliances down to the panel finish, but the online experience wasn't delivering the same sense of control as the showroom floor. I owned visual design for a tool that had to guide users through dozens of decisions without overwhelming them.</p>
 
 </ProseGroup>
-
-<Meta client="Samsung" role="Associate Design Director" agency="Razorfish" year={2024} />
 
 <ImagePair>
   <Fragment slot="left"><Image src={desktop06Src} alt="Desktop view of the Bespoke Design Studio" format="webp" /></Fragment>

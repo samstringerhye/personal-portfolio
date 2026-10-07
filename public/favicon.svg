@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#1A1A1A"/>
-  <text x="16" y="22" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="600" fill="#FAFAF9" text-anchor="middle">S</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1100 1100">
+  <path d="M250.5 0C388.295 0 500 111.929 500 250V500H250.5C112.705 500 1 388.071 1 250C1 111.929 112.705 0 250.5 0Z" fill="#F22434"/>
+  <path d="M500 850C500 988.071 388.071 1100 250 1100C111.929 1100 0 988.071 0 850C0 711.929 111.929 600 250 600H500V850Z" fill="#E5C800"/>
+  <path d="M850 0C988.071 0 1100 111.929 1100 250C1100 388.071 988.071 500 850 500H600V250C600 111.929 711.929 0 850 0Z" fill="#00CC55"/>
+  <path d="M850 600C988.071 600 1100 711.929 1100 850C1100 988.071 988.071 1100 850 1100C711.929 1100 600 988.071 600 850V600H850Z" fill="#2471F2"/>
 </svg>

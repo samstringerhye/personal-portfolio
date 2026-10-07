@@ -59,7 +59,7 @@ interface InitMessage {
     accent1: string
     accent2: string
     accent3: string
-    textPrimary: string
+    dot: string
   }
 }
 
@@ -146,7 +146,7 @@ async function initScene(msg: InitMessage) {
     { color: msg.colors.accent1, delay: 1, opacity: accentOpacity },
     { color: msg.colors.accent2, delay: 2, opacity: accentOpacity },
     { color: msg.colors.accent3, delay: 3, opacity: accentOpacity },
-    { color: msg.colors.textPrimary, delay: 0, opacity: 1 },
+    { color: msg.colors.dot, delay: 0, opacity: 1 },
   ]
 
   meshes = []

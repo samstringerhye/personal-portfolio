@@ -7,17 +7,33 @@ interface Props {
   tag?: HeadingTag
   role?: TypographyRole
   body?: string
-  bodyHighlight?: string
+  bodyHighlights?: string[]
   bodyRole?: TypographyRole
 }
 
-const { headline, tag = 'h1', role = 'display-lg', body, bodyHighlight, bodyRole = 'title-lg' } = Astro.props as Props
+const { headline, tag = 'h1', role = 'display-lg', body, bodyHighlights = [], bodyRole = 'title-lg' } = Astro.props as Props
 
-// Split the bio around the highlighted phrase so it can take the accent color
-const highlightAt = body && bodyHighlight ? body.indexOf(bodyHighlight) : -1
-const bodyParts = highlightAt >= 0 && body && bodyHighlight
-  ? [body.slice(0, highlightAt), bodyHighlight, body.slice(highlightAt + bodyHighlight.length)]
-  : null
+// Break the bio into plain and highlighted runs, taking whichever phrase appears next
+const bodySegments: { text: string; highlight: number }[] = []
+if (body) {
+  let cursor = 0
+  while (cursor < body.length) {
+    let next = { at: -1, phrase: '' }
+    for (const phrase of bodyHighlights) {
+      const at = body.indexOf(phrase, cursor)
+      if (at !== -1 && (next.at === -1 || at < next.at)) next = { at, phrase }
+    }
+    if (next.at === -1) {
+      bodySegments.push({ text: body.slice(cursor), highlight: 0 })
+      break
+    }
+    if (next.at > cursor) bodySegments.push({ text: body.slice(cursor, next.at), highlight: 0 })
+    // Highlights number 1–3 in reading order, cycling, so each takes a different accent
+    const count = bodySegments.filter(seg => seg.highlight).length
+    bodySegments.push({ text: next.phrase, highlight: (count % 3) + 1 })
+    cursor = next.at + next.phrase.length
+  }
+}
 const HeroTag = tag as any
 const heroRole = `typo-${role}`
 
@@ -35,7 +51,7 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
       <HeroTag class:list={["hero-block", heroRole]} data-hero-text>{headline}</HeroTag>
       {body && (
         <p class:list={["hero-bio", "hero-sub", `typo-${bodyRole}`]} data-hero-sub>
-          {bodyParts ? <>{bodyParts[0]}<span class="hero-name">{bodyParts[1]}</span>{bodyParts[2]}</> : body}
+          {bodySegments.map(seg => seg.highlight ? <span class="hero-highlight" data-hl={seg.highlight}>{seg.text}</span> : seg.text)}
         </p>
       )}
     </div>
@@ -110,23 +126,36 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     background: radial-gradient(closest-side, var(--color-bg-primary) 60%, transparent);
   }
 
+  /* Each highlight takes a different accent. The first (the name) matches the accent the nav
+     picked for the active tab (Nav.astro sets data-accent); the rest follow in rotation. */
   .hero-bio {
     margin: 0;
     color: var(--color-text-primary);
+    --hl-1: var(--color-accent-text-1);
+    --hl-2: var(--color-accent-text-2);
+    --hl-3: var(--color-accent-text-3);
   }
 
-  /* Follows the accent the nav picked for the active tab (Nav.astro sets data-accent) */
-  .hero-name {
-    color: var(--color-accent-text-1);
+  :global([data-accent="2"]) .hero-bio {
+    --hl-1: var(--color-accent-text-2);
+    --hl-2: var(--color-accent-text-3);
+    --hl-3: var(--color-accent-text-1);
   }
 
-  :global([data-accent="2"]) .hero-name {
-    color: var(--color-accent-text-2);
+  :global([data-accent="3"]) .hero-bio {
+    --hl-1: var(--color-accent-text-3);
+    --hl-2: var(--color-accent-text-1);
+    --hl-3: var(--color-accent-text-2);
   }
 
-  :global([data-accent="3"]) .hero-name {
-    color: var(--color-accent-text-3);
+  .hero-highlight {
+    /* Keep each phrase (e.g. the job title) on one line */
+    white-space: nowrap;
   }
+
+  .hero-highlight[data-hl="1"] { color: var(--hl-1); }
+  .hero-highlight[data-hl="2"] { color: var(--hl-2); }
+  .hero-highlight[data-hl="3"] { color: var(--hl-3); }
 
   .hero-bio {
     max-width: 36em;
@@ -209,11 +238,10 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
       heroHandles.push(createCmyAutoSplitReveal(el, cfg, { delay: startDelay }))
     })
 
-    // Eyebrow and bio follow the headline in, after its first words land
-    gsap.fromTo(subs,
-      { opacity: 0, y: cfg.slideUp },
-      { opacity: 1, y: 0, duration: cfg.duration, ease: cfg.ease, delay: startDelay + 0.4, stagger: 0.1 },
-    )
+    // The bio follows the headline in line by line, after its first words land
+    subs.forEach(el => {
+      heroHandles.push(createCmyAutoSplitReveal(el, cfg, { delay: startDelay + 0.4 }, 'lines'))
+    })
   }
 
   document.addEventListener('astro:page-load', () => {

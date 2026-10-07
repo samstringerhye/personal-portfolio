@@ -5,15 +5,18 @@ year: 2020
 role: "Senior Designer"
 agency: "Razorfish"
 tagline: "Design system and GNB for one of the world's most-visited consumer electronics sites."
-thumbnail: "../../assets/work/samsung-redesign/samsung-redesign-carousel.jpeg"
+thumbnail: "../../assets/work/samsung-redesign/samsung-redesign-thumbnail-32.jpeg"
+thumbnailLayers:
+  subject: "../../assets/work/samsung-redesign/samsung-redesign-subject-32.png"
+  background: "#F5F5F5"
+  heroOffset: -0.006
 heroImageAlt: "Samsung.com redesign showing global navigation and product pages across desktop and mobile"
-thumbnailAlt: "Samsung.com product pages and Galaxy device screens arranged on a dark background"
+thumbnailAlt: "Samsung.com Galaxy S20 pages on a phone and a laptop, on a white background"
 heroImage: "../../assets/work/samsung-redesign/revamp-kv.jpg"
 featured: true
-sortOrder: 3
+sortOrder: 4
 tags: ["Design System", "E-commerce", "Global", "Navigation"]
 ---
-import HeroImage from '../../components/HeroImage.astro'
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
@@ -23,7 +26,6 @@ import Figure from '../../components/Figure.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
 import AccentBand from '../../components/AccentBand.astro'
-import heroSrc from '../../assets/work/samsung-redesign/revamp-kv.jpg'
 import uiMosaicOverviewSrc from '../../assets/work/samsung-redesign/revamp-ui-mosaic.jpg'
 import productCategoryPageSrc from '../../assets/work/samsung-redesign/samsung-section-2-pcd-desktop.jpg'
 import productDetailZoomSrc from '../../assets/work/samsung-redesign/samsung-section-2-pd-zoom-desktop.jpg'
@@ -32,17 +34,13 @@ import globalNavigationMobileSrc from '../../assets/work/samsung-redesign/samsun
 import globalNavigationCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
 import globalNavigationDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
 
-<HeroImage src={heroSrc} alt="Samsung.com redesign showing global navigation and product pages across desktop and mobile" />
+<Meta client="Samsung" role="Senior Designer" agency="Razorfish" year={2020} />
 
 <ProseGroup>
 
-# Samsung.com Redesign
-
-I contributed to three areas of Samsung.com: the design system, page layouts, and the global navigation bar. The GNB was the hardest problem, and where I spent the most time.
+<p class="cs-intro">I contributed to three areas of Samsung.com: the design system, page layouts, and the global navigation bar. The GNB was the hardest problem, and where I spent the most time.</p>
 
 </ProseGroup>
-
-<Meta client="Samsung" role="Senior Designer" agency="Razorfish" year={2020} />
 
 <ZigzagSection>
   <Fragment slot="media">

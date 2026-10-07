@@ -261,11 +261,11 @@ function passwordPage(caseStudyTitle: string, error: boolean, rateLimited = fals
   <title>${title} — Password Required</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
       background: #EFF4F5;
       color: #0B0D1B;
       min-height: 100dvh;

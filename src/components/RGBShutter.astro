@@ -131,6 +131,11 @@
       const event = e as any
       const originalLoader = event.loader
       event.loader = async () => {
+        // A work card's Flip zoom (WorkList.astro) handles its own transition
+        if (document.documentElement.dataset.flipNav === 'true') {
+          await originalLoader()
+          return
+        }
         w.__shutterActive = true
         await coverAnimation()
         await originalLoader()

@@ -5,15 +5,19 @@ year: 2022
 role: "Associate Design Director"
 agency: "Razorfish"
 tagline: "Visual redesign and motion system for a telecom app people only open when something's wrong."
-thumbnail: "../../assets/work/myfrontier-app/myfrontier-app-thumbnail.jpeg"
+thumbnail: "../../assets/work/myfrontier-app/myfrontier-app-thumbnail-32.png"
+thumbnailLayers:
+  subject: "../../assets/work/myfrontier-app/myfrontier-app-subject-32.png"
+  background: "#FF033A"
+  heroOffset: -0.006
 heroImageAlt: "MyFrontier app redesign, mobile screens showing dashboard, bill pay, and support flow"
-thumbnailAlt: "MyFrontier app screens on a red background showing onboarding, dashboard, and payment flows"
+thumbnailAlt: "Two MyFrontier app screens, the account dashboard and support tickets, on Frontier red"
+thumbnailText: "light"
 heroImage: "../../assets/work/myfrontier-app/frontier-app-kv.png"
 featured: true
-sortOrder: 2
+sortOrder: 3
 tags: ["Mobile App", "Design System", "Motion Design", "UX"]
 ---
-import HeroImage from '../../components/HeroImage.astro'
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import LottiePlayer from '../../components/LottiePlayer.astro'
@@ -23,21 +27,16 @@ import Carousel from '../../components/Carousel.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
 import AccentBand from '../../components/AccentBand.astro'
-import heroSrc from '../../assets/work/myfrontier-app/frontier-app-kv.png'
 import dashboard1Src from '../../assets/work/myfrontier-app/screens/dashboard-1.png'
 import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.png'
 
-<HeroImage src={heroSrc} alt="MyFrontier app redesign, mobile screens showing dashboard, bill pay, and support flow" />
+<Meta client="Frontier" role="Associate Design Director" agency="Razorfish" year={2022} />
 
 <ProseGroup>
 
-# MyFrontier App Redesign
-
-The MyFrontier app covered bill pay, account management, technician scheduling, and support, but the experience didn't hold together. As Associate Design Director on a small team close to dev, I rebuilt the visual design and the layout system. The motion language I built from scratch targeted specific moments: payment confirmation, appointment scheduling, setup completion.
+<p class="cs-intro">The MyFrontier app covered bill pay, account management, technician scheduling, and support, but the experience didn't hold together. As Associate Design Director on a small team close to dev, I rebuilt the visual design and the layout system. The motion language I built from scratch targeted specific moments: payment confirmation, appointment scheduling, setup completion.</p>
 
 </ProseGroup>
-
-<Meta client="Frontier" role="Associate Design Director" agency="Razorfish" year={2022} />
 
 <ImagePair>
   <Fragment slot="left"><Image src={dashboard1Src} alt="Dashboard home" format="webp" /></Fragment>

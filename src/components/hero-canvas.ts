@@ -143,7 +143,8 @@ function initWithWorker(
       accent1: accentColors['1'],
       accent2: accentColors['2'],
       accent3: accentColors['3'],
-      textPrimary: semantic.color.text.primary,
+      // Dots sit one step lighter than body text so the hero copy reads above them
+      dot: semantic.color.text.secondary,
     },
   } as any, [offscreen])
 
@@ -212,7 +213,7 @@ async function initFallback(
     { color: accentColors['1'], delay: 1, opacity: accentOpacity },
     { color: accentColors['2'], delay: 2, opacity: accentOpacity },
     { color: accentColors['3'], delay: 3, opacity: accentOpacity },
-    { color: semantic.color.text.primary, delay: 0, opacity: 1 },
+    { color: semantic.color.text.secondary, delay: 0, opacity: 1 },
   ]
 
   const meshes: InstanceType<typeof InstancedMesh>[] = []

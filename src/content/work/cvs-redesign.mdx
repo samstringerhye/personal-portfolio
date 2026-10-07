@@ -5,15 +5,18 @@ year: 2022
 role: "Associate Design Director"
 agency: "Razorfish"
 tagline: "Type system, icon grid, and component library for CVS.com's e-commerce platform."
-thumbnail: "../../assets/work/cvs-redesign/cvs-redesign-thumbnail.jpeg"
+thumbnail: "../../assets/work/cvs-redesign/cvs-redesign-thumbnail-32.jpeg"
+thumbnailLayers:
+  subject: "../../assets/work/cvs-redesign/cvs-redesign-subject-32.png"
+  background: "#02A5E6"
+  heroOffset: -0.006
 heroImageAlt: "Laptop and phone showing the redesigned CVS.com homepage: shop navigation, a back-to-school promo banner, and a personalized ExtraBucks message"
 thumbnailAlt: "CVS.com homepage and category pages showing the redesigned type system and navigation"
 heroImage: "../../assets/work/cvs-redesign/cvs-header-2.jpg"
 featured: true
-sortOrder: 4
+sortOrder: 5
 tags: ["Design System", "E-commerce", "Accessibility", "Typography"]
 ---
-import HeroImage from '../../components/HeroImage.astro'
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
@@ -21,7 +24,6 @@ import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
 import AccentBand from '../../components/AccentBand.astro'
-import heroSrc from '../../assets/work/cvs-redesign/cvs-header-2.jpg'
 import brandVisualLanguageSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
 import iconIllustrationSystemSrc from '../../assets/work/cvs-redesign/frame-10558.png'
 import iconConstructionSrc from '../../assets/work/cvs-redesign/frame-10629.png'
@@ -29,17 +31,13 @@ import homepageResponsiveLayoutSrc from '../../assets/work/cvs-redesign/frame-10
 import uiComponentsHeadlinesSrc from '../../assets/work/cvs-redesign/frame-10630.png'
 import uiComponentsPaginationSrc from '../../assets/work/cvs-redesign/frame-10608.png'
 
-<HeroImage src={heroSrc} alt="Laptop and phone showing the redesigned CVS.com homepage: shop navigation, a back-to-school promo banner, and a personalized ExtraBucks message" />
+<Meta client="CVS" role="Associate Design Director" agency="Razorfish" year={2022} />
 
 <ProseGroup>
 
-# CVS Shop Website Redesign
-
-CVS.com had years of inconsistency from acquisitions. I led the type system, the icon system, the component library, and the overall design direction. The approach was composable primitives rather than page-specific components, so teams could assemble what they needed.
+<p class="cs-intro">CVS.com had years of inconsistency from acquisitions. I led the type system, the icon system, the component library, and the overall design direction. The approach was composable primitives rather than page-specific components, so teams could assemble what they needed.</p>
 
 </ProseGroup>
-
-<Meta client="CVS" role="Associate Design Director" agency="Razorfish" year={2022} />
 
 <ZigzagSection>
   <Fragment slot="media">

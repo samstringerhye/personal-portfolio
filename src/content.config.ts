@@ -19,6 +19,12 @@ const work = defineCollection({
     unlisted: z.boolean().default(false),
     passwordProtected: z.boolean().default(false),
     tags: z.array(z.string()).optional(),
+    // Text color over the homepage thumbnail: 'light' for saturated images, 'dark' for light ones
+    thumbnailText: z.enum(['light', 'dark']).default('dark'),
+    // Homepage card as two layers for the hover tilt: a transparent subject over a CSS background
+    // heroOffset: fraction of image height to nudge the subject in the full-width hero (negative = up), so
+    // it keeps the card's spacing above the headline (the hero frame is wider than 3:2, so it crops)
+    thumbnailLayers: z.object({ subject: image(), background: z.string(), heroOffset: z.number().default(0) }).optional(),
   }),
 })
 

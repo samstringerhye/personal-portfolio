@@ -5,7 +5,7 @@
     "headlineTag": "h1",
     "headlineRole": "display-lg",
     "body": "I'm Sam Stringer-Hye, a Philadelphia-based Associate Design Director at Razorfish with 13+ years in UX, UI, and motion. I lead design system and product teams for Samsung, Amica, Frontier, and CVS.",
-    "bodyHighlight": "Sam Stringer-Hye",
+    "bodyHighlights": ["Sam Stringer-Hye", "Associate Design Director", "Razorfish"],
     "bodyRole": "title-lg"
   },
   "work": {
@@ -13,7 +13,7 @@
     "headingTag": "h2",
     "headingRole": "headline-lg",
     "cardTitleTag": "h3",
-    "cardTitleRole": "headline-sm"
+    "cardTitleRole": "headline-lg"
   },
   "leadership": {
     "headline": "How I lead",

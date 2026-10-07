@@ -32,30 +32,51 @@ const featured = (await getCollection('work'))
     </div>
   </div>
 
-  <ul class="work-list" role="list">
+  <!-- data-no-reveal: the site-wide image fade-up would otherwise animate every thumbnail on scroll -->
+  <ul class="work-list" role="list" data-no-reveal>
     {featured.map((entry, i) => (
-      <li class="work-list-item">
+      <li class:list={['work-list-item', { 'work-list-item--light': entry.data.thumbnailText === 'light' }]}>
         <a href={`/work/${entry.id}`} class="work-list-card">
-          <div class="work-list-media">
-            <Image
-              src={entry.data.thumbnail}
-              alt={entry.data.thumbnailAlt ?? entry.data.title}
-              layout="full-width"
-              sizes="(max-width: 768px) 100vw, 66vw"
-              format="webp"
-              loading={i === 0 ? 'eager' : 'lazy'}
-            />
+          <div
+            class="work-list-media"
+            data-layered={entry.data.thumbnailLayers ? '' : undefined}
+            data-slug={entry.data.thumbnailLayers ? entry.id : undefined}
+            data-hero-offset={entry.data.thumbnailLayers?.heroOffset}
+          >
+            {entry.data.thumbnailLayers ? (
+              <div class="work-list-plane">
+                <div class="work-list-bg" style={`background: ${entry.data.thumbnailLayers.background}`} aria-hidden="true"></div>
+                <Image
+                  class="work-list-subject"
+                  src={entry.data.thumbnailLayers.subject}
+                  alt={entry.data.thumbnailAlt ?? entry.data.title}
+                  layout="full-width"
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                  format="webp"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+            ) : (
+              <Image
+                src={entry.data.thumbnail}
+                alt={entry.data.thumbnailAlt ?? entry.data.title}
+                layout="full-width"
+                sizes="(max-width: 768px) 100vw, 66vw"
+                format="webp"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            )}
           </div>
+          <p class="work-list-meta typo-ui-caps">
+            <span>{entry.data.year}</span>
+            {entry.data.passwordProtected && (
+              <span class="work-list-lock">
+                <Icon name="material-symbols:lock-outline" aria-hidden="true" />
+                Password protected
+              </span>
+            )}
+          </p>
           <div class="work-list-text">
-            <p class="work-list-meta typo-ui-caps">
-              <span>{entry.data.year}</span>
-              {entry.data.passwordProtected && (
-                <span class="work-list-lock">
-                  <Icon name="material-symbols:lock-outline" aria-hidden="true" />
-                  Password protected
-                </span>
-              )}
-            </p>
             <CardTitleTag class={`work-list-title typo-${cardTitleRole}`}>{entry.data.title}</CardTitleTag>
             <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
           </div>
@@ -89,7 +110,7 @@ const featured = (await getCollection('work'))
     color: var(--color-text-primary);
   }
 
-  /* ── Right column: stacked cards, image above text ── */
+  /* ── Right column: stacked cards. Year sits top-left on the image, title and tagline bottom-left ── */
   .work-list {
     list-style: none;
     margin: 0;
@@ -100,45 +121,73 @@ const featured = (await getCollection('work'))
     border-top: var(--border-width-1) solid var(--color-rule);
   }
 
+  /* The card is a size container so the overlay text scales with it, keeping the text-to-image
+     proportions the thumbnails were composed for at every width */
   .work-list-card {
+    position: relative;
     display: block;
     color: var(--color-text-primary);
     text-decoration: none;
+    container-type: inline-size;
   }
 
-  /* Thumbnails keep their own ratio (2:1 to 16:10) so none of them lose UI to a crop */
+  /* Thumbnails are composed at 3:2; the frame enforces it so every card is the same height */
   .work-list-media {
+    position: relative;
     overflow: hidden;
-    border-bottom: var(--border-width-1) solid var(--color-rule);
+    aspect-ratio: 3 / 2;
   }
 
   .work-list-media img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     transition: transform var(--duration-long) var(--easing-standard, ease);
   }
 
-  .work-list-text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-4) var(--content-inset-sm);
+  /* ── Layered cards: a background layer plus a transparent subject (the page transition zooms
+     these same layers into the case study hero). Hover zooms the image in slightly, inside the
+     card's frame. ── */
+  /* Hover zoom amount; work-transition.ts reads it so the zoom-back lands on the hovered size */
+  .work-list-media {
+    --work-hover-zoom: 1.04;
+  }
+
+  .work-list-plane {
+    position: absolute;
+    inset: 0;
+    transition: transform var(--duration-long) var(--easing-standard, ease);
+  }
+
+  .work-list-bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .work-list-media[data-layered] .work-list-subject {
+    position: absolute;
+    inset: 0;
+    transition: none;
+    filter: drop-shadow(0 18px 22px rgba(11, 13, 27, 0.22));
   }
 
   .work-list-meta {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-1) var(--space-3);
     margin: 0;
+    padding: min(var(--space-5), 5.2cqi);
   }
 
   .work-list-lock {
     display: inline-flex;
     align-items: center;
     gap: 0.25em;
-    color: var(--color-text-secondary);
   }
 
   .work-list-lock svg {
@@ -146,13 +195,33 @@ const featured = (await getCollection('work'))
     height: 1.1em;
   }
 
+  .work-list-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: fit-content;
+    max-width: min(40rem, 62%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: min(var(--space-5), 5.2cqi);
+  }
+
+  /* headline-lg, but capped to ~4.9% of the card width (45px on a 917px card) */
   .work-list-title {
     margin: 0;
+    font-size: min(var(--text-400), 4.9cqi);
   }
 
   .work-list-tagline {
     margin: 0;
     max-width: 38em;
+  }
+
+  /* ── Light cards: white text on saturated thumbnails (set per project with thumbnailText) ── */
+  .work-list-item--light .work-list-meta,
+  .work-list-item--light .work-list-text {
+    color: white;
   }
 
   .work-list-card:focus-visible {
@@ -161,30 +230,52 @@ const featured = (await getCollection('work'))
   }
 
   @media (hover: hover) {
-    .work-list-card:hover .work-list-media img {
-      transform: scale(1.02);
-    }
-
-    .work-list-card:hover .work-list-title {
-      animation: cmy-cycle 1.5s steps(1, end) infinite;
+    .work-list-card:hover .work-list-plane,
+    .work-list-card:hover .work-list-media:not([data-layered]) img {
+      transform: scale(var(--work-hover-zoom));
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .work-list-media img {
+    .work-list-media img,
+    .work-list-plane {
       transition: none;
     }
 
-    .work-list-card:hover .work-list-media img {
+    .work-list-card:hover .work-list-media img,
+    .work-list-card:hover .work-list-plane {
       transform: none;
-    }
-
-    .work-list-card:hover .work-list-title {
-      animation: none;
     }
   }
 
-  /* ── Tablet and below: heading stacks above the cards ── */
+  /* ── Narrow cards (under ~780px, any screen): too narrow for text over the image, so the title
+     and tagline drop below it. The year stays on the image's top-left corner. Keyed to the card's
+     own width because that's what decides whether the text collides with the subject. ── */
+  @container (max-width: 780px) {
+    .work-list-media {
+      border-bottom: var(--border-width-1) solid var(--color-rule);
+    }
+
+    .work-list-meta {
+      padding: var(--space-3) var(--content-inset-sm);
+    }
+
+    /* Below the image there is no proportion to keep: back to the regular headline size */
+    .work-list-title {
+      font-size: var(--text-400);
+    }
+
+    .work-list-text,
+    .work-list-item--light .work-list-text {
+      position: static;
+      width: auto;
+      max-width: none;
+      padding: var(--space-4) var(--content-inset-sm);
+      color: var(--color-text-primary);
+    }
+  }
+
+  /* ── Phones: heading stacks above the cards ── */
   @media (--2x) {
     .work-list-section {
       grid-template-columns: 1fr;
@@ -204,3 +295,10 @@ const featured = (await getCollection('work'))
   }
 </style>
 
+
+
+
+<script>
+  // Card ↔ hero zoom between this list and the case study pages
+  import './work-transition'
+</script>

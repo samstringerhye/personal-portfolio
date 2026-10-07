@@ -283,3 +283,78 @@ ol {
     transform: none !important;
   }
 }
+
+/* Case study hero frame. Shared by the hero itself and the homepage's hidden zoom target, so the
+   card-to-hero transition always lands exactly on the hero. Full content width, as tall as the
+   viewport allows, never taller than 3:2. */
+.cs-hero-size {
+  width: 100%;
+  height: min(calc(100svh - var(--nav-height)), 66.667vw);
+}
+
+/* Case study hero text. Global (not scoped) so the homepage can measure these sizes for the
+   card-to-hero zoom. Year top-left, title and tagline bottom-left, like the work cards. */
+.cs-hero {
+  position: relative;
+  grid-column: 1 / -1;
+  container-type: inline-size;
+}
+
+.cs-hero-year,
+.cs-hero-text {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  padding: var(--space-6);
+  color: var(--color-text-primary);
+}
+
+.cs-hero-year {
+  top: 0;
+}
+
+.cs-hero-text {
+  bottom: 0;
+  max-width: min(56rem, 62%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cs-hero-title,
+.cs-hero-tagline {
+  margin: 0;
+}
+
+.cs-hero--light .cs-hero-year,
+.cs-hero--light .cs-hero-text {
+  color: white;
+}
+
+/* Too narrow to sit over the image: the text drops below it, on the page background */
+@container (max-width: 780px) {
+  .cs-hero-text {
+    position: static;
+    max-width: none;
+    padding: var(--space-4) var(--content-inset-sm);
+    color: var(--color-text-primary) !important;
+  }
+
+  .cs-hero-year {
+    padding: var(--space-3) var(--content-inset-sm);
+  }
+}
+
+/* During a card ↔ hero zoom (work-transition.ts sets data-flip-nav), skip the router's root
+   crossfade. Its frozen before/after snapshots would show the moving copy twice (ghosting) and
+   hide the live zoom until the crossfade ends. */
+html[data-flip-nav]::view-transition-group(root),
+html[data-flip-nav]::view-transition-old(root),
+html[data-flip-nav]::view-transition-new(root) {
+  /* With no animations left, the view transition ends as soon as it starts */
+  animation: none !important;
+}
+
+html[data-flip-nav]::view-transition-old(root) {
+  display: none;
+}

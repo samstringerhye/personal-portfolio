@@ -8,7 +8,7 @@ export interface HomeContent {
     headlineTag: HeadingTag
     headlineRole: TypographyRole
     body: string
-    bodyHighlight?: string
+    bodyHighlights?: string[]
     bodyRole: TypographyRole
   }
   work: {

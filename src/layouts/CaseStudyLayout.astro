@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro'
 import CaseStudyNav from '../components/CaseStudyNav.astro'
+import CaseStudyHero from '../components/CaseStudyHero.astro'
+import type { ImageMetadata } from 'astro'
 
 interface Props {
   title: string
@@ -12,14 +14,19 @@ interface Props {
   nextSlug?: string
   nextTitle?: string
   noindex?: boolean
+  heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number }
+  heroAlt?: string
+  heroYear?: number
+  heroTone?: 'light' | 'dark'
 }
 
-const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitle, noindex } = Astro.props
+const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitle, noindex, heroLayers, heroAlt, heroYear, heroTone } = Astro.props
 ---
 
 <BaseLayout title={`${title} — Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   <div class="scroll-progress" aria-hidden="true"></div>
   <article class="case-study-body">
+    {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} />}
     <slot />
   </article>
 
@@ -45,6 +52,26 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
     display: grid;
     grid-template-columns: subgrid;
     row-gap: 0;
+  }
+
+  /* ── Intro: the paragraph under the hero, set larger with generous space as a lead-in ── */
+  .case-study-body .prose-group:has(> .cs-intro) {
+    grid-column: 2 / 10;
+    padding-block: var(--space-8);
+  }
+
+  .case-study-body .prose-group > .cs-intro {
+    margin: 0;
+    font-size: var(--text-200);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+  }
+
+  @media (--2x) {
+    .case-study-body .prose-group:has(> .cs-intro) {
+      grid-column: 1 / -1;
+      padding-block: var(--space-7);
+    }
   }
 
   /* ── Contact CTA ── */

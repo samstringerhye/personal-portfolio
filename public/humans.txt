@@ -11,7 +11,7 @@ Built with help from Claude Code by Anthropic.
 /* SITE */
 Framework: Astro
 Animation: GSAP, Lenis
-Fonts: Inter, Perfectly Nineties
+Fonts: DM Sans, Perfectly Nineties
 Hosting: Cloudflare Pages
 Last updated: 2026-03-10
 

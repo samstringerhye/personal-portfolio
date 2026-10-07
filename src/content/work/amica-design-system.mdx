@@ -5,12 +5,17 @@ year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
 tagline: "Re-architecting the foundation under a 615-page design system while the team never stopped shipping."
-thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail.jpeg"
+thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
+thumbnailLayers:
+  subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
+  background: "#00A88F"
+  heroOffset: 0
 heroImage: "../../assets/work/amica-design-system/hero.png"
 heroImageAlt: "Amica.com homepage in the redesigned teal brand palette, showing the ambient hero, Trustpilot rating, and quote-start widget"
-thumbnailAlt: "Amica.com homepage in the redesigned teal brand palette, showing the ambient hero, Trustpilot rating, and quote-start widget"
+thumbnailAlt: "Amica logo in white on Amica teal"
+thumbnailText: "light"
 featured: true
-sortOrder: 0
+sortOrder: 1
 passwordProtected: true
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
 ---
@@ -31,17 +36,15 @@ import ambientHeroThumb from '../../assets/work/amica-design-system/prototype-v2
 import quoteFlyoutAddressSrc from '../../assets/work/amica-design-system/prototype-v2/quote-flyout-address-entry.png'
 import quoteFlyoutNotAvailableSrc from '../../assets/work/amica-design-system/prototype/quote-flyout-not-available.png'
 
-<HeroMosaic />
+<Meta client="Amica" role="Associate Design Director" agency="Razorfish" year={2026} />
 
 <ProseGroup>
 
-# Amica.com Design System
-
-<p class="typo-body-lg">Amica relaunched amica.com on this system on October 2, 2026. Before that, a 615-page redesign was shipping on a design library that was quietly broken: 314,000 nodes, no token system, dead components wired into live pages. I rebuilt the foundation as a data problem, indexed the whole library into a database, benchmarked it against 14 production design systems, and remediated it with a verified pipeline, without pulling the team off a sprint.</p>
+<p class="cs-intro">Amica relaunched amica.com on this system on October 2, 2026. Before that, a 615-page redesign was shipping on a design library that was quietly broken: 314,000 nodes, no token system, dead components wired into live pages. I rebuilt the foundation as a data problem, indexed the whole library into a database, benchmarked it against 14 production design systems, and remediated it with a verified pipeline, without pulling the team off a sprint.</p>
 
 </ProseGroup>
 
-<Meta client="Amica" role="Associate Design Director" agency="Razorfish" year={2026} />
+<HeroMosaic />
 
 <ProseGroup>
 

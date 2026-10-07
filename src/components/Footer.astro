@@ -17,8 +17,8 @@ const year = new Date().getFullYear()
       <div class="footer-bar-text">
         <p class="footer-wordmark-text">Sam Stringer-Hye</p>
         <nav class="footer-links" aria-label="Footer links">
-          <a href="mailto:sam@samstringerhye.com" class="footer-link footer-link--email typo-ui-caps">sam@samstringerhye.com</a>
-          <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer" class="footer-link typo-ui-caps">LinkedIn <span class="visually-hidden">(opens in new tab)</span></a>
+          <a href="mailto:sam@samstringerhye.com" class="footer-link typo-body-lg">sam@samstringerhye.com</a>
+          <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer" class="footer-link typo-body-lg">LinkedIn <span class="visually-hidden">(opens in new tab)</span></a>
         </nav>
       </div>
     </div>
@@ -126,11 +126,6 @@ const year = new Date().getFullYear()
     text-decoration: none;
     padding: var(--space-2) var(--space-3);
     transition: opacity var(--duration-short) ease;
-  }
-
-  /* Addresses read wrong in caps; keep the UI size but drop the transform */
-  .footer-link--email {
-    text-transform: none;
   }
 
   .footer-colophon-link {

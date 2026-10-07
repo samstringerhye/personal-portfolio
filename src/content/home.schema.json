@@ -45,7 +45,7 @@
         "headlineTag":  { "$ref": "#/definitions/htmlTag" },
         "headlineRole": { "$ref": "#/definitions/typographyRole" },
         "body":          { "type": "string", "minLength": 1, "description": "Short bio below the headline" },
-        "bodyHighlight": { "type": "string", "minLength": 1, "description": "Phrase in the bio set in the accent color (the name)" },
+        "bodyHighlights": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Phrases in the bio set in the accent color (name, title, company)" },
         "bodyRole":      { "$ref": "#/definitions/typographyRole" }
       },
       "required": ["headline", "body"],

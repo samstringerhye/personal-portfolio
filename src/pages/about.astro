@@ -64,28 +64,6 @@ const skills = [
         <ClientLogos />
       </div>
     </div>
-
-    <div class="about-row about-row--links">
-      <nav class="about-row-body about-links" aria-label="Contact and resume">
-        <a href="/#work" class="about-link typo-body-lg">
-          <span>View my work</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M15 5H8M15 5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="mailto:sam@samstringerhye.com" class="about-link typo-body-lg">
-          <span>sam@samstringerhye.com</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M15 5H8M15 5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer" class="about-link typo-body-lg">
-          <span>LinkedIn</span>
-          <span class="visually-hidden">(opens in new tab)</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M15 5H8M15 5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="/resume" class="about-link typo-body-lg">
-          <span>Resume</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M15 5H8M15 5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </nav>
-    </div>
   </section>
 </BaseLayout>
 
@@ -238,54 +216,6 @@ const skills = [
     padding-bottom: var(--space-5);
   }
 
-  .about-row--links .about-row-body {
-    grid-column: 1 / 7;
-  }
-
-  .about-links {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .about-link {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--color-text-primary);
-    text-decoration: none;
-    padding-block: var(--space-3);
-    min-height: 44px;
-    transition: padding-left var(--duration-medium) ease;
-  }
-
-  .about-link + .about-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--border-width-1);
-    background: var(--color-rule);
-    transform: scaleX(var(--border-draw, 1));
-    transform-origin: left;
-  }
-
-  .about-link svg {
-    flex-shrink: 0;
-    transition: transform var(--duration-medium) ease;
-  }
-
-  @media (hover: hover) {
-    .about-link:hover {
-      padding-left: var(--space-2);
-    }
-
-    .about-link:hover svg {
-      transform: translate(2px, -2px);
-    }
-  }
-
   /* ── Mobile ── */
   @media (--2x) {
     .about-heading {
@@ -330,9 +260,7 @@ const skills = [
       padding-inline: var(--content-inset-sm);
     }
 
-    .about-row-body,
-    /* Outranks the desktop `.about-row--links .about-row-body` column span */
-    .about-row--links .about-row-body {
+    .about-row-body {
       grid-column: 1 / -1;
       padding-inline: var(--content-inset-sm);
       max-width: none;
