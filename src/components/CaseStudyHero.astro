@@ -72,7 +72,7 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
   /* Locked case study: the art and title fade out, then the form fades in (PasswordGate) */
   :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject),
   :global(.cs-hero:has([data-password-gate])) :global(.cs-hero-text) {
-    transition: opacity var(--duration-long) var(--easing-standard) var(--duration-long);
+    transition: opacity var(--duration-medium) var(--easing-standard) var(--duration-medium);
   }
 
   :global(.cs-hero.is-gated) :global(img.cs-hero-subject),
