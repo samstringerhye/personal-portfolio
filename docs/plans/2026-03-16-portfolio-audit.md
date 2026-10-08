@@ -76,10 +76,9 @@ The page ends abruptly after the Accessibility paragraph. No link to work, home,
 The W3 Award is mentioned but not linked. If real, link to the W3 Awards listing for verification.
 **Fix:** Add the verification link, or note the award year/category.
 
-### S6. cmy-cycle hover colors don't match tokens and green fails contrast
-**File:** `src/styles/global.css:72-75`
-The `cmy-cycle` animation uses `#0062ff`, `#ac00ff`, `#ba4f00` — a completely different palette from the defined accent tokens. Additionally, the green accent `#00E676` used elsewhere has only 2.2:1 contrast against the background — fails WCAG AA for any text size.
-**Fix:** Align hover animation colors with the accent token palette. Address the green contrast issue (darken to ~#00B85C or similar for 4.5:1).
+### S6. Green accent fails contrast
+The green accent `#00E676` used elsewhere has only 2.2:1 contrast against the background — fails WCAG AA for any text size.
+**Fix:** Darken to ~#00B85C or similar for 4.5:1.
 
 ### S7. Hardcoded colors in CaseStudyLayout
 **File:** `src/layouts/CaseStudyLayout.astro:269,274`

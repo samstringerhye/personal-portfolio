@@ -19,14 +19,19 @@ let revealCtx: gsap.Context | null = null
  * the viewport, or an empty object when it's already visible.
  * Spreading the result into a gsap.to() call means visible elements
  * animate immediately while off-screen ones wait for scroll.
+ * A start line the page can't scroll far enough to reach (a low element on a tall viewport) would
+ * leave the element hidden for good, so it falls back to firing as the element enters the viewport.
  */
 function stVars(trigger: Element | null, start: string = cfg.scrollStart): Pick<gsap.AnimationVars, 'scrollTrigger'> {
   if (!trigger) return {}
   if ((trigger as HTMLElement).getBoundingClientRect().top < window.innerHeight) return {}
+  const probe = ScrollTrigger.create({ trigger, start })
+  const reachable = probe.start < ScrollTrigger.maxScroll(window) - 1
+  probe.kill()
   return {
     scrollTrigger: {
       trigger,
-      start,
+      start: reachable ? start : 'top bottom',
       toggleActions: 'play none none none',
     },
   }

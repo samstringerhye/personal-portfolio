@@ -84,12 +84,6 @@ const { prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props
     font-weight: var(--font-weight-regular);
   }
 
-  @media (hover: hover) {
-    .cs-nav-link:hover .cs-nav-title {
-      animation: cmy-cycle 1.5s steps(1, end) infinite;
-    }
-  }
-
   @media (--2x) {
     .cs-nav-inner {
       padding-inline: var(--content-inset-sm);

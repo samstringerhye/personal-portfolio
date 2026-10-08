@@ -19,9 +19,9 @@ const copies = 4
 
 <div class="client-logos" aria-label="Selected clients">
   <div class="client-logos-track">
-    {Array.from({ length: copies }, () =>
+    {Array.from({ length: copies }, (_, copy) =>
       clients.map(c => (
-        <img src={c.logo} alt={c.name} class="client-logo" style={`height: ${c.h}px;`} loading="lazy" />
+        <img src={c.logo} alt={c.name} class="client-logo" style={`height: ${c.h}px;`} loading={copy === 0 ? 'eager' : 'lazy'} />
       ))
     )}
   </div>
@@ -110,7 +110,13 @@ const copies = 4
 
     const { default: gsap } = await import('gsap')
 
-    const copyWidth = track.scrollWidth / 4
+    // One loop is the distance to the start of the second copy. Measured once the first copy's logos
+    // have loaded: until then they have no width, and the loop would come out short and jump.
+    const logos = [...track.querySelectorAll('img')]
+    const perCopy = logos.length / 4
+    await Promise.all(logos.slice(0, perCopy).map(img => img.decode().catch(() => {})))
+    if (!container.isConnected) return
+    const copyWidth = (logos[perCopy] as HTMLElement).offsetLeft - (logos[0] as HTMLElement).offsetLeft
 
     logoTween = gsap.to(track, {
       x: -copyWidth,

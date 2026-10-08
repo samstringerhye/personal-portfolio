@@ -82,17 +82,6 @@ a {
   text-decoration-thickness: 1px;
 }
 
-@keyframes cmy-cycle {
-  0%      { color: var(--color-accent-text-3); }
-  33.33%  { color: var(--color-accent-text-1); }
-  66.66%  { color: var(--color-accent-text-2); }
-  100%    { color: var(--color-accent-text-3); }
-}
-
-a:hover:not(.nav-link):not(.nav-logo):not(.work-list-card):not(.back-to-work) {
-  animation: cmy-cycle 1.5s steps(1, end) infinite;
-}
-
 button {
   background: none;
   border: none;
