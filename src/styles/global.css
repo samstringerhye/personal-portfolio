@@ -89,7 +89,7 @@ a {
   100%    { color: var(--color-accent-text-3); }
 }
 
-a:hover:not(.nav-link):not(.nav-logo):not(.work-list-card) {
+a:hover:not(.nav-link):not(.nav-logo):not(.work-list-card):not(.back-to-work) {
   animation: cmy-cycle 1.5s steps(1, end) infinite;
 }
 
@@ -313,18 +313,43 @@ ol {
   top: 0;
 }
 
-/* Back to the work list: top-right, mirroring the year. Case studies without a hero get .cs-back-bar. */
+/* Back to the work list: an arrow where the year sat on the card. The year stays in the markup (hidden)
+   so the card-to-hero zoom can still measure it. Case studies without a hero get .cs-back-bar. */
 .back-to-work {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
   color: var(--color-text-primary);
   text-decoration: none;
-  white-space: nowrap;
 }
 
-.cs-hero-back {
+.back-to-work svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+@media (hover: hover) {
+  .back-to-work {
+    transition: opacity var(--duration-short) ease;
+  }
+
+  .back-to-work:hover {
+    opacity: var(--opacity-50);
+  }
+}
+
+.cs-hero-year[hidden] {
+  display: none;
+}
+
+.cs-hero .cs-hero-back {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   padding: var(--space-6);
+  text-decoration: none;
 }
 
 .cs-hero--light .cs-hero-back {
@@ -363,7 +388,7 @@ ol {
   }
 
   .cs-hero-year,
-  .cs-hero-back {
+  .cs-hero .cs-hero-back {
     padding: var(--space-3) var(--content-inset-sm);
   }
 }

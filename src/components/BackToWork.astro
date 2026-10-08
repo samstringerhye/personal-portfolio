@@ -6,4 +6,8 @@ interface Props {
 const { class: className } = Astro.props
 ---
 
-<a href="/#work" class:list={['back-to-work', 'typo-ui-caps', className]} data-astro-prefetch="hover"><span aria-hidden="true">←</span> Back to work</a>
+<a href="/#work" class:list={['back-to-work', className]} aria-label="Back to work" data-astro-prefetch="hover">
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M16.5 10H3.5M8.5 5l-5 5 5 5" />
+  </svg>
+</a>
