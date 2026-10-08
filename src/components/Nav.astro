@@ -141,6 +141,15 @@ function isActive(href: string) {
     transition: background-color var(--duration-medium) ease;
   }
 
+  /* The active tab's fill: the page's accent, set on <html> by the script below before each page swap */
+  :global(html[data-accent='1']) .nav-links { --nav-active: var(--color-accent-1); }
+  :global(html[data-accent='2']) .nav-links { --nav-active: var(--color-accent-2); }
+  :global(html[data-accent='3']) .nav-links { --nav-active: var(--color-accent-3); }
+
+  :global(.nav-links li:has(> .nav-link.active)) {
+    background-color: var(--nav-active, transparent);
+  }
+
   .nav-links li::before {
     content: '';
     position: absolute;
@@ -323,7 +332,8 @@ function isActive(href: string) {
         bgTarget.style.backgroundColor = CMY_COLORS[colorIndex++ % CMY_COLORS.length]
       })
       el.addEventListener('mouseleave', () => {
-        bgTarget.style.backgroundColor = bgTarget.dataset.activeBg || ''
+        // Back to the CSS fill, which is the accent for the active tab and nothing for the rest
+        bgTarget.style.backgroundColor = ''
       })
     })
 
@@ -478,28 +488,32 @@ function isActive(href: string) {
   let lastGroup = ''
   let lastIndex = 0
 
-  function setActiveNavColor() {
-    const activeLink = document.querySelector<HTMLElement>('.nav-link.active')
-    if (activeLink) {
-      const li = activeLink.parentElement as HTMLElement
-      const href = activeLink.getAttribute('href')
-      const group = href === '/' || href === '/#work' ? 'work' : (href ?? '')
-      const keep = group === 'work' && lastGroup === 'work'
-      const index = keep ? lastIndex : activeColorIndex
-      if (!keep) activeColorIndex = (activeColorIndex + 1) % ACTIVE_COLORS.length
-      lastGroup = group
-      lastIndex = index
-
-      const color = ACTIVE_COLORS[index]
-      li.style.backgroundColor = color
-      li.dataset.activeBg = color
-      // Lets page accents (like the hero name) match the active tab
-      document.documentElement.dataset.accent = String(index + 1)
-    }
+  // The tab's fill comes from html[data-accent] in CSS, not from inline styles, and the incoming page
+  // gets its accent before the swap: a fill applied after the swap leaves the new tab uncolored for a
+  // frame or two, which showed as a flicker. The same attribute lets page accents (like the hero name)
+  // match the active tab.
+  function chooseAccent(root: ParentNode): number | null {
+    const activeLink = root.querySelector<HTMLElement>('.nav-link.active')
+    if (!activeLink) return null
+    const href = activeLink.getAttribute('href')
+    const group = href === '/' || href === '/#work' ? 'work' : (href ?? '')
+    const keep = group === 'work' && lastGroup === 'work'
+    const index = keep ? lastIndex : activeColorIndex
+    if (!keep) activeColorIndex = (activeColorIndex + 1) % ACTIVE_COLORS.length
+    lastGroup = group
+    lastIndex = index
+    return index
   }
 
-  setActiveNavColor()
-  document.addEventListener('astro:after-swap', setActiveNavColor)
+  const initialAccent = chooseAccent(document)
+  if (initialAccent !== null) document.documentElement.dataset.accent = String(initialAccent + 1)
+
+  document.addEventListener('astro:before-swap', (e) => {
+    const incoming = (e as Event & { newDocument: Document }).newDocument.documentElement
+    const index = chooseAccent((e as Event & { newDocument: Document }).newDocument)
+    const accent = index !== null ? String(index + 1) : document.documentElement.dataset.accent
+    if (accent) incoming.dataset.accent = accent
+  })
 
   // On the homepage, the Work tab takes the highlight while the work list sits under the nav.
   // Visual only: Home keeps aria-current, since this is still the homepage.
@@ -518,29 +532,32 @@ function isActive(href: string) {
     let inWork = false
     let frame = 0
 
-    function update() {
+    // `at` is the scroll position to judge from: the page's own, unless a swap is about to restore one
+    function update(at = window.scrollY) {
       frame = 0
       const line = nav!.offsetHeight + 1
       const rect = section!.getBoundingClientRect()
-      const next = rect.top <= line && rect.bottom > line
+      const top = rect.top + window.scrollY - at
+      const next = top <= line && top + rect.height > line
       if (next === inWork) return
       inWork = next
 
       const [from, to] = next ? [homeLi!, workLi!] : [workLi!, homeLi!]
-      const color = from.dataset.activeBg || ''
       from.querySelector('.nav-link')?.classList.remove('active')
-      from.style.backgroundColor = ''
-      delete from.dataset.activeBg
       to.querySelector('.nav-link')?.classList.add('active')
-      to.style.backgroundColor = color
-      to.dataset.activeBg = color
     }
 
     const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update)
+      if (!frame) frame = requestAnimationFrame(() => update())
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    update()
+    // The first read happens before the page is first painted: no fade from the server-rendered Home tab
+    // On Back, Astro restores the saved scroll just after the swap; start from where it will land
+    const restored = (history.state as { scrollY?: number } | null)?.scrollY ?? 0
+    homeLi.style.transition = workLi.style.transition = 'none'
+    update(Math.max(window.scrollY, restored))
+    void homeLi.offsetWidth
+    homeLi.style.transition = workLi.style.transition = ''
 
     removeWorkSpy = () => {
       window.removeEventListener('scroll', onScroll)
@@ -548,6 +565,8 @@ function isActive(href: string) {
     }
   }
 
+  // Also right at the swap, so a page restored deep in the list never paints with Home lit first
+  document.addEventListener('astro:after-swap', initWorkSpy)
   document.addEventListener('astro:page-load', initWorkSpy)
   document.addEventListener('astro:before-swap', () => removeWorkSpy?.())
 
