@@ -69,16 +69,15 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
     translate: 0 calc(var(--hero-offset, 0) * max(100cqh, 66.667cqw));
   }
 
-  /* Locked case study: the art and title fade out, then the form fades in (PasswordGate) */
+  /* Locked case study: the art and title crossfade with the form (PasswordGate) */
   :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject),
   :global(.cs-hero:has([data-password-gate])) :global(.cs-hero-text) {
-    transition: opacity var(--duration-medium) var(--easing-standard) var(--duration-medium);
+    transition: opacity var(--duration-medium) var(--easing-standard);
   }
 
   :global(.cs-hero.is-gated) :global(img.cs-hero-subject),
   :global(.cs-hero.is-gated) :global(.cs-hero-text) {
     opacity: 0;
-    transition-delay: 0s;
   }
 </style>
 
