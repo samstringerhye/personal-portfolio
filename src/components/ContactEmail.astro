@@ -1,0 +1,25 @@
+---
+// The address is assembled in the browser, so it never appears in the HTML or the source for scrapers to read.
+interface Props {
+  class?: string
+}
+const { class: className } = Astro.props
+---
+
+<a data-contact-email class={className}>Email me</a>
+
+<script>
+  const user = 'hello'
+  const host = ['samstringerhye', 'com'].join('.')
+
+  function fill() {
+    const address = `${user}@${host}`
+    document.querySelectorAll<HTMLAnchorElement>('a[data-contact-email]').forEach((link) => {
+      link.href = `mailto:${address}`
+      link.textContent = address
+    })
+  }
+
+  fill()
+  document.addEventListener('astro:page-load', fill)
+</script>

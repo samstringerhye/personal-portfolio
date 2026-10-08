@@ -419,12 +419,19 @@ function passwordPage(caseStudyTitle: string, error: boolean, rateLimited = fals
         <h1>This case study is password-protected</h1>
         <p class="subtitle">This case study is under NDA. Enter the password to view.</p>
         ${formContent}
-        <p class="subtitle access">Need access? Email <a href="mailto:sam@samstringerhye.com">sam@samstringerhye.com</a></p>
+        <p class="subtitle access">Need access? Email <a data-contact-email>me</a></p>
         <a href="/#work" class="back">&larr; Back to work</a>
       </div>
     </main>
   </div>
   <script>
+    const contact = document.querySelector('a[data-contact-email]')
+    if (contact) {
+      const address = 'hello@' + ['samstringerhye', 'com'].join('.')
+      contact.href = 'mailto:' + address
+      contact.textContent = address
+    }
+
     const form = document.querySelector('form')
     const submitButton = form?.querySelector('button[type="submit"]')
 

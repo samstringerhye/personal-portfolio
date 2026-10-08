@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro'
 import CaseStudyNav from '../components/CaseStudyNav.astro'
 import CaseStudyHero from '../components/CaseStudyHero.astro'
+import ContactEmail from '../components/ContactEmail.astro'
 import type { ImageMetadata } from 'astro'
 
 interface Props {
@@ -34,7 +35,7 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
     <hr class="section-rule" />
     <div class="case-study-cta-content">
       <h2 id="case-study-cta-heading" class="typo-headline-sm">Like what you see?</h2>
-      <a href="mailto:sam@samstringerhye.com" class="case-study-cta-link typo-body-lg">sam@samstringerhye.com</a>
+      <ContactEmail class="case-study-cta-link typo-body-lg" />
     </div>
   </section>
 

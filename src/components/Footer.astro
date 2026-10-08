@@ -1,4 +1,6 @@
 ---
+import ContactEmail from './ContactEmail.astro'
+
 const year = new Date().getFullYear()
 ---
 
@@ -17,7 +19,7 @@ const year = new Date().getFullYear()
       <div class="footer-bar-text">
         <p class="footer-wordmark-text">Sam Stringer-Hye</p>
         <nav class="footer-links" aria-label="Footer links">
-          <a href="mailto:sam@samstringerhye.com" class="footer-link typo-body-lg">sam@samstringerhye.com</a>
+          <ContactEmail class="footer-link typo-body-lg" />
           <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer" class="footer-link typo-body-lg">LinkedIn <span class="visually-hidden">(opens in new tab)</span></a>
         </nav>
       </div>
