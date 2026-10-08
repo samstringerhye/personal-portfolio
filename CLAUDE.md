@@ -45,6 +45,5 @@ sections predate the build; trust the code where they disagree. See README.md fo
 
 - `.agents/skills` and `.claude/skills` are tracked despite `.gitignore` entries (added earlier);
   leave them alone.
-- `src/pages/zzpreview-amica-tmp.astro` is a scratch preview page.
 - `WorkCarousel.astro` and `BioSection.astro` are unused (see `docs/notes/session-log.md`).
 - Large source images are already in history. Compress before adding more.
