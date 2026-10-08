@@ -96,7 +96,7 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
   Object.assign(wrap.style, {
     position: 'fixed', left: `${rect.left}px`, top: `${rect.top}px`,
     width: `${rect.width}px`, height: `${rect.height}px`,
-    overflow: 'hidden', zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', background,
+    overflow: 'hidden', zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', background, willChange: 'transform',
   })
   const inner = document.createElement('div')
   inner.dataset.copyInner = ''
@@ -254,12 +254,12 @@ function zoomSurroundings(card: DOMRect, hero: DOMRect, forward: boolean, ease: 
   return Promise.all(els.map(el => new Promise<void>(resolve => {
     const r = el.getBoundingClientRect()
     const transformOrigin = `${card.left + card.width / 2 - r.left}px ${card.top + card.height / 2 - r.top}px`
-    gsap.fromTo(el, { ...(forward ? rest : zoomed), transformOrigin }, {
+    gsap.fromTo(el, { ...(forward ? rest : zoomed), transformOrigin, willChange: 'transform, opacity' }, {
       ...(forward ? zoomed : rest),
       duration: DURATION,
       ease,
       // Only set clearProps when needed: GSAP splits the value if the key exists, even if undefined
-      ...(forward ? {} : { clearProps: 'transform' }),
+      ...(forward ? {} : { clearProps: 'transform,willChange' }),
       onComplete: () => resolve(),
     })
     // Fade only at the far end of the zoom, so the page change itself never shows a hard cut
@@ -280,10 +280,10 @@ function prepareSurroundings(card: DOMRect, hero: DOMRect) {
   const els = [document.querySelector('main'), document.querySelector('.footer')].filter(Boolean) as HTMLElement[]
   els.forEach(el => {
     const r = el.getBoundingClientRect()
-    gsap.set(el, { scale: s, x: dx, y: dy, opacity: 0, transformOrigin: `${card.left + card.width / 2 - r.left}px ${card.top + card.height / 2 - r.top}px` })
+    gsap.set(el, { scale: s, x: dx, y: dy, opacity: 0, willChange: 'transform, opacity', transformOrigin: `${card.left + card.width / 2 - r.left}px ${card.top + card.height / 2 - r.top}px` })
   })
   return (ease: string) => Promise.all(els.map(el => new Promise<void>(resolve => {
-    gsap.to(el, { scale: 1, x: 0, y: 0, duration: DURATION, ease, clearProps: 'transform', onComplete: () => resolve() })
+    gsap.to(el, { scale: 1, x: 0, y: 0, duration: DURATION, ease, clearProps: 'transform,willChange', onComplete: () => resolve() })
     gsap.to(el, { opacity: 1, duration: DURATION * 0.35, ease: 'power1.out', clearProps: 'opacity' })
   }))).then(() => {})
 }
@@ -407,7 +407,9 @@ async function onAfterSwap() {
   if (mode === 'forward') {
     // The incoming page isn't zoomed, so nothing spills any more
     clearMasks()
-    await waitForImage(document.querySelector<HTMLImageElement>('[data-cs-hero] img'))
+    // Hold the copy until the hero image has decoded and the new page's startup work has run, so the
+    // stalls that causes happen under the copy instead of during its fade
+    await Promise.all([waitForImage(document.querySelector<HTMLImageElement>('[data-cs-hero] img')), afterPageStartup()])
     return fadeOutCopy()
   }
 

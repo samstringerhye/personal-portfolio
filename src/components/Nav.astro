@@ -472,16 +472,29 @@ function isActive(href: string) {
   const ACTIVE_COLORS = accentRgba(1)
   let activeColorIndex = Math.floor(Math.random() * ACTIVE_COLORS.length)
 
+  // The homepage and its case studies are one place as far as the highlight goes (Home and Work trade it
+  // as the list scrolls, and a case study keeps Work lit), so the color holds across them, including
+  // through the card zoom. Other pages take the next color.
+  let lastGroup = ''
+  let lastIndex = 0
+
   function setActiveNavColor() {
     const activeLink = document.querySelector<HTMLElement>('.nav-link.active')
     if (activeLink) {
       const li = activeLink.parentElement as HTMLElement
-      const color = ACTIVE_COLORS[activeColorIndex]
+      const href = activeLink.getAttribute('href')
+      const group = href === '/' || href === '/#work' ? 'work' : (href ?? '')
+      const keep = group === 'work' && lastGroup === 'work'
+      const index = keep ? lastIndex : activeColorIndex
+      if (!keep) activeColorIndex = (activeColorIndex + 1) % ACTIVE_COLORS.length
+      lastGroup = group
+      lastIndex = index
+
+      const color = ACTIVE_COLORS[index]
       li.style.backgroundColor = color
       li.dataset.activeBg = color
       // Lets page accents (like the hero name) match the active tab
-      document.documentElement.dataset.accent = String(activeColorIndex + 1)
-      activeColorIndex = (activeColorIndex + 1) % ACTIVE_COLORS.length
+      document.documentElement.dataset.accent = String(index + 1)
     }
   }
 
