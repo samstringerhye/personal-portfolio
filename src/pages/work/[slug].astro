@@ -17,6 +17,9 @@ const sorted = await getSortedWork()
 const entry = sorted.find(e => e.id === slug)
 if (!entry) return Astro.redirect('/404')
 
+// Set by middleware.ts while a protected case study is locked: render the hero with the password
+// form and leave the body out, so nothing behind the password reaches the browser
+const gate = (Astro.locals as { gate?: { error?: boolean; rateLimited?: boolean } }).gate
 const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jsonLd } = await buildCaseStudyProps(entry, sorted)
 ---
 
@@ -29,11 +32,12 @@ const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jso
   prevTitle={prevTitle}
   nextSlug={nextSlug}
   nextTitle={nextTitle}
-  noindex={noindex}
+  noindex={noindex || !!gate}
+  gate={gate}
   heroLayers={entry.data.thumbnailLayers}
   heroAlt={entry.data.thumbnailAlt}
   heroYear={entry.data.year}
   heroTone={entry.data.thumbnailText}
 >
-  <Content />
+  {!gate && <Content />}
 </CaseStudyLayout>

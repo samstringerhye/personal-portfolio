@@ -20,33 +20,35 @@ interface Props {
   heroAlt?: string
   heroYear?: number
   heroTone?: 'light' | 'dark'
+  // Locked password-protected case study: hero with the password form, no body, CTA or pager
+  gate?: { error?: boolean; rateLimited?: boolean }
 }
 
-const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitle, noindex, heroLayers, heroAlt, heroYear, heroTone } = Astro.props
+const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitle, noindex, heroLayers, heroAlt, heroYear, heroTone, gate } = Astro.props
 ---
 
 <BaseLayout title={`${title} — Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
-  <div class="scroll-progress" aria-hidden="true"></div>
+  {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
   {!heroLayers && <div class="cs-back-bar grid-12"><BackToWork /></div>}
   <article class="case-study-body">
-    {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} />}
+    {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
     <slot />
   </article>
 
-  <section class="case-study-cta" aria-labelledby="case-study-cta-heading">
+  {!gate && <section class="case-study-cta" aria-labelledby="case-study-cta-heading">
     <hr class="section-rule" />
     <div class="case-study-cta-content">
       <h2 id="case-study-cta-heading" class="typo-headline-sm">Like what you see?</h2>
       <ContactEmail class="case-study-cta-link typo-body-lg" />
     </div>
-  </section>
+  </section>}
 
-  <CaseStudyNav
+  {!gate && <CaseStudyNav
     prevSlug={prevSlug}
     prevTitle={prevTitle}
     nextSlug={nextSlug}
     nextTitle={nextTitle}
-  />
+  />}
 </BaseLayout>
 
 <style is:global>

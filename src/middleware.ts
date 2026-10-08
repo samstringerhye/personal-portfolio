@@ -38,6 +38,26 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const protectedPath = `/work/${slug}`
 
+  // The case study page shows the password form inside its own hero (the page reads locals.gate);
+  // the embedded apps have no page to render, so they keep the standalone form. The hero form
+  // submits with fetch and only needs a status back.
+  const fromHero = request.headers.has('x-gate-fetch')
+  const showGate = async (status: number, state: { error?: boolean; rateLimited?: boolean }, headers: Record<string, string> = {}) => {
+    if (fromHero) return new Response(null, { status, headers })
+    if (isPrototypePath || isAmbientHeroPath) {
+      return new Response(passwordPage(caseStudy.data.title, !!state.error, !!state.rateLimited), {
+        status,
+        headers: { 'Content-Type': 'text/html; charset=utf-8', ...headers },
+      })
+    }
+    ;(context.locals as any).gate = state
+    const page = await next()
+    const merged = new Headers(page.headers)
+    merged.set('Cache-Control', 'no-store')
+    for (const [name, value] of Object.entries(headers)) merged.set(name, value)
+    return new Response(page.body, { status, headers: merged })
+  }
+
   // Clean expired entries
   const now = Date.now()
   for (const [ip, data] of attempts) {
@@ -49,10 +69,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const clientIp = getClientIp(request)
     const entry = attempts.get(clientIp)
     if (entry && entry.count >= RATE_LIMIT_MAX && now < entry.resetAt) {
-      return new Response(passwordPage(caseStudy.data.title, false, true), {
-        status: 429,
-        headers: { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '300' },
-      })
+      return showGate(429, { rateLimited: true }, { 'Retry-After': '300' })
     }
   }
 
@@ -94,7 +111,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         secure: import.meta.env.PROD,
         sameSite: 'lax',
       })
-      return context.redirect(url.pathname, 302)
+      return fromHero ? new Response(null, { status: 204 }) : context.redirect(url.pathname, 302)
     }
 
     const clientIp = getClientIp(request)
@@ -102,17 +119,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     entry.count++
     attempts.set(clientIp, entry)
 
-    return new Response(passwordPage(caseStudy.data.title, true), {
-      status: 401,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-    })
+    return showGate(401, { error: true })
   }
 
   // Show password form
-  return new Response(passwordPage(caseStudy.data.title, false), {
-    status: 401,
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
-  })
+  return showGate(401, {})
 })
 
 // Serves an embedded app whose real files live under public/_protected-embeds/, NOT under

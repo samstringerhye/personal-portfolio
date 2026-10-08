@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import BackToWork from './BackToWork.astro'
+import PasswordGate from './PasswordGate.astro'
 
 interface Props {
   subject: ImageMetadata
@@ -12,14 +13,16 @@ interface Props {
   tagline?: string
   year?: number
   tone?: 'light' | 'dark'
+  // Set when the case study is password-protected and locked: the form replaces the art
+  gate?: { error?: boolean; rateLimited?: boolean }
 }
 
-const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = 'dark' } = Astro.props
+const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = 'dark', gate } = Astro.props
 ---
 
 <!-- Same layers and text as the homepage card, so the card's zoom lands on an identical hero.
      Text styles live in global.css (.cs-hero-*) so the homepage can measure them. -->
-<div class:list={['cs-hero', { 'cs-hero--light': tone === 'light' }]}>
+<div class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]}>
   <div class="cs-hero-media cs-hero-size" data-cs-hero style={`--hero-offset: ${heroOffset}; background: ${background}`}>
     <Image
       class="cs-hero-subject"
@@ -31,6 +34,7 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
       loading="eager"
       fetchpriority="high"
     />
+    {gate && <PasswordGate error={gate.error} rateLimited={gate.rateLimited} />}
   </div>
   {year && <p class="cs-hero-year typo-ui-caps" hidden>{year}</p>}
   <BackToWork class="cs-hero-back" />
@@ -63,6 +67,18 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
     filter: drop-shadow(0 18px 22px rgba(11, 13, 27, 0.22));
     /* Centers subjects that the card art sits above center to leave room for the card's title */
     translate: 0 calc(var(--hero-offset, 0) * max(100cqh, 66.667cqw));
+  }
+
+  /* Locked case study: the art and title fade out, then the form fades in (PasswordGate) */
+  :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject),
+  :global(.cs-hero:has([data-password-gate])) :global(.cs-hero-text) {
+    transition: opacity var(--duration-long) var(--easing-standard) var(--duration-long);
+  }
+
+  :global(.cs-hero.is-gated) :global(img.cs-hero-subject),
+  :global(.cs-hero.is-gated) :global(.cs-hero-text) {
+    opacity: 0;
+    transition-delay: 0s;
   }
 </style>
 
