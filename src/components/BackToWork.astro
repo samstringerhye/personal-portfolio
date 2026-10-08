@@ -1,0 +1,9 @@
+---
+// Goes to the homepage work list. Any link to "/" also plays the hero → card zoom (work-transition.ts).
+interface Props {
+  class?: string
+}
+const { class: className } = Astro.props
+---
+
+<a href="/#work" class:list={['back-to-work', 'typo-ui-caps', className]} data-astro-prefetch="hover"><span aria-hidden="true">←</span> Back to work</a>

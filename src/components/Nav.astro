@@ -8,9 +8,12 @@ const links = [
   { href: '/resume', label: 'Resume' },
 ]
 
+const inWork = pathname === '/work' || pathname.startsWith('/work/')
+
 function isActive(href: string) {
   if (href === '/') return pathname === '/'
-  if (href.startsWith('/#')) return false
+  // Work is a homepage section, so only its case study pages light it up from elsewhere
+  if (href === '/#work') return inWork
   return pathname.startsWith(href)
 }
 ---
@@ -33,7 +36,7 @@ function isActive(href: string) {
           <a
             href={link.href}
             class:list={['nav-link', 'typo-ui', { active: isActive(link.href) }]}
-            aria-current={isActive(link.href) ? 'page' : undefined}
+            aria-current={isActive(link.href) ? (link.href === '/#work' ? 'true' : 'page') : undefined}
             data-astro-prefetch="hover"
           >
             {link.label}

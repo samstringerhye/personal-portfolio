@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro'
 import CaseStudyNav from '../components/CaseStudyNav.astro'
 import CaseStudyHero from '../components/CaseStudyHero.astro'
 import ContactEmail from '../components/ContactEmail.astro'
+import BackToWork from '../components/BackToWork.astro'
 import type { ImageMetadata } from 'astro'
 
 interface Props {
@@ -26,6 +27,7 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
 
 <BaseLayout title={`${title} — Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   <div class="scroll-progress" aria-hidden="true"></div>
+  {!heroLayers && <div class="cs-back-bar grid-12"><BackToWork /></div>}
   <article class="case-study-body">
     {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} />}
     <slot />

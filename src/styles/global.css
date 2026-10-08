@@ -313,6 +313,28 @@ ol {
   top: 0;
 }
 
+/* Back to the work list: top-right, mirroring the year. Case studies without a hero get .cs-back-bar. */
+.back-to-work {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cs-hero-back {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: var(--space-6);
+}
+
+.cs-hero--light .cs-hero-back {
+  color: white;
+}
+
+.cs-back-bar {
+  padding-block: var(--space-3);
+}
+
 .cs-hero-text {
   bottom: 0;
   max-width: min(56rem, 62%);
@@ -340,7 +362,8 @@ ol {
     color: var(--color-text-primary) !important;
   }
 
-  .cs-hero-year {
+  .cs-hero-year,
+  .cs-hero-back {
     padding: var(--space-3) var(--content-inset-sm);
   }
 }

@@ -1,5 +1,6 @@
 ---
 // The address is assembled in the browser, so it never appears in the HTML or the source for scrapers to read.
+// The link reads "Email me" and only its destination is filled in.
 interface Props {
   class?: string
 }
@@ -13,10 +14,8 @@ const { class: className } = Astro.props
   const host = ['samstringerhye', 'com'].join('.')
 
   function fill() {
-    const address = `${user}@${host}`
     document.querySelectorAll<HTMLAnchorElement>('a[data-contact-email]').forEach((link) => {
-      link.href = `mailto:${address}`
-      link.textContent = address
+      link.href = `mailto:${user}@${host}`
     })
   }
 

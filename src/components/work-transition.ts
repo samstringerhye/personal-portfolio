@@ -198,6 +198,47 @@ function fit(target: HTMLElement | Flip.FlipState, from: number, to: number, end
 }
 
 /**
+ * The zooming page spills past the column's side lines, so two panels in the page color cover
+ * everything outside them for the length of the zoom: it reads as cropped to the content area.
+ * Fixed to the viewport (not clipped on the page), so they hold still however the page is scrolled.
+ */
+let masks: HTMLElement[] = []
+
+function contentBounds(): { left: number; right: number } | null {
+  const overlay = document.querySelector<HTMLElement>('.grid-overlay')
+  if (!overlay) return null
+  const margin = document.createElement('div')
+  margin.style.cssText = 'position:absolute;visibility:hidden;width:var(--page-margin)'
+  document.body.appendChild(margin)
+  const inset = margin.getBoundingClientRect().width
+  margin.remove()
+  const r = overlay.getBoundingClientRect()
+  return { left: r.left + inset, right: r.right - inset }
+}
+
+function maskOutsideLines() {
+  clearMasks()
+  const bounds = contentBounds()
+  if (!bounds) return
+  const panel = (edge: Partial<CSSStyleDeclaration>) => {
+    const el = document.createElement('div')
+    el.setAttribute('aria-hidden', 'true')
+    Object.assign(el.style, {
+      position: 'fixed', top: '0', bottom: '0', background: 'var(--color-bg-primary)',
+      zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', ...edge,
+    })
+    document.documentElement.appendChild(el)
+    return el
+  }
+  masks = [panel({ left: '0', width: `${bounds.left}px` }), panel({ left: `${bounds.right}px`, right: '0' })]
+}
+
+function clearMasks() {
+  masks.forEach(el => el.remove())
+  masks = []
+}
+
+/**
  * Zoom the rest of the page with the image, like the bento demo's surrounding tiles: everything
  * scales around the card's center by the same factor and moves with it, so neighbours push outward.
  * `forward` zooms in from rest; otherwise the page starts zoomed and settles back to rest.
@@ -276,6 +317,7 @@ function fadeOutCopy() {
 }
 
 function finish() {
+  clearMasks()
   mode = null
   backSlug = null
   backText = null
@@ -289,8 +331,12 @@ async function waitForImage(img: HTMLImageElement | null) {
 
 type NavEvent = Event & { sourceElement?: Element; from: URL; to: URL; loader: () => Promise<void> }
 
+// The last client-side navigation, so the back button can tell whether it can step back to the homepage
+let lastNav: { from: string; to: string } | null = null
+
 function onBeforePreparation(e: Event) {
   const event = e as NavEvent
+  lastNav = { from: event.from.pathname, to: event.to.pathname }
   if (reducedMotion()) return
 
   // Forward: a homepage work card → its case study
@@ -320,6 +366,7 @@ function onBeforePreparation(e: Event) {
       const heroRect = probe.box.getBoundingClientRect()
       const growth = heroRect.width / cardRect.width
       const offset = Number(cardMedia.dataset.heroOffset ?? 0)
+      maskOutsideLines()
       // Load the next page while the zoom plays; the swap waits for both
       await Promise.all([
         fit(probe.box, 1, growth, heroShift(offset, heroRect.width, heroRect.height), text ? probe.text : null),
@@ -347,7 +394,7 @@ function onBeforePreparation(e: Event) {
       backText = readText(heroRoot, 'hero')
       copy = buildCopy(hero, hero.style.background, backText, 1, heroShift(offset, hr.width, hr.height))
       hero.style.visibility = 'hidden'
-      heroRoot.querySelectorAll<HTMLElement>('.cs-hero-year, .cs-hero-text').forEach(el => { el.style.visibility = 'hidden' })
+      heroRoot.querySelectorAll<HTMLElement>('.cs-hero-year, .cs-hero-text, .cs-hero-back').forEach(el => { el.style.visibility = 'hidden' })
       gsap.to(['main', '.footer'], { opacity: 0, duration: FADE, ease: 'power2.out' })
       await original()
     }
@@ -358,6 +405,8 @@ async function onAfterSwap() {
   if (!copy || !mode) return finish()
 
   if (mode === 'forward') {
+    // The incoming page isn't zoomed, so nothing spills any more
+    clearMasks()
     await waitForImage(document.querySelector<HTMLImageElement>('[data-cs-hero] img'))
     return fadeOutCopy()
   }
@@ -389,6 +438,7 @@ async function onAfterSwap() {
   // Hold the copy at hero size while the homepage starts up, then zoom out in one smooth pass.
   // Capture the card's resting position first: preparing scales the page, card included.
   const cardState = Flip.getState(cardMedia)
+  maskOutsideLines()
   const playSurroundings = prepareSurroundings(r, heroRect)
   await afterPageStartup()
   await Promise.all([
@@ -416,6 +466,19 @@ if (!tw.__workTransitionBound) {
   document.addEventListener('astro:before-preparation', onBeforePreparation)
   document.addEventListener('pointermove', e => { pointer = { x: e.clientX, y: e.clientY } }, { passive: true })
   document.addEventListener('astro:after-swap', onAfterSwap)
+  // Back to work: when this case study was opened from the homepage, step back in history so the list
+  // returns at the scroll position it was left at and the hero zooms into its card, like the browser's
+  // Back. Otherwise (opened directly, or from another case study) the link goes to the work list.
+  // Capture phase, before the router's own click handler, which skips clicks already default-prevented.
+  window.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    if (!(e.target as Element | null)?.closest('a.back-to-work')) return
+    const index = (history.state as { index?: number } | null)?.index ?? 0
+    if (lastNav?.from === '/' && lastNav.to === location.pathname && index > 0) {
+      e.preventDefault()
+      history.back()
+    }
+  }, { capture: true })
   // The swap copies the incoming page's <html> attributes over ours, which would drop the flag right as
   // the browser starts its root crossfade; carry it onto the incoming page so global.css can skip it.
   document.addEventListener('astro:before-swap', e => {

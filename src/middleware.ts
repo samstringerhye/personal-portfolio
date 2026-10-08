@@ -427,9 +427,7 @@ function passwordPage(caseStudyTitle: string, error: boolean, rateLimited = fals
   <script>
     const contact = document.querySelector('a[data-contact-email]')
     if (contact) {
-      const address = 'hello@' + ['samstringerhye', 'com'].join('.')
-      contact.href = 'mailto:' + address
-      contact.textContent = address
+      contact.href = 'mailto:hello@' + ['samstringerhye', 'com'].join('.')
     }
 
     const form = document.querySelector('form')
