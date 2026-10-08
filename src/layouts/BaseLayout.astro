@@ -257,7 +257,9 @@ const typoCss = `:root {
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" rel="stylesheet" />
     <link rel="preload" href="/fonts/perfectlynineties-light.woff2" as="font" type="font/woff2" crossorigin />
-    <style>
+    <!-- Persisted so the router keeps these faces on swap; re-creating them unloads the headline
+         font mid-zoom -->
+    <style is:inline data-astro-transition-persist="font-faces">
       @font-face {
         font-family: 'Perfectly Nineties';
         src: url('/fonts/perfectlynineties-light.woff2') format('woff2');
