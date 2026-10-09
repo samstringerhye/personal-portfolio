@@ -550,10 +550,14 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
     padding-top: var(--space-3);
   }
 
-  /* Visual after its prose intro: connected pair */
-  .case-study-body .prose-group + .cs-figure:not(.cs-figure--flush),
-  .case-study-body .prose-group + .image-pair {
+  /* Visual after its prose intro: connected pair. The pair's background is the divider color, so its
+     gap is a margin; padding would show as a dark bar above the images. */
+  .case-study-body .prose-group + .cs-figure:not(.cs-figure--flush) {
     padding-top: var(--space-4);
+  }
+
+  .case-study-body .prose-group + .image-pair {
+    margin-top: var(--space-4);
   }
 
   /* New prose section after a visual: topic shift */
