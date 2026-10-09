@@ -735,7 +735,8 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
     if (!body) return
 
     body.querySelectorAll<HTMLImageElement>('img').forEach(img => {
-      if (img.classList.contains('mosaic-media') || img.classList.contains('has-transparency') || img.dataset.transparencyChecked) return
+      // Device frames are transparent by design and sized by their own component; padding them shrinks the bezel
+      if (img.classList.contains('mosaic-media') || img.classList.contains('device-frame') || img.classList.contains('device-screen') || img.classList.contains('has-transparency') || img.dataset.transparencyChecked) return
 
       const check = () => {
         if (!img.naturalWidth) return
