@@ -22,6 +22,8 @@ let copy: HTMLElement | null = null
 let mode: Mode | null = null
 let backSlug: string | null = null
 let backText: TextLayout | null = null
+let backStacked: Stacked | null = null
+let textCopy: HTMLElement | null = null
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches
@@ -80,6 +82,63 @@ function textEl(tag: string, l: Line, color: string): HTMLElement {
   el.textContent = l.text
   Object.assign(el.style, { margin: '0', color, fontSize: `${l.size}px`, lineHeight: `${l.leading}px`, textWrap: 'balance' })
   return el
+}
+
+/* ── Text below the image (narrow cards and heroes, e.g. every phone): the title and tagline
+   ride as their own copy, moving from the card's text block to the hero's ── */
+type Stacked = { rect: DOMRect; color: string; padX: number; padY: number; gap: number; title: Line; tagline?: Line }
+
+function readStacked(root: ParentNode, kind: 'card' | 'hero'): Stacked | null {
+  const k = kind === 'card'
+    ? { block: '.work-list-text', title: '.work-list-title', tagline: '.work-list-tagline' }
+    : { block: '.cs-hero-text', title: '.cs-hero-title', tagline: '.cs-hero-tagline' }
+  const block = root.querySelector<HTMLElement>(k.block)
+  const title = root.querySelector<HTMLElement>(k.title)
+  const tagline = root.querySelector<HTMLElement>(k.tagline)
+  if (!block || !title || getComputedStyle(block).position !== 'static') return null
+  const cs = getComputedStyle(block)
+  return {
+    rect: block.getBoundingClientRect(),
+    color: cs.color,
+    padX: px(cs.paddingLeft),
+    padY: px(cs.paddingTop),
+    gap: px(cs.rowGap),
+    title: line(title, 'typo-display-md'),
+    tagline: tagline ? line(tagline, 'typo-title-lg') : undefined,
+  }
+}
+
+function buildStackedCopy(t: Stacked): HTMLElement {
+  const el = document.createElement('div')
+  el.setAttribute('aria-hidden', 'true')
+  Object.assign(el.style, {
+    position: 'fixed', left: `${t.rect.left}px`, top: `${t.rect.top}px`, width: `${t.rect.width}px`,
+    padding: `${t.padY}px ${t.padX}px`, display: 'flex', flexDirection: 'column', rowGap: `${t.gap}px`,
+    zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', boxSizing: 'border-box',
+    // Opaque like the card's own text area, so the page moving underneath never shows through
+    background: 'var(--color-bg-primary)',
+  })
+  const title = textEl('div', t.title, t.color)
+  title.dataset.copyTitle = ''
+  el.appendChild(title)
+  if (t.tagline) {
+    const tag = textEl('p', t.tagline, t.color)
+    tag.dataset.copyTagline = ''
+    el.appendChild(tag)
+  }
+  document.documentElement.appendChild(el)
+  return el
+}
+
+/** Moves the text copy onto `to`, resizing its type on the way; same timing as the image. */
+function moveStacked(to: Stacked, ease: string) {
+  if (!textCopy) return
+  const tween = { duration: DURATION, ease, autoRound: false }
+  const sized = (l: Line) => ({ fontSize: l.size, lineHeight: `${l.leading}px` })
+  gsap.to(textCopy, { left: to.rect.left, top: to.rect.top, width: to.rect.width, paddingTop: to.padY, paddingBottom: to.padY, paddingLeft: to.padX, paddingRight: to.padX, rowGap: to.gap, ...tween })
+  gsap.to(textCopy.querySelector('[data-copy-title]'), { ...sized(to.title), ...tween })
+  const tag = textCopy.querySelector('[data-copy-tagline]')
+  if (tag && to.tagline) gsap.to(tag, { ...sized(to.tagline), ...tween })
 }
 
 /**
@@ -150,7 +209,7 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
 }
 
 /** Invisible hero laid out exactly like the case study's (global .cs-hero-* styles), for measuring. */
-function heroProbe(title: string, tagline: string, year: string, light: boolean): { box: HTMLElement; text: TextLayout | null; remove: () => void } {
+function heroProbe(title: string, tagline: string, year: string, light: boolean): { box: HTMLElement; text: TextLayout | null; stacked: Stacked | null; remove: () => void } {
   const frame = document.createElement('div')
   frame.setAttribute('aria-hidden', 'true')
   Object.assign(frame.style, {
@@ -166,7 +225,7 @@ function heroProbe(title: string, tagline: string, year: string, light: boolean)
   hero.querySelector('.cs-hero-tagline')!.textContent = tagline
   frame.appendChild(hero)
   document.body.appendChild(frame)
-  return { box: hero.querySelector<HTMLElement>('.cs-hero-size')!, text: readText(hero, 'hero'), remove: () => frame.remove() }
+  return { box: hero.querySelector<HTMLElement>('.cs-hero-size')!, text: readText(hero, 'hero'), stacked: readStacked(hero, 'hero'), remove: () => frame.remove() }
 }
 
 /** Fits the copy into `target`, animating its zoom, subject shift and text to the target's. */
@@ -316,6 +375,9 @@ const zoomEase = (from: number, to: number) => {
 function fadeOutCopy() {
   const c = copy
   copy = null
+  const t = textCopy
+  textCopy = null
+  if (t) gsap.to(t, { opacity: 0, duration: FADE, ease: 'power1.out', onComplete: () => t.remove() })
   if (!c) return finish()
   gsap.to(c, { opacity: 0, duration: FADE, ease: 'power1.out', onComplete: () => { c.remove(); finish() } })
 }
@@ -325,6 +387,9 @@ function finish() {
   mode = null
   backSlug = null
   backText = null
+  backStacked = null
+  textCopy?.remove()
+  textCopy = null
   delete document.documentElement.dataset.flipNav
 }
 
@@ -367,10 +432,19 @@ function onBeforePreparation(e: Event) {
       copy = buildCopy(cardMedia, bg, text, hoverZoom)
       cardMedia.style.visibility = 'hidden'
       if (text) card!.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text').forEach(el => { el.style.visibility = 'hidden' })
+      // Text below the image on both ends: it rides alongside the image (the year, which the hero
+      // swaps for the back arrow, goes with the card)
+      const stackedFrom = text ? null : readStacked(card!, 'card')
+      const stackedTo = stackedFrom ? probe.stacked : null
+      if (stackedFrom && stackedTo) {
+        textCopy = buildStackedCopy(stackedFrom)
+        card!.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text').forEach(el => { el.style.visibility = 'hidden' })
+      }
       const heroRect = probe.box.getBoundingClientRect()
       const growth = heroRect.width / cardRect.width
       const offset = Number(cardMedia.dataset.heroOffset ?? 0)
       maskOutsideLines()
+      if (stackedTo) moveStacked(stackedTo, zoomEase(1, growth))
       // Load the next page while the zoom plays; the swap waits for both
       await Promise.all([
         fit(probe.box, 1, growth, heroShift(offset, heroRect.width, heroRect.height), text ? probe.text : null),
@@ -396,7 +470,9 @@ function onBeforePreparation(e: Event) {
       const offset = Number(getComputedStyle(hero).getPropertyValue('--hero-offset') || 0)
       const heroRoot = hero.closest('.cs-hero') ?? document
       backText = readText(heroRoot, 'hero')
+      backStacked = backText ? null : readStacked(heroRoot, 'hero')
       copy = buildCopy(hero, hero.style.background, backText, 1, heroShift(offset, hr.width, hr.height))
+      if (backStacked) textCopy = buildStackedCopy(backStacked)
       hero.style.visibility = 'hidden'
       heroRoot.querySelectorAll<HTMLElement>('.cs-hero-year, .cs-hero-text, .cs-hero-back').forEach(el => { el.style.visibility = 'hidden' })
       gsap.to(['main', '.footer'], { opacity: 0, duration: FADE, ease: 'power2.out' })
@@ -424,6 +500,7 @@ async function onAfterSwap() {
   if (!cardMedia || !r || !onScreen) return fadeOutCopy()
   const cardEl = cardMedia.closest<HTMLElement>('.work-list-card')
   const cardText = cardEl ? readText(cardEl, 'card') : null
+  const cardStacked = cardEl && backStacked ? readStacked(cardEl, 'card') : null
   const cardTextEls = cardEl ? [...cardEl.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text')] : []
   // The cursor is often still over the card it came from. Browsers don't re-apply :hover after a page
   // swap until the mouse moves, so decide from the tracked pointer: land on the hover zoom and hold it
@@ -437,8 +514,8 @@ async function onAfterSwap() {
     plane.style.transform = `scale(${cardZoom})`
   }
   cardMedia.style.visibility = 'hidden'
-  if (backText && cardText) cardTextEls.forEach(el => { el.style.visibility = 'hidden' })
-  else copy.querySelectorAll<HTMLElement>('[data-copy-meta], [data-copy-block]').forEach(el => el.remove())
+  if ((backText && cardText) || cardStacked) cardTextEls.forEach(el => { el.style.visibility = 'hidden' })
+  if (!(backText && cardText)) copy.querySelectorAll<HTMLElement>('[data-copy-meta], [data-copy-block]').forEach(el => el.remove())
   const heroRect = copy.getBoundingClientRect()
   const shrink = r.width / heroRect.width
   // Hold the copy at hero size while the homepage starts up, then zoom out in one smooth pass.
@@ -447,6 +524,8 @@ async function onAfterSwap() {
   maskOutsideLines()
   const playSurroundings = prepareSurroundings(r, heroRect)
   await afterPageStartup()
+  if (cardStacked) moveStacked(cardStacked, zoomEase(1 / shrink, 1))
+  else if (textCopy) gsap.to(textCopy, { opacity: 0, duration: FADE, ease: 'power1.out' })
   await Promise.all([
     fit(cardState, 1, shrink, 0, backText && cardText ? cardText : null, cardZoom),
     playSurroundings(zoomEase(1 / shrink, 1)),
