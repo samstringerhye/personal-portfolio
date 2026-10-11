@@ -24,7 +24,14 @@ const work = defineCollection({
     // Homepage card as two layers for the hover tilt: a transparent subject over a CSS background
     // heroOffset: fraction of image height to nudge the subject in the full-width hero (negative = up), so
     // it keeps the card's spacing above the headline (the hero frame is wider than 3:2, so it crops)
-    thumbnailLayers: z.object({ subject: image(), background: z.string(), heroOffset: z.number().default(0) }).optional(),
+    // subjectBox: where the subject sits in its art, as fractions of the image (measured from its
+    // alpha). Narrow cards and heroes frame just this box (see narrow-art.ts)
+    thumbnailLayers: z.object({
+      subject: image(),
+      background: z.string(),
+      heroOffset: z.number().default(0),
+      subjectBox: z.object({ top: z.number(), right: z.number(), bottom: z.number(), left: z.number() }).optional(),
+    }).optional(),
   }),
 })
 

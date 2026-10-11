@@ -31,10 +31,11 @@ const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').m
 // Last pointer position, so the zoom-back can tell whether the cursor is over the returning card
 let pointer: { x: number; y: number } | null = null
 
-/** Card art sits subjects above center; the hero moves them down by this much of the image height:
-    the cover height when wide, the enlarged art (80% of the width tall) when narrow (see global.css). */
+/** Card art sits subjects above center; the hero moves them down by this much of the image height.
+    Narrow heroes frame the subject's own box instead (global.css), so they don't shift. */
 const NARROW = 780
-const heroShift = (offset: number, w: number, h: number) => offset * (w <= NARROW ? w * 0.8 : Math.max(h, w / 1.5))
+const heroShift = (offset: number, w: number, h: number) => (w <= NARROW ? 0 : offset * Math.max(h, w / 1.5))
+const ART_VARS = ['--art-ratio', '--art-l', '--art-t', '--art-w', '--art-h']
 
 /* ── Text that rides along with the image (year, title, tagline) ── */
 type Line = { text: string; cls: string; size: number; leading: number }
@@ -88,7 +89,7 @@ function textEl(tag: string, l: Line, color: string): HTMLElement {
 
 /* ── Text below the image (narrow cards and heroes, e.g. every phone): the title and tagline sit on
    the project's color under the art and ride as their own copy, from the card's block to the hero's ── */
-type Stacked = { rect: DOMRect; color: string; padX: number; padY: number; gap: number; title: Line; tagline?: Line }
+type Stacked = { rect: DOMRect; color: string; padX: number; padTop: number; padBottom: number; gap: number; title: Line; tagline?: Line }
 
 function readStacked(root: ParentNode, kind: 'card' | 'hero'): Stacked | null {
   const k = kind === 'card'
@@ -103,7 +104,8 @@ function readStacked(root: ParentNode, kind: 'card' | 'hero'): Stacked | null {
     rect: block.getBoundingClientRect(),
     color: cs.color,
     padX: px(cs.paddingLeft),
-    padY: px(cs.paddingTop),
+    padTop: px(cs.paddingTop),
+    padBottom: px(cs.paddingBottom),
     gap: px(cs.rowGap),
     title: line(title, 'typo-display-md'),
     tagline: tagline ? line(tagline, 'typo-title-lg') : undefined,
@@ -115,7 +117,7 @@ function buildStackedCopy(t: Stacked, background: string): HTMLElement {
   el.setAttribute('aria-hidden', 'true')
   Object.assign(el.style, {
     position: 'fixed', left: `${t.rect.left}px`, top: `${t.rect.top}px`, width: `${t.rect.width}px`,
-    padding: `${t.padY}px ${t.padX}px`, display: 'flex', flexDirection: 'column', rowGap: `${t.gap}px`,
+    padding: `${t.padTop}px ${t.padX}px ${t.padBottom}px`, display: 'flex', flexDirection: 'column', rowGap: `${t.gap}px`,
     zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', boxSizing: 'border-box',
     background,
   })
@@ -136,7 +138,7 @@ function moveStacked(to: Stacked, ease: string) {
   if (!textCopy) return
   const tween = { duration: DURATION, ease, autoRound: false }
   const sized = (l: Line) => ({ fontSize: l.size, lineHeight: `${l.leading}px` })
-  gsap.to(textCopy, { left: to.rect.left, top: to.rect.top, width: to.rect.width, paddingTop: to.padY, paddingBottom: to.padY, paddingLeft: to.padX, paddingRight: to.padX, rowGap: to.gap, ...tween })
+  gsap.to(textCopy, { left: to.rect.left, top: to.rect.top, width: to.rect.width, paddingTop: to.padTop, paddingBottom: to.padBottom, paddingLeft: to.padX, paddingRight: to.padX, rowGap: to.gap, ...tween })
   gsap.to(textCopy.querySelector('[data-copy-title]'), { ...sized(to.title), ...tween })
   const tag = textCopy.querySelector('[data-copy-tagline]')
   if (tag && to.tagline) gsap.to(tag, { ...sized(to.tagline), ...tween })
@@ -155,6 +157,8 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
   wrap.setAttribute('aria-hidden', 'true')
   // Art layout lives in global.css ([data-copy-wrap], [data-copy-pic]) so it follows the copy's size
   wrap.dataset.copyWrap = ''
+  const cs = getComputedStyle(media)
+  ART_VARS.forEach(v => wrap.style.setProperty(v, cs.getPropertyValue(v)))
   Object.assign(wrap.style, {
     position: 'fixed', left: `${rect.left}px`, top: `${rect.top}px`,
     width: `${rect.width}px`, height: `${rect.height}px`,
@@ -209,7 +213,7 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
 }
 
 /** Invisible hero laid out exactly like the case study's (global .cs-hero-* styles), for measuring. */
-function heroProbe(title: string, tagline: string, year: string, light: boolean): { box: HTMLElement; text: TextLayout | null; stacked: Stacked | null; remove: () => void } {
+function heroProbe(title: string, tagline: string, year: string, light: boolean, artFrom: HTMLElement): { box: HTMLElement; text: TextLayout | null; stacked: Stacked | null; remove: () => void } {
   const frame = document.createElement('div')
   frame.setAttribute('aria-hidden', 'true')
   Object.assign(frame.style, {
@@ -219,6 +223,9 @@ function heroProbe(title: string, tagline: string, year: string, light: boolean)
   })
   const hero = document.createElement('div')
   hero.className = light ? 'cs-hero cs-hero--light' : 'cs-hero'
+  // The subject's framing at narrow widths, so the probe's image box is as tall as the real hero's
+  const art = getComputedStyle(artFrom)
+  ART_VARS.forEach(v => hero.style.setProperty(v, art.getPropertyValue(v)))
   hero.innerHTML = `<div class="cs-hero-size"></div><p class="cs-hero-year typo-ui-caps"></p><div class="cs-hero-text"><div class="cs-hero-title typo-display-md"></div><p class="cs-hero-tagline typo-title-lg"></p></div>`
   hero.querySelector('.cs-hero-year')!.textContent = year
   hero.querySelector('.cs-hero-title')!.textContent = title
@@ -426,19 +433,20 @@ function onBeforePreparation(e: Event) {
         card!.querySelector('.work-list-tagline')?.textContent?.trim() ?? '',
         card!.querySelector('.work-list-meta > span')?.textContent?.trim() ?? '',
         !!card!.closest('.work-list-item--light'),
+        cardMedia,
       )
       // Text rides along only when it overlays the image on both ends
       const text = cardText && probe.text ? cardText : null
       copy = buildCopy(cardMedia, bg, text, hoverZoom)
       cardMedia.style.visibility = 'hidden'
       if (text) card!.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text').forEach(el => { el.style.visibility = 'hidden' })
-      // Text below the image on both ends (phones): it rides under the image (the year, which the
-      // hero swaps for the back arrow, goes with the card)
+      // Text below the image on both ends (phones): it rides under the image. The year stays on the
+      // page, which moves with the image here and fades out (the hero has no year)
       const stackedFrom = text ? null : readStacked(card!, 'card')
       const stackedTo = stackedFrom ? probe.stacked : null
       if (stackedFrom && stackedTo) {
         textCopy = buildStackedCopy(stackedFrom, bg)
-        card!.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text').forEach(el => { el.style.visibility = 'hidden' })
+        card!.querySelector<HTMLElement>('.work-list-text')!.style.visibility = 'hidden'
       }
       const heroRect = probe.box.getBoundingClientRect()
       const growth = heroRect.width / cardRect.width
@@ -514,7 +522,9 @@ async function onAfterSwap() {
     plane.style.transform = `scale(${cardZoom})`
   }
   cardMedia.style.visibility = 'hidden'
-  if ((backText && cardText) || cardStacked) cardTextEls.forEach(el => { el.style.visibility = 'hidden' })
+  if (backText && cardText) cardTextEls.forEach(el => { el.style.visibility = 'hidden' })
+  // Stacked: only the title block rides; the year fades in with the page, which moves with the image
+  else if (cardStacked) cardTextEls.filter(el => el.matches('.work-list-text')).forEach(el => { el.style.visibility = 'hidden' })
   if (!(backText && cardText)) copy.querySelectorAll<HTMLElement>('[data-copy-meta], [data-copy-block]').forEach(el => el.remove())
   const heroRect = copy.getBoundingClientRect()
   const shrink = r.width / heroRect.width

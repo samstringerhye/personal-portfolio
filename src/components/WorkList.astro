@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets'
 import { Icon } from 'astro-icon/components'
+import { narrowArtStyle } from './narrow-art'
 import type { HeadingTag, TypographyRole } from '../types/typography'
 
 interface Props {
@@ -36,7 +37,7 @@ const featured = (await getCollection('work'))
   <ul class="work-list" role="list" data-no-reveal>
     {featured.map((entry, i) => (
       <li class:list={['work-list-item', { 'work-list-item--light': entry.data.thumbnailText === 'light' }]}>
-        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailLayers.background}` : undefined}>
+        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox)}` : undefined}>
           <div
             class="work-list-media"
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
@@ -251,24 +252,35 @@ const featured = (await getCollection('work'))
   }
 
   /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the art, so the
-     card becomes one panel in the project's color: the art, enlarged and cropped to the band that
-     holds the subject (the subjects sit in roughly the middle half of their 3:2 art), then the
-     title and tagline right under it. Keyed to the card's own width because that's what decides
-     whether the text collides with the subject. The case study hero (global.css) matches. ── */
+     card stacks two boxes on the project's color, each with the same padding: the subject, framed
+     to its own box (subjectBox) so it fills the width, then the year, title and tagline. Keyed to
+     the card's own width because that's what decides whether the text collides with the subject.
+     The case study hero (global.css) matches. ── */
   @container (max-width: 780px) {
     .work-list-media {
       aspect-ratio: auto;
-      height: var(--narrow-art-height);
+      height: var(--narrow-frame-height);
     }
 
     .work-list-media[data-layered] .work-list-subject {
-      inset: var(--narrow-art-top) auto auto var(--narrow-art-left);
+      inset: auto;
+      left: var(--narrow-art-left);
+      top: var(--narrow-art-top);
       width: var(--narrow-art-width);
-      height: var(--narrow-art-size);
+      height: var(--narrow-art-height);
+      max-width: none;
+    }
+
+    /* The card is the size container, so the panel color goes on its children */
+    .work-list-meta,
+    .work-list-text {
+      position: static;
+      background: var(--work-bg, transparent);
+      padding-inline: var(--narrow-pad);
     }
 
     .work-list-meta {
-      padding: var(--space-3) var(--content-inset-sm);
+      padding-block: 0 var(--space-1);
     }
 
     /* The proportional cap would shrink the title too far at this width */
@@ -276,12 +288,9 @@ const featured = (await getCollection('work'))
       font-size: var(--text-400);
     }
 
-    /* The card is the size container, so the panel color goes on its children */
     .work-list-text {
-      position: static;
       max-width: none;
-      padding: var(--space-2) var(--content-inset-sm) var(--space-5);
-      background: var(--work-bg, transparent);
+      padding-block: 0 var(--narrow-pad);
     }
   }
 
