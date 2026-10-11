@@ -273,6 +273,36 @@ ol {
   }
 }
 
+/* Narrow work cards and case study heroes (container under 780px) stack two boxes on the
+   project's color, the same size on every card: the image box, a full-width 4:3 frame with the
+   subject's own box (--art-* from narrow-art.ts) fitted and centered inside it with
+   --narrow-art-pad all round, then the text box, padded by --narrow-pad and starting right under
+   the art's bottom margin. Shared by WorkList, CaseStudyHero and the card-to-hero
+   copy so all three line up. cqw is the frame's width. Declared where the --art-* values are set,
+   since a custom property resolves the var()s it references where it's declared. */
+:root {
+  --narrow-pad: var(--space-4);
+  --narrow-art-pad: calc(2 * var(--narrow-pad));
+}
+
+.work-list-card,
+.cs-hero,
+[data-copy-wrap] {
+  --narrow-frame-height: 75cqw;
+  --narrow-window-width: calc(100cqw - 2 * var(--narrow-art-pad));
+  --narrow-window-height: calc(var(--narrow-frame-height) - 2 * var(--narrow-art-pad));
+  /* The subject box, fitted inside the window (contain) */
+  --narrow-box-width: min(var(--narrow-window-width), calc(var(--narrow-window-height) * var(--art-ratio, 1.5)));
+  --narrow-box-height: calc(var(--narrow-box-width) / var(--art-ratio, 1.5));
+  --narrow-box-left: calc(var(--narrow-art-pad) + (var(--narrow-window-width) - var(--narrow-box-width)) / 2);
+  --narrow-box-top: calc(var(--narrow-art-pad) + (var(--narrow-window-height) - var(--narrow-box-height)) / 2);
+  /* The whole image, positioned so its subject fills that box */
+  --narrow-art-left: calc(var(--narrow-box-left) + var(--narrow-box-width) * var(--art-l, 0));
+  --narrow-art-top: calc(var(--narrow-box-top) + var(--narrow-box-height) * var(--art-t, 0));
+  --narrow-art-width: calc(var(--narrow-box-width) * var(--art-w, 1));
+  --narrow-art-height: calc(var(--narrow-box-height) * var(--art-h, 1));
+}
+
 /* Case study hero frame. Shared by the hero itself and the homepage's hidden zoom target, so the
    card-to-hero transition always lands exactly on the hero. Full content width, as tall as the
    viewport allows, never taller than 3:2. */
@@ -367,18 +397,62 @@ ol {
   color: white;
 }
 
-/* Too narrow to sit over the image: the text drops below it, on the page background */
+/* Narrow (phones): the image box then the text box on the project's color, like the work cards
+   at this width */
 @container (max-width: 780px) {
+  .cs-hero-size {
+    height: var(--narrow-frame-height);
+  }
+
+  /* .cs-hero is the size container, so the panel color goes on the text block */
   .cs-hero-text {
     position: static;
     max-width: none;
-    padding: var(--space-4) var(--content-inset-sm);
-    color: var(--color-text-primary) !important;
+    padding: 0 var(--narrow-pad) var(--narrow-pad);
+    background: var(--hero-bg);
   }
 
-  .cs-hero-year,
-  .cs-hero .cs-hero-back {
+  .cs-hero-year {
     padding: var(--space-3) var(--content-inset-sm);
+  }
+
+  /* The back arrow gets its own strip above the panel, like .cs-back-bar on heroes without art,
+     so it never sits on the subject */
+  .cs-hero-size {
+    margin-top: var(--touch-target);
+  }
+
+  .cs-hero .cs-hero-back,
+  .cs-hero--light .cs-hero-back {
+    padding: 0 var(--content-inset-sm);
+    color: var(--color-text-primary);
+  }
+}
+
+/* The card ↔ hero zoom's copy (work-transition.ts) lays its art out like the card and hero at
+   every width, including mid-zoom: full frame when wide, the framed subject when narrow */
+[data-copy-wrap] {
+  container-type: size;
+}
+
+[data-copy-pic] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: drop-shadow(0 18px 22px rgba(11, 13, 27, 0.22));
+}
+
+@container (max-width: 780px) {
+  [data-copy-pic] {
+    inset: auto;
+    left: var(--narrow-art-left);
+    top: var(--narrow-art-top);
+    width: var(--narrow-art-width);
+    height: var(--narrow-art-height);
+    max-width: none;
+    filter: none;
   }
 }
 
