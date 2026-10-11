@@ -20,7 +20,7 @@ function isActive(href: string) {
 
 <header class="nav" id="site-nav">
   <nav class="nav-inner" aria-label="Main navigation">
-    <a href="/" class="nav-logo" aria-label="Sam Stringer-Hye — Home">
+    <a href="/" class="nav-logo" aria-label="Sam Stringer-Hye, home">
       <svg class="nav-logo-icon" width="1100" height="1100" viewBox="0 0 1100 1100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M250.5 0C388.295 0 500 111.929 500 250V500H250.5C112.705 500 1 388.071 1 250C1 111.929 112.705 0 250.5 0Z" fill="#F22434"/>
         <path d="M500 850C500 988.071 388.071 1100 250 1100C111.929 1100 -1.60836e-06 988.071 0 850C1.81059e-05 711.929 111.929 600 250 600H500V850Z" fill="#E5C800"/>
@@ -465,7 +465,10 @@ function isActive(href: string) {
     links.querySelectorAll('a').forEach(link => {
       if ((link as HTMLElement).dataset.navCloseBound === 'true') return
       ;(link as HTMLElement).dataset.navCloseBound = 'true'
-      link.addEventListener('click', closeNav)
+      // Only when the mobile menu is open: closeNav pulls every link out of the tab order
+      link.addEventListener('click', () => {
+        if (toggle!.getAttribute('aria-expanded') === 'true') closeNav()
+      })
     })
   }
 

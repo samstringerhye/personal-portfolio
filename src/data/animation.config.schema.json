@@ -223,6 +223,17 @@
         "wheelMultiplier": { "type": "number", "minimum": 0, "description": "Mouse wheel speed multiplier" }
       },
       "additionalProperties": false
+    },
+    "pageTransition": {
+      "type": "object",
+      "description": "RGBShutter panel transition between pages",
+      "properties": {
+        "duration":  { "$ref": "#/definitions/duration", "description": "Panel cover and reveal duration" },
+        "stagger":   { "$ref": "#/definitions/stagger" },
+        "ease":      { "$ref": "#/definitions/gsapEase" },
+        "exitDelay": { "$ref": "#/definitions/duration", "description": "Pause before the panel reveals the new page" }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

@@ -38,7 +38,18 @@ export const elementMap = resolved.elementMap
 export const semantic = sys
 export const hover = sys.hover
 
-export const animations = resolveRefs(rawAnimations, resolved) as Resolved<typeof rawAnimations>
+// Motion tokens are CSS times ("0.25s"); GSAP reads those as 0, so animation refs become seconds.
+function cssTimesToSeconds(node: any): any {
+  if (typeof node === 'string') {
+    const m = node.match(/^(-?[\d.]+)(m?s)$/)
+    return m ? parseFloat(m[1]) / (m[2] === 'ms' ? 1000 : 1) : node
+  }
+  if (node === null || typeof node !== 'object') return node
+  if (Array.isArray(node)) return node.map(cssTimesToSeconds)
+  return Object.fromEntries(Object.entries(node).map(([k, v]) => [k, cssTimesToSeconds(v)]))
+}
+
+export const animations = cssTimesToSeconds(resolveRefs(rawAnimations, resolved)) as Resolved<typeof rawAnimations>
 
 export const colors = sys.color
 

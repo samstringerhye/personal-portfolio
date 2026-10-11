@@ -100,19 +100,19 @@
 
   <div class="ba-stats">
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="258">0</span>
+      <span class="ba-stat-number" data-target="258">258</span>
       <span class="ba-stat-label">Tokens</span>
     </div>
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="3">0</span>
+      <span class="ba-stat-number" data-target="3">3</span>
       <span class="ba-stat-label">Collections</span>
     </div>
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="90" data-suffix="+">0</span>
+      <span class="ba-stat-number" data-target="90" data-suffix="+">90+</span>
       <span class="ba-stat-label">Icons</span>
     </div>
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="11">0</span>
+      <span class="ba-stat-number" data-target="11">11</span>
       <span class="ba-stat-label">Color States</span>
     </div>
   </div>
@@ -338,6 +338,8 @@
         const target = parseInt(el.dataset.target || '0', 10)
         const suffix = el.dataset.suffix || ''
         const obj = { val: 0 }
+        // Markup carries the final value for crawlers and no-JS; count up from zero here
+        el.textContent = '0' + suffix
 
         gsap.to(obj, {
           val: target,

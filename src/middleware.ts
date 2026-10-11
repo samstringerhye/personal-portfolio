@@ -129,9 +129,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 // Serves an embedded app whose real files live under public/_protected-embeds/, NOT under
 // public/work/ — Cloudflare's static asset layer serves any exact file match directly,
 // bypassing the worker (and this password gate) regardless of run_worker_first. Keeping the
-// real files off the public URL entirely means no request under /work/amica-design-system/
+// real files out of public/work/ means no request under /work/amica-design-system/
 // prototype or /ambient-hero ever has a literal asset match, so every one of them is
-// guaranteed to reach this middleware first. We translate the gated public path to the
+// guaranteed to reach this middleware first. Direct requests for /_protected-embeds/ are
+// refused in src/worker.ts. We translate the gated public path to the
 // internal storage path and fetch it via the ASSETS binding. The prototype app is a
 // client-routed SPA, so any sub-path that isn't a real file (e.g. /prototype/products/auto)
 // falls back to its index.html.
@@ -269,7 +270,7 @@ function passwordPage(caseStudyTitle: string, error: boolean, rateLimited = fals
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>${title} — Password Required</title>
+  <title>${title} | Password Required</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet" />

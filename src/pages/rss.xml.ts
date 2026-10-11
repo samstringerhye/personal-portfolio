@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
     .sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime())
 
   return rss({
-    title: 'Sam Stringer-Hye — Writing',
+    title: 'Writing | Sam Stringer-Hye',
     description: 'Thoughts on design, development, and the space between.',
     site: context.site!.toString(),
     items: posts.map(post => ({

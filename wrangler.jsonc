@@ -9,7 +9,7 @@
   "assets": {
     "binding": "ASSETS",
     "directory": "dist",
-    "run_worker_first": ["/work/*"]
+    "run_worker_first": ["/work/*", "/_protected-embeds/*"]
   },
   // Logs, traces and issues for the Cloudflare dashboard; every Worker has the same block.
   "observability": {
