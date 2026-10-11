@@ -275,8 +275,8 @@ ol {
 
 /* Narrow work cards and case study heroes (container under 780px) stack two boxes on the
    project's color, the same size on every card: the image box, a full-width 4:3 frame with the
-   subject's own box (--art-* from narrow-art.ts) fitted and centered to fill it, then the text
-   box, padded by --narrow-pad all round. Shared by WorkList, CaseStudyHero and the card-to-hero
+   subject's own box (--art-* from narrow-art.ts) fitted and centered inside it, then the text
+   box. Both boxes are padded by --narrow-pad all round. Shared by WorkList, CaseStudyHero and the card-to-hero
    copy so all three line up. cqw is the frame's width. Declared where the --art-* values are set,
    since a custom property resolves the var()s it references where it's declared. */
 :root {
@@ -286,14 +286,14 @@ ol {
 .work-list-card,
 .cs-hero,
 [data-copy-wrap] {
-  --narrow-window-width: 100cqw;
-  --narrow-window-height: 75cqw;
-  --narrow-frame-height: var(--narrow-window-height);
+  --narrow-frame-height: 75cqw;
+  --narrow-window-width: calc(100cqw - 2 * var(--narrow-pad));
+  --narrow-window-height: calc(var(--narrow-frame-height) - 2 * var(--narrow-pad));
   /* The subject box, fitted inside the window (contain) */
   --narrow-box-width: min(var(--narrow-window-width), calc(var(--narrow-window-height) * var(--art-ratio, 1.5)));
   --narrow-box-height: calc(var(--narrow-box-width) / var(--art-ratio, 1.5));
-  --narrow-box-left: calc((var(--narrow-window-width) - var(--narrow-box-width)) / 2);
-  --narrow-box-top: calc((var(--narrow-window-height) - var(--narrow-box-height)) / 2);
+  --narrow-box-left: calc(var(--narrow-pad) + (var(--narrow-window-width) - var(--narrow-box-width)) / 2);
+  --narrow-box-top: calc(var(--narrow-pad) + (var(--narrow-window-height) - var(--narrow-box-height)) / 2);
   /* The whole image, positioned so its subject fills that box */
   --narrow-art-left: calc(var(--narrow-box-left) + var(--narrow-box-width) * var(--art-l, 0));
   --narrow-art-top: calc(var(--narrow-box-top) + var(--narrow-box-height) * var(--art-t, 0));
