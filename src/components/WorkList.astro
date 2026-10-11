@@ -68,18 +68,20 @@ const featured = (await getCollection('work'))
               />
             )}
           </div>
-          <p class="work-list-meta typo-ui-caps">
-            <span>{entry.data.year}</span>
-            {entry.data.passwordProtected && (
-              <span class="work-list-lock">
-                <Icon name="material-symbols:lock-outline" aria-hidden="true" />
-                Password protected
-              </span>
-            )}
-          </p>
-          <div class="work-list-text">
-            <CardTitleTag class={`work-list-title typo-${cardTitleRole}`}>{entry.data.title}</CardTitleTag>
-            <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
+          <div class="work-list-caption">
+            <p class="work-list-meta typo-ui-caps">
+              <span>{entry.data.year}</span>
+              {entry.data.passwordProtected && (
+                <span class="work-list-lock">
+                  <Icon name="material-symbols:lock-outline" aria-hidden="true" />
+                  Password protected
+                </span>
+              )}
+            </p>
+            <div class="work-list-text">
+              <CardTitleTag class={`work-list-title typo-${cardTitleRole}`}>{entry.data.title}</CardTitleTag>
+              <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
+            </div>
           </div>
         </a>
       </li>
@@ -175,6 +177,11 @@ const featured = (await getCollection('work'))
     filter: drop-shadow(0 18px 22px rgba(11, 13, 27, 0.22));
   }
 
+  /* Groups the year and text for the narrow layout; no box of its own on wider cards */
+  .work-list-caption {
+    display: contents;
+  }
+
   .work-list-meta {
     position: absolute;
     top: 0;
@@ -252,10 +259,11 @@ const featured = (await getCollection('work'))
   }
 
   /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the art, so the
-     card stacks two boxes on the project's color, each with the same padding: the subject, framed
-     to its own box (subjectBox) so it fills the width, then the year, title and tagline. Keyed to
-     the card's own width because that's what decides whether the text collides with the subject.
-     The case study hero (global.css) matches. ── */
+     card stacks two boxes on the project's color, the same size on every card: the image box,
+     with the subject (subjectBox) fitted to fill it, then the caption box, its year, title and
+     tagline centered with equal padding all round. Keyed to the card's own width because that's
+     what decides whether the text collides with the subject. The case study hero (global.css)
+     matches. ── */
   @container (max-width: 780px) {
     .work-list-media {
       aspect-ratio: auto;
@@ -271,30 +279,29 @@ const featured = (await getCollection('work'))
       max-width: none;
     }
 
-    /* The card is the size container, so the panel color goes on its children */
+    /* The card is the size container, so the panel color goes on the caption. Room for the
+       year (ui-caps), two lines of title (headline-lg) and four of tagline (body-lg), so every
+       card's caption is the same height; shorter text centers with the spare room split evenly. */
+    .work-list-caption {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: var(--space-1);
+      min-height: calc(1.25 * var(--text-75) + 2 * 1.25 * var(--text-400) + 4 * 1.5 * var(--text-100) + 2 * var(--space-1) + 2 * var(--narrow-pad));
+      padding: var(--narrow-pad);
+      background: var(--work-bg, transparent);
+    }
+
     .work-list-meta,
     .work-list-text {
       position: static;
-      background: var(--work-bg, transparent);
-      padding-inline: var(--narrow-pad);
-    }
-
-    .work-list-meta {
-      padding-block: 0 var(--space-1);
+      max-width: none;
+      padding: 0;
     }
 
     /* The proportional cap would shrink the title too far at this width */
     .work-list-title {
       font-size: var(--text-400);
-    }
-
-    /* Room for two lines of title (headline-lg, 1.25 leading) and four of tagline (body-lg, 1.5),
-       so every card's text box is the same height; shorter text leaves the space at the bottom */
-    .work-list-text {
-      justify-content: flex-start;
-      max-width: none;
-      min-height: calc(2 * 1.25 * var(--text-400) + var(--space-1) + 4 * 1.5 * var(--text-100) + var(--narrow-pad));
-      padding-block: 0 var(--narrow-pad);
     }
   }
 
