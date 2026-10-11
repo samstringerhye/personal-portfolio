@@ -22,7 +22,7 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
 
 <!-- Same layers and text as the homepage card, so the card's zoom lands on an identical hero.
      Text styles live in global.css (.cs-hero-*) so the homepage can measure them. -->
-<div class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]}>
+<div class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]} style={`--hero-bg: ${background}`}>
   <div class="cs-hero-media cs-hero-size" data-cs-hero style={`--hero-offset: ${heroOffset}; background: ${background}`}>
     <Image
       class="cs-hero-subject"
@@ -69,11 +69,14 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
     translate: 0 calc(var(--hero-offset, 0) * max(100cqh, 66.667cqw));
   }
 
-  /* Narrow frames are taller than the 3:2 art: it fills the top band and the text sits below it */
+  /* Narrow: the art enlarged and cropped to its subject band, like the work cards (global.css) */
   @container (max-width: 780px) {
     :global(.case-study-body) .cs-hero-media :global(img.cs-hero-subject) {
-      height: min(100%, 66.667cqw);
-      translate: 0 calc(var(--hero-offset, 0) * 66.667cqw);
+      position: absolute;
+      inset: var(--narrow-art-top) auto auto var(--narrow-art-left);
+      width: var(--narrow-art-width);
+      height: var(--narrow-art-size);
+      translate: 0 calc(var(--hero-offset, 0) * var(--narrow-art-size));
     }
   }
 

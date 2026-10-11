@@ -273,6 +273,18 @@ ol {
   }
 }
 
+/* Narrow work cards and case study heroes (container under 780px) show the 3:2 art enlarged by
+   1.2 and cropped to the band that holds the subject (8% to 80% of the art's height), with the
+   title and tagline under it on the project's color. Shared by WorkList, CaseStudyHero and the
+   card-to-hero copy so all three line up. cqw is the frame's width. */
+:root {
+  --narrow-art-width: 120%;
+  --narrow-art-left: -10%;
+  --narrow-art-size: 80cqw;
+  --narrow-art-top: calc(var(--narrow-art-size) * -0.08);
+  --narrow-art-height: calc(var(--narrow-art-size) * 0.72);
+}
+
 /* Case study hero frame. Shared by the hero itself and the homepage's hidden zoom target, so the
    card-to-hero transition always lands exactly on the hero. Full content width, as tall as the
    viewport allows, never taller than 3:2. */
@@ -367,16 +379,19 @@ ol {
   color: white;
 }
 
-/* Narrow (phones): a taller frame with the art in its top band and the text over the bottom, like
-   the work cards at this width. Matches .work-list-media's 4:5 so the card-to-hero move lines up. */
+/* Narrow (phones): one panel in the project's color, the cropped art then the text, like the
+   work cards at this width */
 @container (max-width: 780px) {
   .cs-hero-size {
-    height: min(calc(100svh - var(--nav-height)), 125cqw);
+    height: var(--narrow-art-height);
   }
 
+  /* .cs-hero is the size container, so the panel color goes on the text block */
   .cs-hero-text {
+    position: static;
     max-width: none;
-    padding: var(--space-4) var(--content-inset-sm);
+    padding: var(--space-2) var(--content-inset-sm) var(--space-5);
+    background: var(--hero-bg);
   }
 
   .cs-hero-year,
@@ -386,7 +401,7 @@ ol {
 }
 
 /* The card ↔ hero zoom's copy (work-transition.ts) lays its art out like the card and hero at
-   every width, including mid-zoom: full frame when wide, the top 3:2 band when narrow */
+   every width, including mid-zoom: full frame when wide, the cropped subject band when narrow */
 [data-copy-wrap] {
   container-type: size;
 }
@@ -401,8 +416,9 @@ ol {
 
 @container (max-width: 780px) {
   [data-copy-pic] {
-    bottom: auto;
-    height: min(100%, 66.667cqw);
+    inset: var(--narrow-art-top) auto auto var(--narrow-art-left);
+    width: var(--narrow-art-width);
+    height: var(--narrow-art-size);
   }
 }
 

@@ -36,7 +36,7 @@ const featured = (await getCollection('work'))
   <ul class="work-list" role="list" data-no-reveal>
     {featured.map((entry, i) => (
       <li class:list={['work-list-item', { 'work-list-item--light': entry.data.thumbnailText === 'light' }]}>
-        <a href={`/work/${entry.id}`} class="work-list-card">
+        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailLayers.background}` : undefined}>
           <div
             class="work-list-media"
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
@@ -250,18 +250,21 @@ const featured = (await getCollection('work'))
     }
   }
 
-  /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the 3:2 art, so
-     the frame grows to 4:5, the art fills its top band and the text sits over the bottom. Keyed to
-     the card's own width because that's what decides whether the text collides with the subject.
-     The case study hero (global.css) uses the same layout at this width. ── */
+  /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the art, so the
+     card becomes one panel in the project's color: the art, enlarged and cropped to the band that
+     holds the subject (the subjects sit in roughly the middle half of their 3:2 art), then the
+     title and tagline right under it. Keyed to the card's own width because that's what decides
+     whether the text collides with the subject. The case study hero (global.css) matches. ── */
   @container (max-width: 780px) {
     .work-list-media {
-      aspect-ratio: 4 / 5;
+      aspect-ratio: auto;
+      height: var(--narrow-art-height);
     }
 
     .work-list-media[data-layered] .work-list-subject {
-      bottom: auto;
-      height: min(100%, 66.667cqw);
+      inset: var(--narrow-art-top) auto auto var(--narrow-art-left);
+      width: var(--narrow-art-width);
+      height: var(--narrow-art-size);
     }
 
     .work-list-meta {
@@ -273,9 +276,12 @@ const featured = (await getCollection('work'))
       font-size: var(--text-400);
     }
 
+    /* The card is the size container, so the panel color goes on its children */
     .work-list-text {
+      position: static;
       max-width: none;
-      padding: var(--space-4) var(--content-inset-sm);
+      padding: var(--space-2) var(--content-inset-sm) var(--space-5);
+      background: var(--work-bg, transparent);
     }
   }
 
