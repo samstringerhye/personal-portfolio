@@ -367,18 +367,42 @@ ol {
   color: white;
 }
 
-/* Too narrow to sit over the image: the text drops below it, on the page background */
+/* Narrow (phones): a taller frame with the art in its top band and the text over the bottom, like
+   the work cards at this width. Matches .work-list-media's 4:5 so the card-to-hero move lines up. */
 @container (max-width: 780px) {
+  .cs-hero-size {
+    height: min(calc(100svh - var(--nav-height)), 125cqw);
+  }
+
   .cs-hero-text {
-    position: static;
     max-width: none;
     padding: var(--space-4) var(--content-inset-sm);
-    color: var(--color-text-primary) !important;
   }
 
   .cs-hero-year,
   .cs-hero .cs-hero-back {
     padding: var(--space-3) var(--content-inset-sm);
+  }
+}
+
+/* The card ↔ hero zoom's copy (work-transition.ts) lays its art out like the card and hero at
+   every width, including mid-zoom: full frame when wide, the top 3:2 band when narrow */
+[data-copy-wrap] {
+  container-type: size;
+}
+
+[data-copy-pic] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@container (max-width: 780px) {
+  [data-copy-pic] {
+    bottom: auto;
+    height: min(100%, 66.667cqw);
   }
 }
 

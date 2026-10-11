@@ -250,30 +250,32 @@ const featured = (await getCollection('work'))
     }
   }
 
-  /* ── Narrow cards (under ~780px, any screen): too narrow for text over the image, so the title
-     and tagline drop below it. The year stays on the image's top-left corner. Keyed to the card's
-     own width because that's what decides whether the text collides with the subject. ── */
+  /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the 3:2 art, so
+     the frame grows to 4:5, the art fills its top band and the text sits over the bottom. Keyed to
+     the card's own width because that's what decides whether the text collides with the subject.
+     The case study hero (global.css) uses the same layout at this width. ── */
   @container (max-width: 780px) {
     .work-list-media {
-      border-bottom: var(--border-width-1) solid var(--color-rule);
+      aspect-ratio: 4 / 5;
+    }
+
+    .work-list-media[data-layered] .work-list-subject {
+      bottom: auto;
+      height: min(100%, 66.667cqw);
     }
 
     .work-list-meta {
       padding: var(--space-3) var(--content-inset-sm);
     }
 
-    /* Below the image there is no proportion to keep: back to the regular headline size */
+    /* The proportional cap would shrink the title too far at this width */
     .work-list-title {
       font-size: var(--text-400);
     }
 
-    .work-list-text,
-    .work-list-item--light .work-list-text {
-      position: static;
-      width: auto;
+    .work-list-text {
       max-width: none;
       padding: var(--space-4) var(--content-inset-sm);
-      color: var(--color-text-primary);
     }
   }
 

@@ -69,6 +69,14 @@ const { subject, background, heroOffset = 0, alt, title, tagline, year, tone = '
     translate: 0 calc(var(--hero-offset, 0) * max(100cqh, 66.667cqw));
   }
 
+  /* Narrow frames are taller than the 3:2 art: it fills the top band and the text sits below it */
+  @container (max-width: 780px) {
+    :global(.case-study-body) .cs-hero-media :global(img.cs-hero-subject) {
+      height: min(100%, 66.667cqw);
+      translate: 0 calc(var(--hero-offset, 0) * 66.667cqw);
+    }
+  }
+
   /* Locked case study: the art and title crossfade with the form (PasswordGate) */
   :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject),
   :global(.cs-hero:has([data-password-gate])) :global(.cs-hero-text) {
