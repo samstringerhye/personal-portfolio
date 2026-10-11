@@ -277,6 +277,8 @@ const featured = (await getCollection('work'))
       width: var(--narrow-art-width);
       height: var(--narrow-art-height);
       max-width: none;
+      /* No drop shadow here: it spills into the padding and throws off the centering */
+      filter: none;
     }
 
     /* The card is the size container, so the panel color goes on the caption. Room for the

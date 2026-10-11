@@ -173,7 +173,6 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
     pic.src = img.currentSrc || img.src
     pic.alt = ''
     pic.dataset.copyPic = ''
-    pic.style.filter = 'drop-shadow(0 18px 22px rgba(11,13,27,0.22))'
     gsap.set(pic, { y: shift })
     inner.appendChild(pic)
   }
