@@ -129,6 +129,8 @@ const featured = (await getCollection('work'))
     color: var(--color-text-primary);
     text-decoration: none;
     container-type: inline-size;
+    /* The tap flash would tint the image while it zooms into the case study */
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Thumbnails are composed at 3:2; the frame enforces it so every card is the same height */

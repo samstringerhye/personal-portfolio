@@ -304,8 +304,12 @@ function afterPageStartup(cap = 400): Promise<void> {
   })
 }
 
-const zoomEase = (from: number, to: number) =>
-  `expoScale(${Math.max(0.05, from).toFixed(2)}, ${Math.max(0.05, to).toFixed(2)}, power2.inOut)`
+// expoScale divides by (to - from), so equal sizes give NaN and nothing moves. That's every phone:
+// the card and the hero are both full-width 3:2, so there the copy just slides between them.
+const zoomEase = (from: number, to: number) => {
+  const [a, b] = [Math.max(0.05, from).toFixed(2), Math.max(0.05, to).toFixed(2)]
+  return a === b ? 'power2.inOut' : `expoScale(${a}, ${b}, power2.inOut)`
+}
 
 /** Fades the copy away, then clears the transition state (kept until now so the router's root
     crossfade, which runs right after the swap, stays suppressed). */
