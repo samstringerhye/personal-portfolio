@@ -288,8 +288,12 @@ const featured = (await getCollection('work'))
       font-size: var(--text-400);
     }
 
+    /* Room for two lines of title (headline-lg, 1.25 leading) and four of tagline (body-lg, 1.5),
+       so every card's text box is the same height; shorter text leaves the space at the bottom */
     .work-list-text {
+      justify-content: flex-start;
       max-width: none;
+      min-height: calc(2 * 1.25 * var(--text-400) + var(--space-1) + 4 * 1.5 * var(--text-100) + var(--narrow-pad));
       padding-block: 0 var(--narrow-pad);
     }
   }

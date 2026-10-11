@@ -116,7 +116,7 @@ function buildStackedCopy(t: Stacked, background: string): HTMLElement {
   const el = document.createElement('div')
   el.setAttribute('aria-hidden', 'true')
   Object.assign(el.style, {
-    position: 'fixed', left: `${t.rect.left}px`, top: `${t.rect.top}px`, width: `${t.rect.width}px`,
+    position: 'fixed', left: `${t.rect.left}px`, top: `${t.rect.top}px`, width: `${t.rect.width}px`, height: `${t.rect.height}px`,
     padding: `${t.padTop}px ${t.padX}px ${t.padBottom}px`, display: 'flex', flexDirection: 'column', rowGap: `${t.gap}px`,
     zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', boxSizing: 'border-box',
     background,
@@ -138,7 +138,7 @@ function moveStacked(to: Stacked, ease: string) {
   if (!textCopy) return
   const tween = { duration: DURATION, ease, autoRound: false }
   const sized = (l: Line) => ({ fontSize: l.size, lineHeight: `${l.leading}px` })
-  gsap.to(textCopy, { left: to.rect.left, top: to.rect.top, width: to.rect.width, paddingTop: to.padTop, paddingBottom: to.padBottom, paddingLeft: to.padX, paddingRight: to.padX, rowGap: to.gap, ...tween })
+  gsap.to(textCopy, { left: to.rect.left, top: to.rect.top, width: to.rect.width, height: to.rect.height, paddingTop: to.padTop, paddingBottom: to.padBottom, paddingLeft: to.padX, paddingRight: to.padX, rowGap: to.gap, ...tween })
   gsap.to(textCopy.querySelector('[data-copy-title]'), { ...sized(to.title), ...tween })
   const tag = textCopy.querySelector('[data-copy-tagline]')
   if (tag && to.tagline) gsap.to(tag, { ...sized(to.tagline), ...tween })

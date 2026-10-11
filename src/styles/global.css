@@ -274,11 +274,11 @@ ol {
 }
 
 /* Narrow work cards and case study heroes (container under 780px) stack two boxes on the
-   project's color, each padded by --narrow-pad: the image, framed to the subject's own box so it
-   fills the width (--art-* from narrow-art.ts), then the text. Shared by WorkList, CaseStudyHero
-   and the card-to-hero copy so all three line up. cqw is the frame's width. Declared where the
-   --art-* values are set, since a custom property resolves the var()s it references where it's
-   declared. */
+   project's color, the same size on every card: the image box, a 4:3 window padded by
+   --narrow-pad with the subject's own box (--art-* from narrow-art.ts) fitted and centered in it,
+   then the text box. Shared by WorkList, CaseStudyHero and the card-to-hero copy so all three
+   line up. cqw is the frame's width. Declared where the --art-* values are set, since a custom
+   property resolves the var()s it references where it's declared. */
 :root {
   --narrow-pad: var(--space-4);
 }
@@ -287,12 +287,18 @@ ol {
 .cs-hero,
 [data-copy-wrap] {
   --narrow-window-width: calc(100cqw - 2 * var(--narrow-pad));
-  --narrow-window-height: calc(var(--narrow-window-width) / var(--art-ratio, 1.5));
+  --narrow-window-height: calc(var(--narrow-window-width) * 0.75);
   --narrow-frame-height: calc(var(--narrow-window-height) + 2 * var(--narrow-pad));
-  --narrow-art-left: calc(var(--narrow-pad) + var(--narrow-window-width) * var(--art-l, 0));
-  --narrow-art-top: calc(var(--narrow-pad) + var(--narrow-window-height) * var(--art-t, 0));
-  --narrow-art-width: calc(var(--narrow-window-width) * var(--art-w, 1));
-  --narrow-art-height: calc(var(--narrow-window-height) * var(--art-h, 1));
+  /* The subject box, fitted inside the window (contain) */
+  --narrow-box-width: min(var(--narrow-window-width), calc(var(--narrow-window-height) * var(--art-ratio, 1.5)));
+  --narrow-box-height: calc(var(--narrow-box-width) / var(--art-ratio, 1.5));
+  --narrow-box-left: calc(var(--narrow-pad) + (var(--narrow-window-width) - var(--narrow-box-width)) / 2);
+  --narrow-box-top: calc(var(--narrow-pad) + (var(--narrow-window-height) - var(--narrow-box-height)) / 2);
+  /* The whole image, positioned so its subject fills that box */
+  --narrow-art-left: calc(var(--narrow-box-left) + var(--narrow-box-width) * var(--art-l, 0));
+  --narrow-art-top: calc(var(--narrow-box-top) + var(--narrow-box-height) * var(--art-t, 0));
+  --narrow-art-width: calc(var(--narrow-box-width) * var(--art-w, 1));
+  --narrow-art-height: calc(var(--narrow-box-height) * var(--art-h, 1));
 }
 
 /* Case study hero frame. Shared by the hero itself and the homepage's hidden zoom target, so the
