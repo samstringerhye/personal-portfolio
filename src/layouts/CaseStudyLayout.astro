@@ -27,7 +27,7 @@ interface Props {
 const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitle, noindex, heroLayers, heroAlt, heroYear, heroTone, gate } = Astro.props
 ---
 
-<BaseLayout title={`${title} — Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
+<BaseLayout title={`${title} | Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
   {!heroLayers && <div class="cs-back-bar grid-12"><BackToWork /></div>}
   <article class="case-study-body">
@@ -728,9 +728,6 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
   sizeImagePairs()
   mobileQuery.addEventListener('change', sizeImagePairs)
   document.addEventListener('astro:page-load', sizeImagePairs)
-  document.addEventListener('astro:before-swap', () => {
-    mobileQuery.removeEventListener('change', sizeImagePairs)
-  }, { once: true })
 </script>
 
 <script>

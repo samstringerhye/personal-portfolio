@@ -15,7 +15,7 @@ export const prerender = false
 const { slug } = Astro.params
 const sorted = await getSortedWork()
 const entry = sorted.find(e => e.id === slug)
-if (!entry) return Astro.redirect('/404')
+if (!entry) return new Response(null, { status: 404 })
 
 // Set by middleware.ts while a protected case study is locked: render the hero with the password
 // form and leave the body out, so nothing behind the password reaches the browser

@@ -88,19 +88,19 @@ import '../../styles/amica-tokens.css'
 
   <div class="ba-stats">
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="209">0</span>
+      <span class="ba-stat-number" data-target="209">209</span>
       <span class="ba-stat-label">Component Sets</span>
     </div>
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="464">0</span>
+      <span class="ba-stat-number" data-target="464">464</span>
       <span class="ba-stat-label">Local Variables</span>
     </div>
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="97" data-suffix="%">0</span>
+      <span class="ba-stat-number" data-target="97" data-suffix="%">97%</span>
       <span class="ba-stat-label">Cascade Success</span>
     </div>
     <div class="ba-stat">
-      <span class="ba-stat-number" data-target="100" data-suffix="%">0</span>
+      <span class="ba-stat-number" data-target="100" data-suffix="%">100%</span>
       <span class="ba-stat-label">Padding Compliance</span>
     </div>
   </div>
@@ -320,6 +320,8 @@ import '../../styles/amica-tokens.css'
         const target = parseInt(el.dataset.target || '0', 10)
         const suffix = el.dataset.suffix || ''
         const obj = { val: 0 }
+        // Markup carries the final value for crawlers and no-JS; count up from zero here
+        el.textContent = '0' + suffix
 
         gsap.to(obj, {
           val: target,
