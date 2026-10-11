@@ -260,8 +260,8 @@ const featured = (await getCollection('work'))
 
   /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the art, so the
      card stacks two boxes on the project's color, the same size on every card: the image box,
-     with the subject (subjectBox) fitted to fill it, then the caption box, its year, title and
-     tagline centered with equal padding all round. Keyed to the card's own width because that's
+     with the subject (subjectBox) fitted and centered in it, then the caption box: year, title
+     and tagline right under the art's bottom margin, any spare room at the bottom. Keyed to the card's own width because that's
      what decides whether the text collides with the subject. The case study hero (global.css)
      matches. ── */
   @container (max-width: 780px) {
@@ -282,15 +282,14 @@ const featured = (await getCollection('work'))
     }
 
     /* The card is the size container, so the panel color goes on the caption. Room for the
-       year (ui-caps), two lines of title (headline-lg) and four of tagline (body-lg), so every
-       card's caption is the same height; shorter text centers with the spare room split evenly. */
+       year (ui-caps), two lines of title (headline-lg) and three of tagline (body-lg), the longest
+       any card needs, so every caption is the same height. */
     .work-list-caption {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       gap: var(--space-1);
-      min-height: calc(1.25 * var(--text-75) + 2 * 1.25 * var(--text-400) + 4 * 1.5 * var(--text-100) + 2 * var(--space-1) + 2 * var(--narrow-pad));
-      padding: var(--narrow-pad);
+      min-height: calc(1.25 * var(--text-75) + 2 * 1.25 * var(--text-400) + 3 * 1.5 * var(--text-100) + 2 * var(--space-1) + var(--narrow-pad));
+      padding: 0 var(--narrow-pad) var(--narrow-pad);
       background: var(--work-bg, transparent);
     }
 
