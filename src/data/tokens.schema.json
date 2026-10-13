@@ -175,6 +175,16 @@
               },
               "additionalProperties": false
             },
+            "accentText": {
+              "type": "object",
+              "description": "Darker accent shades for text",
+              "properties": {
+                "1": { "$ref": "#/definitions/hexColor" },
+                "2": { "$ref": "#/definitions/hexColor" },
+                "3": { "$ref": "#/definitions/hexColor" }
+              },
+              "additionalProperties": false
+            },
             "highlight": { "$ref": "#/definitions/hexColor" }
           },
           "additionalProperties": false
@@ -342,7 +352,8 @@
         "weight": { "$ref": "#/definitions/refObject" },
         "scale": { "$ref": "#/definitions/refObject" },
         "lineHeight": { "$ref": "#/definitions/refObject" },
-        "tracking": { "$ref": "#/definitions/refObject" }
+        "tracking": { "$ref": "#/definitions/refObject" },
+        "textTransform": { "type": "string", "enum": ["none", "uppercase", "lowercase", "capitalize"] }
       },
       "required": ["family", "weight", "scale", "lineHeight", "tracking"],
       "additionalProperties": false
@@ -367,12 +378,22 @@
               "type": "object",
               "properties": {
                 "primary": { "$ref": "#/definitions/refObject" },
-                "alt": { "$ref": "#/definitions/refObject" }
+                "alt": { "$ref": "#/definitions/refObject" },
+                "warm": { "$ref": "#/definitions/hexColor" }
               },
               "additionalProperties": false
             },
             "rule": { "$ref": "#/definitions/refObject" },
             "accent": {
+              "type": "object",
+              "properties": {
+                "1": { "$ref": "#/definitions/refObject" },
+                "2": { "$ref": "#/definitions/refObject" },
+                "3": { "$ref": "#/definitions/refObject" }
+              },
+              "additionalProperties": false
+            },
+            "accentText": {
               "type": "object",
               "properties": {
                 "1": { "$ref": "#/definitions/refObject" },
@@ -416,7 +437,12 @@
         "layout": {
           "type": "object",
           "properties": {
-            "pageMargin": { "$ref": "#/definitions/refObject" },
+            "pageMargin": {
+              "oneOf": [
+                { "$ref": "#/definitions/refObject" },
+                { "$ref": "#/definitions/fluidRange" }
+              ]
+            },
             "contentInset": {
               "type": "object",
               "properties": {
