@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ClientLogos from '../components/ClientLogos.astro'
+import { Image } from 'astro:assets'
+import portrait from '../assets/about/sam-portrait.jpg'
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -31,6 +33,16 @@ const skills = [
 
     <div class="about-row about-row--intro">
       <div class="about-intro-left">
+        <Image
+          src={portrait}
+          alt="Sam Stringer-Hye in glasses and a navy work jacket, standing in front of a red corrugated wall"
+          widths={[400, 640, 960]}
+          sizes="(max-width: 768px) 100vw, 22rem"
+          format="webp"
+          quality={85}
+          loading="eager"
+          class="about-portrait"
+        />
         <h2 class="about-name typo-display-md">All that screen time actually led somewhere</h2>
       </div>
       <div class="about-intro-right">
@@ -105,12 +117,23 @@ const skills = [
   .about-intro-left {
     grid-column: 1 / 7;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-5);
     padding: var(--space-6) var(--content-inset-md);
   }
 
   .about-name {
     margin: 0;
+  }
+
+  .about-portrait {
+    display: block;
+    inline-size: min(100%, 22rem);
+    block-size: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
   }
 
   .about-intro-right {
