@@ -96,6 +96,8 @@ import '../../styles/amica-tokens.css'
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
   let ctx: { revert: () => void } | null = null
 
   async function initTokenTiers() {
@@ -114,8 +116,8 @@ import '../../styles/amica-tokens.css'
       gsap.from(container.querySelectorAll('.tier, .why-box'), {
         y: 20,
         opacity: 0,
-        duration: 0.5,
-        stagger: 0.12,
+        duration: animations.caseStudy.tokenTiers.duration,
+        stagger: animations.caseStudy.tokenTiers.stagger,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.token-tiers',

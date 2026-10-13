@@ -167,6 +167,10 @@ import '../../styles/wab-tokens.css'
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
+  const morphTiming = animations.caseStudy.scrubbedMorph
+  const timing = animations.caseStudy.typeHierarchy
   let ctx: { revert: () => void } | null = null
 
   async function initTypeHierarchy() {
@@ -209,12 +213,12 @@ import '../../styles/wab-tokens.css'
         const roleLabel = line.querySelector('.th-role') as HTMLElement
         const target = targets[role]
 
-        tl.to(text, { ...target, duration: 1, ease: 'power2.inOut' }, 0)
-        tl.to(roleLabel, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.5)
+        tl.to(text, { ...target, duration: morphTiming.morph, ease: 'power2.inOut' }, 0)
+        tl.to(roleLabel, { opacity: 1, duration: timing.roleFade, ease: 'power2.out' }, timing.roleAt)
       })
 
-      tl.to(beforeLabel, { opacity: 0, y: -10, duration: 0.3 }, 0.2)
-      tl.to(afterLabel, { opacity: 1, y: 0, duration: 0.3 }, 0.5)
+      tl.to(beforeLabel, { opacity: 0, y: -10, duration: morphTiming.labelFade }, morphTiming.beforeOutAt)
+      tl.to(afterLabel, { opacity: 1, y: 0, duration: morphTiming.labelFade }, morphTiming.afterInAt)
     })
   }
 

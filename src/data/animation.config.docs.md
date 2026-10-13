@@ -62,9 +62,11 @@ Wrap multiple text elements in a `data-reveal-group` container:
 | `wipeEase` | GSAP ease | `back.out(1.4)` | Easing for the color wipe |
 | `wipeOutDuration` | seconds | `0.25` | Color wipe removal duration |
 | `wipeOutEase` | GSAP ease | `back.in(1.4)` | Easing for wipe removal |
-| `highlightsShowDuration` | seconds | `0.25` | Highlight text fade-in |
+| `highlightsShowDuration` | seconds | `0.6` | Each highlight line's fade-in |
 | `highlightsShowDelay` | seconds | `0.15` | Delay before highlights appear (after wipe starts) |
-| `highlightsHideDuration` | seconds | `0.2` | Highlight text fade-out (slightly faster) |
+| `highlightsShowStagger` | seconds | `0.08` | Delay between highlight lines fading in |
+| `highlightsHideDuration` | seconds | `0.25` | Each highlight line's fade-out |
+| `highlightsHideStagger` | seconds | `0.02` | Delay between highlight lines fading out |
 | `cmyOpacity` | 0–1 | `1` | CMY color opacity for timeline wipe fills |
 | `saveCmyOpacity` | 0–1 | `1` | CMY color opacity for the save/download button hover background |
 
@@ -84,6 +86,90 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `dotGrid.spacing` | px | `30` | Gap between dots in the interests section background grid |
 | `dotGrid.radius` | px | `1` | Dot radius in that grid |
 | `dotGrid.opacity` | 0–1 | `0.5` | Grid opacity before the reveal multiplier |
+
+---
+
+## nav (Nav.astro)
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `petal.fillIn` | `0.2` | Logo petals turning white on hover |
+| `petal.anticipate` | `0.15` | Petals pulling toward the center before the burst |
+| `petal.burst` | `0.25` | Petals bursting outward |
+| `petal.settle` | `0.6` | Elastic settle back to rest |
+| `petal.reset` | `0.3` | Color and position reset on mouseleave |
+| `entrance.gridDraw` | `1.0` | Grid lines drawing down on the first visit |
+| `entrance.navDraw` / `navDrawAt` | `0.8` / `0.1` | Nav bottom line: duration / start time in the entrance timeline |
+| `entrance.logoDraw` / `logoDrawAt` | `0.6` / `0.2` | Logo border draw |
+| `entrance.logoFade` / `logoFadeAt` | `0.5` / `0.15` | Logo fade-in |
+| `entrance.linkDraw` / `linkDrawAt` | `0.5` / `0.25` | Each nav link's border draw |
+| `entrance.linkFade` / `linkFadeAt` | `0.4` / `0.3` | Nav links fading in |
+| `entrance.linkStagger` | `0.12` | Delay between nav links (borders and text) |
+| `entrance.ruleDraw` / `ruleDrawAt` | `0.8` / `0.2` | First section rule drawing from the left |
+| `scrollToWork` | `1` | Smooth scroll to the work list from the Work link |
+
+---
+
+## imageReveal and homeReveal (scroll-reveals.ts)
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `imageReveal.duration` | `0.9` | Fade-up of images, image grids, zigzags and carousel slides |
+| `imageReveal.pairStagger` | `0.15` | Delay between the two images of an image pair |
+| `imageReveal.carouselStagger` | `0.1` | Delay between carousel slides |
+| `imageReveal.proseDelay` | `0.2` | Zigzag text starting after its image |
+| `homeReveal.duration` | `0.9` | Interests rows fading up |
+| `homeReveal.timelineDuration` | `0.7` | Timeline job text and year labels |
+| `homeReveal.jobStagger` | `0.1` | Delay between timeline jobs |
+| `homeReveal.yearStagger` / `yearDelay` | `0.05` / `0.2` | Year labels: stagger / start delay |
+| `homeReveal.dotGridDuration` | `1.2` | Interests dot grid fading in |
+
+---
+
+## carousel, clientLogos, lottie
+
+| Section.Key | Default | What it controls |
+|-------------|---------|-----------------|
+| `carousel.snapDuration` | `0.5` | Carousel slide snap on arrow, dot or swipe |
+| `clientLogos.scrollDuration` | `40` | One loop of the About page logo marquee |
+| `lottie.loopDuration` | `2` | One pass of a looping Lottie (it plays back and forth) |
+| `lottie.loopRepeatDelay` | `0.5` | Pause at each end of the loop |
+
+---
+
+## caseStudy (Amica and Whataburger diagrams)
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `beforeAfter.itemDuration` / `itemStagger` | `0.5` / `0.08` | Before/after list items fading up (BeforeAfterStats) |
+| `beforeAfter.countDuration` | `2` | Stats counting up from zero |
+| `tokenTiers.duration` / `stagger` | `0.5` / `0.12` | Amica token tiers fading up |
+| `diagrams.duration` / `stagger` | `0.5` / `0.08` | Default fade-up for Whataburger diagram items (diagram-animations.ts) |
+| `diagrams.tokenTiers` | `0.6` / `0.15` | Token architecture tiers (duration / stagger) |
+| `diagrams.tokenArrow` | `0.4` | Token architecture arrows popping in |
+| `diagrams.colorStatesStagger` | `0.06` | Color state cards |
+| `diagrams.spacingRows` / `radiusItems` | `0.4` / `0.05`, `0.4` / `0.06` | Spacing rows and radius items (duration / stagger) |
+| `diagrams.durationItemsStagger` | `0.12` | Motion duration bars |
+| `diagrams.easingCard` | `0.6` | Motion easing card |
+| `diagrams.elevationCards` | `0.6` / `0.1` | Elevation cards (duration / stagger) |
+| `diagrams.libraryCardsStagger` | `0.1` | Component library cards |
+| `diagrams.libraryStats` | `0.4` / `0.1` / `0.3` | Component library stats (duration / stagger / delay) |
+| `scrubbedMorph.morph` | `1` | Main morph in the scroll-scrubbed ChaosToOrder and TypeHierarchy timelines (scrubbed, so these are proportions of the scroll, not seconds) |
+| `scrubbedMorph.labelFade` | `0.3` | Before/after labels crossfading |
+| `scrubbedMorph.beforeOutAt` / `afterInAt` | `0.2` / `0.5` | When the before label leaves and the after label arrives |
+| `chaosToOrder.stagger` | `0.03` | Delay between rectangles settling into the grid |
+| `chaosToOrder.shadowAt` / `shadowDuration` / `shadowStagger` | `0.7` / `0.3` / `0.02` | Shadows landing on the settled grid |
+| `typeHierarchy.roleFade` / `roleAt` | `0.3` / `0.5` | Role labels appearing |
+| `motionSystem.dotFade` / `dotFadeDelay` | `0.2` / `0.3` | Duration-bar dot fading after its run |
+| `motionSystem.easingTrace` | `1.2` | Dot tracing the easing curve |
+| `motionSystem.easingFade` / `easingFadeDelay` | `0.3` / `0.5` | Easing dot fading after its trace |
+| `heroPhoneScroll.loop` / `loopMobile` | `60` / `40` | One loop of the phone row (desktop / 768px and below) |
+| `heroPhoneScroll.speedUp` | `1` | Phone row easing up to full speed |
+| `heroPhoneScroll.zoomOut` | `2` | Opening zoom-out |
+| `heroPhoneScroll.centerFade` | `0.2` | Center phone fading in |
+| `heroPhoneScroll.phonesAt` | `0.25` | When the side phones start |
+| `heroPhoneScroll.phoneFade` / `phoneSlide` / `phoneStagger` | `0.08` / `0.7` / `0.18` | Side phones fading and sliding in, one after another |
+| `heroPhoneScroll.scrollAt` | `0.4` | When the endless scroll starts |
 
 ---
 

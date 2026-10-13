@@ -382,10 +382,10 @@ const jobsWithRows = jobsChronological.map((j, i) => {
           gsap.set(splitLines, { opacity: 0, x: -12 })
           gsap.to(splitLines, {
             opacity: 1, x: 0,
-            duration: 0.6,
+            duration: h.highlightsShowDuration,
             delay: h.highlightsShowDelay,
             ease: 'power4.out',
-            stagger: 0.08,
+            stagger: h.highlightsShowStagger,
           })
         }
       })
@@ -402,9 +402,9 @@ const jobsWithRows = jobsChronological.map((j, i) => {
           gsap.killTweensOf(splitLines)
           gsap.to(splitLines, {
             opacity: 0, x: -12,
-            duration: 0.25,
+            duration: h.highlightsHideDuration,
             ease: 'power2.in',
-            stagger: 0.02,
+            stagger: h.highlightsHideStagger,
             overwrite: true,
             onComplete: () => { highlights.style.visibility = 'hidden' },
           })

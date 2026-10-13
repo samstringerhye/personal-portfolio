@@ -263,6 +263,9 @@ const durations = [
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
+  const timing = animations.caseStudy.motionSystem
   let ctx: { revert: () => void } | null = null
 
   async function initMotionSystem() {
@@ -295,7 +298,7 @@ const durations = [
           duration: ms / 1000,
           ease: 'power2.inOut',
           onComplete() {
-            gsap.to(dot, { opacity: 0, duration: 0.2, delay: 0.3 })
+            gsap.to(dot, { opacity: 0, duration: timing.dotFade, delay: timing.dotFadeDelay })
           }
         })
       }
@@ -334,7 +337,7 @@ const durations = [
           easingProgress = { t: 0 }
           gsap.to(easingProgress, {
             t: 1,
-          duration: 1.2,
+          duration: timing.easingTrace,
           ease: 'none',
           onUpdate() {
               const point = easingPath.getPointAtLength((easingProgress?.t || 0) * length)
@@ -342,7 +345,7 @@ const durations = [
             easingDot.setAttribute('cy', String(point.y))
           },
           onComplete() {
-            gsap.to(easingDot, { opacity: 0, duration: 0.3, delay: 0.5 })
+            gsap.to(easingDot, { opacity: 0, duration: timing.easingFade, delay: timing.easingFadeDelay })
           }
         })
       }

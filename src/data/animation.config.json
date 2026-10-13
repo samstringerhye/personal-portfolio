@@ -56,10 +56,12 @@
       "wipeEase": { "$ref": "sys.motion.gsapEasing.bounce" },
       "wipeOutDuration": { "$ref": "sys.motion.duration.quick" },
       "wipeOutEase": { "$ref": "sys.motion.gsapEasing.bounceIn" },
-      "highlightsShowDuration": { "$ref": "sys.motion.duration.quick" },
+      "highlightsShowDuration": 0.6,
       "highlightsShowDelay": 0.15,
+      "highlightsShowStagger": 0.08,
       "highlightsShowEase": { "$ref": "sys.motion.gsapEasing.bounce" },
-      "highlightsHideDuration": 0.2,
+      "highlightsHideDuration": { "$ref": "sys.motion.duration.quick" },
+      "highlightsHideStagger": 0.02,
       "highlightsHideEase": { "$ref": "sys.motion.gsapEasing.bounceIn" }
     }
   },
@@ -74,6 +76,132 @@
   "smoothScroll": {
     "lerp": 0.5,
     "wheelMultiplier": 1
+  },
+  "nav": {
+    "petal": {
+      "fillIn": 0.2,
+      "anticipate": 0.15,
+      "burst": 0.25,
+      "settle": 0.6,
+      "reset": 0.3
+    },
+    "entrance": {
+      "gridDraw": 1.0,
+      "navDraw": 0.8,
+      "navDrawAt": 0.1,
+      "logoDraw": 0.6,
+      "logoDrawAt": 0.2,
+      "logoFade": 0.5,
+      "logoFadeAt": 0.15,
+      "linkDraw": 0.5,
+      "linkDrawAt": 0.25,
+      "linkFade": 0.4,
+      "linkFadeAt": 0.3,
+      "linkStagger": 0.12,
+      "ruleDraw": 0.8,
+      "ruleDrawAt": 0.2
+    },
+    "scrollToWork": 1
+  },
+  "imageReveal": {
+    "duration": 0.9,
+    "pairStagger": 0.15,
+    "carouselStagger": 0.1,
+    "proseDelay": 0.2
+  },
+  "homeReveal": {
+    "duration": 0.9,
+    "timelineDuration": 0.7,
+    "jobStagger": 0.1,
+    "yearStagger": 0.05,
+    "yearDelay": 0.2,
+    "dotGridDuration": 1.2
+  },
+  "carousel": {
+    "snapDuration": 0.5
+  },
+  "clientLogos": {
+    "scrollDuration": 40
+  },
+  "lottie": {
+    "loopDuration": 2,
+    "loopRepeatDelay": 0.5
+  },
+  "caseStudy": {
+    "beforeAfter": {
+      "itemDuration": 0.5,
+      "itemStagger": 0.08,
+      "countDuration": 2
+    },
+    "tokenTiers": {
+      "duration": 0.5,
+      "stagger": 0.12
+    },
+    "diagrams": {
+      "duration": 0.5,
+      "stagger": 0.08,
+      "tokenTiers": {
+        "duration": 0.6,
+        "stagger": 0.15
+      },
+      "tokenArrow": 0.4,
+      "colorStatesStagger": 0.06,
+      "spacingRows": {
+        "duration": 0.4,
+        "stagger": 0.05
+      },
+      "radiusItems": {
+        "duration": 0.4,
+        "stagger": 0.06
+      },
+      "durationItemsStagger": 0.12,
+      "easingCard": 0.6,
+      "elevationCards": {
+        "duration": 0.6,
+        "stagger": 0.1
+      },
+      "libraryCardsStagger": 0.1,
+      "libraryStats": {
+        "duration": 0.4,
+        "stagger": 0.1,
+        "delay": 0.3
+      }
+    },
+    "scrubbedMorph": {
+      "morph": 1,
+      "labelFade": 0.3,
+      "beforeOutAt": 0.2,
+      "afterInAt": 0.5
+    },
+    "chaosToOrder": {
+      "stagger": 0.03,
+      "shadowAt": 0.7,
+      "shadowDuration": 0.3,
+      "shadowStagger": 0.02
+    },
+    "typeHierarchy": {
+      "roleFade": 0.3,
+      "roleAt": 0.5
+    },
+    "motionSystem": {
+      "dotFade": 0.2,
+      "dotFadeDelay": 0.3,
+      "easingTrace": 1.2,
+      "easingFade": 0.3,
+      "easingFadeDelay": 0.5
+    },
+    "heroPhoneScroll": {
+      "loop": 60,
+      "loopMobile": 40,
+      "speedUp": 1,
+      "zoomOut": 2,
+      "centerFade": 0.2,
+      "phonesAt": 0.25,
+      "phoneFade": 0.08,
+      "phoneSlide": 0.7,
+      "phoneStagger": 0.18,
+      "scrollAt": 0.4
+    }
   },
   "pageTransition": {
     "duration": 0.25,

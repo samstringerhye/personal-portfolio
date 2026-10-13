@@ -290,6 +290,9 @@ const { label, theme, before, after, stats } = Astro.props
 </style>
 
 <script>
+  import { animations } from '../data/tokens'
+
+  const timing = animations.caseStudy.beforeAfter
   let ctx: { revert: () => void } | null = null
 
   async function initBeforeAfter() {
@@ -319,8 +322,8 @@ const { label, theme, before, after, stats } = Astro.props
       gsap.from(container.querySelectorAll('.ba-item'), {
         y: 20,
         opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
+        duration: timing.itemDuration,
+        stagger: timing.itemStagger,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: grid,
@@ -337,7 +340,7 @@ const { label, theme, before, after, stats } = Astro.props
 
         gsap.to(obj, {
           val: target,
-          duration: 2,
+          duration: timing.countDuration,
           ease: 'power2.out',
           scrollTrigger: {
             trigger: stats,

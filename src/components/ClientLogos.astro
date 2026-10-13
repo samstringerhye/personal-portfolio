@@ -89,6 +89,8 @@ const copies = 4
 </style>
 
 <script>
+  import { animations } from '../data/tokens'
+
   let logoTween: any = null
   let logoObserver: IntersectionObserver | null = null
 
@@ -120,7 +122,7 @@ const copies = 4
 
     logoTween = gsap.to(track, {
       x: -copyWidth,
-      duration: 40,
+      duration: animations.clientLogos.scrollDuration,
       ease: 'none',
       repeat: -1,
       modifiers: {

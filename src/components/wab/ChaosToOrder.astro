@@ -112,6 +112,10 @@ import '../../styles/wab-tokens.css'
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
+  const morphTiming = animations.caseStudy.scrubbedMorph
+  const timing = animations.caseStudy.chaosToOrder
   let ctx: { revert: () => void } | null = null
 
   async function initChaosToOrder() {
@@ -188,18 +192,18 @@ import '../../styles/wab-tokens.css'
         backgroundColor: (i: number) => afterColors[i],
         borderRadius: 8,
         zIndex: 1,
-        duration: 1,
-        stagger: 0.03,
+        duration: morphTiming.morph,
+        stagger: timing.stagger,
         ease: 'power2.inOut',
       }, 0)
 
-      tl.to(beforeLabel, { opacity: 0, y: -10, duration: 0.3 }, 0.2)
-      tl.to(afterLabel, { opacity: 1, y: 0, duration: 0.3 }, 0.5)
+      tl.to(beforeLabel, { opacity: 0, y: -10, duration: morphTiming.labelFade }, morphTiming.beforeOutAt)
+      tl.to(afterLabel, { opacity: 1, y: 0, duration: morphTiming.labelFade }, morphTiming.afterInAt)
       tl.to(elements, {
         boxShadow: '0 2px 8px rgba(71, 44, 25, 0.12)',
-        duration: 0.3,
-        stagger: 0.02,
-      }, 0.7)
+        duration: timing.shadowDuration,
+        stagger: timing.shadowStagger,
+      }, timing.shadowAt)
     })
   }
 

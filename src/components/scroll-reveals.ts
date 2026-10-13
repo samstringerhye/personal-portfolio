@@ -10,6 +10,8 @@ import {
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const cfg = animations.textReveal
+const imgCfg = animations.imageReveal
+const homeCfg = animations.homeReveal
 const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 let revealCtx: gsap.Context | null = null
@@ -126,7 +128,7 @@ function initImageReveals() {
   if (!main) return
 
   const imgStart = 'top 70%'
-  const imgDuration = 0.9
+  const imgDuration = imgCfg.duration
   const imgEase = 'power3.out'
 
   const blurUp = { opacity: 0, y: 30 }
@@ -153,7 +155,7 @@ function initImageReveals() {
       gsap.set(imgs, blurUp)
       gsap.to(imgs, {
         ...blurUpTo,
-        stagger: 0.15,
+        stagger: imgCfg.pairStagger,
         ...stVars(pair, imgStart),
         onComplete() { gsap.set(imgs, { clearProps: 'transform,translate,rotate,scale' }) },
       })
@@ -167,7 +169,7 @@ function initImageReveals() {
       gsap.to(slides, {
         opacity: 1, x: 0,
         duration: imgDuration, ease: imgEase,
-        stagger: 0.1,
+        stagger: imgCfg.carouselStagger,
         ...stVars(el, imgStart),
       })
     })
@@ -200,7 +202,7 @@ function initImageReveals() {
         gsap.set(prose, { opacity: 0, y: 20 })
         gsap.to(prose, {
           opacity: 1, y: 0,
-          duration: imgDuration, ease: imgEase, delay: 0.2,
+          duration: imgDuration, ease: imgEase, delay: imgCfg.proseDelay,
           ...stVars(section, imgStart),
         })
       }
@@ -247,7 +249,7 @@ function initImageReveals() {
 
 function initHomeReveals() {
   const start = 'top 70%'
-  const duration = 0.9
+  const duration = homeCfg.duration
   const ease = 'power3.out'
 
   // ── Timeline: job card text staggers in (borders stay visible) ──
@@ -257,8 +259,8 @@ function initHomeReveals() {
     gsap.set(timelineJobTexts, { opacity: 0, y: 20 })
     gsap.to(timelineJobTexts, {
       opacity: 1, y: 0,
-      duration: 0.7, ease,
-      stagger: 0.1,
+      duration: homeCfg.timelineDuration, ease,
+      stagger: homeCfg.jobStagger,
       ...stVars(timelineTrigger, start),
     })
   }
@@ -269,9 +271,9 @@ function initHomeReveals() {
     gsap.set(yearLabels, { opacity: 0 })
     gsap.to(yearLabels, {
       opacity: 1,
-      duration: 0.7, ease,
-      stagger: 0.05,
-      delay: 0.2,
+      duration: homeCfg.timelineDuration, ease,
+      stagger: homeCfg.yearStagger,
+      delay: homeCfg.yearDelay,
       ...stVars(timelineTrigger, start),
     })
   }
@@ -291,7 +293,7 @@ function initHomeReveals() {
   if (interestsSection) {
     gsap.fromTo(interestsSection, { '--dot-grid-reveal': 0 } as any, {
       '--dot-grid-reveal': 1,
-      duration: 1.2,
+      duration: homeCfg.dotGridDuration,
       ease: 'power2.out',
       ...stVars(interestsSection, start),
     } as any)
