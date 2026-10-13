@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets'
 import { Icon } from 'astro-icon/components'
-import { narrowArtStyle } from './narrow-art'
+import { boundsAttr, narrowArtStyle } from './narrow-art'
 import type { HeadingTag, TypographyRole } from '../types/typography'
 
 interface Props {
@@ -43,6 +43,7 @@ const featured = (await getCollection('work'))
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
             data-slug={entry.data.thumbnailLayers ? entry.id : undefined}
             data-hero-offset={entry.data.thumbnailLayers?.heroOffset}
+            data-subject-bounds={entry.data.thumbnailLayers ? boundsAttr(entry.data.thumbnailLayers.subjectBounds ?? entry.data.thumbnailLayers.subjectBox) : undefined}
           >
             {entry.data.thumbnailLayers ? (
               <div class="work-list-plane">

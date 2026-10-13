@@ -17,7 +17,7 @@ interface Props {
   nextSlug?: string
   nextTitle?: string
   noindex?: boolean
-  heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number; subjectBox?: SubjectBox }
+  heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number; subjectBox?: SubjectBox; subjectBounds?: SubjectBox }
   heroAlt?: string
   heroYear?: number
   heroTone?: 'light' | 'dark'
@@ -32,7 +32,7 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
   {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
   {!heroLayers && <div class="cs-back-bar grid-12"><BackToWork /></div>}
   <article class="case-study-body">
-    {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
+    {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
     <slot />
   </article>
 

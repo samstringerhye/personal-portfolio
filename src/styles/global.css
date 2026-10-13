@@ -303,6 +303,13 @@ ol {
   --narrow-art-height: calc(var(--narrow-box-height) * var(--art-h, 1));
 }
 
+/* Heroes and the zoom copy fit the subject to their image box's real height (cqh: the box is a size
+   container): 75cqw on phones, whatever the art is given when a wide hero stacks (hero-fit.ts) */
+.cs-hero,
+[data-copy-wrap] {
+  --narrow-frame-height: 100cqh;
+}
+
 /* Case study hero frame. Shared by the hero itself and the homepage's hidden zoom target, so the
    card-to-hero transition always lands exactly on the hero. Full content width, as tall as the
    viewport allows, never taller than 3:2. */
@@ -401,7 +408,7 @@ ol {
    at this width */
 @container (max-width: 780px) {
   .cs-hero-size {
-    height: var(--narrow-frame-height);
+    height: 75cqw;
   }
 
   /* .cs-hero is the size container, so the panel color goes on the text block */
@@ -429,6 +436,30 @@ ol {
   }
 }
 
+/* Wide, but the title would meet the art (hero-fit.ts): stacked as on phones, the art taking what the
+   viewport leaves after the title, between 40cqw and the phones' 75cqw */
+.cs-hero--stacked {
+  display: flex;
+  flex-direction: column;
+  min-height: min(calc(100svh - var(--nav-height)), 66.667vw);
+}
+
+.cs-hero--stacked .cs-hero-size {
+  /* Takes the free height first; the text only gets what the art's max-height leaves */
+  flex: 1000 1 0;
+  height: auto;
+  min-height: 40cqw;
+  max-height: 75cqw;
+}
+
+.cs-hero--stacked .cs-hero-text {
+  flex: 1 0 auto;
+  position: static;
+  max-width: none;
+  padding-top: 0;
+  background: var(--hero-bg);
+}
+
 /* The card ↔ hero zoom's copy (work-transition.ts) lays its art out like the card and hero at
    every width, including mid-zoom: full frame when wide, the framed subject when narrow */
 [data-copy-wrap] {
@@ -454,6 +485,17 @@ ol {
     max-width: none;
     filter: none;
   }
+}
+
+/* Zooming between a narrow card and a stacked hero: framed the whole way */
+[data-copy-wrap][data-stacked] [data-copy-pic] {
+  inset: auto;
+  left: var(--narrow-art-left);
+  top: var(--narrow-art-top);
+  width: var(--narrow-art-width);
+  height: var(--narrow-art-height);
+  max-width: none;
+  filter: none;
 }
 
 /* During a card ↔ hero zoom (work-transition.ts sets data-flip-nav), skip the router's root

@@ -26,11 +26,14 @@ const work = defineCollection({
     // it keeps the card's spacing above the headline (the hero frame is wider than 3:2, so it crops)
     // subjectBox: where the subject sits in its art, as fractions of the image (measured from its
     // alpha). Narrow cards and heroes frame just this box (see narrow-art.ts)
+    // subjectBounds: the subject's whole extent, when subjectBox frames only part of it (defaults to
+    // subjectBox). Wide heroes keep their title clear of it (hero-fit.ts)
     thumbnailLayers: z.object({
       subject: image(),
       background: z.string(),
       heroOffset: z.number().default(0),
       subjectBox: z.object({ top: z.number(), right: z.number(), bottom: z.number(), left: z.number() }).optional(),
+      subjectBounds: z.object({ top: z.number(), right: z.number(), bottom: z.number(), left: z.number() }).optional(),
     }).optional(),
   }),
 })
