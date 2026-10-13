@@ -8,6 +8,7 @@
  *   .hero-phone-scroll  — overflow:hidden container
  *     .scroll-track     — flex row of phones; GSAP owns all transforms
  */
+import '../../styles/wab-tokens.css'
 import { Image } from 'astro:assets'
 
 interface Screen {
@@ -47,16 +48,6 @@ const { screens } = Astro.props
     height: 85vh;
     display: flex;
     align-items: center;
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     border-bottom: var(--border-width-1) solid var(--color-text-primary);
   }

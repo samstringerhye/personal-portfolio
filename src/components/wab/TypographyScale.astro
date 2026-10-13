@@ -3,6 +3,7 @@
  * Typography Scale diagram for Whataburger case study.
  * M3-inspired naming: Display, Headline, Body, Label
  */
+import '../../styles/wab-tokens.css'
 const typeScale = [
   { role: 'Display', size: 'Lg', px: 48, lh: 60, tracking: -0.5, weight: 'Bold', font: 'display', spacing: 'tighter' },
   { role: 'Display', size: 'Med', px: 26, lh: 33, tracking: -0.25, weight: 'Bold', font: 'display', spacing: 'tight' },
@@ -40,16 +41,6 @@ const typeScale = [
 
 <style>
   .type-scale {
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     border-radius: 0;
     border-top: var(--border-width-1) solid var(--color-text-primary);

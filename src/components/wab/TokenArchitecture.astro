@@ -3,6 +3,7 @@
  * Token Architecture diagram for Whataburger case study.
  * Shows the 3-tier flow: Primitive → Semantic → Component
  */
+import '../../styles/wab-tokens.css'
 ---
 
 <section class="token-arch" aria-label="Token architecture diagram">
@@ -81,11 +82,11 @@
 
 <style>
   .token-arch {
-    --arch-bg: #fdf8f4;
-    --arch-border: #ffd6ba;
-    --arch-brown: #472c19;
-    --arch-orange: #fe7800;
-    --arch-muted: #806c5b;
+    --arch-bg: var(--wab-bg);
+    --arch-border: var(--wab-highlight);
+    --arch-brown: var(--wab-brown);
+    --arch-orange: var(--wab-orange);
+    --arch-muted: var(--wab-muted);
     background: var(--arch-bg);
     border-radius: 0;
     border-top: var(--border-width-1) solid var(--color-text-primary);

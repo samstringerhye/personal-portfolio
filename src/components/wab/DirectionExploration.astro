@@ -7,6 +7,7 @@
  * Follows the WAB component visual language: #fdf8f4 bg, brown/orange palette,
  * border-top/bottom pattern.
  */
+import '../../styles/wab-tokens.css'
 import { Image } from 'astro:assets'
 import vibrantMoodboard from '../../assets/work/wab-2026/direction-vibrant-moodboard.png'
 import modernMoodboard from '../../assets/work/wab-2026/direction-modern-moodboard.png'
@@ -116,16 +117,6 @@ import austinMoodboard from '../../assets/work/wab-2026/direction-austin-moodboa
 
 <style>
   .direction-exploration {
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     border-top: var(--border-width-1) solid var(--color-text-primary);
     border-bottom: var(--border-width-1) solid var(--color-text-primary);
