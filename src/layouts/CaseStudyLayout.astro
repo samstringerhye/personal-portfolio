@@ -113,40 +113,23 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
   }
 
   /* ── Bordered frame only on visual elements ── */
-  .case-study-body .cs-hero-image,
   .case-study-body .cs-hero-meta,
   .case-study-body .image-pair,
   .case-study-body .carousel,
   .case-study-body .zigzag-section,
   .case-study-body .cs-figure,
   .case-study-body .image-grid,
-  .case-study-body > img,
-  .case-study-body .accent-band {
+  .case-study-body > img {
     border: var(--border-width-1) solid var(--color-text-primary);
   }
 
   /* Collapse doubled borders: when two bordered siblings are adjacent,
      pull the second one up by 1px so the borders overlap instead of stacking. */
-  .case-study-body :is(.cs-hero-image, .cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .accent-band, .lottie-grid)
-  + :is(.cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .accent-band, .lottie-grid) {
+  .case-study-body :is(.cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .lottie-grid)
+  + :is(.cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .lottie-grid) {
     margin-top: calc(-1 * var(--border-width-1));
   }
 
-
-  /* ── Hero image ── */
-  .case-study-body .cs-hero-image {
-    overflow: hidden;
-    border: none;
-    border-bottom: var(--border-width-1) solid var(--color-rule);
-  }
-
-  .case-study-body .cs-hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    max-height: none;
-    object-fit: cover;
-  }
 
   /* ── Meta bar ── */
   .case-study-body .cs-hero-meta {
@@ -229,7 +212,6 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
   }
 
   /* ── Image hover: subtle scale + shadow lift + zoom cursor ── */
-  .case-study-body .cs-hero-image,
   .case-study-body .cs-figure,
   .case-study-body .image-pair,
   .case-study-body .image-pair > img,
@@ -431,19 +413,6 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
   }
 
 
-  /* ── Accent band: full-width color section ── */
-  .case-study-body .accent-band {
-    padding-inline: var(--content-inset-md);
-  }
-  .accent-band-1 { background: var(--color-accent-1); }
-  .accent-band-2 { background: var(--color-accent-2); }
-  .accent-band-3 { background: var(--color-accent-3); }
-
-  /* Children inside accent band lose their own border */
-  .case-study-body .accent-band > * {
-    border: none;
-  }
-
   /* ── Figure: image + figcaption ── */
   .case-study-body .cs-figure {
     padding-inline: 0;
@@ -532,7 +501,6 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
 
   /* ── Vertical rhythm: tiered spacing by adjacency ── */
   .case-study-body .zigzag-section,
-  .case-study-body .accent-band,
   .case-study-body .cs-figure,
   .case-study-body .prose-group {
     padding-block: var(--space-6);
@@ -617,16 +585,15 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
     .case-study-body .zigzag-section,
     .case-study-body > .cs-figure,
     .case-study-body .image-grid,
-    .case-study-body > img,
-    .case-study-body .accent-band {
+    .case-study-body > img {
       border: none;
       border-top: var(--border-width-1) solid var(--color-rule);
       border-bottom: var(--border-width-1) solid var(--color-rule);
     }
 
     /* Collapse doubled borders on mobile too */
-    .case-study-body :is(.cs-hero-image, .cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .accent-band, .lottie-grid)
-    + :is(.cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .accent-band, .lottie-grid) {
+    .case-study-body :is(.cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .lottie-grid)
+    + :is(.cs-hero-meta, .image-pair, .carousel, .zigzag-section, .cs-figure, .image-grid, .lottie-grid) {
       margin-top: calc(-1 * var(--border-width-1));
     }
 
