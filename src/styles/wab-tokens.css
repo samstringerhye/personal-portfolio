@@ -1,0 +1,14 @@
+/* Shared colors for the Whataburger case study diagrams (wab/* components), from the Pele
+   design system's palette. Component layout stays this portfolio's own. */
+:root {
+  --wab-bg: #fdf8f4;
+  --wab-bg-alt: #f4ebe1;
+  --wab-brown: #472c19;
+  --wab-muted: #806c5b;
+  --wab-muted-alt: #a0846c;
+  --wab-orange: #fe7800;
+  --wab-border: #f4ebe1;
+  --wab-highlight: #ffd6ba;
+  --wab-muted-mid: #948274;
+  --wab-tan: #cdb9a7;
+}

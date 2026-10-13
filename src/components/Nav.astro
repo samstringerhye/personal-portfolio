@@ -305,7 +305,7 @@ function isActive(href: string) {
 
 <script>
   import gsap from 'gsap'
-  import { accentRgba } from '../data/tokens'
+  import { accentRgba, animations } from '../data/tokens'
 
   const CMY_COLORS = accentRgba(1)
   let colorIndex = 0
@@ -343,31 +343,32 @@ function isActive(href: string) {
       logo.dataset.petalBound = 'true'
       const paths = logo.querySelectorAll<SVGPathElement>('.nav-logo-icon path')
       const originalFills = Array.from(paths).map(p => p.getAttribute('fill') ?? '')
+      const petal = animations.nav.petal
 
       logo.addEventListener('mouseenter', () => {
         paths.forEach((path, i) => {
           gsap.killTweensOf(path)
           const { x, y } = petalOffsets[i]
-          gsap.to(path, { attr: { fill: '#ffffff' }, duration: 0.2, ease: 'power2.out' })
+          gsap.to(path, { attr: { fill: '#ffffff' }, duration: petal.fillIn, ease: 'power2.out' })
 
           const tl = gsap.timeline()
           // 1. Anticipation: pull toward center
           tl.to(path, {
             x: -x * 0.3,
             y: -y * 0.3,
-            duration: 0.15,
+            duration: petal.anticipate,
             ease: 'back.in(4)',
           })
           // 2. Burst outward
           .to(path, {
             x, y,
-            duration: 0.25,
+            duration: petal.burst,
             ease: 'power4.out',
           })
           // 3. Spring settle back to rest
           .to(path, {
             x: 0, y: 0,
-            duration: 0.6,
+            duration: petal.settle,
             ease: 'elastic.out(1, 0.4)',
           })
         })
@@ -376,8 +377,8 @@ function isActive(href: string) {
       logo.addEventListener('mouseleave', () => {
         paths.forEach((path, i) => {
           gsap.killTweensOf(path)
-          gsap.to(path, { attr: { fill: originalFills[i] }, duration: 0.3, ease: 'power2.out' })
-          gsap.to(path, { x: 0, y: 0, duration: 0.3, ease: 'back.out(2)' })
+          gsap.to(path, { attr: { fill: originalFills[i] }, duration: petal.reset, ease: 'power2.out' })
+          gsap.to(path, { x: 0, y: 0, duration: petal.reset, ease: 'back.out(2)' })
         })
       })
     }
@@ -590,7 +591,7 @@ function isActive(href: string) {
     const lenis = (window as Window & { __siteLenis?: SmoothScroller | null }).__siteLenis
     if (lenis) {
       const navHeight = document.getElementById('site-nav')?.offsetHeight ?? 0
-      lenis.scrollTo(section, { offset: -navHeight, duration: 1, easing: (t) => 1 - Math.pow(1 - t, 4) })
+      lenis.scrollTo(section, { offset: -navHeight, duration: animations.nav.scrollToWork, easing: (t) => 1 - Math.pow(1 - t, 4) })
     } else {
       // scroll-margin-top on the section clears the nav here
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -601,8 +602,10 @@ function isActive(href: string) {
 
 <script>
   import gsap from 'gsap'
+  import { animations } from '../data/tokens'
 
   const ENTRANCE_KEY = 'entrance-played'
+  const entranceTiming = animations.nav.entrance
 
   function showAllImmediate() {
     gsap.set('.nav-logo, .nav-link', { opacity: 1, y: 0 })
@@ -636,33 +639,33 @@ function isActive(href: string) {
     // 1. Grid vertical lines draw down from top
     const overlay = document.querySelector<HTMLElement>('.grid-overlay')
     if (overlay) {
-      tl.fromTo(overlay, { '--line-draw': 0 }, { '--line-draw': 1, duration: 1.0 }, 0)
+      tl.fromTo(overlay, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.gridDraw }, 0)
     }
 
     // 2. Nav bottom horizontal line draws from left
     const nav = document.querySelector<HTMLElement>('.nav')
     if (nav) {
-      tl.fromTo(nav, { '--line-draw': 0 }, { '--line-draw': 1, duration: 0.8 }, 0.1)
+      tl.fromTo(nav, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.navDraw }, entranceTiming.navDrawAt)
     }
 
     // 3. Logo right border draws down + logo content fades in
     const logo = document.querySelector<HTMLElement>('.nav-logo')
     if (logo) {
-      tl.fromTo(logo, { '--line-draw': 0 }, { '--line-draw': 1, duration: 0.6 }, 0.2)
+      tl.fromTo(logo, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.logoDraw }, entranceTiming.logoDrawAt)
     }
-    tl.to('.nav-logo', { opacity: 1, y: 0, duration: 0.5 }, 0.15)
+    tl.to('.nav-logo', { opacity: 1, y: 0, duration: entranceTiming.logoFade }, entranceTiming.logoFadeAt)
 
     // 4. Nav link borders draw down + links fade in staggered
     const linkItems = document.querySelectorAll<HTMLElement>('.nav-links li')
     linkItems.forEach((li, i) => {
-      tl.fromTo(li, { '--line-draw': 0 }, { '--line-draw': 1, duration: 0.5 }, 0.25 + i * 0.12)
+      tl.fromTo(li, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.linkDraw }, entranceTiming.linkDrawAt + i * entranceTiming.linkStagger)
     })
-    tl.to('.nav-link', { opacity: 1, y: 0, duration: 0.4, stagger: 0.12 }, 0.3)
+    tl.to('.nav-link', { opacity: 1, y: 0, duration: entranceTiming.linkFade, stagger: entranceTiming.linkStagger }, entranceTiming.linkFadeAt)
 
     // 5. First section rule (below hero) draws from left on load
     const firstRule = document.querySelector<HTMLElement>('.section-rule')
     if (firstRule) {
-      tl.to(firstRule, { scaleX: 1, duration: 0.8, ease: 'power3.inOut' }, 0.2)
+      tl.to(firstRule, { scaleX: 1, duration: entranceTiming.ruleDraw, ease: 'power3.inOut' }, entranceTiming.ruleDrawAt)
     }
   }
 

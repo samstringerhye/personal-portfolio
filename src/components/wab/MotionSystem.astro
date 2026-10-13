@@ -5,6 +5,7 @@
  * Animated dots play the actual duration on hover.
  * Easing curve has a traveling dot on click.
  */
+import '../../styles/wab-tokens.css'
 const durations = [
   { name: 'Fast', ms: 100, usage: 'Toggles, checkboxes', width: '20%' },
   { name: 'Normal', ms: 150, usage: 'Sheets, modals', width: '40%' },
@@ -72,16 +73,6 @@ const durations = [
 
 <style>
   .motion-system {
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     border-radius: 0;
     border-top: var(--border-width-1) solid var(--color-text-primary);
@@ -272,6 +263,9 @@ const durations = [
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
+  const timing = animations.caseStudy.motionSystem
   let ctx: { revert: () => void } | null = null
 
   async function initMotionSystem() {
@@ -304,7 +298,7 @@ const durations = [
           duration: ms / 1000,
           ease: 'power2.inOut',
           onComplete() {
-            gsap.to(dot, { opacity: 0, duration: 0.2, delay: 0.3 })
+            gsap.to(dot, { opacity: 0, duration: timing.dotFade, delay: timing.dotFadeDelay })
           }
         })
       }
@@ -343,7 +337,7 @@ const durations = [
           easingProgress = { t: 0 }
           gsap.to(easingProgress, {
             t: 1,
-          duration: 1.2,
+          duration: timing.easingTrace,
           ease: 'none',
           onUpdate() {
               const point = easingPath.getPointAtLength((easingProgress?.t || 0) * length)
@@ -351,7 +345,7 @@ const durations = [
             easingDot.setAttribute('cy', String(point.y))
           },
           onComplete() {
-            gsap.to(easingDot, { opacity: 0, duration: 0.3, delay: 0.5 })
+            gsap.to(easingDot, { opacity: 0, duration: timing.easingFade, delay: timing.easingFadeDelay })
           }
         })
       }

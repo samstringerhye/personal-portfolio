@@ -10,6 +10,7 @@
  *       .morph-el     — individual rectangles that animate
  *     .morph-labels   — before/after labels that crossfade
  */
+import '../../styles/wab-tokens.css'
 ---
 
 <section class="chaos-to-order" aria-label="Design system transformation visualization">
@@ -32,16 +33,6 @@
 
 <style>
   .chaos-to-order {
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     border-top: var(--border-width-1) solid var(--color-text-primary);
     border-bottom: var(--border-width-1) solid var(--color-text-primary);
@@ -121,6 +112,10 @@
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
+  const morphTiming = animations.caseStudy.scrubbedMorph
+  const timing = animations.caseStudy.chaosToOrder
   let ctx: { revert: () => void } | null = null
 
   async function initChaosToOrder() {
@@ -197,18 +192,18 @@
         backgroundColor: (i: number) => afterColors[i],
         borderRadius: 8,
         zIndex: 1,
-        duration: 1,
-        stagger: 0.03,
+        duration: morphTiming.morph,
+        stagger: timing.stagger,
         ease: 'power2.inOut',
       }, 0)
 
-      tl.to(beforeLabel, { opacity: 0, y: -10, duration: 0.3 }, 0.2)
-      tl.to(afterLabel, { opacity: 1, y: 0, duration: 0.3 }, 0.5)
+      tl.to(beforeLabel, { opacity: 0, y: -10, duration: morphTiming.labelFade }, morphTiming.beforeOutAt)
+      tl.to(afterLabel, { opacity: 1, y: 0, duration: morphTiming.labelFade }, morphTiming.afterInAt)
       tl.to(elements, {
         boxShadow: '0 2px 8px rgba(71, 44, 25, 0.12)',
-        duration: 0.3,
-        stagger: 0.02,
-      }, 0.7)
+        duration: timing.shadowDuration,
+        stagger: timing.shadowStagger,
+      }, timing.shadowAt)
     })
   }
 

@@ -1,0 +1,360 @@
+---
+/**
+ * Before/after comparison of a design system rebuild with counting stats, shared by the Amica
+ * and Whataburger case studies. `theme` picks the case study's colors and spacing.
+ */
+import '../styles/amica-tokens.css'
+import '../styles/wab-tokens.css'
+
+interface Item {
+  title: string
+  /** May hold inline HTML such as <code> */
+  detail: string
+}
+
+interface Column {
+  label: string
+  title: string
+  items: Item[]
+}
+
+interface Stat {
+  value: number
+  suffix?: string
+  label: string
+}
+
+interface Props {
+  label: string
+  theme: 'amica' | 'wab'
+  before: Column
+  after: Column
+  stats: Stat[]
+}
+
+const { label, theme, before, after, stats } = Astro.props
+---
+
+<section class:list={['ba', `ba--${theme}`]} aria-label={label} data-before-after>
+  <div class="ba-grid">
+    <div class="ba-col ba-before">
+      <div class="ba-label">{before.label}</div>
+      <h4 class="ba-title">{before.title}</h4>
+      <ul class="ba-list">
+        {before.items.map(item => (
+          <li class="ba-item ba-problem">
+            <span class="ba-icon">✕</span>
+            <div>
+              <strong>{item.title}</strong>
+              <span class="ba-detail" set:html={item.detail} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="ba-divider" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="ba-col ba-after">
+      <div class="ba-label">{after.label}</div>
+      <h4 class="ba-title">{after.title}</h4>
+      <ul class="ba-list">
+        {after.items.map(item => (
+          <li class="ba-item ba-success">
+            <span class="ba-icon">✓</span>
+            <div>
+              <strong>{item.title}</strong>
+              <span class="ba-detail" set:html={item.detail} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="ba-stats">
+    {stats.map(stat => (
+      <div class="ba-stat">
+        <span class="ba-stat-number" data-target={stat.value} data-suffix={stat.suffix}>{stat.value}{stat.suffix}</span>
+        <span class="ba-stat-label">{stat.label}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .ba--amica {
+    --ba-bg: var(--color-bg-primary);
+    --ba-padding: var(--space-6);
+    --ba-padding-mobile: var(--space-6) var(--space-4);
+    --ba-margin: var(--space-6) 0;
+    --ba-rule: var(--amica-mint);
+    --ba-label-before: var(--color-text-secondary, #667);
+    --ba-label-after: var(--amica-teal);
+    --ba-ink: var(--color-text-primary);
+    --ba-detail: var(--color-text-secondary, #667);
+    --ba-code-bg: var(--amica-light-mint);
+    --ba-problem-bg: var(--color-bg-primary);
+    --ba-problem-ink: var(--color-text-secondary, #667);
+    --ba-success-bg: var(--color-accent-2, var(--amica-teal));
+    --ba-accent: var(--color-text-primary);
+    --ba-stat-label: var(--color-text-secondary, #667);
+  }
+
+  .ba--wab {
+    --ba-bg: var(--wab-bg);
+    --ba-padding: 2rem;
+    --ba-padding-mobile: 1.25rem;
+    --ba-margin: 2rem 0;
+    --ba-rule: var(--wab-border);
+    --ba-label-before: var(--wab-muted-alt);
+    --ba-label-after: var(--wab-orange);
+    --ba-ink: var(--wab-brown);
+    --ba-detail: var(--wab-muted);
+    --ba-code-bg: var(--wab-bg);
+    --ba-problem-bg: var(--wab-bg-alt);
+    --ba-problem-ink: var(--wab-muted-alt);
+    --ba-success-bg: var(--wab-orange);
+    --ba-accent: var(--wab-orange);
+    --ba-stat-label: var(--wab-muted);
+  }
+
+  .ba {
+    background: var(--ba-bg);
+    border-top: var(--border-width-1) solid var(--color-text-primary);
+    border-bottom: var(--border-width-1) solid var(--color-text-primary);
+    padding: var(--ba-padding);
+    margin: var(--ba-margin);
+  }
+
+  .ba-grid {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .ba-col {
+    flex: 1;
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid var(--ba-rule);
+  }
+
+  .ba-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .ba-before .ba-label {
+    color: var(--ba-label-before);
+  }
+
+  .ba-after .ba-label {
+    color: var(--ba-label-after);
+  }
+
+  .ba-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ba-ink);
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--ba-rule);
+  }
+
+  .ba-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ba-item {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--ba-ink);
+  }
+
+  .ba-item div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .ba-detail {
+    font-size: 0.75rem;
+    color: var(--ba-detail);
+  }
+
+  .ba-detail :global(code) {
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    background: var(--ba-code-bg);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+  }
+
+  .ba-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  .ba-problem .ba-icon {
+    background: var(--ba-problem-bg);
+    color: var(--ba-problem-ink);
+  }
+
+  .ba-success .ba-icon {
+    background: var(--ba-success-bg);
+    color: white;
+  }
+
+  .ba-divider {
+    display: flex;
+    align-items: center;
+    color: var(--ba-accent);
+    flex-shrink: 0;
+  }
+
+  .ba-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ba-rule);
+  }
+
+  .ba-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .ba-stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ba-accent);
+    line-height: 1;
+  }
+
+  .ba-stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ba-stat-label);
+  }
+
+  @media (max-width: 768px) {
+    .ba-grid {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .ba-divider {
+      justify-content: center;
+      transform: rotate(90deg);
+    }
+
+    .ba {
+      padding: var(--ba-padding-mobile);
+    }
+
+    .ba-stats {
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<script>
+  import { animations } from '../data/tokens'
+
+  const timing = animations.caseStudy.beforeAfter
+  let ctx: { revert: () => void } | null = null
+
+  async function initBeforeAfter() {
+    const container = document.querySelector('[data-before-after]') as HTMLElement | null
+    if (!container || container.dataset.baInit === 'true') return
+    container.dataset.baInit = 'true'
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Show final state immediately
+      container.querySelectorAll<HTMLElement>('.ba-stat-number').forEach(el => {
+        const target = el.dataset.target || '0'
+        const suffix = el.dataset.suffix || ''
+        el.textContent = target + suffix
+      })
+      return
+    }
+
+    const { default: gsap } = await import('gsap')
+    const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+    gsap.registerPlugin(ScrollTrigger)
+
+    ctx?.revert()
+    ctx = gsap.context(() => {
+      const grid = container.querySelector('.ba-grid')
+      const stats = container.querySelector('.ba-stats')
+
+      gsap.from(container.querySelectorAll('.ba-item'), {
+        y: 20,
+        opacity: 0,
+        duration: timing.itemDuration,
+        stagger: timing.itemStagger,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: grid,
+          start: 'top 80%',
+        }
+      })
+
+      container.querySelectorAll<HTMLElement>('.ba-stat-number').forEach(el => {
+        const target = parseInt(el.dataset.target || '0', 10)
+        const suffix = el.dataset.suffix || ''
+        const obj = { val: 0 }
+        // Markup carries the final value for crawlers and no-JS; count up from zero here
+        el.textContent = '0' + suffix
+
+        gsap.to(obj, {
+          val: target,
+          duration: timing.countDuration,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: stats,
+            start: 'top 85%',
+          },
+          onUpdate() {
+            el.textContent = Math.round(obj.val) + suffix
+          },
+        })
+      })
+    })
+  }
+
+  initBeforeAfter()
+  document.addEventListener('astro:page-load', initBeforeAfter)
+  document.addEventListener('astro:before-swap', () => { ctx?.revert(); ctx = null })
+</script>

@@ -8,6 +8,7 @@
  *   .hero-phone-scroll  — overflow:hidden container
  *     .scroll-track     — flex row of phones; GSAP owns all transforms
  */
+import '../../styles/wab-tokens.css'
 import { Image } from 'astro:assets'
 
 interface Screen {
@@ -47,16 +48,6 @@ const { screens } = Astro.props
     height: 85vh;
     display: flex;
     align-items: center;
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     border-bottom: var(--border-width-1) solid var(--color-text-primary);
   }
@@ -144,6 +135,9 @@ const { screens } = Astro.props
 </style>
 
 <script>
+  import { animations } from '../../data/tokens'
+
+  const timing = animations.caseStudy.heroPhoneScroll
   const INIT_ATTR = 'data-hero-initialized'
   let ctx: { revert: () => void } | null = null
   let scrollTween: gsap.core.Tween | null = null
@@ -227,7 +221,7 @@ const { screens } = Astro.props
 
       const halfWidth = track.scrollWidth / 2
       const isMobile = window.matchMedia('(max-width: 768px)').matches
-      const scrollDuration = isMobile ? 40 : 60
+      const scrollDuration = isMobile ? timing.loopMobile : timing.loop
 
       function startScroll() {
         scrollTween = gsap.fromTo(track,
@@ -235,47 +229,47 @@ const { screens } = Astro.props
           { x: centerOffset - halfWidth, duration: scrollDuration, repeat: -1, ease: 'none' }
         )
         scrollTween.timeScale(0)
-        speedTween = gsap.to(scrollTween, { timeScale: 1, duration: 1, ease: 'power2.inOut' })
+        speedTween = gsap.to(scrollTween, { timeScale: 1, duration: timing.speedUp, ease: 'power2.inOut' })
       }
 
       const tl = gsap.timeline()
 
       tl.to(track, {
         scale: 1,
-        duration: 2,
+        duration: timing.zoomOut,
         ease: 'elastic.out(1, 1)',
       }, 0)
 
       tl.to(phones[centerIndex], {
         opacity: 1,
-        duration: 0.2,
+        duration: timing.centerFade,
         ease: 'power2.out',
       }, 0)
 
       const leftPhones = phones.slice(0, centerIndex).reverse()
       const rightPhones = phones.slice(centerIndex + 1)
-      const STAGGER = 0.18
+      const STAGGER = timing.phoneStagger
 
       const fadeConfig = {
         opacity: 1,
-        duration: 0.08,
+        duration: timing.phoneFade,
         ease: 'power2.out' as const,
         stagger: STAGGER,
       }
-      tl.to(leftPhones, fadeConfig, 0.25)
-      tl.to(rightPhones, fadeConfig, 0.25)
+      tl.to(leftPhones, fadeConfig, timing.phonesAt)
+      tl.to(rightPhones, fadeConfig, timing.phonesAt)
 
       const slideConfig = {
         x: 0,
-        duration: 0.7,
+        duration: timing.phoneSlide,
         ease: 'power4.out' as const,
         stagger: STAGGER,
       }
-      tl.to(leftPhones, slideConfig, 0.25)
-      tl.to(rightPhones, slideConfig, 0.25)
+      tl.to(leftPhones, slideConfig, timing.phonesAt)
+      tl.to(rightPhones, slideConfig, timing.phonesAt)
 
-      tl.call(startScroll, [], 0.4)
-      tl.set(dupes, { opacity: 1 }, 0.4)
+      tl.call(startScroll, [], timing.scrollAt)
+      tl.set(dupes, { opacity: 1 }, timing.scrollAt)
     })
   }
 

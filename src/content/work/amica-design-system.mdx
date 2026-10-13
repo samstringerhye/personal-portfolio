@@ -26,7 +26,7 @@ import Figure from '../../components/Figure.astro'
 import Carousel from '../../components/Carousel.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
 import TokenTiers from '../../components/amica/TokenTiers.astro'
-import BeforeAfterStats from '../../components/amica/BeforeAfterStats.astro'
+import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
 import StatCallout from '../../components/amica/StatCallout.astro'
 import BenchmarkChart from '../../components/amica/BenchmarkChart.astro'
 import HeroMosaic from '../../components/amica/HeroMosaic.astro'
@@ -121,7 +121,36 @@ Fixing 314,000 nodes by hand would have burned the team for weeks. I built an in
 
 </ProseGroup>
 
-<BeforeAfterStats />
+<BeforeAfterStats
+  label='Amica design system before and after comparison'
+  theme="amica"
+  before={{
+    label: 'Before',
+    title: 'Inherited Library',
+    items: [
+      { title: '3,044 off-library references', detail: 'Some abandoned mid-migration, some never published' },
+      { title: '61 dead component masters', detail: 'Instances still on canvas with no live source' },
+      { title: 'No token system', detail: 'Hardcoded hex, duplicated into Primary Light / Primary Dark variants' },
+      { title: 'Deliverable-first organization', detail: '314,000 nodes grouped by page type, not component' },
+    ],
+  }}
+  after={{
+    label: 'After: rebuilt architecture',
+    title: 'Self-Contained System',
+    items: [
+      { title: 'Single source of truth', detail: 'Every reference resolves back to the library' },
+      { title: '61 masters restored', detail: 'Zero visual regressions, verified by independent re-index' },
+      { title: 'Two-tier token architecture', detail: '54 semantic tokens across Light and Dark mode' },
+      { title: '209 component sets', detail: 'Composed freely across templates without new variants' },
+    ],
+  }}
+  stats={[
+    { value: 209, label: 'Component Sets' },
+    { value: 464, label: 'Local Variables' },
+    { value: 97, suffix: '%', label: 'Cascade Success' },
+    { value: 100, suffix: '%', label: 'Padding Compliance' },
+  ]}
+/>
 
 {/* PROTOTYPE-IMAGES-START */}
 

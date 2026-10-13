@@ -17,5 +17,3 @@ export type HeadingTag = (typeof HEADING_TAGS)[number]
 
 export const TEXT_TAGS = ['p', 'span', 'div'] as const
 export type TextTag = (typeof TEXT_TAGS)[number]
-
-export type TypographyTag = HeadingTag | TextTag

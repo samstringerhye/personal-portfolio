@@ -69,6 +69,11 @@
         { "$ref": "#/definitions/tokenRef" }
       ]
     },
+    "seconds": {
+      "type": "object",
+      "description": "Named durations, delays, staggers and timeline positions, in seconds",
+      "additionalProperties": { "type": "number", "minimum": 0 }
+    },
     "durationOrRef": {
       "description": "Duration in seconds or token $ref",
       "oneOf": [
@@ -163,8 +168,10 @@
             "wipeOutEase":             { "$ref": "#/definitions/easeOrRef" },
             "highlightsShowDuration":  { "$ref": "#/definitions/durationOrRef", "description": "Highlights fade-in duration" },
             "highlightsShowDelay":     { "$ref": "#/definitions/duration", "description": "Highlights fade-in delay" },
+            "highlightsShowStagger":   { "$ref": "#/definitions/stagger", "description": "Delay between highlight lines fading in" },
             "highlightsShowEase":      { "$ref": "#/definitions/easeOrRef" },
-            "highlightsHideDuration":  { "$ref": "#/definitions/duration", "description": "Highlights fade-out duration on leave" },
+            "highlightsHideDuration":  { "$ref": "#/definitions/durationOrRef", "description": "Highlights fade-out duration on leave" },
+            "highlightsHideStagger":   { "$ref": "#/definitions/stagger", "description": "Delay between highlight lines fading out" },
             "highlightsHideEase":      { "$ref": "#/definitions/easeOrRef" }
           },
           "additionalProperties": false
@@ -223,6 +230,34 @@
         "wheelMultiplier": { "type": "number", "minimum": 0, "description": "Mouse wheel speed multiplier" }
       },
       "additionalProperties": false
+    },
+    "nav": {
+      "type": "object",
+      "description": "Nav logo hover, first-visit entrance and the Work link's smooth scroll",
+      "properties": {
+        "petal":        { "$ref": "#/definitions/seconds", "description": "Logo petal burst on hover" },
+        "entrance":     { "$ref": "#/definitions/seconds", "description": "First-visit grid and nav draw-in; *At keys are timeline positions" },
+        "scrollToWork": { "$ref": "#/definitions/duration", "description": "Smooth scroll to the work list" }
+      },
+      "additionalProperties": false
+    },
+    "imageReveal": { "$ref": "#/definitions/seconds", "description": "Image reveals on scroll, site-wide and in case studies" },
+    "homeReveal":  { "$ref": "#/definitions/seconds", "description": "Homepage timeline, interests and dot grid reveals" },
+    "carousel":    { "$ref": "#/definitions/seconds", "description": "Case study carousel" },
+    "clientLogos": { "$ref": "#/definitions/seconds", "description": "About page client logo marquee" },
+    "lottie":      { "$ref": "#/definitions/seconds", "description": "Looping Lottie players" },
+    "caseStudy": {
+      "type": "object",
+      "description": "Case study diagrams (Amica and Whataburger)",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            { "type": "number", "minimum": 0 },
+            { "$ref": "#/definitions/seconds" }
+          ]
+        }
+      }
     },
     "pageTransition": {
       "type": "object",

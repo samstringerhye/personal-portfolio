@@ -10,6 +10,7 @@ thumbnailLayers:
   subject: "../../assets/work/wab-2026/wab-subject-32.png"
   background: "#FD7801"
   subjectBox: { top: 0.03, right: 0.75, bottom: 0.78, left: 0.42 }
+  subjectBounds: { top: 0.054, right: 1, bottom: 1, left: 0.586 }
 heroImage: "../../assets/work/wab-2026/hero.png"
 heroImageAlt: "Whataburger mobile app redesign: home screen shown in a device mockup"
 featured: true
@@ -34,7 +35,7 @@ import TypographyScale from '../../components/wab/TypographyScale.astro'
 import SpacingSystem from '../../components/wab/SpacingSystem.astro'
 import MotionSystem from '../../components/wab/MotionSystem.astro'
 import ElevationSystem from '../../components/wab/ElevationSystem.astro'
-import SystemBeforeAfter from '../../components/wab/SystemBeforeAfter.astro'
+import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
 import ComponentLibrary from '../../components/wab/ComponentLibrary.astro'
 import ChaosToOrder from '../../components/wab/ChaosToOrder.astro'
 import TypeHierarchy from '../../components/wab/TypeHierarchy.astro'
@@ -221,7 +222,38 @@ The rebuild, codenamed Pele, delivered 258 variables across three collections. E
 
 <TypeHierarchy />
 
-<SystemBeforeAfter />
+<BeforeAfterStats
+  label='Design system before and after comparison'
+  theme="wab"
+  before={{
+    label: 'Before',
+    title: 'Legacy System',
+    items: [
+      { title: 'Brand-named tokens', detail: '"Whataburger Orange": named by appearance, not function' },
+      { title: 'No interactive states', detail: 'One color per element: no hover, pressed, or disabled' },
+      { title: 'No semantic layer', detail: 'Primitives only: every new screen meant inventing values' },
+      { title: 'No spacing or elevation system', detail: 'Arbitrary values with no scale or convention' },
+      { title: 'One display typeface everywhere', detail: 'All-caps branded type with no hierarchy or roles' },
+    ],
+  }}
+  after={{
+    label: 'After: Pele system',
+    title: 'Rebuilt System',
+    items: [
+      { title: '3-tier token architecture', detail: 'Primitive → Semantic → Component: 258 variables' },
+      { title: '11 interactive color states', detail: 'Foreground, background, and border for every state' },
+      { title: 'Semantic naming = React props', detail: '<code>fg/primary</code> maps directly to component theme tokens' },
+      { title: 'Complete spatial system', detail: '×100 scale for spacing, radius, elevation, and motion' },
+      { title: 'M3-inspired type scale', detail: 'Display, Headline, Body, Label: each with semantic tokens' },
+    ],
+  }}
+  stats={[
+    { value: 258, label: 'Tokens' },
+    { value: 3, label: 'Collections' },
+    { value: 90, suffix: '+', label: 'Icons' },
+    { value: 11, label: 'Color States' },
+  ]}
+/>
 
 <TokenArchitecture />
 

@@ -70,7 +70,4 @@ export function accentRgba(opacity: number): [string, string, string] {
   ]
 }
 
-/** @deprecated Use accentRgba instead */
-export const cmyRgba = accentRgba
-
 export default resolved

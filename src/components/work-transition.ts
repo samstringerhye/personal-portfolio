@@ -12,6 +12,8 @@ import gsap from 'gsap'
 // trips TypeScript on case-insensitive disks. gsap has no side effects, so unused plugins tree-shake.
 import { Flip, ExpoScaleEase } from 'gsap/all'
 
+import { fitHero, heroFitData, STACKED } from './hero-fit'
+
 gsap.registerPlugin(Flip, ExpoScaleEase)
 
 const DURATION = 0.6
@@ -32,9 +34,9 @@ const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').m
 let pointer: { x: number; y: number } | null = null
 
 /** Card art sits subjects above center; the hero moves them down by this much of the image height.
-    Narrow heroes frame the subject's own box instead (global.css), so they don't shift. */
+    Narrow and stacked heroes frame the subject's own box instead (global.css), so they don't shift. */
 const NARROW = 780
-const heroShift = (offset: number, w: number, h: number) => (w <= NARROW ? 0 : offset * Math.max(h, w / 1.5))
+const heroShift = (offset: number, w: number, h: number, stacked = false) => (w <= NARROW || stacked ? 0 : offset * Math.max(h, w / 1.5))
 const ART_VARS = ['--art-ratio', '--art-l', '--art-t', '--art-w', '--art-h']
 
 /* ── Text that rides along with the image (year, title, tagline) ── */
@@ -212,7 +214,7 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
 }
 
 /** Invisible hero laid out exactly like the case study's (global .cs-hero-* styles), for measuring. */
-function heroProbe(title: string, tagline: string, year: string, light: boolean, artFrom: HTMLElement): { box: HTMLElement; text: TextLayout | null; stacked: Stacked | null; remove: () => void } {
+function heroProbe(title: string, tagline: string, year: string, light: boolean, artFrom: HTMLElement): { box: HTMLElement; text: TextLayout | null; stacked: Stacked | null; wideStacked: boolean; remove: () => void } {
   const frame = document.createElement('div')
   frame.setAttribute('aria-hidden', 'true')
   Object.assign(frame.style, {
@@ -231,7 +233,11 @@ function heroProbe(title: string, tagline: string, year: string, light: boolean,
   hero.querySelector('.cs-hero-tagline')!.textContent = tagline
   frame.appendChild(hero)
   document.body.appendChild(frame)
-  return { box: hero.querySelector<HTMLElement>('.cs-hero-size')!, text: readText(hero, 'hero'), stacked: readStacked(hero, 'hero'), remove: () => frame.remove() }
+  const box = hero.querySelector<HTMLElement>('.cs-hero-size')!
+  // Stack it as the real hero will, if its title would meet the art (hero-fit.ts)
+  const fitData = heroFitData(artFrom)
+  const wideStacked = fitData ? fitHero(hero, box, fitData.bounds, fitData.offset) : false
+  return { box, text: readText(hero, 'hero'), stacked: readStacked(hero, 'hero'), wideStacked, remove: () => frame.remove() }
 }
 
 /** Fits the copy into `target`, animating its zoom, subject shift and text to the target's. */
@@ -437,6 +443,8 @@ function onBeforePreparation(e: Event) {
       // Text rides along only when it overlays the image on both ends
       const text = cardText && probe.text ? cardText : null
       copy = buildCopy(cardMedia, bg, text, hoverZoom)
+      // A narrow card zooming into a stacked hero keeps its framed subject the whole way
+      if (probe.wideStacked && !cardText) copy.dataset.stacked = ''
       cardMedia.style.visibility = 'hidden'
       if (text) card!.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text').forEach(el => { el.style.visibility = 'hidden' })
       // Text below the image on both ends (phones): it rides under the image. The year stays on the
@@ -454,7 +462,7 @@ function onBeforePreparation(e: Event) {
       if (stackedTo) moveStacked(stackedTo, zoomEase(1, growth))
       // Load the next page while the zoom plays; the swap waits for both
       await Promise.all([
-        fit(probe.box, 1, growth, heroShift(offset, heroRect.width, heroRect.height), text ? probe.text : null),
+        fit(probe.box, 1, growth, heroShift(offset, heroRect.width, heroRect.height, probe.wideStacked), text ? probe.text : null),
         zoomSurroundings(cardRect, heroRect, true, zoomEase(1, growth)),
         original(),
       ])
@@ -476,9 +484,11 @@ function onBeforePreparation(e: Event) {
       const hr = hero.getBoundingClientRect()
       const offset = Number(getComputedStyle(hero).getPropertyValue('--hero-offset') || 0)
       const heroRoot = hero.closest('.cs-hero') ?? document
+      const wideStacked = heroRoot instanceof HTMLElement && heroRoot.classList.contains(STACKED)
       backText = readText(heroRoot, 'hero')
       backStacked = backText ? null : readStacked(heroRoot, 'hero')
-      copy = buildCopy(hero, hero.style.background, backText, 1, heroShift(offset, hr.width, hr.height))
+      copy = buildCopy(hero, hero.style.background, backText, 1, heroShift(offset, hr.width, hr.height, wideStacked))
+      if (wideStacked) copy.dataset.stacked = ''
       if (backStacked) textCopy = buildStackedCopy(backStacked, hero.style.background)
       hero.style.visibility = 'hidden'
       heroRoot.querySelectorAll<HTMLElement>('.cs-hero-year, .cs-hero-text, .cs-hero-back').forEach(el => { el.style.visibility = 'hidden' })
@@ -507,6 +517,8 @@ async function onAfterSwap() {
   if (!cardMedia || !r || !onScreen) return fadeOutCopy()
   const cardEl = cardMedia.closest<HTMLElement>('.work-list-card')
   const cardText = cardEl ? readText(cardEl, 'card') : null
+  // A stacked hero shrinking into a wide card: the card covers its frame, so the copy does too
+  if (cardText) delete copy.dataset.stacked
   const cardStacked = cardEl && backStacked ? readStacked(cardEl, 'card') : null
   const cardTextEls = cardEl ? [...cardEl.querySelectorAll<HTMLElement>('.work-list-meta, .work-list-text')] : []
   // The cursor is often still over the card it came from. Browsers don't re-apply :hover after a page

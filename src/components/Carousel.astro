@@ -141,6 +141,7 @@ const { label, fullBleed = false } = Astro.props
 
 <script>
   import gsap from 'gsap'
+  import { animations } from '../data/tokens'
 
   const carouselObservers = new WeakMap<Element, ResizeObserver>()
 
@@ -267,7 +268,7 @@ const { label, fullBleed = false } = Astro.props
         updateDots(i)
         gsap.to(track, {
           x: snapPoints[i],
-          duration: 0.5,
+          duration: animations.carousel.snapDuration,
           ease: 'power3.out',
           overwrite: true,
         })

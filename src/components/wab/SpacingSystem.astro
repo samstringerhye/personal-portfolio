@@ -3,6 +3,7 @@
  * Spacing System diagram for Whataburger case study.
  * ×100 scale (base 4px) for spacing, radius, and stroke
  */
+import '../../styles/wab-tokens.css'
 const spacing = [
   { token: '050', value: 2 },
   { token: '0', value: 0 },
@@ -66,16 +67,6 @@ const radius = [
 
 <style>
   .spacing-system {
-    --wab-bg: #fdf8f4;
-    --wab-bg-alt: #f4ebe1;
-    --wab-brown: #472c19;
-    --wab-muted: #806c5b;
-    --wab-muted-alt: #a0846c;
-    --wab-orange: #fe7800;
-    --wab-border: #f4ebe1;
-    --wab-highlight: #ffd6ba;
-    --wab-muted-mid: #948274;
-    --wab-tan: #cdb9a7;
     background: var(--wab-bg);
     margin: 2rem 0;
     border-top: var(--border-width-1) solid var(--color-text-primary);

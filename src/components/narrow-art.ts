@@ -12,3 +12,9 @@ export function narrowArtStyle(box?: SubjectBox): string {
   const n = (v: number) => v.toFixed(4)
   return `--art-ratio: ${n((w * 1.5) / h)}; --art-l: ${n(-b.left / w)}; --art-t: ${n(-b.top / h)}; --art-w: ${n(1 / w)}; --art-h: ${n(1 / h)}`
 }
+
+/** The subject's extent as a data attribute value for hero-fit.ts: top,right,bottom,left. */
+export function boundsAttr(box?: SubjectBox): string {
+  const b = box ?? { top: 0, right: 1, bottom: 1, left: 0 }
+  return [b.top, b.right, b.bottom, b.left].join(',')
+}

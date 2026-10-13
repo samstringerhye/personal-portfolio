@@ -3,13 +3,14 @@ import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import BackToWork from './BackToWork.astro'
 import PasswordGate from './PasswordGate.astro'
-import { narrowArtStyle, type SubjectBox } from './narrow-art'
+import { boundsAttr, narrowArtStyle, type SubjectBox } from './narrow-art'
 
 interface Props {
   subject: ImageMetadata
   background: string
   heroOffset?: number
   subjectBox?: SubjectBox
+  subjectBounds?: SubjectBox
   alt: string
   title: string
   tagline?: string
@@ -19,12 +20,17 @@ interface Props {
   gate?: { error?: boolean; rateLimited?: boolean }
 }
 
-const { subject, background, heroOffset = 0, subjectBox, alt, title, tagline, year, tone = 'dark', gate } = Astro.props
+const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, title, tagline, year, tone = 'dark', gate } = Astro.props
 ---
 
 <!-- Same layers and text as the homepage card, so the card's zoom lands on an identical hero.
      Text styles live in global.css (.cs-hero-*) so the homepage can measure them. -->
-<div class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]} style={`--hero-bg: ${background}; ${narrowArtStyle(subjectBox)}`}>
+<div
+  class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]}
+  style={`--hero-bg: ${background}; ${narrowArtStyle(subjectBox)}`}
+  data-subject-bounds={boundsAttr(subjectBounds ?? subjectBox)}
+  data-hero-offset={heroOffset}
+>
   <div class="cs-hero-media cs-hero-size" data-cs-hero style={`--hero-offset: ${heroOffset}; background: ${background}`}>
     <Image
       class="cs-hero-subject"
@@ -85,6 +91,18 @@ const { subject, background, heroOffset = 0, subjectBox, alt, title, tagline, ye
     }
   }
 
+  /* Wide but stacked (hero-fit.ts): framed the same way, above the title */
+  :global(.case-study-body .cs-hero--stacked) .cs-hero-media :global(img.cs-hero-subject) {
+    position: absolute;
+    left: var(--narrow-art-left);
+    top: var(--narrow-art-top);
+    width: var(--narrow-art-width);
+    height: var(--narrow-art-height);
+    max-width: none;
+    translate: none;
+    filter: none;
+  }
+
   /* Locked case study: the art and title crossfade with the form (PasswordGate) */
   :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject),
   :global(.cs-hero:has([data-password-gate])) :global(.cs-hero-text) {
@@ -100,4 +118,36 @@ const { subject, background, heroOffset = 0, subjectBox, alt, title, tagline, ye
 <script>
   // Card ↔ hero zoom (also registers the reverse zoom back to the homepage)
   import './work-transition'
+  import { fitHero, heroFitData } from './hero-fit'
+
+  // Stack the hero whenever its title would meet the art: on load, on resize, and once the web fonts
+  // (which change the title's wrapping) are in
+  let observer: ResizeObserver | null = null
+
+  function fit() {
+    const hero = document.querySelector<HTMLElement>('.cs-hero[data-subject-bounds]')
+    const frame = hero?.querySelector<HTMLElement>('[data-cs-hero]')
+    const data = hero && heroFitData(hero)
+    if (hero && frame && data) fitHero(hero, frame, data.bounds, data.offset)
+  }
+
+  function watch() {
+    observer?.disconnect()
+    const hero = document.querySelector<HTMLElement>('.cs-hero[data-subject-bounds]')
+    if (!hero) return
+    fit()
+    // Width changes come through the observer; height changes (which resize the frame) through resize
+    let last = hero.offsetWidth
+    observer = new ResizeObserver(() => {
+      if (hero.offsetWidth === last) return
+      last = hero.offsetWidth
+      fit()
+    })
+    observer.observe(hero)
+  }
+
+  watch()
+  window.addEventListener('resize', fit)
+  document.fonts?.ready.then(fit)
+  document.addEventListener('astro:page-load', watch)
 </script>
