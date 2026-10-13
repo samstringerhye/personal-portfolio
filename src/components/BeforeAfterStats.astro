@@ -1,46 +1,55 @@
 ---
-import '../../styles/amica-tokens.css'
 /**
- * Before/After comparison of the Amica design system migration.
- * Visualizes inherited library problems vs rebuilt self-contained system.
- * Mirrors SystemBeforeAfter.astro structure exactly with GSAP animations.
+ * Before/after comparison of a design system rebuild with counting stats, shared by the Amica
+ * and Whataburger case studies. `theme` picks the case study's colors and spacing.
  */
+import '../styles/amica-tokens.css'
+import '../styles/wab-tokens.css'
+
+interface Item {
+  title: string
+  /** May hold inline HTML such as <code> */
+  detail: string
+}
+
+interface Column {
+  label: string
+  title: string
+  items: Item[]
+}
+
+interface Stat {
+  value: number
+  suffix?: string
+  label: string
+}
+
+interface Props {
+  label: string
+  theme: 'amica' | 'wab'
+  before: Column
+  after: Column
+  stats: Stat[]
+}
+
+const { label, theme, before, after, stats } = Astro.props
 ---
 
-<section class="amica-ba" aria-label="Amica design system before and after comparison">
+<section class:list={['ba', `ba--${theme}`]} aria-label={label} data-before-after>
   <div class="ba-grid">
     <div class="ba-col ba-before">
-      <div class="ba-label">Before</div>
-      <h4 class="ba-title">Inherited Library</h4>
+      <div class="ba-label">{before.label}</div>
+      <h4 class="ba-title">{before.title}</h4>
       <ul class="ba-list">
-        <li class="ba-item ba-problem">
-          <span class="ba-icon">✕</span>
-          <div>
-            <strong>3,044 off-library references</strong>
-            <span class="ba-detail">Some abandoned mid-migration, some never published</span>
-          </div>
-        </li>
-        <li class="ba-item ba-problem">
-          <span class="ba-icon">✕</span>
-          <div>
-            <strong>61 dead component masters</strong>
-            <span class="ba-detail">Instances still on canvas with no live source</span>
-          </div>
-        </li>
-        <li class="ba-item ba-problem">
-          <span class="ba-icon">✕</span>
-          <div>
-            <strong>No token system</strong>
-            <span class="ba-detail">Hardcoded hex, duplicated into Primary Light / Primary Dark variants</span>
-          </div>
-        </li>
-        <li class="ba-item ba-problem">
-          <span class="ba-icon">✕</span>
-          <div>
-            <strong>Deliverable-first organization</strong>
-            <span class="ba-detail">314,000 nodes grouped by page type, not component</span>
-          </div>
-        </li>
+        {before.items.map(item => (
+          <li class="ba-item ba-problem">
+            <span class="ba-icon">✕</span>
+            <div>
+              <strong>{item.title}</strong>
+              <span class="ba-detail" set:html={item.detail} />
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
 
@@ -51,72 +60,75 @@ import '../../styles/amica-tokens.css'
     </div>
 
     <div class="ba-col ba-after">
-      <div class="ba-label">After: rebuilt architecture</div>
-      <h4 class="ba-title">Self-Contained System</h4>
+      <div class="ba-label">{after.label}</div>
+      <h4 class="ba-title">{after.title}</h4>
       <ul class="ba-list">
-        <li class="ba-item ba-success">
-          <span class="ba-icon">✓</span>
-          <div>
-            <strong>Single source of truth</strong>
-            <span class="ba-detail">Every reference resolves back to the library</span>
-          </div>
-        </li>
-        <li class="ba-item ba-success">
-          <span class="ba-icon">✓</span>
-          <div>
-            <strong>61 masters restored</strong>
-            <span class="ba-detail">Zero visual regressions, verified by independent re-index</span>
-          </div>
-        </li>
-        <li class="ba-item ba-success">
-          <span class="ba-icon">✓</span>
-          <div>
-            <strong>Two-tier token architecture</strong>
-            <span class="ba-detail">54 semantic tokens across Light and Dark mode</span>
-          </div>
-        </li>
-        <li class="ba-item ba-success">
-          <span class="ba-icon">✓</span>
-          <div>
-            <strong>209 component sets</strong>
-            <span class="ba-detail">Composed freely across templates without new variants</span>
-          </div>
-        </li>
+        {after.items.map(item => (
+          <li class="ba-item ba-success">
+            <span class="ba-icon">✓</span>
+            <div>
+              <strong>{item.title}</strong>
+              <span class="ba-detail" set:html={item.detail} />
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   </div>
 
   <div class="ba-stats">
-    <div class="ba-stat">
-      <span class="ba-stat-number" data-target="209">209</span>
-      <span class="ba-stat-label">Component Sets</span>
-    </div>
-    <div class="ba-stat">
-      <span class="ba-stat-number" data-target="464">464</span>
-      <span class="ba-stat-label">Local Variables</span>
-    </div>
-    <div class="ba-stat">
-      <span class="ba-stat-number" data-target="97" data-suffix="%">97%</span>
-      <span class="ba-stat-label">Cascade Success</span>
-    </div>
-    <div class="ba-stat">
-      <span class="ba-stat-number" data-target="100" data-suffix="%">100%</span>
-      <span class="ba-stat-label">Padding Compliance</span>
-    </div>
+    {stats.map(stat => (
+      <div class="ba-stat">
+        <span class="ba-stat-number" data-target={stat.value} data-suffix={stat.suffix}>{stat.value}{stat.suffix}</span>
+        <span class="ba-stat-label">{stat.label}</span>
+      </div>
+    ))}
   </div>
 </section>
 
 <style>
-  .amica-ba {
-    --amica-warm-neutral: var(--amica-cream);
-    --amica-bg: var(--amica-light-mint);
+  .ba--amica {
+    --ba-bg: var(--color-bg-primary);
+    --ba-padding: var(--space-6);
+    --ba-padding-mobile: var(--space-6) var(--space-4);
+    --ba-margin: var(--space-6) 0;
+    --ba-rule: var(--amica-mint);
+    --ba-label-before: var(--color-text-secondary, #667);
+    --ba-label-after: var(--amica-teal);
+    --ba-ink: var(--color-text-primary);
+    --ba-detail: var(--color-text-secondary, #667);
+    --ba-code-bg: var(--amica-light-mint);
+    --ba-problem-bg: var(--color-bg-primary);
+    --ba-problem-ink: var(--color-text-secondary, #667);
+    --ba-success-bg: var(--color-accent-2, var(--amica-teal));
+    --ba-accent: var(--color-text-primary);
+    --ba-stat-label: var(--color-text-secondary, #667);
+  }
 
-    background: var(--color-bg-primary);
+  .ba--wab {
+    --ba-bg: var(--wab-bg);
+    --ba-padding: 2rem;
+    --ba-padding-mobile: 1.25rem;
+    --ba-margin: 2rem 0;
+    --ba-rule: var(--wab-border);
+    --ba-label-before: var(--wab-muted-alt);
+    --ba-label-after: var(--wab-orange);
+    --ba-ink: var(--wab-brown);
+    --ba-detail: var(--wab-muted);
+    --ba-code-bg: var(--wab-bg);
+    --ba-problem-bg: var(--wab-bg-alt);
+    --ba-problem-ink: var(--wab-muted-alt);
+    --ba-success-bg: var(--wab-orange);
+    --ba-accent: var(--wab-orange);
+    --ba-stat-label: var(--wab-muted);
+  }
+
+  .ba {
+    background: var(--ba-bg);
     border-top: var(--border-width-1) solid var(--color-text-primary);
     border-bottom: var(--border-width-1) solid var(--color-text-primary);
-    padding-block: var(--space-6);
-    padding-inline: var(--space-6);
-    margin-block: var(--space-6);
+    padding: var(--ba-padding);
+    margin: var(--ba-margin);
   }
 
   .ba-grid {
@@ -129,7 +141,7 @@ import '../../styles/amica-tokens.css'
     flex: 1;
     padding: 1.5rem;
     background: white;
-    border: 1px solid var(--amica-mint);
+    border: 1px solid var(--ba-rule);
   }
 
   .ba-label {
@@ -141,20 +153,20 @@ import '../../styles/amica-tokens.css'
   }
 
   .ba-before .ba-label {
-    color: var(--color-text-secondary, #667);
+    color: var(--ba-label-before);
   }
 
   .ba-after .ba-label {
-    color: var(--amica-teal);
+    color: var(--ba-label-after);
   }
 
   .ba-title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: var(--ba-ink);
     margin: 0 0 1rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--amica-mint);
+    border-bottom: 1px solid var(--ba-rule);
   }
 
   .ba-list {
@@ -172,7 +184,7 @@ import '../../styles/amica-tokens.css'
     align-items: flex-start;
     font-size: 0.85rem;
     line-height: 1.4;
-    color: var(--color-text-primary);
+    color: var(--ba-ink);
   }
 
   .ba-item div {
@@ -183,13 +195,13 @@ import '../../styles/amica-tokens.css'
 
   .ba-detail {
     font-size: 0.75rem;
-    color: var(--color-text-secondary, #667);
+    color: var(--ba-detail);
   }
 
-  .ba-detail code {
+  .ba-detail :global(code) {
     font-family: var(--font-primary);
     font-size: 0.72rem;
-    background: var(--amica-bg);
+    background: var(--ba-code-bg);
     padding: 0.1rem 0.3rem;
     border-radius: 3px;
   }
@@ -208,19 +220,19 @@ import '../../styles/amica-tokens.css'
   }
 
   .ba-problem .ba-icon {
-    background: var(--color-bg-primary);
-    color: var(--color-text-secondary, #667);
+    background: var(--ba-problem-bg);
+    color: var(--ba-problem-ink);
   }
 
   .ba-success .ba-icon {
-    background: var(--color-accent-2, var(--amica-teal));
+    background: var(--ba-success-bg);
     color: white;
   }
 
   .ba-divider {
     display: flex;
     align-items: center;
-    color: var(--color-text-primary);
+    color: var(--ba-accent);
     flex-shrink: 0;
   }
 
@@ -230,7 +242,7 @@ import '../../styles/amica-tokens.css'
     gap: 2.5rem;
     margin-top: 1.5rem;
     padding-top: 1.25rem;
-    border-top: 1px solid var(--amica-mint);
+    border-top: 1px solid var(--ba-rule);
   }
 
   .ba-stat {
@@ -243,7 +255,7 @@ import '../../styles/amica-tokens.css'
   .ba-stat-number {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: var(--ba-accent);
     line-height: 1;
   }
 
@@ -252,7 +264,7 @@ import '../../styles/amica-tokens.css'
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-text-secondary, #667);
+    color: var(--ba-stat-label);
   }
 
   @media (max-width: 768px) {
@@ -266,8 +278,8 @@ import '../../styles/amica-tokens.css'
       transform: rotate(90deg);
     }
 
-    .amica-ba {
-      padding-inline: var(--space-4);
+    .ba {
+      padding: var(--ba-padding-mobile);
     }
 
     .ba-stats {
@@ -280,8 +292,8 @@ import '../../styles/amica-tokens.css'
 <script>
   let ctx: { revert: () => void } | null = null
 
-  async function initAmicaBA() {
-    const container = document.querySelector('.amica-ba') as HTMLElement | null
+  async function initBeforeAfter() {
+    const container = document.querySelector('[data-before-after]') as HTMLElement | null
     if (!container || container.dataset.baInit === 'true') return
     container.dataset.baInit = 'true'
 
@@ -339,7 +351,7 @@ import '../../styles/amica-tokens.css'
     })
   }
 
-  initAmicaBA()
-  document.addEventListener('astro:page-load', initAmicaBA)
+  initBeforeAfter()
+  document.addEventListener('astro:page-load', initBeforeAfter)
   document.addEventListener('astro:before-swap', () => { ctx?.revert(); ctx = null })
 </script>

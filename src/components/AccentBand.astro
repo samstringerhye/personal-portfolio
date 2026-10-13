@@ -1,8 +1,0 @@
----
-interface Props { color?: 1 | 2 | 3 }
-const { color = 1 } = Astro.props
----
-
-<div class={`accent-band accent-band-${color}`}>
-  <slot />
-</div>
