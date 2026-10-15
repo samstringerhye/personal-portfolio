@@ -75,10 +75,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Get password from Cloudflare env (runtime) or Astro env (dev)
   const runtime = (context.locals as any)?.runtime
-  const envPassword = runtime?.env?.WAB_PASSWORD ?? import.meta.env.WAB_PASSWORD
+  const envPassword = runtime?.env?.CASESTUDY_PASSWORD ?? import.meta.env.CASESTUDY_PASSWORD
 
   if (!envPassword) {
-    console.error('WAB_PASSWORD not set')
+    console.error('CASESTUDY_PASSWORD not set')
     return new Response(serviceUnavailablePage(), {
       status: 503,
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
