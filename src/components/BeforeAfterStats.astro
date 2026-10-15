@@ -296,19 +296,13 @@ const { label, theme, before, after, stats } = Astro.props
   let ctx: { revert: () => void } | null = null
 
   async function initBeforeAfter() {
-    const container = document.querySelector('[data-before-after]') as HTMLElement | null
-    if (!container || container.dataset.baInit === 'true') return
-    container.dataset.baInit = 'true'
+    const containers = [...document.querySelectorAll<HTMLElement>('[data-before-after]')]
+      .filter(el => el.dataset.baInit !== 'true')
+    if (!containers.length) return
+    containers.forEach(el => { el.dataset.baInit = 'true' })
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // Show final state immediately
-      container.querySelectorAll<HTMLElement>('.ba-stat-number').forEach(el => {
-        const target = el.dataset.target || '0'
-        const suffix = el.dataset.suffix || ''
-        el.textContent = target + suffix
-      })
-      return
-    }
+    // Markup carries the final values; with reduced motion there is nothing to do
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const { default: gsap } = await import('gsap')
     const { ScrollTrigger } = await import('gsap/ScrollTrigger')
@@ -316,38 +310,40 @@ const { label, theme, before, after, stats } = Astro.props
 
     ctx?.revert()
     ctx = gsap.context(() => {
-      const grid = container.querySelector('.ba-grid')
-      const stats = container.querySelector('.ba-stats')
-
-      gsap.from(container.querySelectorAll('.ba-item'), {
-        y: 20,
-        opacity: 0,
-        duration: timing.itemDuration,
-        stagger: timing.itemStagger,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: grid,
-          start: 'top 80%',
-        }
-      })
-
-      container.querySelectorAll<HTMLElement>('.ba-stat-number').forEach(el => {
-        const target = parseInt(el.dataset.target || '0', 10)
-        const suffix = el.dataset.suffix || ''
-        const obj = { val: 0 }
-        // Markup carries the final value for crawlers and no-JS; count up from zero here
-        el.textContent = '0' + suffix
-
-        gsap.to(obj, {
-          val: target,
-          duration: timing.countDuration,
+      containers.forEach(container => {
+        gsap.from(container.querySelectorAll('.ba-item'), {
+          y: 20,
+          opacity: 0,
+          duration: timing.itemDuration,
+          stagger: timing.itemStagger,
           ease: 'power2.out',
           scrollTrigger: {
-            trigger: stats,
-            start: 'top 85%',
-          },
-          onUpdate() {
-            el.textContent = Math.round(obj.val) + suffix
+            trigger: container.querySelector('.ba-grid'),
+            start: 'top 80%',
+          }
+        })
+
+        const numbers = [...container.querySelectorAll<HTMLElement>('.ba-stat-number')]
+        // Only drop to zero once the row is on screen, so the final value stays in the page
+        // for anything that reads it before (or without) scrolling
+        ScrollTrigger.create({
+          trigger: container.querySelector('.ba-stats'),
+          start: 'top 85%',
+          once: true,
+          onEnter() {
+            numbers.forEach(el => {
+              const target = parseInt(el.dataset.target || '0', 10)
+              const suffix = el.dataset.suffix || ''
+              const obj = { val: 0 }
+              el.textContent = '0' + suffix
+              gsap.to(obj, {
+                val: target,
+                duration: timing.countDuration,
+                ease: 'power2.out',
+                onUpdate() { el.textContent = Math.round(obj.val) + suffix },
+                onComplete() { el.textContent = target + suffix },
+              })
+            })
           },
         })
       })
