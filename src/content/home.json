@@ -4,7 +4,7 @@
     "headline": "Every pixel, on purpose.",
     "headlineTag": "h1",
     "headlineRole": "display-lg",
-    "body": "I'm Sam Stringer-Hye, a Philadelphia-based Associate Design Director at Razorfish with 13+ years in UX, UI, and motion. I lead design system and product teams for Samsung, Amica, Frontier, and CVS.",
+    "body": "I'm Sam Stringer-Hye, a Philadelphia-based Associate Design Director at Razorfish. For 13+ years I've led client work across brand, content platforms, and product, from discovery through design systems and developer handoff. Amica relaunched amica.com on October 2, 2026, on a design system I led six designers to rebuild.",
     "bodyHighlights": ["Sam Stringer-Hye", "Associate Design Director", "Razorfish"],
     "bodyRole": "title-lg"
   },
@@ -24,7 +24,7 @@
     "items": [
       {
         "title": "Teams",
-        "body": "I led six designers through the Amica.com design system rebuild, and teams of three to five on Samsung, CVS, and Frontier."
+        "body": "I lead teams of three to six designers: six on the Amica.com design system rebuild, three to five on Samsung, CVS, and Frontier."
       },
       {
         "title": "Mentorship",
@@ -36,7 +36,7 @@
       },
       {
         "title": "Scope calls",
-        "body": "When scope grew after kickoff with no notice to design, I escalated it into a named decision with an owner instead of letting the team absorb it."
+        "body": "When Amica added a ZIP-code editor after kickoff with no notice to design, I escalated it into a named scope decision with an owner instead of letting the team absorb it."
       }
     ]
   },
@@ -54,11 +54,11 @@
       {
         "title": "Associate Design Director",
         "company": "Razorfish",
-        "location": "Remote",
+        "location": "Remote, Philadelphia, PA",
         "startDate": "2021-10",
         "endDate": null,
         "highlights": [
-          "Leads UX and design systems for Samsung, Frontier, and CVS product redesigns."
+          "Leads Razorfish design teams on client work for Amica, Samsung, CVS, and Frontier, from discovery through design systems and developer handoff."
         ]
       },
       {
@@ -68,17 +68,17 @@
         "startDate": "2018-06",
         "endDate": "2021-10",
         "highlights": [
-          "Designed flows, prototypes, and motion systems for Samsung and Barclays. Built the interaction patterns, delivered the specs."
+          "Designed the global navigation and system components for Samsung.com across 12+ markets, and prototypes and motion for SmartThings, Barclays, and Pilot Flying J."
         ]
       },
       {
-        "title": "Product Designer",
+        "title": "Motion & Product Designer",
         "company": "Independent",
         "location": "New York, NY",
         "startDate": "2016-08",
         "endDate": "2018-06",
         "highlights": [
-          "Built interactive prototypes and motion systems for early-stage products and client pitches. The kind of work that turns a deck into something you can actually click through."
+          "Designed new-business pitch work for Walmart and McDonald's, and an interactive prototype for Google's editorial platform."
         ]
       },
       {
@@ -88,7 +88,7 @@
         "startDate": "2014-03",
         "endDate": "2016-08",
         "highlights": [
-          "Led design and motion direction for Mashable's Snapchat Discover launch and ran daily creative production."
+          "Led art direction for Mashable's Snapchat Discover launch, and a team of animators, illustrators, editors, and producers across six channels."
         ]
       },
       {
@@ -98,7 +98,7 @@
         "startDate": "2012-08",
         "endDate": "2014-03",
         "highlights": [
-          "Built the motion templates behind NowThis's daily social videos and redesigned the brand identity at an early stage."
+          "Redesigned the NowThis brand identity and built the motion templates behind its daily social video."
         ]
       }
     ]
