@@ -4,7 +4,7 @@ Paste-ready copy for linkedin.com/in/samstringerhye. Facts follow the resume. Th
 
 ## Headline
 
-Design Director | Brand, Content Platforms & Design Systems | Razorfish | Led the Amica.com relaunch
+Design Director | Brand, Content Platforms & Design Systems | Razorfish | Led the Amica.com design system rebuild
 
 ## About
 
