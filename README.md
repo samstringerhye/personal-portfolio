@@ -29,7 +29,7 @@ npm run deploy    # build, then wrangler deploy (needs Cloudflare auth)
 `wrangler.jsonc` serves `dist/` as static assets and runs the Worker first for `/work/*`
 (`src/middleware.ts`), which gates password-protected case studies.
 
-Environment: copy `.env.example` to `.env` for local dev. `WAB_PASSWORD` is the password for
+Environment: copy `.env.example` to `.env` for local dev. `CASESTUDY_PASSWORD` is the password for
 the protected case study. In production set it as a Worker secret, never in the repo.
 
 ## Where things live
