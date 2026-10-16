@@ -296,11 +296,19 @@ ol {
   --narrow-box-height: calc(var(--narrow-box-width) / var(--art-ratio, 1.5));
   --narrow-box-left: calc(var(--narrow-art-pad) + (var(--narrow-window-width) - var(--narrow-box-width)) / 2);
   --narrow-box-top: calc(var(--narrow-art-pad) + (var(--narrow-window-height) - var(--narrow-box-height)) / 2);
-  /* The whole image, positioned so its subject fills that box */
-  --narrow-art-left: calc(var(--narrow-box-left) + var(--narrow-box-width) * var(--art-l, 0));
-  --narrow-art-top: calc(var(--narrow-box-top) + var(--narrow-box-height) * var(--art-t, 0));
+  /* The whole image, positioned so its subject fills that box. Art that bleeds off its right or
+     bottom edge (--art-bleed-*) moves over until that edge meets the frame's; unflagged, the second
+     max() term is always the smaller, so it has no effect */
   --narrow-art-width: calc(var(--narrow-box-width) * var(--art-w, 1));
   --narrow-art-height: calc(var(--narrow-box-height) * var(--art-h, 1));
+  --narrow-art-left: max(
+    calc(var(--narrow-box-left) + var(--narrow-box-width) * var(--art-l, 0)),
+    calc(100cqw - var(--narrow-art-width) - (1 - var(--art-bleed-r, 0)) * 100cqw)
+  );
+  --narrow-art-top: max(
+    calc(var(--narrow-box-top) + var(--narrow-box-height) * var(--art-t, 0)),
+    calc(var(--narrow-frame-height) - var(--narrow-art-height) - (1 - var(--art-bleed-b, 0)) * var(--narrow-frame-height))
+  );
 }
 
 /* Heroes and the zoom copy fit the subject to their image box's real height (cqh: the box is a size

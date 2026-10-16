@@ -37,7 +37,7 @@ let pointer: { x: number; y: number } | null = null
     Narrow and stacked heroes frame the subject's own box instead (global.css), so they don't shift. */
 const NARROW = 780
 const heroShift = (offset: number, w: number, h: number, stacked = false) => (w <= NARROW || stacked ? 0 : offset * Math.max(h, w / 1.5))
-const ART_VARS = ['--art-ratio', '--art-l', '--art-t', '--art-w', '--art-h']
+const ART_VARS = ['--art-ratio', '--art-l', '--art-t', '--art-w', '--art-h', '--art-bleed-r', '--art-bleed-b']
 
 /* ── Text that rides along with the image (year, title, tagline) ── */
 type Line = { text: string; cls: string; size: number; leading: number }

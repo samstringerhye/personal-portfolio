@@ -4,13 +4,18 @@ export type SubjectBox = { top: number; right: number; bottom: number; left: num
  * CSS custom properties that frame a 3:2 subject image to its subject box at narrow widths (see
  * "Narrow work cards and case study heroes" in global.css): the frame's aspect ratio, and the
  * image's offset and size as multiples of the frame. Without a box the whole image is framed.
+ * A subject that runs off the image's right or bottom edge (bounds at 1) is flagged so the frame
+ * pins that image edge to its own, instead of cutting the subject off inside the panel.
  */
-export function narrowArtStyle(box?: SubjectBox): string {
+export function narrowArtStyle(box?: SubjectBox, bounds?: SubjectBox): string {
   const b = box ?? { top: 0, right: 1, bottom: 1, left: 0 }
   const w = b.right - b.left
   const h = b.bottom - b.top
   const n = (v: number) => v.toFixed(4)
-  return `--art-ratio: ${n((w * 1.5) / h)}; --art-l: ${n(-b.left / w)}; --art-t: ${n(-b.top / h)}; --art-w: ${n(1 / w)}; --art-h: ${n(1 / h)}`
+  const bleed = bounds ?? box
+  const bleedR = box && bleed && bleed.right >= 1 ? 1 : 0
+  const bleedB = box && bleed && bleed.bottom >= 1 ? 1 : 0
+  return `--art-ratio: ${n((w * 1.5) / h)}; --art-l: ${n(-b.left / w)}; --art-t: ${n(-b.top / h)}; --art-w: ${n(1 / w)}; --art-h: ${n(1 / h)}; --art-bleed-r: ${bleedR}; --art-bleed-b: ${bleedB}`
 }
 
 /** The subject's extent as a data attribute value for hero-fit.ts: top,right,bottom,left. */

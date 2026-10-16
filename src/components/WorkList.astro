@@ -37,7 +37,7 @@ const featured = (await getCollection('work'))
   <ul class="work-list" role="list" data-no-reveal>
     {featured.map((entry, i) => (
       <li class:list={['work-list-item', { 'work-list-item--light': entry.data.thumbnailText === 'light' }]}>
-        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox)}` : undefined}>
+        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox, entry.data.thumbnailLayers.subjectBounds)}` : undefined}>
           <div
             class="work-list-media"
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
