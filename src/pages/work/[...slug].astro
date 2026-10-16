@@ -26,7 +26,7 @@ const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jso
   noindex={noindex}
   heroLayers={entry.data.thumbnailLayers}
   heroAlt={entry.data.thumbnailAlt}
-  heroYear={entry.data.year}
+  heroYear={entry.data.yearLabel ?? entry.data.year}
   heroTone={entry.data.thumbnailText}
 >
   <Content />
