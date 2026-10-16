@@ -3,10 +3,31 @@
  * Two images side by side with automatic column ratio based on aspect ratios.
  * Uses CSS grid. The JS in CaseStudyLayout handles runtime sizing.
  * Each image is wrapped in a .image-pair-cell for overflow clipping on hover.
+ * With captions, each cell becomes a figure and captions align along the bottom.
  */
+interface Props {
+  leftCaption?: string
+  rightCaption?: string
+}
+
+const { leftCaption, rightCaption } = Astro.props
+const captioned = Boolean(leftCaption || rightCaption)
 ---
 
-<div class="image-pair">
-  <div class="image-pair-cell"><slot name="left" /></div>
-  <div class="image-pair-cell"><slot name="right" /></div>
-</div>
+{captioned ? (
+  <div class="image-pair image-pair--captioned">
+    <figure class="image-pair-cell">
+      <div class="image-pair-media"><slot name="left" /></div>
+      <figcaption>{leftCaption}</figcaption>
+    </figure>
+    <figure class="image-pair-cell">
+      <div class="image-pair-media"><slot name="right" /></div>
+      <figcaption>{rightCaption}</figcaption>
+    </figure>
+  </div>
+) : (
+  <div class="image-pair">
+    <div class="image-pair-cell"><slot name="left" /></div>
+    <div class="image-pair-cell"><slot name="right" /></div>
+  </div>
+)}
