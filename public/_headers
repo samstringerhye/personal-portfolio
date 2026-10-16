@@ -9,6 +9,9 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+/fonts/*
+  Cache-Control: public, max-age=31536000
+
 # Embedded prototypes (public/_protected-embeds/) are framed by the case study page itself
 # and need X-Frame-Options: SAMEORIGIN instead of the DENY above. Cloudflare's _headers
 # matching merges same-named headers from every matching rule rather than having the more

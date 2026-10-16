@@ -39,6 +39,14 @@ const heroRole = `typo-${role}`
 
 const revealCfg = animations.textReveal
 const heroInitBlur = `${revealCfg.initialBlur}px`
+
+// The headline reveals word by word in CSS from first paint, so it doesn't wait on GSAP and fonts
+const headlineWords = headline.split(/\s+/).filter(Boolean)
+const heroWordDuration = `${revealCfg.duration}s`
+const heroWordStagger = `${revealCfg.wordStagger}s`
+const heroWordStart = `${animations.hero.text.startDelay}s`
+const heroWordSlide = `${revealCfg.slideUp}px`
+const heroWordEase = revealCfg.cssEase
 ---
 
 <section class="hero" aria-label="Introduction">
@@ -48,7 +56,9 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
   </div>
   <div class="hero-text">
     <div class="hero-copy">
-      <HeroTag class:list={["hero-block", heroRole]} data-hero-text>{headline}</HeroTag>
+      <HeroTag class:list={["hero-block", heroRole]} data-hero-text>
+        {headlineWords.map((word, i) => <><span class="hero-word" style={`--i: ${i}`}>{word}</span>{i < headlineWords.length - 1 && ' '}</>)}
+      </HeroTag>
       {body && (
         <p class:list={["hero-bio", "hero-sub", `typo-${bodyRole}`]} data-hero-sub>
           {bodySegments.map(seg => seg.highlight ? <span class="hero-highlight" data-hl={seg.highlight}>{seg.text}</span> : seg.text)}
@@ -58,7 +68,7 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
   </div>
 </section>
 
-<style define:vars={{ heroInitBlur }}>
+<style define:vars={{ heroInitBlur, heroWordDuration, heroWordStagger, heroWordStart, heroWordSlide, heroWordEase }}>
   .hero {
     position: relative;
     width: 100%;
@@ -168,9 +178,22 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     max-width: 36em;
   }
 
+  .hero-word {
+    display: inline-block;
+    animation: hero-word-in var(--heroWordDuration) var(--heroWordEase) both;
+    animation-delay: calc(var(--heroWordStart) + var(--i) * var(--heroWordStagger));
+  }
+
+  @keyframes hero-word-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--heroWordSlide));
+      filter: blur(var(--heroInitBlur));
+    }
+  }
+
   /* Hidden until the entrance script runs, so the text isn't painted, hidden, then replayed;
      noscript and reduced motion reset this, and the failsafe shows it if the script never starts */
-  .hero-block,
   .hero-sub {
     opacity: 0;
     animation: hero-text-failsafe 0s 4s forwards;
@@ -202,11 +225,8 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
       opacity: 1;
       animation: none;
     }
-    .hero-block {
-      opacity: 1;
+    .hero-word {
       animation: none;
-      transform: none;
-      filter: none;
     }
     #hero-canvas-root {
       transition: none;
@@ -220,10 +240,10 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
 
   let heroHandles: CmyAutoSplitHandle[] = []
 
+  // The headline animates in CSS; this brings in the bio, which splits into lines once fonts load
   async function animateHero() {
-    const els = document.querySelectorAll<HTMLElement>('[data-hero-text]')
-    if (!els.length) return
     const subs = document.querySelectorAll<HTMLElement>('[data-hero-sub]')
+    if (!subs.length) return
 
     heroHandles.forEach(h => h.kill())
     heroHandles = []
@@ -237,25 +257,20 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     ])
 
     if (prefersReduced) {
-      gsap.set(els, { opacity: 1, y: 0, filter: 'none', textShadow: 'none' })
       gsap.set(subs, { opacity: 1 })
       return
     }
-
-    gsap.set(els, { opacity: 0, y: 0, filter: 'none' })
 
     const cfg = animations.textReveal
     const startDelay = animations.hero.text.startDelay
 
     await document.fonts.ready
 
-    els.forEach(el => {
-      heroHandles.push(createCmyAutoSplitReveal(el, cfg, { delay: startDelay }))
-    })
-
-    // The bio follows the headline in line by line, after its first words land
+    // The bio follows the headline in line by line, after its first words land. The headline's CSS
+    // clock started at first paint, so count from page start rather than from now
+    const delay = Math.max(0, startDelay + 0.4 - performance.now() / 1000)
     subs.forEach(el => {
-      heroHandles.push(createCmyAutoSplitReveal(el, cfg, { delay: startDelay + 0.4 }, 'lines'))
+      heroHandles.push(createCmyAutoSplitReveal(el, cfg, { delay }, 'lines'))
     })
   }
 
@@ -282,7 +297,18 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     }
   }
 
+  // Data Saver and low-memory phones keep the CSS gradient instead of downloading Three.js
+  function canvasWorthIt() {
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number }
+    if (nav.connection?.saveData) return false
+    if (nav.deviceMemory && nav.deviceMemory <= 2) return false
+    return true
+  }
+
+  // Waits for an idle moment, so the dot field doesn't compete with the headline's reveal
   document.addEventListener('astro:page-load', () => {
-    requestAnimationFrame(() => mountHeroCanvas())
+    if (!canvasWorthIt()) return
+    if ('requestIdleCallback' in window) requestIdleCallback(() => mountHeroCanvas(), { timeout: 2500 })
+    else setTimeout(mountHeroCanvas, 1500)
   })
 </script>

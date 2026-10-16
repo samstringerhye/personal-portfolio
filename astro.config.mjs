@@ -12,6 +12,8 @@ const isDev = process.argv.includes('dev')
 export default defineConfig({
   devToolbar: { enabled: false },
   site: 'https://samstringerhye.com',
+  // Internal links have no trailing slash; wrangler's drop-trailing-slash serves pages there directly
+  trailingSlash: 'never',
   redirects: {
     // The contact form was retired for a mailto link in the footer
     '/contact': '/about',

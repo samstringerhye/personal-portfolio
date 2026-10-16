@@ -7,6 +7,7 @@
     "slideUp": 20,
     "initialBlur": 6,
     "ease": { "$ref": "sys.motion.gsapEasing.enter" },
+    "cssEase": "cubic-bezier(0.23, 1, 0.32, 1)",
     "scrollStart": "top 70%",
     "cmyStagger": 0.04,
     "cmyOpacity": 0.4
