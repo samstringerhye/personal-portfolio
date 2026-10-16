@@ -1,5 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import couplePhoto from '../../assets/work/amica-design-system/bento/photo-couple-fence.jpg'
 import roadAheadPhoto from '../../assets/work/amica-design-system/bento/car-road-ahead-masthead.jpg'
 import avatarImage from '../../assets/work/amica-design-system/bento/avatar.jpg'
@@ -14,6 +16,21 @@ import productGridMotorcycle from '../../assets/work/amica-design-system/bento/p
 import productGridMarine from '../../assets/work/amica-design-system/bento/product-grid-marine.jpg'
 import productGridRv from '../../assets/work/amica-design-system/bento/product-grid-rv.jpg'
 import productGridBundle from '../../assets/work/amica-design-system/bento/product-grid-bundle.jpg'
+import editorialHome from '../../assets/work/amica-design-system/bento/editorial-home.jpg'
+import editorialCare from '../../assets/work/amica-design-system/bento/editorial-care.jpg'
+
+// The tiles crop with object-fit: cover, so an image wider than its box needs box height × aspect.
+// Boxes are the measured tile sizes in vw, below and above the 960px breakpoint.
+type Box = { w: number; h: number }
+const coverSizes = (img: ImageMetadata, narrow: Box, wide: Box) => {
+  const need = ({ w, h }: Box) => Math.ceil(Math.max(w, (h * img.width) / img.height))
+  return `(max-width: 960px) ${need(narrow)}vw, ${need(wide)}vw`
+}
+const coverWidths = (img: ImageMetadata, steps: number[]) => [...new Set(steps.map((w) => Math.min(w, img.width)))]
+const photoTile = { narrow: { w: 94, h: 47 }, wide: { w: 32, h: 16 }, steps: [480, 960, 1440, 2048, 2700] }
+const productCard = { narrow: { w: 18, h: 26 }, wide: { w: 6, h: 4 }, steps: [160, 320, 640, 1280, 1600] }
+// Editorial thumbnails are at most 84px square
+const editorialSizes = (img: ImageMetadata) => `${Math.ceil((84 * img.width) / img.height)}px`
 
 const preserveIllustrationRatio = (svg: string) =>
   svg.replace('preserveAspectRatio="none"', 'preserveAspectRatio="xMidYMid meet"')
@@ -30,19 +47,20 @@ const editorialCards = [
     title: 'Home, made personal',
     body: 'Coverage shaped around the way you live.',
     label: 'Home insurance',
-    image: '/work/amica-design-system/prototype/images/June%2010%20Prototype_img/Home_EverythingInOrder_0684_4666EHG_C_ADOBERGB.jpg',
+    image: editorialHome,
   },
   {
     title: 'Ready for the road',
     body: 'Protection that stays with you from driveway to destination.',
     label: 'Auto insurance',
-    image: '/work/amica-design-system/prototype/images/June%2010%20Prototype_img/woman-with-motorcycle-orig.jpg',
+    // Same file as the prototype's woman-with-motorcycle-orig.jpg
+    image: productGridMotorcycle,
   },
   {
     title: 'Help when it matters',
     body: 'Real guidance from people who know your coverage.',
     label: 'Our service',
-    image: '/work/amica-design-system/prototype/images/sections/care.jpg',
+    image: editorialCare,
   },
 ]
 
@@ -86,7 +104,7 @@ const down = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m
 <section class="mosaic" aria-label="Amica design system in use: component mosaic">
   <div class="mosaic__grid">
     <article class="tile tile--masthead">
-      <img class="mosaic-media masthead-image" src={roadAheadPhoto.src} alt="Couple standing beside their car at sunset" />
+      <Image class="mosaic-media masthead-image" src={roadAheadPhoto} alt="Couple standing beside their car at sunset" widths={coverWidths(roadAheadPhoto, photoTile.steps)} sizes={coverSizes(roadAheadPhoto, photoTile.narrow, photoTile.wide)} format="webp" loading="lazy" />
       <div class="masthead-card">
         <div class="masthead-rating" aria-label="Excellent rating on Trustpilot">
           <strong>Excellent</strong>
@@ -106,7 +124,7 @@ const down = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m
       </div>
     </article>
 
-    <div class="tile tile--photo"><img class="mosaic-media" src={couplePhoto.src} alt="Couple leaning on a fence outside their home" /></div>
+    <div class="tile tile--photo"><Image class="mosaic-media" src={couplePhoto} alt="Couple leaning on a fence outside their home" widths={coverWidths(couplePhoto, photoTile.steps)} sizes={coverSizes(couplePhoto, photoTile.narrow, photoTile.wide)} format="webp" loading="lazy" /></div>
 
     <article class="tile tile--editorial" aria-label="Explore Amica coverage">
       <div class="editorial-panel">
@@ -118,7 +136,7 @@ const down = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m
         <div class="editorial-list">
           {editorialCards.map((card) => (
             <div class="editorial-item">
-              <img class="mosaic-media" src={card.image} alt="" />
+              <Image class="mosaic-media" src={card.image} alt="" widths={coverWidths(card.image, [128, 256, 512, 768])} sizes={editorialSizes(card.image)} format="webp" loading="lazy" />
               <span class="editorial-item__copy">
                 <strong>{card.title}</strong>
                 <span class="editorial-item__body">{card.body}</span>
@@ -143,7 +161,7 @@ const down = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m
         {productGridCards.map((card) => (
           <figure class="product-grid__card">
             {card.offer && <span class="product-grid__offer">Offer</span>}
-            <img class="mosaic-media" src={card.image.src} alt="" />
+            <Image class="mosaic-media" src={card.image} alt="" widths={coverWidths(card.image, productCard.steps)} sizes={coverSizes(card.image, productCard.narrow, productCard.wide)} format="webp" loading="lazy" />
             <figcaption>{card.name}</figcaption>
             <span class="product-grid__arrow" aria-hidden="true">→</span>
           </figure>
@@ -212,7 +230,7 @@ const down = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m
       <span class="quote-mark">"</span>
       <p>After the storm, Amica <em>called us before we even called them.</em> Everything was handled in days.</p>
       <div class="attribution-row">
-        <img src={avatarImage.src} alt="" class="avatar mosaic-media" />
+        <Image src={avatarImage} alt="" class="avatar mosaic-media" width={88} format="webp" loading="lazy" />
         <div class="attribution-info">
           <div class="attribution-name">M. Delgado</div>
           <div class="attribution-subtext">Policyholder since 2011</div>

@@ -10,6 +10,7 @@
  */
 import '../../styles/wab-tokens.css'
 import { Image } from 'astro:assets'
+import iphoneFrame from '../../assets/work/wab-2026/iphone-frame.png'
 
 interface Screen {
   src: ImageMetadata
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const { screens } = Astro.props
+// About four phones fit across a desktop viewport; the rest and the loop's duplicates load lazily
+const EAGER_PHONES = 5
 ---
 
 <div class="hero-phone-scroll" aria-label="App screens showcase">
@@ -28,15 +31,15 @@ const { screens } = Astro.props
     {/* First set — GSAP entrance targets */}
     {screens.map((s, i) => (
       <div class="scroll-phone" data-phone-index={i}>
-        <Image src={s.src} alt={s.alt} width={730} format="webp" quality={90} loading="eager" class="device-screen" />
-        <img src="/images/iphone-frame.png" alt="" loading="eager" class="device-frame" />
+        <Image src={s.src} alt={s.alt} width={730} format="webp" quality={90} loading={i < EAGER_PHONES ? 'eager' : 'lazy'} class="device-screen" />
+        <Image src={iphoneFrame} alt="" width={750} format="webp" quality={90} loading={i < EAGER_PHONES ? 'eager' : 'lazy'} class="device-frame" />
       </div>
     ))}
     {/* Duplicate set for seamless loop */}
     {screens.map(s => (
       <div class="scroll-phone" data-phone-dupe aria-hidden="true">
-        <Image src={s.src} alt={s.alt} width={730} format="webp" quality={90} loading="eager" class="device-screen" />
-        <img src="/images/iphone-frame.png" alt="" loading="eager" class="device-frame" />
+        <Image src={s.src} alt={s.alt} width={730} format="webp" quality={90} loading="lazy" class="device-screen" />
+        <Image src={iphoneFrame} alt="" width={750} format="webp" quality={90} loading="lazy" class="device-frame" />
       </div>
     ))}
   </div>
