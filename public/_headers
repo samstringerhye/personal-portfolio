@@ -6,6 +6,25 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
+# HTML pages: no-transform stops Cloudflare injecting its bot-detection script (JavaScript
+# Detections), which the Free plan can't switch off and which cost 0.4-0.7s of main thread per page
+# on mobile. Pages are stored pre-compressed, so they stay Brotli-compressed. Listed per path so the
+# rule doesn't also match /_astro/* and merge two Cache-Control values.
+/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/about
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/resume
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/colophon
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/blog
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/blog/*
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/work/*
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
