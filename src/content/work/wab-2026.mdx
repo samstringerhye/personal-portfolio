@@ -4,7 +4,7 @@ client: "Whataburger"
 year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "Design system and production screens for a 900-location QSR brand's mobile app."
+tagline: "Design system and production screens for Whataburger's mobile app."
 thumbnail: "../../assets/work/wab-2026/wab-thumbnail-32.jpeg"
 thumbnailLayers:
   subject: "../../assets/work/wab-2026/wab-subject-32.png"
@@ -214,7 +214,7 @@ Account groups settings into one self-service hub. Condiment preference badges (
 
 Before designing a single screen, I audited the existing token structure and found a system that could only describe what already existed, not what needed to be built. Primitive tokens named after the brand ("Whataburger Orange") rather than by function. No tokens for interaction states, motion, or elevation. No semantic layer. Every new screen meant inventing values from scratch.
 
-The rebuild, codenamed Pele, delivered 258 variables across three collections. Every token reads like a path: `color/fg/primary`, `spacing/400`, `shadow/elevation/raised`. Designers get names that describe function. Engineers get names that map directly to component props without a translation layer.
+The rebuild, codenamed Pele, delivered 258 variables across three collections. Every token reads like a path: `color/fg/primary`, `spacing/400`, `shadow/elevation/raised`. Designers get names that describe function. Engineers get names that map directly to component props.
 
 </ProseGroup>
 
@@ -242,7 +242,7 @@ The rebuild, codenamed Pele, delivered 258 variables across three collections. E
       { title: '11 interactive color states', detail: 'Foreground, background, and border for every state' },
       { title: 'Semantic naming = React props', detail: '<code>fg/primary</code> maps directly to component theme tokens' },
       { title: 'Complete spatial system', detail: '×100 scale for spacing, radius, elevation, and motion' },
-      { title: 'M3-inspired type scale', detail: 'Display, Headline, Body, Label: each with semantic tokens' },
+      { title: 'M3-inspired type scale', detail: 'Display, Headline, Body, Label, Caption: each with semantic tokens' },
     ],
   }}
   stats={[
@@ -269,7 +269,7 @@ The most critical gap in the old system was interactive states. A button had one
 
 ### Typography
 
-Typography follows an M3-inspired naming convention: Display, Headline, Body, Label. Display styles use Alkaline (the brand's display typeface), while all other roles use Unbounded. Each style is bound to semantic tokens for size, line-height, letter-spacing, and weight.
+Typography follows an M3-inspired naming convention: Display, Headline, Body, Label, Caption. Display styles use Alkaline (the brand's display typeface), while all other roles use Unbounded. Each style is bound to semantic tokens for size, line-height, letter-spacing, and weight.
 
 </ProseGroup>
 
@@ -308,7 +308,7 @@ I split the 90+ components into universal ones, ready for reuse across projects,
 ## Outcomes
 
 {/* Add launch results here once the app ships. */}
-I handed off the full system and every production screen in May 2026: 258 tokens across three collections, 90+ components, and an ordering flow cut from 14 taps to 6. The app hasn't launched yet.
+I handed off the full system and every production screen in May 2026: 258 tokens across three collections, 90+ components, and an ordering flow cut from 14 taps to 6. The app launches in 2027.
 
 </ProseGroup>
 

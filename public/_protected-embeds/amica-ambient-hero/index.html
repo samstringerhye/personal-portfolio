@@ -587,38 +587,38 @@
 
       <div class="video-control">
         <button id="playpause" type="button" aria-label="Pause video" aria-pressed="false">
-          <img id="playpause-icon" class="icon-white" src="assets/icon-pause.svg" alt="">
+          <img id="playpause-icon" class="icon-white" src="/work/amica-design-system/ambient-hero/assets/icon-pause.svg" alt="">
         </button>
       </div>
 
       <div class="hero-inner">
         <div class="utility-bar">
-          <a class="utility-item" href="#"><img src="assets/icon-pin.svg" alt=""><span>11101</span></a>
-          <a class="utility-item" href="#"><img src="assets/icon-phone.svg" alt=""><span>800-242-6422</span></a>
+          <a class="utility-item" href="#"><img src="/work/amica-design-system/ambient-hero/assets/icon-pin.svg" alt=""><span>11101</span></a>
+          <a class="utility-item" href="#"><img src="/work/amica-design-system/ambient-hero/assets/icon-phone.svg" alt=""><span>800-242-6422</span></a>
         </div>
 
         <div class="nav-bar">
           <button class="icon-button" data-mobile-only aria-label="Open menu">
-            <img src="assets/icon-menu.svg" alt="">
+            <img src="/work/amica-design-system/ambient-hero/assets/icon-menu.svg" alt="">
           </button>
-          <img class="logo" src="assets/amica-logo.svg" alt="Amica">
+          <img class="logo" src="/work/amica-design-system/ambient-hero/assets/amica-logo.svg" alt="Amica">
           <nav class="nav-links" data-desktop-only>
-            <a href="#">Insurance <img src="assets/icon-chevron-down.svg" alt=""></a>
+            <a href="#">Insurance <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
             <a href="#">Get A Quote</a>
-            <a href="#">Claims <img src="assets/icon-chevron-down.svg" alt=""></a>
-            <a href="#">Customer Service <img src="assets/icon-chevron-down.svg" alt=""></a>
-            <a href="#">Resources <img src="assets/icon-chevron-down.svg" alt=""></a>
+            <a href="#">Claims <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
+            <a href="#">Customer Service <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
+            <a href="#">Resources <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
           </nav>
           <div class="nav-right">
             <button class="icon-button" data-desktop-only aria-label="Search">
-              <img class="icon-search icon-white" src="assets/icon-search.svg" alt="">
+              <img class="icon-search icon-white" src="/work/amica-design-system/ambient-hero/assets/icon-search.svg" alt="">
             </button>
             <button class="btn btn-outline">Log In</button>
           </div>
         </div>
 
         <div class="breadcrumbs">
-          <img src="assets/icon-chevron-left.svg" alt="">
+          <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-left.svg" alt="">
           <a href="#">Page Name</a>
           <span class="sep" data-desktop-only>/</span>
           <a href="#" data-desktop-only>Page Name</a>
@@ -635,15 +635,15 @@
               <div class="microstar" data-when-trustpilot="true">
                 <span>Excellent</span>
                 <span class="stars">
-                  <img src="assets/trustpilot-star.svg" alt="">
-                  <img src="assets/trustpilot-star.svg" alt="">
-                  <img src="assets/trustpilot-star.svg" alt="">
-                  <img src="assets/trustpilot-star.svg" alt="">
-                  <img src="assets/trustpilot-star.svg" alt="">
+                  <img src="/work/amica-design-system/ambient-hero/assets/trustpilot-star.svg" alt="">
+                  <img src="/work/amica-design-system/ambient-hero/assets/trustpilot-star.svg" alt="">
+                  <img src="/work/amica-design-system/ambient-hero/assets/trustpilot-star.svg" alt="">
+                  <img src="/work/amica-design-system/ambient-hero/assets/trustpilot-star.svg" alt="">
+                  <img src="/work/amica-design-system/ambient-hero/assets/trustpilot-star.svg" alt="">
                 </span>
                 <span class="tp-brand">
-                  <img class="tp-brand-star" src="assets/trustpilot-brandstar.svg" alt="">
-                  <img class="tp-brand-word" src="assets/trustpilot-wordmark.svg" alt="Trustpilot">
+                  <img class="tp-brand-star" src="/work/amica-design-system/ambient-hero/assets/trustpilot-brandstar.svg" alt="">
+                  <img class="tp-brand-word" src="/work/amica-design-system/ambient-hero/assets/trustpilot-wordmark.svg" alt="Trustpilot">
                 </span>
               </div>
               <h2 class="headline">Culpa do excepteur ut eu magna anim</h2>
@@ -655,7 +655,7 @@
               <div class="field-row">
                 <div class="field">
                   <label>Select Your Insurance</label>
-                  <div class="control">Auto + Home <img src="assets/icon-chevron-down.svg" alt=""></div>
+                  <div class="control">Auto + Home <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></div>
                 </div>
                 <div class="field">
                   <label>Enter Your ZIP Code</label>
@@ -737,7 +737,11 @@
     switcher.appendChild(btn);
   });
 
-  const SOURCES = { normal: "videos/", slomo: "videos-slomo/" };
+  // One set of clips; 0.5x slows the same file instead of loading a re-encoded copy
+  // Absolute: the gate serves this page without a trailing slash, so relative paths would
+  // resolve one folder up
+  const VIDEO_DIR = "/work/amica-design-system/ambient-hero/videos/";
+  const RATES = { normal: 1, slomo: 0.5 };
   let speed = "normal";
 
   // Per-shot focus points from detect_focus.py: [shotStartSeconds, x%, y%].
@@ -751,12 +755,11 @@
       video.style.objectPosition = "";
       return;
     }
-    // Slow-mo runs at half speed, so cue times double.
-    const scale = speed === "slomo" ? 2 : 1;
+    // currentTime stays in clip time at any playback rate, so cues need no scaling
     const t = video.currentTime;
     let cue = shotCues[0];
     for (const c of shotCues) {
-      if (t >= c[0] * scale) cue = c;
+      if (t >= c[0]) cue = c;
     }
     video.style.objectPosition = `${cue[1]}% ${cue[2]}%`;
   }
@@ -805,9 +808,14 @@
   function selectClip(i) {
     current = i;
     const clip = CLIPS[i];
-    video.src = SOURCES[speed] + clip.file;
+    video.src = VIDEO_DIR + clip.file;
     shotCues = FOCUS[clip.file] || [];
-    ghost.src = SOURCES[speed] + clip.file;
+    ghost.src = VIDEO_DIR + clip.file;
+    // A new src resets playbackRate to defaultPlaybackRate, so set both
+    for (const v of [video, ghost]) {
+      v.defaultPlaybackRate = RATES[speed];
+      v.playbackRate = RATES[speed];
+    }
     ghost.play().catch(() => {});
     applyFocus();
     video.play().catch(() => {});
@@ -879,7 +887,7 @@
 
   function syncPlaypause() {
     const paused = video.paused;
-    playpauseIcon.src = paused ? "assets/icon-play.svg" : "assets/icon-pause.svg";
+    playpauseIcon.src = paused ? "/work/amica-design-system/ambient-hero/assets/icon-play.svg" : "/work/amica-design-system/ambient-hero/assets/icon-pause.svg";
     playpause.setAttribute("aria-label", paused ? "Play video" : "Pause video");
     playpause.setAttribute("aria-pressed", String(paused));
   }
