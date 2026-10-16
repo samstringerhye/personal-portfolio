@@ -1,5 +1,5 @@
 ---
-title: "CVS Shop Website Redesign"
+title: "CVS.com E-commerce Design System"
 client: "CVS"
 year: 2022
 role: "Associate Design Director"
@@ -23,6 +23,7 @@ import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
+import Figure from '../../components/Figure.astro'
 import brandVisualLanguageSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
 import iconIllustrationSystemSrc from '../../assets/work/cvs-redesign/frame-10558.png'
 import iconConstructionSrc from '../../assets/work/cvs-redesign/frame-10629.png'
@@ -34,7 +35,15 @@ import uiComponentsPaginationSrc from '../../assets/work/cvs-redesign/frame-1060
 
 <ProseGroup>
 
-<p class="cs-intro">The design system I built for CVS.com raised conversion 12%. The site had years of inconsistency from acquisitions. I led the type system, the icon system, the component library, and the overall design direction. The approach was composable primitives rather than page-specific components, so teams could assemble what they needed.</p>
+<p class="cs-intro">I led the design system behind CVS.com's shop redesign: one type scale, one icon grid, and a component library covering home, category, brand, and product pages. Five designers had three months, on a live site that couldn't be redesigned from scratch. I set the design direction and built composable parts instead of page-specific components, so teams could assemble what they needed.</p>
+
+</ProseGroup>
+
+<ProseGroup>
+
+## The Problem
+
+CVS sits at an unusual intersection: pharmacy and general retailer. That means the platform serves a wider range of intent than most e-commerce sites. Over time, the shop grew through acquisitions rather than deliberate system thinking, producing fractured type scales, inconsistent icons, and components built independently rather than from shared parts. Because CVS.com is a live platform with real customer volume, I couldn't start over. I had to build shared parts that made every downstream page more consistent without breaking what was live.
 
 </ProseGroup>
 
@@ -44,33 +53,17 @@ import uiComponentsPaginationSrc from '../../assets/work/cvs-redesign/frame-1060
   </Fragment>
   <ProseGroup>
 
-  ## Typography & Icons
+  ## Type and Icons First
 
-  I designed a type system with a rational scale and a grid-based icon and illustration system using CVS brand red. Each icon was constructed on a consistent grid, so a 16px icon and a 48px icon read as the same family. No one-off sizing decisions. The type scale and icon grid became the foundation everything else was built on.
+  Instead of designing a "homepage hero" or a "category card," I started with the parts every page shares. I built a type system on a rational scale, so every downstream component inherited consistency instead of engineering it in later. I drew every icon and illustration on one grid in CVS brand red, so a 16px icon and a 48px icon read as the same family, with no case-by-case adjustment.
 
   </ProseGroup>
 </ZigzagSection>
 
-<ProseGroup>
-
-## The Problem
-
-CVS sits at an unusual intersection: pharmacy and general retailer. That means the platform serves a wider range of intent than most e-commerce sites. Over time, the shop grew through acquisitions rather than deliberate system thinking, producing fractured type scales, inconsistent icons, and components built independently rather than from shared parts. Because CVS.com is a live platform with real customer volume, fixing it required discipline: I couldn't redesign from scratch. I had to build shared parts that made every downstream page more consistent without breaking what was live.
-
-</ProseGroup>
-
-<ImagePair>
+<ImagePair leftCaption="Icon and illustration set, all in CVS brand red" rightCaption="Every icon is drawn on the same construction grid">
   <Fragment slot="left"><Image src={iconIllustrationSystemSrc} alt="Icon and illustration system, geometric shapes built for the CVS brand" format="webp" sizes="66vw" /></Fragment>
   <Fragment slot="right"><Image src={iconConstructionSrc} alt="Icon construction, grid-based build process for consistent sizing" format="webp" sizes="66vw" /></Fragment>
 </ImagePair>
-
-<ProseGroup>
-
-## The Work
-
-Instead of designing a "homepage hero" or a "category card," I built the type scale, icon grid, and spacing system so any team could assemble what they needed. Starting with the typographic framework meant every downstream component inherited consistency rather than having to engineer it in later. The icon system followed the same principle: one grid, one palette, no case-by-case adjustment.
-
-</ProseGroup>
 
 <ZigzagSection reversed>
   <Fragment slot="media">
@@ -80,16 +73,20 @@ Instead of designing a "homepage hero" or a "category card," I built the type sc
 
   ## Components & Templates
 
-  The component library covered homepage modules, product pages, and category navigation. Each piece was built to work across desktop and mobile from the start, preventing the usual pattern of designing desktop first and adapting after the fact.
+  The component library covered homepage modules, product pages, and category navigation. I designed each piece for desktop and mobile from the start, instead of the usual desktop first and adapting after the fact.
 
   </ProseGroup>
 </ZigzagSection>
 
+<Figure caption="Shop navigation: the same category structure on desktop and mobile">
 ![Shop navigation, category browsing on desktop and mobile](../../assets/work/cvs-redesign/frame-10672.png)
+</Figure>
 
+<Figure caption="Brand page template: Neutrogena's skin care page, assembled from shared components">
 ![Brand page template, Skin Care / Neutrogena on mobile and desktop](../../assets/work/cvs-redesign/group-10604.png)
+</Figure>
 
-<ImagePair>
+<ImagePair leftCaption="Components: headlines, product cards, and product tabs" rightCaption="Components: pagination, brand modules, and category navigation">
   <Fragment slot="left"><Image src={uiComponentsHeadlinesSrc} alt="UI components including headlines, product cards, and product tabs" format="webp" sizes="66vw" /></Fragment>
   <Fragment slot="right"><Image src={uiComponentsPaginationSrc} alt="UI components including pagination, branding elements, and category navigation" format="webp" sizes="66vw" /></Fragment>
 </ImagePair>

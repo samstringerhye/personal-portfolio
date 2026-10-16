@@ -25,6 +25,7 @@ import LottiePlayer from '../../components/LottiePlayer.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Carousel from '../../components/Carousel.astro'
 import ImagePair from '../../components/ImagePair.astro'
+import Figure from '../../components/Figure.astro'
 import dashboard1Src from '../../assets/work/myfrontier-app/screens/dashboard-1.png'
 import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.png'
 
@@ -32,34 +33,14 @@ import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.
 
 <ProseGroup>
 
-<p class="cs-intro">The MyFrontier redesign raised autopay sign-ups 22%. The app covered bill pay, account management, technician scheduling, and support, but the experience didn't hold together. As Associate Design Director on a small team close to dev, I rebuilt the visual design and the layout system. The motion language I built from scratch targeted specific moments: payment confirmation, appointment scheduling, setup completion.</p>
+<p class="cs-intro">I rebuilt the MyFrontier app's visual design and layout system, and built its motion language from scratch, as Associate Design Director on a four-designer team working close to dev for four months. The app covers bill pay, account management, technician scheduling, and support, but the experience didn't hold together. Every animation I made answers a question the user is already asking: did my payment go through, is my appointment set, am I done?</p>
 
 </ProseGroup>
 
-<ImagePair>
-  <Fragment slot="left"><Image src={dashboard1Src} alt="Dashboard home" format="webp" sizes="66vw" /></Fragment>
-  <Fragment slot="right"><Image src={dashboard2Src} alt="Account overview" format="webp" sizes="66vw" /></Fragment>
+<ImagePair leftCaption="Dashboard: balance, due date, and one primary action up top" rightCaption="Account: open tickets, plans, and network in one scroll">
+  <Fragment slot="left"><Image src={dashboard1Src} alt="Dashboard with greeting, total balance, and Make a Payment button" format="webp" sizes="66vw" /></Fragment>
+  <Fragment slot="right"><Image src={dashboard2Src} alt="Account screen with open support tickets, plans, and network details" format="webp" sizes="66vw" /></Fragment>
 </ImagePair>
-
-<ProseGroup>
-
-## Interface Design
-
-I designed every core screen: onboarding, dashboard, bill pay, and support. The layout system prioritized information hierarchy: the most important action on each screen got the most visual weight, and secondary actions were consistently grouped so users built muscle memory across flows.
-
-</ProseGroup>
-
-<Carousel label="Frontier app intro screens">
-
-![Splash screen](../../assets/work/myfrontier-app/screens/intro-1.png)
-
-![Sign in](../../assets/work/myfrontier-app/screens/intro-2.png)
-
-![Face ID prompt](../../assets/work/myfrontier-app/screens/intro-3.png)
-
-![Sign in confirmed](../../assets/work/myfrontier-app/screens/intro-4.png)
-
-</Carousel>
 
 <ProseGroup>
 
@@ -69,37 +50,75 @@ Nobody opens a telecom app to browse. They open it because they have a question 
 
 </ProseGroup>
 
-<Carousel label="Bill pay flow">
+<Carousel label="Frontier app intro screens">
 
-![Bill overview](../../assets/work/myfrontier-app/screens/bill-pay-1.png)
+<Figure caption="Launch: the intro animation runs while account data loads">
+![Splash screen with the Frontier mark on red](../../assets/work/myfrontier-app/screens/intro-1.png)
+</Figure>
 
-![Payment method](../../assets/work/myfrontier-app/screens/bill-pay-2.png)
+<Figure caption="Sign in, with one full-width primary action">
+![Sign in screen with email and password fields](../../assets/work/myfrontier-app/screens/intro-2.png)
+</Figure>
 
-![Payment date](../../assets/work/myfrontier-app/screens/bill-pay-3.png)
+<Figure caption="Face ID prompt over the sign-in form">
+![Face ID prompt over the sign-in screen](../../assets/work/myfrontier-app/screens/intro-3.png)
+</Figure>
 
-![Payment confirmed](../../assets/work/myfrontier-app/screens/bill-pay-4.png)
+<Figure caption="Face ID confirmed before the dashboard opens">
+![Face ID confirmed with a check mark](../../assets/work/myfrontier-app/screens/intro-4.png)
+</Figure>
 
 </Carousel>
 
 <ProseGroup>
 
-## The Work
+## One Layout System
 
-I owned layout design across every screen and defined visual hierarchy for core UI components: navigation, appointment calendar, and selector patterns throughout bill pay and account management. The structural decisions made the app feel like a single product: information priority per screen, primary actions sized beyond what the tap target required, consistent control grouping. Alongside that, I built the motion system from scratch.
+I owned layout across every core screen (onboarding, dashboard, bill pay, and support) and defined the hierarchy for the components they share: navigation, the appointment calendar, and selectors. The most important action on each screen gets the most visual weight, sized beyond what the tap target requires. Secondary actions sit in the same groups from flow to flow, so users build muscle memory across the app.
 
 </ProseGroup>
 
+<Carousel label="Bill pay flow">
+
+<Figure caption="Pay my bill: amount and due date first, one primary action">
+![Pay my bill screen showing the current balance and due date](../../assets/work/myfrontier-app/screens/bill-pay-1.png)
+</Figure>
+
+<Figure caption="Payment method in a bottom sheet, default card marked">
+![Payment method sheet listing saved cards](../../assets/work/myfrontier-app/screens/bill-pay-2.png)
+</Figure>
+
+<Figure caption="Payment date: today and the due date marked on the calendar">
+![Payment date calendar sheet](../../assets/work/myfrontier-app/screens/bill-pay-3.png)
+</Figure>
+
+<Figure caption="Payment sent, with a confirmation number and an Auto Pay prompt">
+![Payment sent confirmation screen](../../assets/work/myfrontier-app/screens/bill-pay-4.png)
+</Figure>
+
+</Carousel>
+
 <Carousel label="Support and scheduling flow">
 
-![Support home](../../assets/work/myfrontier-app/screens/support-1.png)
+<Figure caption="Support home: topics, open tickets, then FAQs">
+![Support home screen](../../assets/work/myfrontier-app/screens/support-1.png)
+</Figure>
 
-![Tech on the way](../../assets/work/myfrontier-app/screens/support-2.png)
+<Figure caption="Tech on the way: arrival window and technician name">
+![Technician on the way, with arrival window and technician details](../../assets/work/myfrontier-app/screens/support-2.png)
+</Figure>
 
-![Installation in progress](../../assets/work/myfrontier-app/screens/support-3.png)
+<Figure caption="Installation in progress, tracked on the same timeline">
+![Installation in progress status timeline](../../assets/work/myfrontier-app/screens/support-3.png)
+</Figure>
 
-![All set](../../assets/work/myfrontier-app/screens/support-4.png)
+<Figure caption="All set: every step checked off">
+![Installation complete with every step checked](../../assets/work/myfrontier-app/screens/support-4.png)
+</Figure>
 
-![Modify appointment](../../assets/work/myfrontier-app/screens/support-5.png)
+<Figure caption="Modify appointment: pick a day, then a time range">
+![Modify appointment screen with date and time range pickers](../../assets/work/myfrontier-app/screens/support-5.png)
+</Figure>
 
 </Carousel>
 
@@ -107,7 +126,7 @@ I owned layout design across every screen and defined visual hierarchy for core 
 
 ## Motion Design
 
-I built every Lottie file personally in After Effects, exported through the Lottie pipeline. Each animation answers a question the user is already asking. Did my payment go through? Is my appointment confirmed? The coin confirmed a payment was processing, the leaf signalled setup completion, and the intro sequence covered the initial data load so the app felt responsive from the first tap. I delivered motion specs alongside the files: easing values, timing, and documentation so dev could implement without guesswork.
+I built every Lottie file myself in After Effects. The coin confirmed a payment was processing, the leaf signaled setup completion, and the intro sequence covered the initial data load so the app felt responsive from the first tap. I delivered motion specs alongside the files: easing values, timing, and documentation so dev could implement without guesswork.
 
 </ProseGroup>
 

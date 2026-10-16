@@ -36,8 +36,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const caseStudy = allWork.find(e => e.id === slug && e.data.passwordProtected)
   if (!caseStudy) return next()
 
-  const protectedPath = `/work/${slug}`
-
   // The case study page shows the password form inside its own hero (the page reads locals.gate);
   // the embedded apps have no page to render, so they keep the standalone form. The hero form
   // submits with fetch and only needs a status back.
@@ -105,7 +103,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (submittedPassword !== undefined && timingSafeEqual(submittedPassword, envPassword)) {
       const timestamp = String(Date.now())
       context.cookies.set(COOKIE_NAME, await createAuthCookieValue(timestamp, envPassword), {
-        path: protectedPath,
+        // One password covers every protected case study, so one unlock does too
+        path: '/work',
         maxAge: COOKIE_MAX_AGE,
         httpOnly: true,
         secure: import.meta.env.PROD,

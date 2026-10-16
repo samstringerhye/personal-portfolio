@@ -73,7 +73,7 @@ const featured = (await getCollection('work'))
           </div>
           <div class="work-list-caption">
             <p class="work-list-meta typo-ui-caps">
-              <span>{entry.data.year}</span>
+              <span>{entry.data.yearLabel ?? entry.data.year}</span>
               {entry.data.passwordProtected && (
                 <span class="work-list-lock">
                   <Icon name="material-symbols:lock-outline" aria-hidden="true" />

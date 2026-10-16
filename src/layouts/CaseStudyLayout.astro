@@ -22,7 +22,7 @@ interface Props {
   noindex?: boolean
   heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number; subjectBox?: SubjectBox; subjectBounds?: SubjectBox }
   heroAlt?: string
-  heroYear?: number
+  heroYear?: number | string
   heroTone?: 'light' | 'dark'
   // Locked password-protected case study: hero with the password form, no body, CTA or pager
   gate?: { error?: boolean; rateLimited?: boolean }
@@ -362,6 +362,37 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSl
   .case-study-body .image-pair-cell .device-phone {
     width: 280px;
     max-width: 100%;
+  }
+
+  /* Captioned pairs: image area fills the cell so both captions share a baseline.
+     Device-frame padding moves to the image area so the caption rule runs edge to edge. */
+  .case-study-body .image-pair--captioned > .image-pair-cell,
+  .case-study-body .image-pair--captioned > .image-pair-cell:has(.device-phone) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .case-study-body .image-pair-media {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .case-study-body .image-pair-cell:has(.device-phone) .image-pair-media {
+    padding: var(--space-5) var(--space-3);
+    overflow: visible;
+  }
+
+  .case-study-body .image-pair-cell figcaption {
+    border-top: var(--border-width-1) solid var(--color-text-primary);
+    padding: var(--space-3);
+    font-size: var(--text-100);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-normal);
   }
 
   /* ── Zigzag: alternating image/text 2-col sections ── */
