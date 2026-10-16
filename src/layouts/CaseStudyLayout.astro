@@ -19,7 +19,7 @@ interface Props {
   noindex?: boolean
   heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number; subjectBox?: SubjectBox; subjectBounds?: SubjectBox }
   heroAlt?: string
-  heroYear?: number
+  heroYear?: number | string
   heroTone?: 'light' | 'dark'
   // Locked password-protected case study: hero with the password form, no body, CTA or pager
   gate?: { error?: boolean; rateLimited?: boolean }

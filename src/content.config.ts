@@ -7,6 +7,8 @@ const work = defineCollection({
     title: z.string(),
     client: z.string(),
     year: z.number(),
+    // Shown in place of year for work that ran over several years, e.g. "2022–2025"
+    yearLabel: z.string().optional(),
     role: z.string(),
     agency: z.string(),
     tagline: z.string(),
