@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { entry, sorted } = Astro.props
-const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jsonLd } = await buildCaseStudyProps(entry, sorted)
+const { Content, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, ogImage, jsonLd } = await buildCaseStudyProps(entry, sorted)
 ---
 
 <CaseStudyLayout
@@ -21,8 +21,10 @@ const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jso
   jsonLd={jsonLd}
   prevSlug={prevSlug}
   prevTitle={prevTitle}
+  prevLocked={prevLocked}
   nextSlug={nextSlug}
   nextTitle={nextTitle}
+  nextLocked={nextLocked}
   noindex={noindex}
   heroLayers={entry.data.thumbnailLayers}
   heroAlt={entry.data.thumbnailAlt}

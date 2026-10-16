@@ -14,8 +14,10 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
   prevSlug?: string
   prevTitle?: string
+  prevLocked?: boolean
   nextSlug?: string
   nextTitle?: string
+  nextLocked?: boolean
   noindex?: boolean
   heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number; subjectBox?: SubjectBox; subjectBounds?: SubjectBox }
   heroAlt?: string
@@ -25,7 +27,7 @@ interface Props {
   gate?: { error?: boolean; rateLimited?: boolean }
 }
 
-const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitle, noindex, heroLayers, heroAlt, heroYear, heroTone, gate } = Astro.props
+const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, heroLayers, heroAlt, heroYear, heroTone, gate } = Astro.props
 ---
 
 <BaseLayout title={`${title} | Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
@@ -47,8 +49,10 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, nextSlug, nextTitl
   {!gate && <CaseStudyNav
     prevSlug={prevSlug}
     prevTitle={prevTitle}
+    prevLocked={prevLocked}
     nextSlug={nextSlug}
     nextTitle={nextTitle}
+    nextLocked={nextLocked}
   />}
 </BaseLayout>
 

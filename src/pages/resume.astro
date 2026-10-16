@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import ContactEmail from '../components/ContactEmail.astro'
 ---
 
 <BaseLayout title="Resume | Sam Stringer-Hye" description="Resume for Sam Stringer-Hye | Associate Design Director with 13+ years across brand, editorial, and product. Led the Amica.com design system rebuild.">
@@ -13,7 +14,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         </div>
         <p class="resume-subtitle typo-body-lg">Associate Design Director · Razorfish</p>
         <p class="resume-contact typo-body-sm">
-          Philadelphia, PA · <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          Philadelphia, PA · <ContactEmail showAddress /> · <a href="https://samstringerhye.com">samstringerhye.com</a> · <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer">linkedin.com/in/samstringerhye</a>
         </p>
       </header>
 
@@ -158,10 +159,10 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
   .resume-contact {
     color: var(--color-text-secondary);
-    display: none;
+    margin-top: var(--space-1);
   }
 
-  .resume-contact a {
+  .resume-contact :global(a) {
     color: inherit;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -357,7 +358,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       color: #888 !important;
     }
 
-    .resume-contact a {
+    .resume-contact :global(a) {
       color: #888 !important;
       text-decoration: none !important;
     }

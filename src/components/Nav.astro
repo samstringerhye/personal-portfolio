@@ -43,6 +43,7 @@ function isActive(href: string) {
           </a>
         </li>
       ))}
+      <li><a data-contact-email class="nav-link typo-ui">Email me</a></li>
     </ul>
 
     <button
@@ -306,6 +307,7 @@ function isActive(href: string) {
 <script>
   import gsap from 'gsap'
   import { accentRgba, animations } from '../data/tokens'
+  import './contact-email'
 
   const CMY_COLORS = accentRgba(1)
   let colorIndex = 0

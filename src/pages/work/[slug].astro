@@ -20,7 +20,7 @@ if (!entry) return new Response(null, { status: 404 })
 // Set by middleware.ts while a protected case study is locked: render the hero with the password
 // form and leave the body out, so nothing behind the password reaches the browser
 const gate = (Astro.locals as { gate?: { error?: boolean; rateLimited?: boolean } }).gate
-const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jsonLd } = await buildCaseStudyProps(entry, sorted)
+const { Content, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, ogImage, jsonLd } = await buildCaseStudyProps(entry, sorted)
 ---
 
 <CaseStudyLayout
@@ -30,8 +30,10 @@ const { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jso
   jsonLd={jsonLd}
   prevSlug={prevSlug}
   prevTitle={prevTitle}
+  prevLocked={prevLocked}
   nextSlug={nextSlug}
   nextTitle={nextTitle}
+  nextLocked={nextLocked}
   noindex={noindex || !!gate}
   gate={gate}
   heroLayers={entry.data.thumbnailLayers}
