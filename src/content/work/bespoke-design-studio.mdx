@@ -1,5 +1,5 @@
 ---
-title: "Samsung Bespoke Design Studio"
+title: "Samsung Bespoke Appliance Configurator"
 client: "Samsung"
 year: 2024
 role: "Associate Design Director"
@@ -40,7 +40,7 @@ import configuratorFullColorPanelSrc from '../../assets/work/bespoke-design-stud
 
 <ProseGroup>
 
-<p class="cs-intro">Shoppers who used the configurator added to cart at 6 to 10 times the rate of standard product pages, and over 12 months it drove nine figures in incremental revenue. Samsung's Bespoke line lets customers configure appliances down to the panel finish, but online, every choice arrived at once. I led design and made the call that shaped the tool: sequence the decisions the way a salesperson would, and reveal each one only when the last was settled.</p>
+<p class="cs-intro">Shoppers who used the configurator added to cart at 6 to 10 times the rate of standard product pages, and over 12 months it drove nine figures in incremental revenue. Samsung's Bespoke line lets customers configure appliances down to the panel finish, but online, every choice arrived at once. I led design across the whole Bespoke line for a couple of years, with one senior designer, and made the call that shaped the tool: sequence the decisions the way a salesperson would, and reveal each one only when the last was settled.</p>
 
 </ProseGroup>
 
@@ -53,7 +53,7 @@ import configuratorFullColorPanelSrc from '../../assets/work/bespoke-design-stud
 
 ## The Problem
 
-A customer configuring a Bespoke fridge has to pick a model, then a size, then colours for four separate door panels. Show all of that at once and people bail. The early prototypes confirmed this. Show too little and they don't understand their options. The core challenge was progressive disclosure: finding the right order to present decisions so each step felt obvious. In-store, a salesperson sequences those choices naturally. Online, the interface has to do that work.
+A customer configuring a Bespoke fridge has to pick a model, then a size, then colors for four separate door panels. Show all of that at once and people bail. The early prototypes confirmed this. Show too little and they don't understand their options. The core challenge was progressive disclosure: finding the right order to present decisions so each step felt obvious. In-store, a salesperson sequences those choices naturally. Online, the interface has to do that work.
 
 </ProseGroup>
 
@@ -64,40 +64,41 @@ A customer configuring a Bespoke fridge has to pick a model, then a size, then c
 
 <ProseGroup>
 
-## The Work
-
-The sequencing call needed a visible spine. I designed a stepped progress indicator that showed the scope of remaining decisions upfront, so users could see they were three steps from done rather than wondering if the choices would ever end.
-
-</ProseGroup>
-
-<ImagePair>
-  <Fragment slot="left"><Image src={desktop04bSrc} alt="Desktop detail view" format="webp" sizes="66vw" /></Fragment>
-  <Fragment slot="right"><Image src={mobile03bSrc} alt="Mobile detail view" format="webp" sizes="66vw" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
 ## Wireframes
 
-Multiple rounds of wireframing explored how to sequence the configuration steps. The core tension: each decision depended on the previous one (you can't pick panel colours until you've chosen a model), but users needed to understand the full scope before committing to step one.
+Multiple rounds of wireframing explored how to sequence the configuration steps. The core tension: each decision depended on the previous one (you can't pick panel colors until you've chosen a model), but users needed to understand the full scope before committing to step one.
 
 </ProseGroup>
 
 <Carousel label="Bespoke configurator wireframes">
 
-![Wireframe slide 1](../../assets/work/bespoke-design-studio/slide1.webp)
+<Figure caption="Start: the four-step bar sits above the kitchen from the first screen">
+![Wireframe: welcome screen over a kitchen scene, with the four configuration steps listed above](../../assets/work/bespoke-design-studio/slide1.webp)
+</Figure>
 
-![Wireframe slide 2](../../assets/work/bespoke-design-studio/slide2.webp)
+<Figure caption="Choose appliance: tap any appliance in the scene">
+![Wireframe: kitchen scene with each appliance marked as selectable](../../assets/work/bespoke-design-studio/slide2.webp)
+</Figure>
 
-![Wireframe slide 3](../../assets/work/bespoke-design-studio/model.webp)
+<Figure caption="Choose model: three fridge configurations, side by side">
+![Wireframe: model picker with three refrigerator configurations](../../assets/work/bespoke-design-studio/model.webp)
+</Figure>
 
-![Wireframe slide 4 depth](../../assets/work/bespoke-design-studio/depth.webp)
+<Figure caption="Choose depth: only after the model is set">
+![Wireframe: depth picker with full depth and counter depth options](../../assets/work/bespoke-design-studio/depth.webp)
+</Figure>
 
-![Wireframe slide 4](../../assets/work/bespoke-design-studio/slide4.webp)
+<Figure caption="Choose colors: finishes grouped by material, per panel">
+![Wireframe: color picker with finishes grouped by material](../../assets/work/bespoke-design-studio/slide4.webp)
+</Figure>
 
-![Wireframe slide 5](../../assets/work/bespoke-design-studio/slide5.webp)
+<Figure caption="Apply one color to the whole suite, or keep going panel by panel">
+![Wireframe: color picker asking whether to apply the color to the whole appliance suite](../../assets/work/bespoke-design-studio/slide5.webp)
+</Figure>
 
-![Wireframe slide 6](../../assets/work/bespoke-design-studio/slide6.webp)
+<Figure caption="Your design: keep designing or add to cart">
+![Wireframe: final prompt to continue designing or add to cart](../../assets/work/bespoke-design-studio/slide6.webp)
+</Figure>
 
 </Carousel>
 
@@ -114,6 +115,19 @@ Multiple rounds of wireframing explored how to sequence the configuration steps.
   </ProseGroup>
 </ZigzagSection>
 
+<ProseGroup>
+
+## The Work
+
+The sequencing call needed a visible spine. I designed a stepped progress indicator that showed the scope of remaining decisions upfront, so users could see they were three steps from done rather than wondering if the choices would ever end.
+
+</ProseGroup>
+
+<ImagePair>
+  <Fragment slot="left"><Image src={desktop04bSrc} alt="Desktop detail view" format="webp" sizes="66vw" /></Fragment>
+  <Fragment slot="right"><Image src={mobile03bSrc} alt="Mobile detail view" format="webp" sizes="66vw" /></Fragment>
+</ImagePair>
+
 <ZigzagSection reversed>
   <Fragment slot="media">
     <Image src={kitchenConfiguratorOverviewSrc} alt="Kitchen configurator overview" format="webp" />
@@ -122,7 +136,7 @@ Multiple rounds of wireframing explored how to sequence the configuration steps.
 
   ## Design Execution
 
-  I led UI and interaction design across mobile and desktop. Colour swatches appeared only when relevant. Model comparisons showed only meaningful differences. The system was scoped to the configurator's current needs, not a hypothetical future.
+  I led UI and interaction design across mobile and desktop. Color swatches appeared only when relevant. Model comparisons showed only the specs that differed. I scoped the system to the configurator's current needs, not a hypothetical future.
 
   </ProseGroup>
 </ZigzagSection>

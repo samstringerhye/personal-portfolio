@@ -1,5 +1,5 @@
 ---
-title: "Whataburger App Redesign"
+title: "Whataburger App and Design System"
 client: "Whataburger"
 year: 2026
 role: "Associate Design Director"
@@ -65,9 +65,9 @@ import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.pn
 
 <ProseGroup>
 
-<p class="cs-intro">The Whataburger app wasn't working. The ordering flow took too many taps and felt dated. The old design lacked brand personality, and the interface was buried under generic QSR patterns. Core features like ordering, rewards, and location finding all existed, but nothing felt connected or felt like Whataburger.</p>
+<p class="cs-intro">I cut Whataburger's path from home to checkout from 14 taps to 6, and handed off a rebuilt design system (258 tokens, 90+ components) and every production screen in May 2026. As sole visual designer, embedded with the client's UX team, I ran both tracks in parallel from late January.</p>
 
-As sole visual designer on the redesign, I ran two parallel tracks: rebuilding the entire design system from scratch, and delivering production-ready visual design for every screen in the app. Late January to May. 258 tokens, 90+ components, every flow.
+The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, the interface leaned on generic QSR patterns, and ordering, rewards, and location finding felt like separate products.
 
 </ProseGroup>
 
@@ -106,7 +106,7 @@ I defined three pillars that guided every design decision.
 
 ## Research and Testing
 
-I tested early and often. Three visual directions were pressure-tested against real wireframes to find the right balance between brand expression and daily usability.
+I tested three visual directions against the same wireframes to find the balance between brand expression and daily usability.
 
 </ProseGroup>
 
@@ -116,9 +116,7 @@ I tested early and often. Three visual directions were pressure-tested against r
 
 <ProseGroup>
 
-Direction testing identified what resonated visually: color, contrast, imagery, typography. I balanced bold, brand-forward design with readability and usability best practices. Key feature testing followed, putting landing and menu flows in front of users at critical decision moments. I carried forward the top-performing elements while refining what didn't work.
-
-The merged direction took Vibrant Bold's iconography, typography, and color energy, then paired it with Modern's component structure and lighter palette. The result felt like Whataburger without overwhelming the daily ordering experience.
+The direction I carried forward merged two of them: Vibrant Bold's iconography, typography, and color energy on Modern's component structure and lighter palette. It felt like Whataburger without overwhelming a daily order. Feature testing on the landing and menu flows followed, and I refined what didn't hold up.
 
 </ProseGroup>
 
@@ -134,7 +132,7 @@ The merged direction took Vibrant Bold's iconography, typography, and color ener
 
 ### Home
 
-The home screen now does more than welcome guests. It surfaces products, limited-time offers, rewards, reorder history, and location context so guests can make faster decisions and start ordering with less friction. The hero carousel spotlights campaigns. Below the fold, the experience shifts from tactical product offering to brand discovery: quickly reorder, check rewards, explore promotions, and an always-present "Start Order" CTA.
+The home screen surfaces products, limited-time offers, rewards, reorder history, and location context, so guests can start an order faster. The hero carousel spotlights campaigns. Below the fold it shifts to reorders, rewards, and promotions, with "Start Order" always on screen.
 
 </ProseGroup>
 
@@ -147,9 +145,7 @@ The home screen now does more than welcome guests. It surfaces products, limited
 
 ### Menu and Customization
 
-This was the hardest flow to solve. Whataburger's customization depth (significantly more options than most QSR apps) meant the interface had to handle dense decision trees without feeling overwhelming. Branching paths (meal vs. a la carte, daypart-dependent categories, deep customization for every ingredient) meant no single pattern I found in the competitive audit covered the whole tree.
-
-Clearer menu and customization patterns make ordering easier. Each step in the flow (browse, customize, choose sides, review) uses progressive disclosure to surface only what's relevant at that moment.
+This was the hardest flow to solve. Every ingredient on a Whataburger order can be customized, and the paths branch: meal or a la carte, categories that change by daypart. No single pattern in the competitive audit covered the whole tree. Each step (browse, customize, choose sides, review) shows only what's relevant at that moment.
 
 </ProseGroup>
 
@@ -164,9 +160,9 @@ Clearer menu and customization patterns make ordering easier. Each step in the f
 
 <ProseGroup>
 
-### Rewards
+### Rewards, Scan, and Account
 
-The old rewards screen showed points and tier, but nothing else. The redesign adds visual tier progression with distinct offer cards, a branded system that surfaces reward-eligible items, and small personality touches that connect back to the Whataburger brand.
+The old rewards screen showed points and tier, and nothing else. The redesign adds visual tier progression and offer cards that surface reward-eligible items.
 
 </ProseGroup>
 
@@ -176,9 +172,7 @@ The old rewards screen showed points and tier, but nothing else. The redesign ad
 
 <ProseGroup>
 
-### Scan
-
-Scan brings earning, redeeming, and wallet access into one place. A clearer in-store moment that makes it easy for guests to pay, scan coupons, and check their Whatawallet balance without navigating between screens.
+Scan puts earning, redeeming, and the Whatawallet balance on one screen for the moment at the register.
 
 </ProseGroup>
 
@@ -188,9 +182,7 @@ Scan brings earning, redeeming, and wallet access into one place. A clearer in-s
 
 <ProseGroup>
 
-### Account
-
-Account settings are grouped into a simpler self-service hub. Personalized condiment preference badges (Spicy Ketchup, No Pickle, Mustard) add personality while serving a real function: they surface in the ordering flow so returning guests don't have to re-specify preferences.
+Account groups settings into one self-service hub. Condiment preference badges (Spicy Ketchup, No Pickle, Mustard) add personality and do a job: they surface in the ordering flow, so returning guests don't re-specify them.
 
 </ProseGroup>
 
@@ -295,7 +287,7 @@ All spatial values follow a x100 naming convention built on a 4px base. The moti
 
 ### Components
 
-The component library organized into universal components (ready for cross-project reuse) and screen-specific components (with a migration plan to promote them after publishing). Over 90 components, spanning icons, navigation, inputs, layout, and utility. Naming conventions mapped directly to React component props, so the dev team could pull values straight from the system.
+I split the 90+ components into universal ones, ready for reuse across projects, and screen-specific ones with a plan to promote them after publishing. Names map directly to React props, so the dev team pulls values straight from the system.
 
 </ProseGroup>
 
@@ -320,7 +312,7 @@ I handed off the full system and every production screen in May 2026: 258 tokens
 
 Building the system first eliminated the micro-decisions that slow every flow down. When a new screen needed a hover state or an elevation level, the answer already existed. The upfront time felt slow. The downstream speed made up for it.
 
-Working embedded with a client UX team taught me different collaboration patterns. You earn trust through the quality of your work and the clarity of your rationale, not through org-chart authority. The closest collaboration happened during menu customization, where my visual exploration surfaced UX issues that led to meaningful flow changes. That only happens when visual design is involved early, not applied as a skin at the end.
+Working embedded with a client UX team taught me different collaboration patterns. You earn trust through the quality of your work and the clarity of your rationale, not through org-chart authority. The closest collaboration happened during menu customization, where my visual exploration surfaced UX issues that changed the flow. That only happens when visual design is involved early, not applied as a skin at the end.
 
 </ProseGroup>
 
