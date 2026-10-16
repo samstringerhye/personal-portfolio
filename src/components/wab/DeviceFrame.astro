@@ -5,6 +5,7 @@
  * Screen: 365×765, Frame container: 375×775 (10px larger each dimension)
  */
 import { Image } from 'astro:assets'
+import iphoneFrame from '../../assets/work/wab-2026/iphone-frame.png'
 
 interface Props {
   src: ImageMetadata
@@ -17,7 +18,7 @@ const { src, alt } = Astro.props
 <div class="device-phone">
   <div class="device-phone-inner">
     <Image src={src} alt={alt} width={730} format="webp" quality={90} loading="lazy" class="device-screen" />
-    <img src="/images/iphone-frame.png" alt="" loading="lazy" class="device-frame" />
+    <Image src={iphoneFrame} alt="" width={750} format="webp" quality={90} loading="lazy" class="device-frame" />
   </div>
 </div>
 

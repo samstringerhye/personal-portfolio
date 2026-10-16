@@ -9,7 +9,13 @@
   "assets": {
     "binding": "ASSETS",
     "directory": "dist",
-    "run_worker_first": ["/work/*", "/_protected-embeds/*"]
+    // Only the embeds need the Worker first. Gated case studies have no file in dist, so they reach
+    // the Worker anyway; listing /work/* here sent the prerendered ones through SSR and raw images.
+    "run_worker_first": ["/_protected-embeds/*"]
+  },
+  // Resizes images on the SSR (password-gated) case studies; see src/image-endpoint.ts
+  "images": {
+    "binding": "IMAGES"
   },
   // Logs, traces and issues for the Cloudflare dashboard; every Worker has the same block.
   "observability": {
