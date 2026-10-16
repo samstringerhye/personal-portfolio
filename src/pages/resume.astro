@@ -13,7 +13,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         </div>
         <p class="resume-subtitle typo-body-lg">Associate Design Director · Razorfish</p>
         <p class="resume-contact typo-body-sm">
-          Philadelphia, PA · <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          Philadelphia, PA · <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer">LinkedIn</a><span class="resume-print-only"> linkedin.com/in/samstringerhye · samstringerhye.com</span>
         </p>
       </header>
 
@@ -158,6 +158,10 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
   .resume-contact {
     color: var(--color-text-secondary);
+    display: none;
+  }
+
+  .resume-print-only {
     display: none;
   }
 
@@ -352,14 +356,19 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     }
 
     .resume-contact {
+      display: block !important;
       font-size: 8pt !important;
       margin-top: 2pt !important;
       color: #888 !important;
     }
 
+    /* Paper can't follow links, so print the URLs in place of the LinkedIn label */
     .resume-contact a {
-      color: #888 !important;
-      text-decoration: none !important;
+      display: none !important;
+    }
+
+    .resume-print-only {
+      display: inline !important;
     }
 
     /* Summary */
