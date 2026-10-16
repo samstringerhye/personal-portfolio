@@ -416,36 +416,50 @@ function isActive(href: string) {
       setNavLinksTabindex(false)
     }
     window.matchMedia('(max-width: 768px)').addEventListener('change', (e) => {
-      if (!e.matches) setNavLinksTabindex(true)
-      else if (toggle!.getAttribute('aria-expanded') !== 'true') setNavLinksTabindex(false)
+      if (!e.matches) {
+        if (toggle!.getAttribute('aria-expanded') === 'true') closeNav()
+        setNavLinksTabindex(true)
+      } else if (toggle!.getAttribute('aria-expanded') !== 'true') setNavLinksTabindex(false)
     })
+
+    // While the mobile menu is open, the page behind it can't be scrolled, tabbed to or read
+    function setPageLocked(locked: boolean) {
+      document.querySelectorAll<HTMLElement>('#main, .footer, .skip-to-content').forEach(el => {
+        el.inert = locked
+      })
+      document.documentElement.classList.toggle('nav-open', locked)
+      const lenis = (window as Window & { __siteLenis?: { stop: () => void; start: () => void } | null }).__siteLenis
+      if (locked) lenis?.stop()
+      else lenis?.start()
+    }
 
     function openNav() {
       toggle!.setAttribute('aria-expanded', 'true')
       links!.classList.add('open')
       setNavLinksTabindex(true)
+      setPageLocked(true)
 
-      // Focus trap for mobile nav
-      const focusable = links!.querySelectorAll<HTMLElement>('a, button, [tabindex]:not([tabindex="-1"])')
+      // Focus trap for mobile nav: the links plus the close button
+      const focusable = [...links!.querySelectorAll<HTMLElement>('a, button'), toggle!]
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
 
       function handler(e: KeyboardEvent) {
-        if (e.key === 'Escape') { closeNav(); return }
         if (e.key !== 'Tab') return
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus() }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus() }
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
       }
 
-      links!.addEventListener('keydown', handler)
+      document.addEventListener('keydown', handler)
       first?.focus()
-      removeTrap = () => links!.removeEventListener('keydown', handler)
+      removeTrap = () => document.removeEventListener('keydown', handler)
     }
 
     function closeNav() {
       toggle!.setAttribute('aria-expanded', 'false')
       links!.classList.remove('open')
       setNavLinksTabindex(false)
+      setPageLocked(false)
       removeTrap?.()
       removeTrap = null
       toggle!.focus()

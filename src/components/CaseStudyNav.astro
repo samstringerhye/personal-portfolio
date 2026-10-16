@@ -88,12 +88,17 @@ const { prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked } = Ast
     opacity: var(--opacity-60);
   }
 
-  /* Matches the lock on the home work cards */
+  /* Matches the lock on the home work cards; its own line, so it never wraps mid-label */
   .cs-nav-lock {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 0.25em;
-    margin-inline-start: var(--space-2);
+    width: fit-content;
+    margin-top: var(--space-1);
+  }
+
+  .cs-nav-next .cs-nav-lock {
+    margin-left: auto;
   }
 
   .cs-nav-lock :global(svg) {

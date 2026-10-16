@@ -269,6 +269,14 @@ import ContactEmail from '../components/ContactEmail.astro'
     }
   }
 
+  /* Phones: dates and places at body size, so they read without zooming */
+  @media (--1x) {
+    .resume-entry-meta,
+    .resume-contact {
+      font-size: var(--text-100);
+    }
+  }
+
   /* ── Print / PDF stylesheet ── */
   @media print {
     /* Hide site chrome */

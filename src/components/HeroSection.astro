@@ -73,6 +73,13 @@ const heroInitBlur = `${revealCfg.initialBlur}px`
     }
   }
 
+  /* Phones: short enough that the first work card shows in the first screen */
+  @media (--1x) {
+    .hero {
+      height: 58svh;
+    }
+  }
+
   .hero-canvas-fallback {
     position: absolute;
     inset: 0;

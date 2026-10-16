@@ -5,6 +5,7 @@ import CaseStudyNav from '../components/CaseStudyNav.astro'
 import CaseStudyHero from '../components/CaseStudyHero.astro'
 import ContactEmail from '../components/ContactEmail.astro'
 import BackToWork from '../components/BackToWork.astro'
+import ImageZoom from '../components/ImageZoom.astro'
 import type { ImageMetadata } from 'astro'
 
 interface Props {
@@ -45,6 +46,8 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSl
       <ContactEmail class="case-study-cta-link typo-body-lg" />
     </div>
   </section>}
+
+  {!gate && <ImageZoom />}
 
   {!gate && <CaseStudyNav
     prevSlug={prevSlug}
@@ -104,10 +107,30 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSl
     padding-block: var(--space-6);
   }
 
+  /* The end-of-study contact, styled as a button so it reads as the next step */
   .case-study-cta-link {
-    text-decoration: underline;
-    text-decoration-thickness: var(--border-width-1);
-    text-underline-offset: 0.15em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target);
+    padding: var(--space-1) var(--space-4);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border: var(--border-width-1) solid var(--color-text-primary);
+    transition: background-color var(--duration-short) ease, color var(--duration-short) ease;
+  }
+
+  @media (hover: hover) {
+    .case-study-cta-link:hover {
+      color: var(--color-bg-primary);
+      background: var(--color-text-primary);
+    }
+  }
+
+  @media (--1x) {
+    .case-study-cta-link {
+      align-self: stretch;
+    }
   }
 
   /* ── All children: full-width, no universal border ── */
@@ -637,17 +660,25 @@ const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSl
       border-top: var(--border-width-1) solid var(--color-text-primary);
     }
 
+    /* 2×2 on phones, so the intro starts sooner */
     .case-study-body .cs-hero-meta {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
     .case-study-body .cs-meta-item {
-      flex: none;
+      grid-column: auto;
     }
 
     .case-study-body .cs-meta-item + .cs-meta-item {
       border-left: none;
+    }
+
+    .case-study-body .cs-meta-item:nth-child(even) {
+      border-left: var(--border-width-1) solid var(--color-rule);
+    }
+
+    .case-study-body .cs-meta-item:nth-child(n + 3) {
       border-top: var(--border-width-1) solid var(--color-rule);
     }
 
