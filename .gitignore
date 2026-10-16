@@ -33,6 +33,8 @@ oldwbapp/
 output/
 bento-Inspiration/
 .playwright-cli/
+# Root working folder only; the embed's videos/ under public/ is deployed
+/videos/
 
 # Editor / OS
 .DS_Store

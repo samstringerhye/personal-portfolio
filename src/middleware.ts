@@ -179,6 +179,15 @@ async function serveEmbeddedAsset(
     // falls back to the stricter value. Setting it directly on the Response is unambiguous.
     const headers = new Headers(response.headers)
     headers.set('X-Frame-Options', 'SAMEORIGIN')
+
+    // The ASSETS binding ignores Range and always sends the whole file. Safari won't play a
+    // <video> without 206 partial responses, so slice video files here (they're a few MB).
+    const range = context.request.headers.get('Range')
+    if (range && response.status === 200 && headers.get('Content-Type')?.startsWith('video/')) {
+      return partialResponse(await response.arrayBuffer(), range, headers)
+    }
+    if (headers.get('Content-Type')?.startsWith('video/')) headers.set('Accept-Ranges', 'bytes')
+
     return new Response(response.body, { status: response.status, statusText: response.statusText, headers })
   } catch {
     return new Response(
@@ -188,6 +197,30 @@ async function serveEmbeddedAsset(
       { status: 501, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
     )
   }
+}
+
+// Answers a single "bytes=start-end" range (all a <video> element sends) with 206, or 416
+function partialResponse(body: ArrayBuffer, range: string, headers: Headers): Response {
+  const size = body.byteLength
+  const match = /^bytes=(\d*)-(\d*)$/.exec(range.trim())
+  let start = match?.[1] ? Number(match[1]) : NaN
+  let end = match?.[2] ? Number(match[2]) : size - 1
+  // "bytes=-500" means the last 500 bytes
+  if (match && !match[1] && match[2]) {
+    start = Math.max(0, size - Number(match[2]))
+    end = size - 1
+  }
+  headers.set('Accept-Ranges', 'bytes')
+  headers.delete('Content-Encoding')
+  if (!match || Number.isNaN(start) || start >= size || start > end) {
+    headers.set('Content-Range', `bytes */${size}`)
+    headers.set('Content-Length', '0')
+    return new Response(null, { status: 416, headers })
+  }
+  end = Math.min(end, size - 1)
+  headers.set('Content-Range', `bytes ${start}-${end}/${size}`)
+  headers.set('Content-Length', String(end - start + 1))
+  return new Response(body.slice(start, end + 1), { status: 206, headers })
 }
 
 const textEncoder = new TextEncoder()
