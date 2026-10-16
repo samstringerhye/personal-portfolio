@@ -27,7 +27,7 @@ const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, tit
      Text styles live in global.css (.cs-hero-*) so the homepage can measure them. -->
 <div
   class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]}
-  style={`--hero-bg: ${background}; ${narrowArtStyle(subjectBox)}`}
+  style={`--hero-bg: ${background}; ${narrowArtStyle(subjectBox, subjectBounds)}`}
   data-subject-bounds={boundsAttr(subjectBounds ?? subjectBox)}
   data-hero-offset={heroOffset}
 >

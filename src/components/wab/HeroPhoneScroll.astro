@@ -22,17 +22,16 @@ interface Props {
 }
 
 const { screens } = Astro.props
-// About four phones fit across a desktop viewport; the rest and the loop's duplicates load lazily
-const EAGER_PHONES = 5
 ---
 
 <div class="hero-phone-scroll" aria-label="App screens showcase">
   <div class="scroll-track">
-    {/* First set — GSAP entrance targets */}
+    {/* First set — GSAP entrance targets. Eager: the entrance waits on every one of these, and
+        lazy images in the clipped track never load, which left the hero blank */}
     {screens.map((s, i) => (
       <div class="scroll-phone" data-phone-index={i}>
-        <Image src={s.src} alt={s.alt} width={730} format="webp" quality={90} loading={i < EAGER_PHONES ? 'eager' : 'lazy'} class="device-screen" />
-        <Image src={iphoneFrame} alt="" width={750} format="webp" quality={90} loading={i < EAGER_PHONES ? 'eager' : 'lazy'} class="device-frame" />
+        <Image src={s.src} alt={s.alt} width={730} format="webp" quality={90} loading="eager" class="device-screen" />
+        <Image src={iphoneFrame} alt="" width={750} format="webp" quality={90} loading="eager" class="device-frame" />
       </div>
     ))}
     {/* Duplicate set for seamless loop */}
