@@ -99,7 +99,7 @@ I wrote governance into the components themselves. Icon Button carries its own r
 
 ## Benchmarking Against 14 Production Systems
 
-I didn't trust every instinct on my own, so I indexed 14 production design systems into the same database, 1.4 million nodes. Amica nested the deepest of the set, which turned shallow nesting from a preference into a hard constraint. A study of seven systems' form patterns became my blueprint, and one Amica idea came back validated instead of flagged: modeling breakpoint as a token mode, which none of the others did.
+To test my instincts, I indexed 14 production design systems into the same database, 1.4 million nodes. Of the seven where I could record nesting depth, Amica nested deepest, which turned shallow nesting from a preference into a hard constraint. A study of seven systems' form patterns became my blueprint, and one Amica idea came back validated instead of flagged: modeling breakpoint as a token mode, which none of the others did.
 
 </ProseGroup>
 
@@ -117,7 +117,7 @@ I led by evidence, not seniority. When the brand guide's 100% line height broke 
 
 ## The Migration
 
-Fixing 314,000 nodes by hand would have burned the team for weeks. I built an indexing and remediation pipeline with Claude Code: atoms before composites, masters before instances, every write gated by a before-and-after visual diff and verified through a separate read channel, never the one that made the write. It ran alongside the team's sprints. Across two verified rounds, 97% of 941 instance fixes cascaded cleanly, and after I extended the token scale, all 7,362 padding bindings resolved to tokens. The full tooling story is a companion post, [Indexing a Design System](/blog/indexing-a-design-system).
+Fixing 3,044 references and 61 masters by hand would have pulled the team off sprint work for weeks. I built an indexing and remediation pipeline with Claude Code: atoms before composites, masters before instances, every write gated by a before-and-after visual diff and verified through a separate read channel, never the one that made the write. It ran alongside the team's sprints. Across two verified rounds, 97% of 941 instance fixes cascaded cleanly, and after I extended the token scale, all 7,362 padding bindings resolved to tokens. The full tooling story is a companion post, [Indexing a Design System](/blog/indexing-a-design-system).
 
 </ProseGroup>
 
@@ -138,7 +138,7 @@ Fixing 314,000 nodes by hand would have burned the team for weeks. I built an in
     label: 'After: rebuilt architecture',
     title: 'Self-Contained System',
     items: [
-      { title: 'Single source of truth', detail: 'Every reference resolves back to the library' },
+      { title: 'One library behind every reference', detail: 'Every reference resolves back to the library' },
       { title: '61 masters restored', detail: 'Zero visual regressions, verified by independent re-index' },
       { title: 'Two-tier token architecture', detail: '54 semantic tokens across Light and Dark mode' },
       { title: '209 component sets', detail: 'Composed freely across templates without new variants' },
@@ -147,7 +147,7 @@ Fixing 314,000 nodes by hand would have burned the team for weeks. I built an in
   stats={[
     { value: 209, label: 'Component Sets' },
     { value: 464, label: 'Local Variables' },
-    { value: 97, suffix: '%', label: 'Clean Cascades' },
+    { value: 3044, label: 'References Restored' },
     { value: 100, suffix: '%', label: 'Padding on Tokens' },
   ]}
 />
@@ -163,7 +163,7 @@ The library only matters if it survives a browser. I built a React prototype whe
 </ProseGroup>
 
 <EmbeddedPrototype
-  src="/work/amica-design-system/prototype/"
+  src="/work/amica-design-system/prototype"
   title="Amica prototype, live"
   label="Live prototype"
   description="Click to open, then click and scroll inside"
@@ -192,7 +192,7 @@ One more prototype backs this case study: an ambient hero video pipeline that cu
 </ProseGroup>
 
 <EmbeddedPrototype
-  src="/work/amica-design-system/ambient-hero/"
+  src="/work/amica-design-system/ambient-hero"
   title="Ambient hero video pipeline, live"
   label="Live demo"
   description="Desktop / mobile toggle, click to open"
