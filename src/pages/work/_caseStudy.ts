@@ -13,15 +13,20 @@ export async function buildCaseStudyProps(entry: CollectionEntry<'work'>, sorted
   let prevTitle: string | undefined
   let nextSlug: string | undefined
   let nextTitle: string | undefined
+  let prevLocked = false
+  let nextLocked = false
 
-  if (!entry.data.unlisted) {
+  if (!entry.data.unlisted && listed.length > 1) {
+    // Wraps at both ends so every study leads to another
     const idx = listed.indexOf(entry)
-    const prev = listed[idx - 1]
-    const next = listed[idx + 1]
-    prevSlug = prev?.id
-    prevTitle = prev?.data.title
-    nextSlug = next?.id
-    nextTitle = next?.data.title
+    const prev = listed[(idx - 1 + listed.length) % listed.length]
+    const next = listed[(idx + 1) % listed.length]
+    prevSlug = prev.id
+    prevTitle = prev.data.title
+    prevLocked = prev.data.passwordProtected
+    nextSlug = next.id
+    nextTitle = next.data.title
+    nextLocked = next.data.passwordProtected
   }
 
   const { Content } = await render(entry)
@@ -58,5 +63,5 @@ export async function buildCaseStudyProps(entry: CollectionEntry<'work'>, sorted
     },
   ]
 
-  return { Content, prevSlug, prevTitle, nextSlug, nextTitle, noindex, ogImage, jsonLd }
+  return { Content, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, ogImage, jsonLd }
 }

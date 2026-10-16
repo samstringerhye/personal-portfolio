@@ -238,7 +238,8 @@ const featured = (await getCollection('work'))
   }
 
   .work-list-card:focus-visible {
-    outline: none;
+    /* Transparent outline keeps a ring in forced-colors mode, where box-shadow is dropped */
+    outline: 2px solid transparent;
     box-shadow: inset var(--focus-ring);
   }
 

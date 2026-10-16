@@ -268,25 +268,25 @@ const jobsWithRows = jobsChronological.map((j, i) => {
       padding: var(--content-inset-sm);
     }
 
+    /* Phones: a plain list (dates, role, one-line highlight) instead of the year grid */
     .experience-timeline {
-      grid-template-columns: auto 1fr;
-      column-gap: 0;
+      display: block;
       padding-inline: 0;
       margin-inline: calc(var(--page-margin) * -1);
     }
 
     .tl-year {
-      padding: var(--space-2) var(--space-3) var(--space-2) var(--page-margin);
-      margin-left: 0;
+      display: none;
     }
 
     .tl-job {
-      grid-column: 2;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-1);
       margin-left: 0;
       margin-right: 0;
-      padding: var(--space-2) var(--page-margin) var(--space-2) var(--space-3);
+      padding: var(--space-3) var(--content-inset-sm);
       pointer-events: none;
     }
 
@@ -294,12 +294,13 @@ const jobsWithRows = jobsChronological.map((j, i) => {
       display: none;
     }
 
-    .tl-job-highlights {
-      display: none;
+    .tl-job-year-mobile {
+      display: block;
     }
 
-    .tl-job-year-mobile {
-      display: none;
+    .tl-job-highlights {
+      padding-left: 0;
+      visibility: visible;
     }
   }
 </style>
@@ -324,6 +325,8 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     const yearCells = Array.from(timeline.querySelectorAll<HTMLElement>('.tl-year'))
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // Phones list the highlights as plain text (no hover to reveal them)
+    if (!window.matchMedia('(hover: hover) and (min-width: 769px)').matches) return
 
     // Build a map of grid-row index → year cell element
     const yearsByRow = new Map<number, HTMLElement>()

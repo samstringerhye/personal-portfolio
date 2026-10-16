@@ -99,6 +99,11 @@ ol {
   display: inline-block;
 }
 
+/* Mobile menu open: the page behind it stays put */
+html.nav-open {
+  overflow: hidden;
+}
+
 /* Focus visible */
 :focus-visible {
   outline: 2px solid transparent;
@@ -353,6 +358,7 @@ ol {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-1);
   min-width: var(--touch-target);
   min-height: var(--touch-target);
   color: var(--color-text-primary);

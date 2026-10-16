@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<BaseLayout title="404 | Page Not Found" description="Page not found." hideFooter={true}>
+<BaseLayout title="404 | Page Not Found" description="Page not found.">
   <meta slot="head" name="robots" content="noindex" />
   <section class="not-found" aria-label="Page not found">
     <p class="typo-ui-caps" style="color: var(--color-text-primary);">404</p>
@@ -12,6 +12,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <a href="/" class="not-found-link typo-body-lg">Back to home</a>
       <a href="/#work" class="not-found-link typo-body-lg">See work</a>
       <a href="/about" class="not-found-link typo-body-lg">About</a>
+      <a href="/resume" class="not-found-link typo-body-lg">Resume</a>
     </div>
   </section>
 </BaseLayout>

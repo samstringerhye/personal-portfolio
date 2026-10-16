@@ -37,7 +37,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       </p>
 
       <p style="margin-top: var(--space-5);">
-        <a href="/#work" class="typo-ui-caps">View work →</a>
+        <a href="/#work" class="colophon-work-link typo-ui-caps">View work →</a>
       </p>
     </div>
     </div>
@@ -45,6 +45,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 </BaseLayout>
 
 <style>
+  .colophon-work-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+  }
+
   .colophon-page {
     grid-column: 1 / -1;
     display: grid;

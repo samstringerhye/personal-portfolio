@@ -1,26 +1,36 @@
 ---
+import { Icon } from 'astro-icon/components'
+
 interface Props {
   prevSlug?: string
   prevTitle?: string
+  prevLocked?: boolean
   nextSlug?: string
   nextTitle?: string
+  nextLocked?: boolean
 }
 
-const { prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props
+const { prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked } = Astro.props
 ---
 
 <nav class="cs-nav" aria-label="Case study navigation">
   <div class="cs-nav-inner">
     {prevSlug ? (
       <a href={`/work/${prevSlug}`} class="cs-nav-link cs-nav-prev">
-        <span class="cs-nav-label typo-ui-caps">Previous Project</span>
+        <span class="cs-nav-label typo-ui-caps">
+          Previous Project
+          {prevLocked && <span class="cs-nav-lock"><Icon name="material-symbols:lock-outline" aria-hidden="true" />Password protected</span>}
+        </span>
         <span class="cs-nav-title typo-headline-sm">{prevTitle}</span>
       </a>
     ) : <div />}
 
     {nextSlug ? (
       <a href={`/work/${nextSlug}`} class="cs-nav-link cs-nav-next">
-        <span class="cs-nav-label typo-ui-caps">Next Project</span>
+        <span class="cs-nav-label typo-ui-caps">
+          Next Project
+          {nextLocked && <span class="cs-nav-lock"><Icon name="material-symbols:lock-outline" aria-hidden="true" />Password protected</span>}
+        </span>
         <span class="cs-nav-title typo-headline-sm">{nextTitle}</span>
       </a>
     ) : (
@@ -76,6 +86,24 @@ const { prevSlug, prevTitle, nextSlug, nextTitle } = Astro.props
     margin-bottom: var(--space-1);
     font-size: var(--text-75);
     opacity: var(--opacity-60);
+  }
+
+  /* Matches the lock on the home work cards; its own line, so it never wraps mid-label */
+  .cs-nav-lock {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    width: fit-content;
+    margin-top: var(--space-1);
+  }
+
+  .cs-nav-next .cs-nav-lock {
+    margin-left: auto;
+  }
+
+  .cs-nav-lock :global(svg) {
+    width: 1.1em;
+    height: 1.1em;
   }
 
   .cs-nav-title {

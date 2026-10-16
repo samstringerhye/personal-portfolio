@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import ContactEmail from '../components/ContactEmail.astro'
 ---
 
 <BaseLayout title="Resume | Sam Stringer-Hye" description="Resume for Sam Stringer-Hye | Associate Design Director with 13+ years across brand, editorial, and product. Led the Amica.com design system rebuild.">
@@ -13,7 +14,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         </div>
         <p class="resume-subtitle typo-body-lg">Associate Design Director · Razorfish</p>
         <p class="resume-contact typo-body-sm">
-          Philadelphia, PA · <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer">LinkedIn</a><span class="resume-print-only"> linkedin.com/in/samstringerhye · samstringerhye.com</span>
+          Philadelphia, PA · <ContactEmail showAddress /> · <a href="https://samstringerhye.com">samstringerhye.com</a> · <a href="https://linkedin.com/in/samstringerhye" target="_blank" rel="noopener noreferrer">linkedin.com/in/samstringerhye</a>
         </p>
       </header>
 
@@ -158,14 +159,10 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
   .resume-contact {
     color: var(--color-text-secondary);
-    display: none;
+    margin-top: var(--space-1);
   }
 
-  .resume-print-only {
-    display: none;
-  }
-
-  .resume-contact a {
+  .resume-contact :global(a) {
     color: inherit;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -272,6 +269,14 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     }
   }
 
+  /* Phones: dates and places at body size, so they read without zooming */
+  @media (--1x) {
+    .resume-entry-meta,
+    .resume-contact {
+      font-size: var(--text-100);
+    }
+  }
+
   /* ── Print / PDF stylesheet ── */
   @media print {
     /* Hide site chrome */
@@ -362,13 +367,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       color: #888 !important;
     }
 
-    /* Paper can't follow links, so print the URLs in place of the LinkedIn label */
-    .resume-contact a {
-      display: none !important;
-    }
-
-    .resume-print-only {
-      display: inline !important;
+    .resume-contact :global(a) {
+      color: #888 !important;
+      text-decoration: none !important;
     }
 
     /* Summary */
