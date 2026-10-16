@@ -94,6 +94,7 @@
         "slideUp":  { "$ref": "#/definitions/offsetPx", "description": "Slide distance in pixels — used for both text motion and CMY shadow offset" },
         "initialBlur":   { "$ref": "#/definitions/blurPx", "description": "Starting blur — sharpens to 0 during reveal" },
         "ease":          { "$ref": "#/definitions/easeOrRef" },
+        "cssEase":       { "type": "string", "description": "CSS equivalent of ease (power4.out), for reveals that run in CSS without GSAP" },
         "scrollStart":   { "$ref": "#/definitions/scrollTriggerStart" },
         "cmyStagger":    { "$ref": "#/definitions/stagger", "description": "Delay between each CMY color channel following the text" },
         "cmyOpacity":    { "$ref": "#/definitions/opacity01", "description": "Visibility of trailing CMY color layers" }

@@ -53,34 +53,76 @@ try {
   import { animations } from '../data/tokens'
 
   let observer: IntersectionObserver | null = null
+  let preloadObserver: IntersectionObserver | null = null
   const tweens = new Set<any>()
 
   function destroyLottie() {
     observer?.disconnect()
     observer = null
+    preloadObserver?.disconnect()
+    preloadObserver = null
     tweens.forEach(tween => tween.kill())
     tweens.clear()
   }
 
-  async function initLottie() {
+  // The player and gsap load only once an animation nears the viewport
+  let depsPromise: Promise<{ lottie: any; gsap: any }> | null = null
+  function loadDeps() {
+    depsPromise ??= Promise.all([
+      import('lottie-web/build/player/lottie_light'),
+      import('gsap'),
+    ]).then(([lottieMod, gsapMod]) => ({
+      lottie: (lottieMod as any).default || lottieMod,
+      gsap: (gsapMod as any).default || gsapMod,
+    }))
+    return depsPromise
+  }
+
+  async function startPlayer(el: HTMLElement, prefersReduced: boolean) {
+    let lottie: any
+    let gsap: any
+    try {
+      ({ lottie, gsap } = await loadDeps())
+    } catch (e) {
+      console.warn('LottiePlayer: Failed to load dependencies', e)
+      depsPromise = null
+      delete el.dataset.initialized
+      return
+    }
+    try {
+      const animData = JSON.parse(el.dataset.animation!)
+      const anim = lottie.loadAnimation({
+        container: el,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        animationData: animData,
+      })
+      if (!prefersReduced && el.dataset.loop === 'true') {
+        const obj = { frame: 0 }
+        const tween = gsap.to(obj, {
+          frame: anim.totalFrames - 1,
+          duration: animations.lottie.loopDuration,
+          ease: 'power2.inOut',
+          repeat: -1,
+          yoyo: true,
+          repeatDelay: animations.lottie.loopRepeatDelay,
+          onUpdate: () => anim.goToAndStop(obj.frame, true),
+        })
+        tweens.add(tween)
+      } else if (!prefersReduced) {
+        anim.play()
+      }
+    } catch (e) {
+      console.warn('LottiePlayer: Failed to init animation', e)
+    }
+  }
+
+  function initLottie() {
     const players = document.querySelectorAll<HTMLElement>('.lottie-player[data-animation]')
     if (players.length === 0) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    let lottie: any
-    let gsap: any
-    try {
-      const [lottieMod, gsapMod] = await Promise.all([
-        import('lottie-web/build/player/lottie_light'),
-        import('gsap'),
-      ])
-      lottie = lottieMod.default || lottieMod
-      gsap = gsapMod.default || gsapMod
-    } catch (e) {
-      console.warn('LottiePlayer: Failed to load dependencies', e)
-      return
-    }
 
     destroyLottie()
     const io = new IntersectionObserver((entries) => {
@@ -88,39 +130,22 @@ try {
         const el = entry.target as HTMLElement
         if (entry.isIntersecting && !el.dataset.initialized) {
           el.dataset.initialized = 'true'
-          try {
-            const animData = JSON.parse(el.dataset.animation!)
-            const anim = lottie.loadAnimation({
-              container: el,
-              renderer: 'svg',
-              loop: false,
-              autoplay: false,
-              animationData: animData,
-            })
-            if (!prefersReduced && el.dataset.loop === 'true') {
-              const obj = { frame: 0 }
-              const tween = gsap.to(obj, {
-                frame: anim.totalFrames - 1,
-                duration: animations.lottie.loopDuration,
-                ease: 'power2.inOut',
-                repeat: -1,
-                yoyo: true,
-                repeatDelay: animations.lottie.loopRepeatDelay,
-                onUpdate: () => anim.goToAndStop(obj.frame, true),
-              })
-              tweens.add(tween)
-            } else if (!prefersReduced) {
-              anim.play()
-            }
-          } catch (e) {
-            console.warn('LottiePlayer: Failed to init animation', e)
-          }
+          startPlayer(el, prefersReduced)
         }
       })
     }, { threshold: 0.1 })
 
+    // Fetch the player a screen or so ahead, so it's ready when the animation comes into view
+    const preload = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        loadDeps().catch(() => { depsPromise = null })
+        preload.disconnect()
+      }
+    }, { rootMargin: '600px 0px' })
+
     observer = io
-    players.forEach(p => io.observe(p))
+    preloadObserver = preload
+    players.forEach(p => { io.observe(p); preload.observe(p) })
   }
 
   function deferLottie() {

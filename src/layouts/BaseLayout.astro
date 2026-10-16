@@ -252,14 +252,28 @@ const typoCss = `:root {
 <html lang="en">
   <head>
     <SEO title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" as="style" />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" rel="stylesheet" />
     <link rel="preload" href="/fonts/perfectlynineties-light.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Persisted so the router keeps these faces on swap; re-creating them unloads the headline
          font mid-zoom -->
     <style is:inline data-astro-transition-persist="font-faces">
+      /* DM Sans variable (opsz 9–40, wght 100–1000), self-hosted from Google Fonts' files (OFL) */
+      @font-face {
+        font-family: 'DM Sans';
+        src: url('/fonts/dm-sans-latin.woff2') format('woff2');
+        font-weight: 100 1000;
+        font-style: normal;
+        font-display: swap;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'DM Sans';
+        src: url('/fonts/dm-sans-latin-ext.woff2') format('woff2');
+        font-weight: 100 1000;
+        font-style: normal;
+        font-display: swap;
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
       @font-face {
         font-family: 'Perfectly Nineties';
         src: url('/fonts/perfectlynineties-light.woff2') format('woff2');
@@ -317,9 +331,14 @@ const typoCss = `:root {
       }
       globalState.__siteDestroyLenis?.()
 
+      // Lenis only smooths wheel scrolling, so touch screens and reduced motion skip downloading it
+      const wantsLenis = () =>
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !window.matchMedia('(pointer: coarse)').matches
+
       async function initCore() {
-        const [{ default: Lenis }, { default: gsap }, { ScrollTrigger }, { animations }] = await Promise.all([
-          import('lenis'),
+        const [lenisMod, { default: gsap }, { ScrollTrigger }, { animations }] = await Promise.all([
+          wantsLenis() ? import('lenis') : null,
           import('gsap'),
           import('gsap/ScrollTrigger'),
           import('../data/tokens'),
@@ -330,7 +349,7 @@ const typoCss = `:root {
         globalState.__ScrollTrigger = ScrollTrigger
 
         const scrollCfg = animations.smoothScroll
-        let lenis: InstanceType<typeof Lenis> | null = null
+        let lenis: InstanceType<typeof import('lenis').default> | null = null
         let lenisTicker: ((time: number) => void) | null = null
 
         function destroyLenis() {
@@ -345,10 +364,9 @@ const typoCss = `:root {
 
         function initLenis() {
           destroyLenis()
-          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          if (prefersReduced) return
+          if (!lenisMod || !wantsLenis()) return
 
-          lenis = new Lenis({ lerp: scrollCfg.lerp, smoothWheel: true, wheelMultiplier: scrollCfg.wheelMultiplier })
+          lenis = new lenisMod.default({ lerp: scrollCfg.lerp, smoothWheel: true, wheelMultiplier: scrollCfg.wheelMultiplier })
           lenis.on('scroll', ScrollTrigger.update)
           lenisTicker = (time) => lenis?.raf(time * 1000)
           gsap.ticker.add(lenisTicker)
