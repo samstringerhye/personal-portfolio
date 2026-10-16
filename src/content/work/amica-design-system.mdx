@@ -41,7 +41,7 @@ import quoteFlyoutNotAvailableSrc from '../../assets/work/amica-design-system/pr
 
 <ProseGroup>
 
-<p class="cs-intro">Amica relaunched amica.com on October 2, 2026, on a 615-page design system I led six designers to rebuild. Amica got five WCAG 2.1 AA libraries and 209 component sets, with 3,044 broken references restored and no sprint paused. The library I inherited was quietly broken: 314,000 nodes, no token system, dead components wired into live pages. I treated it as a data problem, indexed the whole library into a database, benchmarked it against 14 production design systems, and remediated it with a verified pipeline.</p>
+<p class="cs-intro">Amica relaunched amica.com on October 2, 2026, on a 615-page design system I led six designers to rebuild, with 3,044 broken references restored and no sprint paused. The library I inherited was quietly broken: no token system, and dead components wired into live pages. I treated it as a data problem: I indexed the library into a database, benchmarked it against 14 production systems, and fixed it with a verified pipeline.</p>
 
 </ProseGroup>
 
@@ -117,7 +117,7 @@ I led by evidence, not seniority. When the brand guide's 100% line height broke 
 
 ## The Migration
 
-Fixing 314,000 nodes by hand would have burned the team for weeks. I built an indexing and remediation pipeline with Claude Code: atoms before composites, masters before instances, every write gated by a before-and-after visual diff and verified through a separate read channel, never the one that made the write. It ran alongside the team's sprints; the full tooling story is a companion post, [Indexing a Design System](/blog/indexing-a-design-system).
+Fixing 314,000 nodes by hand would have burned the team for weeks. I built an indexing and remediation pipeline with Claude Code: atoms before composites, masters before instances, every write gated by a before-and-after visual diff and verified through a separate read channel, never the one that made the write. It ran alongside the team's sprints. Across two verified rounds, 97% of 941 instance fixes cascaded cleanly, and after I extended the token scale, all 7,362 padding bindings resolved to tokens. The full tooling story is a companion post, [Indexing a Design System](/blog/indexing-a-design-system).
 
 </ProseGroup>
 
@@ -147,8 +147,8 @@ Fixing 314,000 nodes by hand would have burned the team for weeks. I built an in
   stats={[
     { value: 209, label: 'Component Sets' },
     { value: 464, label: 'Local Variables' },
-    { value: 97, suffix: '%', label: 'Cascade Success' },
-    { value: 100, suffix: '%', label: 'Padding Compliance' },
+    { value: 97, suffix: '%', label: 'Clean Cascades' },
+    { value: 100, suffix: '%', label: 'Padding on Tokens' },
   ]}
 />
 
@@ -211,5 +211,13 @@ The system ships as five Figma files, a shared core kit plus libraries and guide
 By the end of the engagement, the team was composing new templates from existing components without creating new variants, and running their own alignment sessions without me in the room. The color model eliminated a whole category of variant maintenance, and the token grammar let developers read the Figma file without a translation layer.
 
 The system now governs 76 icons, 130 illustrations, and a 999-asset library with a provenance manifest tracing every asset back to its source.
+
+</ProseGroup>
+
+<ProseGroup>
+
+## What I Learned
+
+My first audit flagged nearly the whole library as broken, and it was wrong. The count only meant something once I separated real off-library references from normal nested parts. Measuring before fixing is what made the fixes safe, and it's what let me argue from evidence instead of seniority. The same held for the team: when a full-component review collapsed, the answer was a smaller format, not a firmer hand.
 
 </ProseGroup>
