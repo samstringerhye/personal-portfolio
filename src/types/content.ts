@@ -25,7 +25,7 @@ export interface HomeContent {
     headingRole: TypographyRole
     itemTitleRole: TypographyRole
     itemBodyRole: TypographyRole
-    items: { title: string; body: string }[]
+    items: { title: string; body: string; link?: { href: string; label: string } }[]
   }
   experience: ExperienceContent
   interests: {

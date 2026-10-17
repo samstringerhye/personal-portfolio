@@ -3,7 +3,7 @@ import type { HeadingTag, TypographyRole } from '../types/typography'
 
 interface Props {
   headline: string
-  items: { title: string; body: string }[]
+  items: { title: string; body: string; link?: { href: string; label: string } }[]
   headingTag?: HeadingTag
   headingRole?: TypographyRole
   itemTitleRole?: TypographyRole
@@ -28,6 +28,9 @@ const HeadingTag = headingTag as any
         <span class="leadership-index typo-ui-caps" data-reveal="fade">{String(i + 1).padStart(2, '0')}</span>
         <h3 class:list={["leadership-title", `typo-${itemTitleRole}`]} data-reveal="fade">{item.title}</h3>
         <p class:list={["leadership-body", `typo-${itemBodyRole}`]} data-reveal="fade">{item.body}</p>
+        {item.link && (
+          <a href={item.link.href} class:list={["leadership-link", `typo-${itemBodyRole}`]} data-reveal="fade">{item.link.label} <span aria-hidden="true">→</span></a>
+        )}
       </li>
     ))}
   </ul>
@@ -91,6 +94,15 @@ const HeadingTag = headingTag as any
   .leadership-body {
     margin: 0;
     color: var(--color-text-primary);
+  }
+
+  .leadership-link {
+    display: inline-block;
+    margin-top: var(--space-3);
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
   }
 
   @media (--3x) {
