@@ -243,7 +243,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     padding-left: var(--grid-gutter);
     position: relative;
     z-index: 1;
-    visibility: hidden;
     color: var(--color-text-primary);
   }
 
@@ -300,18 +299,14 @@ const jobsWithRows = jobsChronological.map((j, i) => {
 
     .tl-job-highlights {
       padding-left: 0;
-      visibility: visible;
     }
   }
 </style>
 
 <script>
   import gsap from 'gsap'
-  import { SplitText } from 'gsap/SplitText'
   import { accentRgba, animations } from '../data/tokens'
   import { tightenSingleLineHeadings } from './tighten-headings'
-
-  gsap.registerPlugin(SplitText)
 
   const h = animations.timeline.hover
   const CMY_COLORS = accentRgba(h.cmyOpacity)
@@ -324,8 +319,8 @@ const jobsWithRows = jobsChronological.map((j, i) => {
     const cards = Array.from(timeline.querySelectorAll<HTMLElement>('.tl-job'))
     const yearCells = Array.from(timeline.querySelectorAll<HTMLElement>('.tl-year'))
 
+    // The wipe is decoration only; highlights are always shown, so nothing is lost without it
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    // Phones list the highlights as plain text (no hover to reveal them)
     if (!window.matchMedia('(hover: hover) and (min-width: 769px)').matches) return
 
     // Build a map of grid-row index → year cell element
@@ -352,21 +347,7 @@ const jobsWithRows = jobsChronological.map((j, i) => {
       card.dataset.hoverBound = 'true'
 
       const wipe = card.querySelector<HTMLElement>('.tl-job-wipe')!
-      const highlights = card.querySelector<HTMLElement>('.tl-job-highlights')
       const jobYears = getJobYears(card)
-
-      // Pre-split highlights into lines
-      let splitLines: HTMLElement[] = []
-      if (highlights) {
-        const split = SplitText.create(highlights, {
-          type: 'lines',
-          linesClass: 'highlight-line',
-          autoSplit: true,
-        })
-        splitLines = split.lines as HTMLElement[]
-        gsap.set(splitLines, { opacity: 0, x: -12 })
-        // Keep container hidden until hover — visibility toggled in enter/leave
-      }
 
       card.addEventListener('mouseenter', () => {
         const color = CMY_COLORS[colorIndex++ % CMY_COLORS.length]
@@ -378,19 +359,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
         jobYears.forEach((yr) => {
           gsap.to(yr, { backgroundColor: color, duration: h.wipeDuration, ease: h.wipeEase })
         })
-
-        if (splitLines.length && highlights) {
-          highlights.style.visibility = 'visible'
-          gsap.killTweensOf(splitLines)
-          gsap.set(splitLines, { opacity: 0, x: -12 })
-          gsap.to(splitLines, {
-            opacity: 1, x: 0,
-            duration: h.highlightsShowDuration,
-            delay: h.highlightsShowDelay,
-            ease: 'power4.out',
-            stagger: h.highlightsShowStagger,
-          })
-        }
       })
 
       card.addEventListener('mouseleave', () => {
@@ -400,18 +368,6 @@ const jobsWithRows = jobsChronological.map((j, i) => {
         jobYears.forEach((yr) => {
           gsap.to(yr, { backgroundColor: 'transparent', duration: h.wipeOutDuration, ease: h.wipeOutEase })
         })
-
-        if (splitLines.length && highlights) {
-          gsap.killTweensOf(splitLines)
-          gsap.to(splitLines, {
-            opacity: 0, x: -12,
-            duration: h.highlightsHideDuration,
-            ease: 'power2.in',
-            stagger: h.highlightsHideStagger,
-            overwrite: true,
-            onComplete: () => { highlights.style.visibility = 'hidden' },
-          })
-        }
       })
     })
   }

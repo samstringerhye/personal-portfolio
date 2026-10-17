@@ -252,8 +252,8 @@ function initHomeReveals() {
   const duration = homeCfg.duration
   const ease = 'power3.out'
 
-  // ── Timeline: job card text staggers in (borders stay visible) ──
-  const timelineJobTexts = document.querySelectorAll<HTMLElement>('.tl-job-info')
+  // ── Timeline: job card text and highlights stagger in (borders stay visible) ──
+  const timelineJobTexts = document.querySelectorAll<HTMLElement>('.tl-job-info, .tl-job-highlights')
   const timelineTrigger = document.querySelector<HTMLElement>('.experience-timeline')
   if (timelineJobTexts.length) {
     gsap.set(timelineJobTexts, { opacity: 0, y: 20 })
