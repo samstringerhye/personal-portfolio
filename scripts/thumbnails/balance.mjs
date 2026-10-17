@@ -5,7 +5,7 @@ const sharp = require('sharp')
 const W = 2000, H = 1333
 // Open space at 1440px wide (fractions of card height): year line bottom → headline top
 const BAND = { top: 0.103, bottom: 0.739 }
-const BAND_TWO_LINE = { top: 0.103, bottom: 0.647 } // Bespoke's title wraps to two lines
+const BAND_TWO_LINE = { top: 0.103, bottom: 0.647 } // Bespoke, CVS and Samsung.com titles wrap to two lines
 const GAP = 0.085      // breathing room above and below each subject, same for every card
 const GAP_BELOW = 0.05  // space between the subject and the headline (~30px on a 612px card)
 
@@ -13,8 +13,8 @@ const cards = {
   'amica-design-system/amica-design-system-subject-32.png': { band: BAND, maxH: 0.19, center: 0.5 }, // a mark, not a product shot: centered in the frame
   'bespoke-design-studio/bespoke-design-studio-subject-32.png': { band: BAND_TWO_LINE, gap: 0.07 },
   'myfrontier-app/myfrontier-app-subject-32.png': { band: BAND },
-  'samsung-redesign/samsung-redesign-subject-32.png': { band: BAND },
-  'cvs-redesign/cvs-redesign-subject-32.png': { band: BAND },
+  'samsung-redesign/samsung-redesign-subject-32.png': { band: BAND_TWO_LINE },
+  'cvs-redesign/cvs-redesign-subject-32.png': { band: BAND_TWO_LINE },
 }
 const result = {}
 for (const [f, cfg] of Object.entries(cards)) {
