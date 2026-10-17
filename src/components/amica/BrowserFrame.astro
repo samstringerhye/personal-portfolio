@@ -71,12 +71,13 @@ const { src, alt, url = 'amica.com' } = Astro.props
     display: block;
     width: 100%;
     /* Uniform crop so every framed screenshot is the same height, whatever the
-       source aspect. Shows the above-the-fold region (object-position: top). */
+       source aspect. Anchored top left: the above-the-fold region, and on a capture wider
+       than 16:10 the logo and headline side, not a slice from the middle. */
     aspect-ratio: 16 / 10;
     height: auto;
     margin: 0;
     border: none;
     object-fit: cover;
-    object-position: top;
+    object-position: left top;
   }
 </style>
