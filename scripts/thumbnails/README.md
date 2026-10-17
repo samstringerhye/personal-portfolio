@@ -16,5 +16,7 @@ node scripts/thumbnails/balance.mjs "$PWD"    # size and place each subject: anc
   `thumbnail` fallback.
 - `favicons.mjs` builds `favicon.ico`, `apple-touch-icon.png`, and the Android icons from `public/favicon.svg`.
 
-Placement numbers in `balance.mjs` (band, gap) are measured from the card at 1440px wide. If the card's
-text size or padding changes, re-measure and rerun, then update each case study's `heroOffset`.
+Placement numbers in `balance.mjs` (band, gap) are measured from the card at 1440px wide, except
+Bespoke's, measured at 1250px (the narrowest card that overlays its text), where its tagline wraps to
+three lines. If the card's text size or padding changes, re-measure and rerun, then update each case
+study's `subjectBox` and `heroOffset`.
