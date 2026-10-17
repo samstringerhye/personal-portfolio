@@ -42,7 +42,7 @@ const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, tit
       loading="eager"
       fetchpriority="high"
     />
-    {gate && <PasswordGate error={gate.error} rateLimited={gate.rateLimited} />}
+    {gate && <PasswordGate title={title} error={gate.error} rateLimited={gate.rateLimited} />}
   </div>
   {year && <p class="cs-hero-year typo-ui-caps" hidden>{year}</p>}
   <BackToWork class="cs-hero-back" />
