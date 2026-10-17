@@ -104,6 +104,9 @@
       }
     ]
   },
+  "contact": {
+    "headline": "Want to work together?"
+  },
   "interests": {
     "textRole": "display-lg",
     "items": [

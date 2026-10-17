@@ -137,6 +137,15 @@
       "required": ["headline", "jobs"],
       "additionalProperties": false
     },
+    "contact": {
+      "type": "object",
+      "description": "Contact prompt at the end of the homepage",
+      "properties": {
+        "headline": { "type": "string", "minLength": 1 }
+      },
+      "required": ["headline"],
+      "additionalProperties": false
+    },
     "interests": {
       "type": "object",
       "description": "Scrolling interests marquee content",
@@ -148,6 +157,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["hero", "work", "leadership", "experience", "interests"],
+  "required": ["hero", "work", "leadership", "experience", "contact", "interests"],
   "additionalProperties": false
 }

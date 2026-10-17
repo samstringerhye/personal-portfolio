@@ -5,6 +5,7 @@ import WorkList from '../components/WorkList.astro'
 import Leadership from '../components/Leadership.astro'
 import Timeline from '../components/Timeline.astro'
 import ScrollingInterests from '../components/ScrollingInterests.astro'
+import HomeContact from '../components/HomeContact.astro'
 
 import homeData from '../content/home.json'
 import type { HomeContent } from '../types/content'
@@ -46,4 +47,6 @@ const home = homeData as HomeContent
     interests={home.interests.items}
     textRole={home.interests.textRole}
   />
+  <hr class="section-rule" />
+  <HomeContact headline={home.contact.headline} />
 </BaseLayout>

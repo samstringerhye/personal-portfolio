@@ -28,6 +28,9 @@ export interface HomeContent {
     items: { title: string; body: string; link?: { href: string; label: string } }[]
   }
   experience: ExperienceContent
+  contact: {
+    headline: string
+  }
   interests: {
     textRole: TypographyRole
     items: string[]
