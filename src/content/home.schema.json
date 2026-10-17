@@ -45,7 +45,7 @@
         "headlineTag":  { "$ref": "#/definitions/htmlTag" },
         "headlineRole": { "$ref": "#/definitions/typographyRole" },
         "body":          { "type": "string", "minLength": 1, "description": "Short bio below the headline" },
-        "bodyHighlights": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Phrases in the bio set in the accent color (name, title, company)" },
+        "bodyHighlights": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Phrases in the bio kept on one line (name, title, company)" },
         "bodyRole":      { "$ref": "#/definitions/typographyRole" }
       },
       "required": ["headline", "body"],
@@ -137,6 +137,15 @@
       "required": ["headline", "jobs"],
       "additionalProperties": false
     },
+    "contact": {
+      "type": "object",
+      "description": "Contact prompt at the end of the homepage",
+      "properties": {
+        "headline": { "type": "string", "minLength": 1 }
+      },
+      "required": ["headline"],
+      "additionalProperties": false
+    },
     "interests": {
       "type": "object",
       "description": "Scrolling interests marquee content",
@@ -148,6 +157,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["hero", "work", "leadership", "experience", "interests"],
+  "required": ["hero", "work", "leadership", "experience", "contact", "interests"],
   "additionalProperties": false
 }

@@ -137,7 +137,6 @@ const year = new Date().getFullYear()
     align-items: center;
     min-height: var(--touch-target);
     color: var(--color-text-secondary, var(--color-text-primary));
-    opacity: var(--opacity-50);
     text-decoration: none;
     transition: opacity var(--duration-short) ease;
   }
@@ -148,7 +147,7 @@ const year = new Date().getFullYear()
     }
 
     .footer-colophon-link:hover {
-      opacity: 1;
+      opacity: var(--opacity-50);
     }
   }
 

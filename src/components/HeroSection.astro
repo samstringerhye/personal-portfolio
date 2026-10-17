@@ -13,8 +13,8 @@ interface Props {
 
 const { headline, tag = 'h1', role = 'display-lg', body, bodyHighlights = [], bodyRole = 'title-lg' } = Astro.props as Props
 
-// Break the bio into plain and highlighted runs, taking whichever phrase appears next
-const bodySegments: { text: string; highlight: number }[] = []
+// Break the bio into plain runs and kept-together phrases, taking whichever phrase appears next
+const bodySegments: { text: string; highlight: boolean }[] = []
 if (body) {
   let cursor = 0
   while (cursor < body.length) {
@@ -24,13 +24,11 @@ if (body) {
       if (at !== -1 && (next.at === -1 || at < next.at)) next = { at, phrase }
     }
     if (next.at === -1) {
-      bodySegments.push({ text: body.slice(cursor), highlight: 0 })
+      bodySegments.push({ text: body.slice(cursor), highlight: false })
       break
     }
-    if (next.at > cursor) bodySegments.push({ text: body.slice(cursor, next.at), highlight: 0 })
-    // Highlights number 1–3 in reading order, cycling, so each takes a different accent
-    const count = bodySegments.filter(seg => seg.highlight).length
-    bodySegments.push({ text: next.phrase, highlight: (count % 3) + 1 })
+    if (next.at > cursor) bodySegments.push({ text: body.slice(cursor, next.at), highlight: false })
+    bodySegments.push({ text: next.phrase, highlight: true })
     cursor = next.at + next.phrase.length
   }
 }
@@ -61,7 +59,7 @@ const heroWordEase = revealCfg.cssEase
       </HeroTag>
       {body && (
         <p class:list={["hero-bio", "hero-sub", `typo-${bodyRole}`]} data-hero-sub>
-          {bodySegments.map(seg => seg.highlight ? <span class="hero-highlight" data-hl={seg.highlight}>{seg.text}</span> : seg.text)}
+          {bodySegments.map(seg => seg.highlight ? <span class="hero-highlight">{seg.text}</span> : seg.text)}
         </p>
       )}
     </div>
@@ -143,36 +141,16 @@ const heroWordEase = revealCfg.cssEase
     background: radial-gradient(closest-side, var(--color-bg-primary) 60%, transparent);
   }
 
-  /* Each highlight takes a different accent. The first (the name) matches the accent the nav
-     picked for the active tab (Nav.astro sets data-accent); the rest follow in rotation. */
   .hero-bio {
     margin: 0;
     color: var(--color-text-primary);
-    --hl-1: var(--color-accent-text-1);
-    --hl-2: var(--color-accent-text-2);
-    --hl-3: var(--color-accent-text-3);
   }
 
-  :global([data-accent="2"]) .hero-bio {
-    --hl-1: var(--color-accent-text-2);
-    --hl-2: var(--color-accent-text-3);
-    --hl-3: var(--color-accent-text-1);
-  }
-
-  :global([data-accent="3"]) .hero-bio {
-    --hl-1: var(--color-accent-text-3);
-    --hl-2: var(--color-accent-text-1);
-    --hl-3: var(--color-accent-text-2);
-  }
-
+  /* Plain ink, not accent colors: colored words mid-sentence read as links */
   .hero-highlight {
     /* Keep each phrase (e.g. the job title) on one line */
     white-space: nowrap;
   }
-
-  .hero-highlight[data-hl="1"] { color: var(--hl-1); }
-  .hero-highlight[data-hl="2"] { color: var(--hl-2); }
-  .hero-highlight[data-hl="3"] { color: var(--hl-3); }
 
   .hero-bio {
     max-width: 36em;
