@@ -63,11 +63,11 @@ Wrap multiple text elements in a `data-reveal-group` container:
 | `wipeEase` | GSAP ease | `back.out(1.4)` | Easing for the color wipe |
 | `wipeOutDuration` | seconds | `0.25` | Color wipe removal duration |
 | `wipeOutEase` | GSAP ease | `back.in(1.4)` | Easing for wipe removal |
-| `highlightsShowDuration` | seconds | `0.6` | Each highlight line's fade-in |
-| `highlightsShowDelay` | seconds | `0.15` | Delay before highlights appear (after wipe starts) |
-| `highlightsShowStagger` | seconds | `0.08` | Delay between highlight lines fading in |
-| `highlightsHideDuration` | seconds | `0.25` | Each highlight line's fade-out |
-| `highlightsHideStagger` | seconds | `0.02` | Delay between highlight lines fading out |
+| `highlightsShowDuration` | seconds | `0.6` | Unused: highlights are always shown |
+| `highlightsShowDelay` | seconds | `0.15` | Unused: highlights are always shown |
+| `highlightsShowStagger` | seconds | `0.08` | Unused: highlights are always shown |
+| `highlightsHideDuration` | seconds | `0.25` | Unused: highlights are always shown |
+| `highlightsHideStagger` | seconds | `0.02` | Unused: highlights are always shown |
 | `cmyOpacity` | 0–1 | `1` | CMY color opacity for timeline wipe fills |
 | `saveCmyOpacity` | 0–1 | `1` | CMY color opacity for the save/download button hover background |
 
@@ -120,8 +120,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `imageReveal.carouselStagger` | `0.1` | Delay between carousel slides |
 | `imageReveal.proseDelay` | `0.2` | Zigzag text starting after its image |
 | `homeReveal.duration` | `0.9` | Interests rows fading up |
-| `homeReveal.timelineDuration` | `0.7` | Timeline job text and year labels |
-| `homeReveal.jobStagger` | `0.1` | Delay between timeline jobs |
+| `homeReveal.timelineDuration` | `0.7` | Timeline job text, highlights, and year labels |
+| `homeReveal.jobStagger` | `0.1` | Delay between each timeline job's text and its highlights, then the next job |
 | `homeReveal.yearStagger` / `yearDelay` | `0.05` / `0.2` | Year labels: stagger / start delay |
 | `homeReveal.dotGridDuration` | `1.2` | Interests dot grid fading in |
 

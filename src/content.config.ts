@@ -21,7 +21,8 @@ const work = defineCollection({
     unlisted: z.boolean().default(false),
     passwordProtected: z.boolean().default(false),
     tags: z.array(z.string()).optional(),
-    // Text color over the homepage thumbnail: 'light' for saturated images, 'dark' for light ones
+    // Text color over the homepage thumbnail, hero and password gate. 'light' (white) only where it
+    // passes 4.5:1 on the background; the brand oranges, teals and reds here need 'dark'
     thumbnailText: z.enum(['light', 'dark']).default('dark'),
     // Homepage card as two layers for the hover tilt: a transparent subject over a CSS background
     // heroOffset: fraction of image height to nudge the subject in the full-width hero (negative = up), so
