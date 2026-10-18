@@ -327,18 +327,18 @@ html.ek .work-list-item + .work-list-item {
 /* No text on the art: the narrow card layout (art framed on the project color, text below) at every
    width. work-transition.ts reads this layout from the computed styles, so the card-to-hero zoom
    follows it. */
+/* Card and hero art frames: 3:2 landscape on desktop, 2:3 portrait on phones and small tablets */
 html.ek .work-list-card {
-  --narrow-frame-height: 60cqw;
+  --narrow-frame-height: calc(100cqw * 2 / 3);
 }
 
-/* Phones and small tablets: card and hero art in a 3:4 portrait frame */
 @media (--2x) {
   html.ek .work-list-card {
-    --narrow-frame-height: calc(100cqw * 4 / 3);
+    --narrow-frame-height: calc(100cqw * 3 / 2);
   }
 
   html.ek .cs-hero.cs-hero .cs-hero-size {
-    height: calc(100cqw * 4 / 3);
+    height: calc(100cqw * 3 / 2);
   }
 }
 
@@ -606,24 +606,17 @@ html.ek .cs-hero.cs-hero--stacked {
   min-height: 0;
 }
 
-/* Wide heroes (the same 780px container threshold, plus the page margins) fill the first screen */
-@media (min-width: 52rem) {
-  html.ek .cs-hero {
-    display: flex;
-    flex-direction: column;
-    height: calc(100svh - var(--nav-height));
-    padding-bottom: var(--space-5);
-  }
+html.ek .cs-hero {
+  display: flex;
+  flex-direction: column;
 }
 
 @container (min-width: 781px) {
-  /* The art takes whatever height the first screen leaves after the back link and the title, so
-     the whole hero is always in view */
   html.ek .cs-hero.cs-hero .cs-hero-size {
-    flex: 1 1 0;
-    height: auto;
-    min-height: 26cqw;
-    max-height: 56cqw;
+    flex: none;
+    height: calc(100cqw * 2 / 3);
+    min-height: 0;
+    max-height: none;
     margin-top: var(--touch-target);
   }
 
