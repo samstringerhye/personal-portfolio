@@ -28,6 +28,98 @@ html.ek {
   --ek-prose: 38rem;
   --ek-figure: 65rem;
   --ek-prose-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.35rem);
+  /* Space above every section, and between a section heading and its content */
+  --ek-section: clamp(4.5rem, 10vw, 9rem);
+  --ek-heading-gap: clamp(2rem, 4vw, 3.5rem);
+  /* Sections align to their column's edge, so the old inner insets go */
+  --content-inset-sm: 0px;
+  --content-inset-md: 0px;
+  --content-inset-lg: 0px;
+}
+
+/* ── Layout: three edges only. Nav and footer sit on the page margin; every section and figure
+   on the --ek-figure column; running prose on the narrower --ek-prose column inside it. ── */
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .home-contact),
+html.ek .cs-hero,
+html.ek .case-study-body > :is(.zigzag-section, .carousel, .cs-figure, .image-pair, .image-grid, .case-study-cta),
+html.ek main > .cs-nav {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .interests-section, .home-contact) {
+  padding-block: var(--ek-section) 0;
+}
+
+html.ek main > .home-contact {
+  padding-bottom: var(--ek-section);
+}
+
+html.ek :is(.work-list-heading, .leadership-heading, .experience-heading) {
+  margin: 0 0 var(--ek-heading-gap);
+  padding: 0;
+}
+
+html.ek .leadership-header,
+html.ek .experience-header {
+  display: block;
+}
+
+html.ek .leadership-grid {
+  column-gap: var(--grid-gutter);
+  row-gap: var(--space-5);
+}
+
+html.ek .leadership-cell,
+html.ek .leadership-cell:nth-child(n) {
+  padding: 0;
+  border-top: 0;
+}
+
+html.ek .tl-year {
+  padding-inline: 0;
+}
+
+/* The job rows bled to the page edge to meet the old rules; on the column they stop at its edge */
+html.ek .tl-job {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+@media (--2x) {
+  html.ek .experience-timeline {
+    margin-inline: 0;
+  }
+}
+
+/* Footer: the palette mark on the page margin, like the nav's logo, with the copyright under it */
+html.ek .footer-bottom {
+  padding-inline: 0;
+}
+
+html.ek .home-contact {
+  gap: var(--space-3);
+}
+
+/* Prev / next and the closing prompt: on the column edge, spaced like a section */
+html.ek .case-study-cta {
+  display: block;
+}
+
+html.ek .case-study-cta-content {
+  padding: var(--ek-section) 0 0;
+}
+
+html.ek .cs-nav {
+  display: block;
+  margin-top: var(--ek-section);
+}
+
+html.ek .cs-nav-inner {
+  padding: 0 0 var(--ek-section);
 }
 
 /* ── Type: prose is serif, interface is sans, labels are mono ── */
@@ -107,28 +199,7 @@ html.ek .nav-link.active {
   }
 }
 
-/* ── Home hero: type alone, centered, no dot field ── */
-html.ek .hero {
-  height: auto;
-  min-height: 0;
-  padding-block: clamp(5rem, 12vw, 10rem) clamp(3rem, 6vw, 5rem);
-}
-
-html.ek .hero-canvas-fallback,
-html.ek #hero-canvas-root {
-  display: none;
-}
-
-html.ek .hero-text {
-  position: static;
-}
-
-html.ek .hero-copy {
-  max-width: 48rem;
-  margin-inline: auto;
-  text-align: center;
-}
-
+/* ── Home hero: the dot field stays; only the type changes ── */
 html.ek .hero-block {
   font-weight: 300;
 }
@@ -146,10 +217,6 @@ html.ek .hero-bio {
    plenty of white between projects ── */
 html.ek .work-list-section {
   grid-template-columns: minmax(0, 1fr);
-  width: 100%;
-  max-width: var(--ek-figure);
-  margin-inline: auto;
-  padding-block: var(--space-7) var(--space-8);
 }
 
 html.ek .work-list-intro {
@@ -166,8 +233,8 @@ html.ek .work-list-intro-inner {
 html.ek .work-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(4.5rem, 10vw, 9rem);
-  padding-top: clamp(2.5rem, 5vw, 4rem);
+  gap: var(--ek-section);
+  padding-top: 0;
 }
 
 html.ek .work-list-item + .work-list-item {
@@ -330,11 +397,29 @@ html.ek .case-study-body > img {
   background: #FFFFFF;
 }
 
+/* Its own 12 tracks instead of the page's subgrid, so it can sit on the narrower column */
 html.ek .case-study-body .zigzag-section {
-  max-width: var(--ek-figure);
-  width: 100%;
-  margin: var(--space-6) auto 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  margin-top: var(--space-6);
   border: 0;
+}
+
+html.ek .case-study-body .zigzag-section .zigzag-media {
+  grid-column: 1 / 7;
+}
+
+html.ek .case-study-body .zigzag-section .zigzag-prose {
+  grid-column: 8 / -1;
+  align-self: center;
+}
+
+html.ek .case-study-body .zigzag-reversed .zigzag-media {
+  grid-column: 7 / -1;
+}
+
+html.ek .case-study-body .zigzag-reversed .zigzag-prose {
+  grid-column: 1 / 6;
 }
 
 html.ek .case-study-body .zigzag-media {
@@ -426,7 +511,11 @@ html.ek .cs-hero--light .cs-hero-back {
 }
 
 html.ek .cs-hero .cs-hero-text {
-  padding-top: var(--space-4);
+  padding: var(--space-4) 0 0;
+}
+
+html.ek .cs-hero .cs-hero-back {
+  padding-inline: 0;
 }
 
 html.ek .cs-hero.cs-hero--stacked {
