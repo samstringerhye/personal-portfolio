@@ -142,13 +142,14 @@ html.ek .hero-bio {
   margin-inline: auto;
 }
 
-/* ── Work list: one centered column of windows ── */
+/* ── Work list: one centered column. Each project is just its art and a few lines of type, with
+   plenty of white between projects ── */
 html.ek .work-list-section {
   grid-template-columns: minmax(0, 1fr);
   width: 100%;
   max-width: var(--ek-figure);
   margin-inline: auto;
-  padding-block: var(--space-6) var(--space-8);
+  padding-block: var(--space-7) var(--space-8);
 }
 
 html.ek .work-list-intro {
@@ -165,69 +166,17 @@ html.ek .work-list-intro-inner {
 html.ek .work-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(2.5rem, 5vw, 4.5rem);
-  padding-top: var(--space-5);
+  gap: clamp(4.5rem, 10vw, 9rem);
+  padding-top: clamp(2.5rem, 5vw, 4rem);
 }
 
 html.ek .work-list-item + .work-list-item {
   border-top: 0;
 }
 
-html.ek .work-list-item {
-  border: 1px solid var(--ek-hairline);
-  border-radius: var(--ek-window-radius);
-  overflow: hidden;
-  background: #FFFFFF;
-  box-shadow: var(--ek-shadow);
-}
-
-html.ek .work-list-chrome {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--ek-hairline);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  line-height: 1.4;
-  color: var(--color-text-secondary);
-}
-
-html.ek .work-list-chrome strong {
-  font-weight: 500;
-  color: var(--color-text-primary);
-}
-
-html.ek .work-list-chrome-sep {
-  color: #A9B4C0;
-}
-
-html.ek .work-list-chrome-tags {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@media (--1x) {
-  html.ek .work-list-chrome-tags {
-    display: none;
-  }
-}
-
-/* Tags in the card art keep their own color; the lock reads as an outlined pill */
-html.ek .work-list-lock {
-  padding: 0.2em 0.7em;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-}
-
-/* No text on the art: the narrow card layout (art framed on the project color, text in its own
-   panel below) at every width, with the panel on white. work-transition.ts reads this layout from
-   the computed styles, so the card-to-hero zoom follows it. */
+/* No text on the art: the narrow card layout (art framed on the project color, text below) at every
+   width. work-transition.ts reads this layout from the computed styles, so the card-to-hero zoom
+   follows it. */
 html.ek .work-list-card {
   --narrow-frame-height: 60cqw;
 }
@@ -235,6 +184,7 @@ html.ek .work-list-card {
 html.ek .work-list-item .work-list-card .work-list-media {
   aspect-ratio: auto;
   height: var(--narrow-frame-height);
+  border-radius: var(--ek-window-radius);
 }
 
 html.ek .work-list-item .work-list-card .work-list-media[data-layered] .work-list-subject {
@@ -250,27 +200,44 @@ html.ek .work-list-item .work-list-card .work-list-media[data-layered] .work-lis
 html.ek .work-list-item .work-list-card .work-list-caption {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--narrow-pad) var(--narrow-pad);
-  background: #FFFFFF;
+  gap: var(--space-2);
+  min-height: 0;
+  padding: var(--space-4) 0 0;
+  background: none;
 }
 
 html.ek .work-list-item .work-list-card :is(.work-list-meta, .work-list-text) {
   position: static;
-  max-width: none;
+  max-width: 40rem;
   padding: 0;
   color: var(--color-text-primary);
 }
 
+/* Matches the page, so the zoom's copy of this block rides on white rather than the project color */
 html.ek .work-list-item .work-list-card .work-list-text {
+  gap: var(--space-1);
   background: #FFFFFF;
 }
 
+html.ek .work-list-item .work-list-card .work-list-meta {
+  gap: var(--space-2);
+}
+
+html.ek .work-list-lock svg {
+  width: 1em;
+  height: 1em;
+}
+
 html.ek .work-list-item .work-list-card .work-list-title {
-  font-size: var(--text-400);
+  font-size: var(--text-300);
+  line-height: 1.2;
 }
 
 html.ek .work-list-item .work-list-card .work-list-tagline {
+  font-family: var(--font-serif);
+  font-size: var(--ek-prose-size);
+  line-height: 1.55;
+  font-weight: 300;
   color: var(--ek-ink-body);
 }
 
