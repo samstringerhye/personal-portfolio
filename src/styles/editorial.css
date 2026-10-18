@@ -166,6 +166,47 @@ html.ek .home-contact {
   gap: var(--space-3);
 }
 
+/* The other pages (about, résumé, colophon, blog) sit on the same column. They used the page-wide
+   12-column subgrid; on the column they get their own 12 tracks, and content that started a few
+   tracks in starts at the column edge. */
+html.ek main > :is(.about-page, .resume-page, .colophon-page, .blog-index, .blog-post) {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek :is(.about-page, .about-row, .resume-page, .colophon-page, .colophon-row, .blog-post) {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+}
+
+html.ek :is(.resume-body, .colophon-body, .blog-post-header, .blog-post-body) {
+  grid-column: 1 / -1;
+  padding-inline: 0;
+}
+
+html.ek .about-portrait-cell {
+  margin-inline-end: 0;
+}
+
+html.ek .skill-cell {
+  padding-inline: 0;
+}
+
+html.ek .skill-grid {
+  column-gap: var(--grid-gutter);
+}
+
+@media (--2x) {
+  /* Phone footer links stack on the page margin like everything else */
+  html.ek .footer-links {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+
 /* Prev / next and the closing prompt: on the column edge, spaced like a section */
 html.ek .case-study-cta {
   display: block;
