@@ -17,13 +17,15 @@ html.ek {
   --color-rule: transparent;
   --color-border: #E6EAEE;
   --focus-ring-color: #1D61FF;
-  --page-margin: clamp(1rem, 0.5rem + 2vw, 2rem);
+  --page-margin: clamp(1.5rem, 1rem + 2vw, 2.5rem);
 
   --ek-hairline: #E6EAEE;
   --ek-panel: #F7F8FA;
   --ek-ink-body: #34475C;
-  --ek-window-radius: 10px;
-  --ek-image-radius: 6px;
+  --ek-window-radius: 24px;
+  --ek-image-radius: 16px;
+  /* Color around the framed project art on cards and heroes (global.css default is 2x) */
+  --narrow-art-pad: calc(3 * var(--narrow-pad));
   --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
   --ek-prose: 38rem;
   --ek-figure: 65rem;
@@ -286,7 +288,7 @@ html.ek .work-list-item .work-list-card .work-list-caption {
   flex-direction: column;
   gap: var(--space-2);
   min-height: 0;
-  padding: var(--space-4) 0 0;
+  padding: var(--space-5) 0 0;
   background: none;
 }
 
@@ -539,6 +541,12 @@ html.ek .cs-hero .cs-hero-text {
 
 html.ek .cs-hero .cs-hero-back {
   padding-inline: 0;
+}
+
+/* The hero art and the card-to-hero zoom copy round like the cards, so the zoom lands cleanly */
+html.ek .cs-hero .cs-hero-media,
+html.ek [data-copy-wrap] {
+  border-radius: var(--ek-window-radius);
 }
 
 html.ek .cs-hero.cs-hero--stacked {
