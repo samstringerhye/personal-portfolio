@@ -91,6 +91,23 @@ html.ek main > .interests-section {
   padding-block: var(--ek-section);
 }
 
+/* Full-bleed sections keep their text on the page margin */
+html.ek .hero-text {
+  padding-inline: var(--page-margin);
+}
+
+/* With no rules to end on, the dot fields fade out at top and bottom instead of stopping hard */
+html.ek #hero-canvas-root,
+html.ek .hero-canvas-fallback {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 80%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 80%, transparent);
+}
+
+html.ek .interests-section::before {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
+}
+
 html.ek :is(.work-list-heading, .leadership-heading, .experience-heading) {
   margin: 0 0 var(--ek-heading-gap);
   padding: 0;
