@@ -222,17 +222,17 @@ html.ek .cs-nav-inner {
   padding: 0 0 var(--ek-section);
 }
 
-/* ── Type: the site's own Perfectly Nineties and DM Sans (tokens.json); labels are DM Sans caps ── */
+/* ── Type: the site's own Perfectly Nineties and DM Sans (tokens.json), no caps or italics ── */
 /* No italics in site copy (client brand mockups keep their own type) */
 html.ek :is(em, i, cite, address) {
   font-style: normal;
 }
 
-html.ek .typo-ui-caps {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  color: var(--color-text-secondary);
+/* No all caps: labels keep the ui-caps role's size and font but read in normal case */
+html.ek .typo-ui-caps,
+html.ek :is(.ba-label, .ba-stat-label) {
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 /* ── Frame: no grid guides, no crosshair rules ── */
@@ -546,7 +546,7 @@ html.ek .case-study-body .zigzag-media .cs-figure figcaption {
   text-align: left;
 }
 
-/* Meta line: caps labels over values, on the column edge */
+/* Meta line: labels over values, on the column edge */
 html.ek .case-study-body .cs-hero-meta {
   grid-column: 1 / -1;
   display: flex;
