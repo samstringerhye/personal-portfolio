@@ -96,26 +96,11 @@ html.ek .hero-text {
   padding-inline: var(--page-margin);
 }
 
-/* The hero's dot field runs up behind the nav to the top of the window. The nav starts clear over
-   it and fills in as the page scrolls; browsers without scroll timelines keep the solid nav. */
-html.ek {
-  --ek-hero-height: 87vh;
-}
-
-@media (--2x) {
-  html.ek {
-    --ek-hero-height: 70vh;
-  }
-}
-
-@media (--1x) {
-  html.ek {
-    --ek-hero-height: 58svh;
-  }
-}
-
+/* The hero's dot field runs up behind the nav to the top of the window and fills exactly one screen.
+   The nav starts clear over it and fills in as the page scrolls; browsers without scroll timelines
+   keep the solid nav. The height counts the nav it sits under. */
 html.ek main > .hero {
-  height: calc(var(--ek-hero-height) + var(--nav-height));
+  height: 100svh;
   margin-top: calc(-1 * var(--nav-height));
   padding-top: var(--nav-height);
 }
