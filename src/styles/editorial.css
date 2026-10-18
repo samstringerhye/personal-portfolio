@@ -331,6 +331,17 @@ html.ek .work-list-card {
   --narrow-frame-height: 60cqw;
 }
 
+/* Phones and small tablets: card and hero art in a 3:4 portrait frame */
+@media (--2x) {
+  html.ek .work-list-card {
+    --narrow-frame-height: calc(100cqw * 4 / 3);
+  }
+
+  html.ek .cs-hero.cs-hero .cs-hero-size {
+    height: calc(100cqw * 4 / 3);
+  }
+}
+
 html.ek .work-list-item .work-list-card .work-list-media {
   aspect-ratio: auto;
   height: var(--narrow-frame-height);
