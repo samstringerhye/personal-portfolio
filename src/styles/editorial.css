@@ -70,12 +70,25 @@ html.ek main > :is(.cs-nav, .case-study-cta) {
   margin-inline: auto;
 }
 
-html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .interests-section, .home-contact) {
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .home-contact) {
   padding-block: var(--ek-section) 0;
 }
 
 html.ek main > .home-contact {
   padding-bottom: var(--ek-section);
+}
+
+/* The animated areas (hero dot field, interests marquee and its drifting dots) run edge to edge,
+   out past the column and the page margin */
+html.ek main > :is(.hero, .interests-section) {
+  width: 100vw;
+  max-width: none;
+  margin-inline: calc(50% - 50vw);
+}
+
+html.ek main > .interests-section {
+  margin-top: var(--ek-section);
+  padding-block: var(--ek-section);
 }
 
 html.ek :is(.work-list-heading, .leadership-heading, .experience-heading) {
@@ -346,10 +359,9 @@ html.ek :is(.footer, .footer-container, .footer-bar, .footer-bottom) {
   border-color: transparent;
 }
 
-/* The footer's ink underline and the interests section's dot field belong to the old grid look */
+/* The footer's ink lines belong to the old grid look */
 html.ek .footer::before,
-html.ek .footer-bar::after,
-html.ek .interests-section::before {
+html.ek .footer-bar::after {
   display: none;
 }
 
