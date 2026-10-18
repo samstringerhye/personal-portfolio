@@ -5,7 +5,8 @@
 html.ek {
   --font-serif: 'Newsreader', Georgia, serif;
   --font-sans: 'Geist', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, monospace;
+  /* No monospace in this direction: labels use the sans in caps */
+  --font-mono: var(--font-sans);
 
   --color-text-primary: #0B2140;
   --color-text-secondary: #5E7186;
@@ -142,6 +143,11 @@ html.ek .cs-nav-inner {
 }
 
 /* ── Type: prose is serif, interface is sans, labels are mono ── */
+/* No italics in site copy (client brand mockups keep their own type) */
+html.ek :is(em, i, cite, address) {
+  font-style: normal;
+}
+
 html.ek .typo-ui-caps {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
@@ -172,7 +178,7 @@ html.ek .section-rule::after {
   content: none;
 }
 
-/* ── Nav: italic serif name, quiet sans links, underline for the current page ── */
+/* ── Nav: serif name, quiet sans links, underline for the current page ── */
 html.ek .nav {
   background: color-mix(in srgb, #FFFFFF 92%, transparent);
   backdrop-filter: blur(12px);
@@ -184,7 +190,6 @@ html.ek .nav::before {
 }
 
 html.ek .nav-logo {
-  font-style: italic;
   font-weight: 400;
 }
 
@@ -553,12 +558,24 @@ html.ek .cs-hero.cs-hero--stacked {
   min-height: 0;
 }
 
+/* Wide heroes (the same 780px container threshold, plus the page margins) fill the first screen */
+@media (min-width: 52rem) {
+  html.ek .cs-hero {
+    display: flex;
+    flex-direction: column;
+    height: calc(100svh - var(--nav-height));
+    padding-bottom: var(--space-5);
+  }
+}
+
 @container (min-width: 781px) {
+  /* The art takes whatever height the first screen leaves after the back link and the title, so
+     the whole hero is always in view */
   html.ek .cs-hero.cs-hero .cs-hero-size {
-    flex: none;
-    height: clamp(32cqw, calc(100svh - var(--nav-height) - 15rem), 56cqw);
-    min-height: 0;
-    max-height: none;
+    flex: 1 1 0;
+    height: auto;
+    min-height: 26cqw;
+    max-height: 56cqw;
     margin-top: var(--touch-target);
   }
 
@@ -578,6 +595,7 @@ html.ek .cs-hero.cs-hero--stacked {
   }
 
   html.ek .cs-hero.cs-hero .cs-hero-text {
+    flex: none;
     position: static;
     max-width: none;
     padding: var(--space-5) 0 0;
