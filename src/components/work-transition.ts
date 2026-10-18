@@ -91,7 +91,7 @@ function textEl(tag: string, l: Line, color: string): HTMLElement {
 
 /* ── Text below the image (narrow cards and heroes, e.g. every phone): the title and tagline sit on
    the project's color under the art and ride as their own copy, from the card's block to the hero's ── */
-type Stacked = { rect: DOMRect; color: string; padX: number; padTop: number; padBottom: number; gap: number; title: Line; tagline?: Line }
+type Stacked = { rect: DOMRect; color: string; background: string; padX: number; padTop: number; padBottom: number; gap: number; title: Line; tagline?: Line }
 
 function readStacked(root: ParentNode, kind: 'card' | 'hero'): Stacked | null {
   const k = kind === 'card'
@@ -105,6 +105,7 @@ function readStacked(root: ParentNode, kind: 'card' | 'hero'): Stacked | null {
   return {
     rect: block.getBoundingClientRect(),
     color: cs.color,
+    background: cs.backgroundColor,
     padX: px(cs.paddingLeft),
     padTop: px(cs.paddingTop),
     padBottom: px(cs.paddingBottom),
@@ -121,7 +122,8 @@ function buildStackedCopy(t: Stacked, background: string): HTMLElement {
     position: 'fixed', left: `${t.rect.left}px`, top: `${t.rect.top}px`, width: `${t.rect.width}px`, height: `${t.rect.height}px`,
     padding: `${t.padTop}px ${t.padX}px ${t.padBottom}px`, display: 'flex', flexDirection: 'column', rowGap: `${t.gap}px`,
     zIndex: 'calc(var(--z-nav) - 1)', pointerEvents: 'none', boxSizing: 'border-box',
-    background,
+    // The block's own fill when it has one (a white panel), else the project color it sits on
+    background: t.background !== 'rgba(0, 0, 0, 0)' ? t.background : background,
   })
   const title = textEl('div', t.title, t.color)
   title.dataset.copyTitle = ''

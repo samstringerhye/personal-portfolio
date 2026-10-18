@@ -12,7 +12,9 @@ html.ek {
   --color-bg-primary: #FFFFFF;
   --color-bg-alt: #F7F8FA;
   --color-bg-warm: #F7F8FA;
-  --color-rule: #E6EAEE;
+  /* Structural rules (nav, section dividers, grids, timeline, footer) all draw in --color-rule;
+     this direction drops them. Hairlines remain only on windows, as --ek-hairline. */
+  --color-rule: transparent;
   --color-border: #E6EAEE;
   --focus-ring-color: #1D61FF;
   --page-margin: clamp(1rem, 0.5rem + 2vw, 2rem);
@@ -51,7 +53,7 @@ html.ek .grid-overlay {
 }
 
 html.ek .section-rule {
-  border-top-color: var(--ek-hairline);
+  border-top-color: transparent;
 }
 
 html.ek .section-rule::before,
@@ -67,7 +69,7 @@ html.ek .nav {
 
 html.ek .nav::after,
 html.ek .nav::before {
-  background: var(--ek-hairline);
+  display: none;
 }
 
 html.ek .nav-logo {
@@ -101,11 +103,7 @@ html.ek .nav-link.active {
 
 @media (--2x) {
   html.ek .nav-toggle {
-    border-left-color: var(--ek-hairline);
-  }
-
-  html.ek .nav-link {
-    border-bottom-color: var(--ek-hairline);
+    border-left-color: transparent;
   }
 }
 
@@ -161,8 +159,7 @@ html.ek .work-list-intro {
 
 html.ek .work-list-intro-inner {
   position: static;
-  padding: 0 0 var(--space-3);
-  border-bottom: 1px solid var(--ek-hairline);
+  padding: 0;
 }
 
 html.ek .work-list {
@@ -228,8 +225,53 @@ html.ek .work-list-lock {
   border-radius: 999px;
 }
 
-html.ek .work-list-meta {
-  color: inherit;
+/* No text on the art: the narrow card layout (art framed on the project color, text in its own
+   panel below) at every width, with the panel on white. work-transition.ts reads this layout from
+   the computed styles, so the card-to-hero zoom follows it. */
+html.ek .work-list-card {
+  --narrow-frame-height: 60cqw;
+}
+
+html.ek .work-list-item .work-list-card .work-list-media {
+  aspect-ratio: auto;
+  height: var(--narrow-frame-height);
+}
+
+html.ek .work-list-item .work-list-card .work-list-media[data-layered] .work-list-subject {
+  inset: auto;
+  left: var(--narrow-art-left);
+  top: var(--narrow-art-top);
+  width: var(--narrow-art-width);
+  height: var(--narrow-art-height);
+  max-width: none;
+  filter: none;
+}
+
+html.ek .work-list-item .work-list-card .work-list-caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--narrow-pad) var(--narrow-pad);
+  background: #FFFFFF;
+}
+
+html.ek .work-list-item .work-list-card :is(.work-list-meta, .work-list-text) {
+  position: static;
+  max-width: none;
+  padding: 0;
+  color: var(--color-text-primary);
+}
+
+html.ek .work-list-item .work-list-card .work-list-text {
+  background: #FFFFFF;
+}
+
+html.ek .work-list-item .work-list-card .work-list-title {
+  font-size: var(--text-400);
+}
+
+html.ek .work-list-item .work-list-card .work-list-tagline {
+  color: var(--ek-ink-body);
 }
 
 /* ── Contact and footer: hairlines, sans links ── */
@@ -243,7 +285,14 @@ html.ek .case-study-cta-link {
 }
 
 html.ek :is(.footer, .footer-container, .footer-bar, .footer-bottom) {
-  border-color: var(--ek-hairline);
+  border-color: transparent;
+}
+
+/* The footer's ink underline and the interests section's dot field belong to the old grid look */
+html.ek .footer::before,
+html.ek .footer-bar::after,
+html.ek .interests-section::before {
+  display: none;
 }
 
 html.ek .footer-link {
@@ -343,8 +392,14 @@ html.ek .case-study-body .image-grid .cs-figure {
   box-shadow: none;
 }
 
-html.ek .case-study-body .image-pair {
+html.ek .case-study-body :is(.image-pair, .image-grid) {
   background: var(--ek-hairline);
+}
+
+html.ek .case-study-body .lottie-grid,
+html.ek .case-study-body .lottie-grid .lottie-player,
+html.ek .ba {
+  border-color: transparent;
 }
 
 html.ek .case-study-body .image-pair-cell + .image-pair-cell,
@@ -376,9 +431,8 @@ html.ek .case-study-body .cs-hero-meta {
   width: 100%;
   max-width: var(--ek-prose);
   margin: var(--space-6) auto 0;
-  padding: var(--space-2) 0;
+  padding: 0;
   border: 0;
-  border-block: 1px solid var(--ek-hairline);
 }
 
 html.ek .case-study-body .cs-meta-item {
@@ -391,10 +445,62 @@ html.ek .case-study-body .cs-meta-value {
   font-size: 1.125rem;
 }
 
-/* Hero: the zoom target keeps its frame; only the type changes */
+/* Hero: the art framed on the project color, the back link above it and the title below on white,
+   at every width. hero-fit.ts marks wide heroes cs-hero--stacked so the zoom lands on this layout. */
+html.ek .cs-hero .cs-hero-text,
+html.ek .cs-hero--light .cs-hero-text {
+  background: #FFFFFF;
+  color: var(--color-text-primary);
+}
+
+html.ek .cs-hero .cs-hero-back,
+html.ek .cs-hero--light .cs-hero-back {
+  color: var(--color-text-primary);
+}
+
+html.ek .cs-hero .cs-hero-text {
+  padding-top: var(--space-4);
+}
+
+html.ek .cs-hero.cs-hero--stacked {
+  min-height: 0;
+}
+
+@container (min-width: 781px) {
+  html.ek .cs-hero.cs-hero .cs-hero-size {
+    flex: none;
+    height: clamp(32cqw, calc(100svh - var(--nav-height) - 15rem), 56cqw);
+    min-height: 0;
+    max-height: none;
+    margin-top: var(--touch-target);
+  }
+
+  html.ek .case-study-body .cs-hero .cs-hero-media img.cs-hero-subject {
+    position: absolute;
+    left: var(--narrow-art-left);
+    top: var(--narrow-art-top);
+    width: var(--narrow-art-width);
+    height: var(--narrow-art-height);
+    max-width: none;
+    translate: none;
+    filter: none;
+  }
+
+  html.ek .cs-hero.cs-hero .cs-hero-back {
+    padding: 0;
+  }
+
+  html.ek .cs-hero.cs-hero .cs-hero-text {
+    position: static;
+    max-width: none;
+    padding: var(--space-5) 0 0;
+  }
+}
+
 html.ek .cs-hero-tagline {
   font-family: var(--font-serif);
   font-weight: 300;
+  color: var(--ek-ink-body);
 }
 
 html.ek .scroll-progress {
