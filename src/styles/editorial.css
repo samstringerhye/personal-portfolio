@@ -1,0 +1,422 @@
+/* Editorial Kit direction (preview). Overrides the token-driven base without touching
+   tokens.json, so the hub's build is unaffected. Every rule hangs off html.ek, which outranks
+   the :root token block and the components' scoped styles. */
+
+html.ek {
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+
+  --color-text-primary: #0B2140;
+  --color-text-secondary: #5E7186;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-alt: #F7F8FA;
+  --color-bg-warm: #F7F8FA;
+  --color-rule: #E6EAEE;
+  --color-border: #E6EAEE;
+  --focus-ring-color: #1D61FF;
+  --page-margin: clamp(1rem, 0.5rem + 2vw, 2rem);
+
+  --ek-hairline: #E6EAEE;
+  --ek-panel: #F7F8FA;
+  --ek-ink-body: #34475C;
+  --ek-window-radius: 10px;
+  --ek-image-radius: 6px;
+  --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
+  --ek-prose: 38rem;
+  --ek-figure: 65rem;
+  --ek-prose-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.35rem);
+}
+
+/* ── Type: prose is serif, interface is sans, labels are mono ── */
+html.ek .typo-ui-caps {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+}
+
+html.ek :is(h1, h2, h3, .typo-display-lg, .typo-display-md, .typo-headline-lg, .typo-headline-sm) {
+  font-variation-settings: 'opsz' 72;
+  letter-spacing: -0.01em;
+}
+
+html.ek :is(h2, .typo-headline-lg) {
+  font-weight: 400;
+}
+
+/* ── Frame: no grid guides, no crosshair rules ── */
+html.ek .grid-overlay {
+  display: none;
+}
+
+html.ek .section-rule {
+  border-top-color: var(--ek-hairline);
+}
+
+html.ek .section-rule::before,
+html.ek .section-rule::after {
+  content: none;
+}
+
+/* ── Nav: italic serif name, quiet sans links, underline for the current page ── */
+html.ek .nav {
+  background: color-mix(in srgb, #FFFFFF 92%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+html.ek .nav::after,
+html.ek .nav::before {
+  background: var(--ek-hairline);
+}
+
+html.ek .nav-logo {
+  font-style: italic;
+  font-weight: 400;
+}
+
+html.ek .nav-logo::after,
+html.ek .nav-links li::before {
+  display: none;
+}
+
+html.ek .nav-links li {
+  background: transparent !important;
+}
+
+html.ek .nav-link {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--duration-short) ease;
+}
+
+html.ek .nav-link:hover,
+html.ek .nav-link.active {
+  text-decoration-color: currentColor;
+}
+
+@media (--2x) {
+  html.ek .nav-toggle {
+    border-left-color: var(--ek-hairline);
+  }
+
+  html.ek .nav-link {
+    border-bottom-color: var(--ek-hairline);
+  }
+}
+
+/* ── Home hero: type alone, centered, no dot field ── */
+html.ek .hero {
+  height: auto;
+  min-height: 0;
+  padding-block: clamp(5rem, 12vw, 10rem) clamp(3rem, 6vw, 5rem);
+}
+
+html.ek .hero-canvas-fallback,
+html.ek #hero-canvas-root {
+  display: none;
+}
+
+html.ek .hero-text {
+  position: static;
+}
+
+html.ek .hero-copy {
+  max-width: 48rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+html.ek .hero-block {
+  font-weight: 300;
+}
+
+html.ek .hero-bio {
+  font-family: var(--font-serif);
+  font-size: var(--ek-prose-size);
+  line-height: 1.65;
+  font-weight: 300;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+/* ── Work list: one centered column of windows ── */
+html.ek .work-list-section {
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+  padding-block: var(--space-6) var(--space-8);
+}
+
+html.ek .work-list-intro {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+html.ek .work-list-intro-inner {
+  position: static;
+  padding: 0 0 var(--space-3);
+  border-bottom: 1px solid var(--ek-hairline);
+}
+
+html.ek .work-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  padding-top: var(--space-5);
+}
+
+html.ek .work-list-item + .work-list-item {
+  border-top: 0;
+}
+
+html.ek .work-list-item {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: var(--ek-shadow);
+}
+
+html.ek .work-list-chrome {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ek-hairline);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+html.ek .work-list-chrome strong {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+html.ek .work-list-chrome-sep {
+  color: #A9B4C0;
+}
+
+html.ek .work-list-chrome-tags {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (--1x) {
+  html.ek .work-list-chrome-tags {
+    display: none;
+  }
+}
+
+/* Tags in the card art keep their own color; the lock reads as an outlined pill */
+html.ek .work-list-lock {
+  padding: 0.2em 0.7em;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+
+html.ek .work-list-meta {
+  color: inherit;
+}
+
+/* ── Contact and footer: hairlines, sans links ── */
+html.ek .home-contact-link,
+html.ek .case-study-cta-link {
+  border-radius: 999px;
+  border-color: #C9D1DA;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+html.ek :is(.footer, .footer-container, .footer-bar, .footer-bottom) {
+  border-color: var(--ek-hairline);
+}
+
+html.ek .footer-link {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+}
+
+/* ── Case study: centered essay column, figures as windows ── */
+html.ek .case-study-body {
+  padding-bottom: var(--space-7);
+}
+
+html.ek .case-study-body .prose-group,
+html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
+html.ek .case-study-body .prose-group:has(> .cs-intro),
+html.ek .case-study-cta-content {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: var(--ek-prose);
+  margin-inline: auto;
+}
+
+html.ek .case-study-body .prose-group {
+  padding-block: var(--space-6) 0;
+}
+
+html.ek .case-study-body .prose-group:has(> .cs-intro) {
+  padding-block: var(--space-6) var(--space-4);
+}
+
+html.ek .case-study-body :is(.prose-group, .zigzag-prose) :is(p, li) {
+  font-family: var(--font-serif);
+  font-size: var(--ek-prose-size);
+  line-height: 1.65;
+  font-weight: 300;
+  font-variation-settings: 'opsz' 16;
+  color: var(--color-text-primary);
+  text-wrap: pretty;
+}
+
+html.ek .case-study-body .prose-group > .cs-intro {
+  font-family: var(--font-serif);
+  font-size: var(--ek-prose-size);
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+html.ek .case-study-body :is(.prose-group, .zigzag-prose) h2 {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+html.ek .case-study-body :is(.prose-group, .zigzag-prose) * + p {
+  margin-top: 1.1em;
+}
+
+/* Every visual block becomes a window: hairline, 10px corners, one soft shadow */
+html.ek .case-study-body :is(.image-pair, .carousel, .cs-figure, .image-grid, .lottie-grid),
+html.ek .case-study-body > img {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin: var(--space-6) auto 0;
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  box-shadow: var(--ek-shadow);
+  background: #FFFFFF;
+}
+
+html.ek .case-study-body .zigzag-section {
+  max-width: var(--ek-figure);
+  width: 100%;
+  margin: var(--space-6) auto 0;
+  border: 0;
+}
+
+html.ek .case-study-body .zigzag-media {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  box-shadow: var(--ek-shadow);
+}
+
+html.ek .case-study-body .zigzag-media .cs-figure {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.ek .case-study-body .carousel .cs-figure,
+html.ek .case-study-body .image-grid .cs-figure {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.ek .case-study-body .image-pair {
+  background: var(--ek-hairline);
+}
+
+html.ek .case-study-body .image-pair-cell + .image-pair-cell,
+html.ek .case-study-body .cs-meta-item + .cs-meta-item {
+  border-left-color: var(--ek-hairline);
+}
+
+/* Captions: small sans, muted, centered under the image */
+html.ek .case-study-body figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.84375rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  text-align: center;
+  border-top-color: var(--ek-hairline) !important;
+}
+
+html.ek .case-study-body .zigzag-media .cs-figure figcaption {
+  color: #FFFFFF;
+  text-align: left;
+}
+
+/* Meta line: mono labels over serif values, ruled top and bottom */
+html.ek .case-study-body .cs-hero-meta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  width: 100%;
+  max-width: var(--ek-prose);
+  margin: var(--space-6) auto 0;
+  padding: var(--space-2) 0;
+  border: 0;
+  border-block: 1px solid var(--ek-hairline);
+}
+
+html.ek .case-study-body .cs-meta-item {
+  padding: 0;
+  border: 0 !important;
+}
+
+html.ek .case-study-body .cs-meta-value {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+}
+
+/* Hero: the zoom target keeps its frame; only the type changes */
+html.ek .cs-hero-tagline {
+  font-family: var(--font-serif);
+  font-weight: 300;
+}
+
+html.ek .scroll-progress {
+  background: #448AFF;
+}
+
+/* Previous / next links */
+html.ek :is(.cs-nav, .case-study-nav) {
+  border-color: var(--ek-hairline);
+}
+
+/* Inline links in prose: hairline underline that darkens on hover */
+html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a {
+  text-decoration-color: #A9B4C0;
+}
+
+html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a:hover {
+  text-decoration-color: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.ek .nav-link {
+    transition: none;
+  }
+}

@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro'
 import RGBShutter from '../components/RGBShutter.astro'
 import { ref, sys, elementMap, animations } from '../data/tokens'
 import '../styles/global.css'
+import '../styles/editorial.css'
 
 interface Props {
   title?: string
@@ -249,11 +250,11 @@ const typoCss = `:root {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="ek">
   <head>
     <SEO title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
-    <link rel="preload" href="/fonts/perfectlynineties-light.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Persisted so the router keeps these faces on swap; re-creating them unloads the headline
          font mid-zoom -->
     <style is:inline data-astro-transition-persist="font-faces">
@@ -286,6 +287,36 @@ const typoCss = `:root {
         src: url('/fonts/perfectlynineties-lightitalic.woff2') format('woff2');
         font-weight: 300;
         font-style: italic;
+        font-display: swap;
+      }
+      /* Editorial Kit faces: Newsreader (opsz 6–72, wght 200–800), Geist and Geist Mono, self-hosted
+         from Google Fonts' latin files (OFL) */
+      @font-face {
+        font-family: 'Newsreader';
+        src: url('/fonts/newsreader-latin.woff2') format('woff2');
+        font-weight: 200 800;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Newsreader';
+        src: url('/fonts/newsreader-italic-latin.woff2') format('woff2');
+        font-weight: 200 800;
+        font-style: italic;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Geist';
+        src: url('/fonts/geist-latin.woff2') format('woff2');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Geist Mono';
+        src: url('/fonts/geist-mono-latin.woff2') format('woff2');
+        font-weight: 100 900;
+        font-style: normal;
         font-display: swap;
       }
     </style>
