@@ -37,12 +37,29 @@ html.ek {
   --content-inset-lg: 0px;
 }
 
-/* ── Layout: three edges only. Nav and footer sit on the page margin; every section and figure
-   on the --ek-figure column; running prose on the narrower --ek-prose column inside it. ── */
+/* ── Layout: one column. Nav, every section and figure, running prose and the footer all share
+   the --ek-figure column's left and right edges; prose just stops short at --ek-prose. ── */
+html.ek .nav-inner,
+html.ek .footer-container {
+  max-width: calc(var(--ek-figure) + 2 * var(--page-margin));
+}
+
+html.ek .nav-logo {
+  padding-inline: 0 var(--space-3);
+}
+
+html.ek .nav-links li:last-child .nav-link {
+  padding-right: 0;
+}
+
+html.ek .footer-links :is(.footer-link):last-child {
+  padding-right: 0;
+}
+
 html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .home-contact),
 html.ek .cs-hero,
 html.ek .case-study-body > :is(.zigzag-section, .carousel, .cs-figure, .image-pair, .image-grid, .case-study-cta),
-html.ek main > .cs-nav {
+html.ek main > :is(.cs-nav, .case-study-cta) {
   grid-column: 1 / -1;
   width: 100%;
   min-width: 0;
@@ -339,14 +356,20 @@ html.ek .case-study-body {
   padding-bottom: var(--space-7);
 }
 
+/* Prose shares the column's left edge; only its line length is shorter */
 html.ek .case-study-body .prose-group,
 html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
-html.ek .case-study-body .prose-group:has(> .cs-intro),
-html.ek .case-study-cta-content {
+html.ek .case-study-body .prose-group:has(> .cs-intro) {
   grid-column: 1 / -1;
   width: 100%;
-  max-width: var(--ek-prose);
+  max-width: var(--ek-figure);
   margin-inline: auto;
+}
+
+html.ek .case-study-body .prose-group > *,
+html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
+html.ek .case-study-cta-content {
+  max-width: var(--ek-prose);
 }
 
 html.ek .case-study-body .prose-group {
@@ -481,7 +504,7 @@ html.ek .case-study-body .cs-hero-meta {
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-5);
   width: 100%;
-  max-width: var(--ek-prose);
+  max-width: var(--ek-figure);
   margin: var(--space-6) auto 0;
   padding: 0;
   border: 0;
