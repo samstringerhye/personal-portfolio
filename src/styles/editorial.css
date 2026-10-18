@@ -3,8 +3,6 @@
    the :root token block and the components' scoped styles. */
 
 html.ek {
-  --font-serif: 'Newsreader', Georgia, serif;
-  --font-sans: 'Geist', system-ui, sans-serif;
   /* No monospace in this direction: labels use the sans in caps */
   --font-mono: var(--font-sans);
 
@@ -30,7 +28,6 @@ html.ek {
   --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
   --ek-prose: 38rem;
   --ek-figure: 65rem;
-  --ek-prose-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.35rem);
   /* Space above every section, and between a section heading and its content */
   --ek-section: clamp(4.5rem, 10vw, 9rem);
   --ek-heading-gap: clamp(2rem, 4vw, 3.5rem);
@@ -225,7 +222,7 @@ html.ek .cs-nav-inner {
   padding: 0 0 var(--ek-section);
 }
 
-/* ── Type: prose is serif, interface is sans, labels are mono ── */
+/* ── Type: the site's own Perfectly Nineties and DM Sans (tokens.json); labels are DM Sans caps ── */
 /* No italics in site copy (client brand mockups keep their own type) */
 html.ek :is(em, i, cite, address) {
   font-style: normal;
@@ -236,15 +233,6 @@ html.ek .typo-ui-caps {
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   color: var(--color-text-secondary);
-}
-
-html.ek :is(h1, h2, h3, .typo-display-lg, .typo-display-md, .typo-headline-lg, .typo-headline-sm) {
-  font-variation-settings: 'opsz' 72;
-  letter-spacing: -0.01em;
-}
-
-html.ek :is(h2, .typo-headline-lg) {
-  font-weight: 400;
 }
 
 /* ── Frame: no grid guides, no crosshair rules ── */
@@ -270,10 +258,6 @@ html.ek .nav {
 html.ek .nav::after,
 html.ek .nav::before {
   display: none;
-}
-
-html.ek .nav-logo {
-  font-weight: 400;
 }
 
 html.ek .nav-logo::after,
@@ -306,16 +290,8 @@ html.ek .nav-link.active {
   }
 }
 
-/* ── Home hero: the dot field stays; only the type changes ── */
-html.ek .hero-block {
-  font-weight: 300;
-}
-
+/* ── Home hero: the dot field and type stay as they were ── */
 html.ek .hero-bio {
-  font-family: var(--font-serif);
-  font-size: var(--ek-prose-size);
-  line-height: 1.65;
-  font-weight: 300;
   max-width: 36rem;
   margin-inline: auto;
 }
@@ -408,10 +384,6 @@ html.ek .work-list-item .work-list-card .work-list-title {
 }
 
 html.ek .work-list-item .work-list-card .work-list-tagline {
-  font-family: var(--font-serif);
-  font-size: var(--ek-prose-size);
-  line-height: 1.55;
-  font-weight: 300;
   color: var(--ek-ink-body);
 }
 
@@ -470,20 +442,8 @@ html.ek .case-study-body .prose-group:has(> .cs-intro) {
 }
 
 html.ek .case-study-body :is(.prose-group, .zigzag-prose) :is(p, li) {
-  font-family: var(--font-serif);
-  font-size: var(--ek-prose-size);
-  line-height: 1.65;
-  font-weight: 300;
-  font-variation-settings: 'opsz' 16;
   color: var(--color-text-primary);
   text-wrap: pretty;
-}
-
-html.ek .case-study-body .prose-group > .cs-intro {
-  font-family: var(--font-serif);
-  font-size: var(--ek-prose-size);
-  line-height: 1.65;
-  font-weight: 500;
 }
 
 html.ek .case-study-body :is(.prose-group, .zigzag-prose) h2 {
@@ -586,7 +546,7 @@ html.ek .case-study-body .zigzag-media .cs-figure figcaption {
   text-align: left;
 }
 
-/* Meta line: mono labels over serif values, ruled top and bottom */
+/* Meta line: caps labels over values, on the column edge */
 html.ek .case-study-body .cs-hero-meta {
   grid-column: 1 / -1;
   display: flex;
@@ -602,11 +562,6 @@ html.ek .case-study-body .cs-hero-meta {
 html.ek .case-study-body .cs-meta-item {
   padding: 0;
   border: 0 !important;
-}
-
-html.ek .case-study-body .cs-meta-value {
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
 }
 
 /* Hero: the art framed on the project color, the back link above it and the title below on white,
@@ -685,8 +640,6 @@ html.ek .cs-hero.cs-hero--stacked {
 }
 
 html.ek .cs-hero-tagline {
-  font-family: var(--font-serif);
-  font-weight: 300;
   color: var(--ek-ink-body);
 }
 
