@@ -519,13 +519,38 @@ html.ek .work-list-meta > span:first-child {
   margin-right: var(--space-1);
 }
 
-/* Desktop: each project is a row, the art in the left half and its text beside it in the right,
-   lined up with the halves of How I lead and Experience below. The art frame is its own container
-   so the subject framing (cqw) measures the frame, not the whole row. */
+/* Desktop: Selected Work stays pinned in the left third; each project is a row in the other two
+   thirds, the art with its text beside it. The art frame is its own container so the subject
+   framing (cqw) measures the frame, not the whole row. */
 @media (min-width: 64.0625rem) {
+  html.ek .work-list-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+
+  html.ek .work-list-intro {
+    align-self: stretch;
+  }
+
+  html.ek .work-list-section .work-list-intro-inner {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  html.ek .work-list-section .work-list-heading {
+    margin-bottom: 0;
+  }
+
+  /* Rows are shorter than stacked cards, so they sit closer together */
+  html.ek .work-list {
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+
   html.ek .work-list-item .work-list-card {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     column-gap: var(--grid-gutter);
     align-items: center;
   }
