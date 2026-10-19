@@ -16,8 +16,9 @@ const tilt = animations.workCards.phone
 // Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
 const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
 const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
-// The device is small on the page; past 1.5x the extra pixels cost more than they show
-const dpr = () => Math.min(1.5, window.devicePixelRatio || 1)
+// Full 2x on retina screens: the devices now fill most of each row, and at 1.5x their thin edges
+// and keycaps stair-step. Only on-screen scenes render, so the cost stays to one or two canvases
+const dpr = () => Math.min(2, window.devicePixelRatio || 1)
 
 // No probe context here: creating one costs a main-thread stall. A worker without WebGL reports
 // an error and the main thread takes over

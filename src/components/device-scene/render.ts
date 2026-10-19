@@ -2,15 +2,15 @@
 // DOM screen behind the canvas shows through and the real bezel, frame and glass draw over it.
 // Runs in model.worker.ts, or on the main thread where OffscreenCanvas WebGL is missing.
 import {
-  ACESFilmicToneMapping, Box3, DirectionalLight, DoubleSide, Group, MeshBasicMaterial, NoBlending,
+  Box3, NeutralToneMapping, DirectionalLight, DoubleSide, Group, MeshBasicMaterial, NoBlending,
   PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
   type Mesh, type MeshPhysicalMaterial, type Texture,
 } from 'three'
 import { GLTFLoader, type GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 
 import { DEVICES, modelUrl, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
+import { studioScene } from './studio'
 
 // three.js probes WebP support with new Image(), which a worker doesn't have. Every browser this
 // site supports decodes WebP, so this takes the extension's texture as is
@@ -30,15 +30,17 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
 
   const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
   gl.setPixelRatio(dpr)
-  gl.toneMapping = ACESFilmicToneMapping
+  // Khronos PBR Neutral keeps the screens' and finishes' colors true, where ACES darkens and shifts them
+  gl.toneMapping = NeutralToneMapping
   gl.outputColorSpace = SRGBColorSpace
   gl.setClearColor(0, 0)
 
   const scene = new Scene()
   const pmrem = new PMREMGenerator(gl)
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-  scene.environmentIntensity = 0.9
-  const key = new DirectionalLight(0xffffff, 1.4)
+  // Lit mostly by the studio's softboxes (studio.ts); a soft key adds direction to the shading
+  scene.environment = pmrem.fromScene(studioScene(), 0.02).texture
+  scene.environmentIntensity = 1
+  const key = new DirectionalLight(0xffffff, 0.8)
   key.position.set(-600, 900, 1200)
   scene.add(key)
 
