@@ -71,6 +71,8 @@ export interface DeviceGeometry {
   /** The point the device turns about (its body's middle) relative to the display's center, in
       world units: the display sits at pivot − R·pivot once turned by R */
   pivot: [number, number, number]
+  /** How far a held device rises off the floor, in world units */
+  liftHeight: number
 }
 
 /** World units the stage height spans: the device fits by height or, in a narrow stage, by width */

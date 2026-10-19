@@ -8,7 +8,8 @@ import { DEVICES, viewHeightAt, type DeviceGeometry, type DeviceName } from './s
 interface Backend {
   geometry: DeviceGeometry
   resize: (w: number, h: number, dpr: number) => void
-  frame: (rx: number, ry: number) => void
+  /** Draws the model at this angle and lift, then calls drawn once it's on the canvas */
+  frame: (rx: number, ry: number, lift: number, drawn: () => void) => void
   dispose: () => void
 }
 
@@ -29,10 +30,17 @@ const offscreen = () => typeof HTMLCanvasElement.prototype.transferControlToOffs
 let worker: Worker | null = null
 let nextId = 0
 const pending = new Map<number, { resolve: (geometry: DeviceGeometry) => void; reject: (e: Error) => void }>()
+const drawnCallbacks = new Map<number, () => void>()
 function sharedWorker(): Worker {
   if (worker) return worker
   const w = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
   w.onmessage = e => {
+    if (e.data.type === 'drawn') {
+      const done = drawnCallbacks.get(e.data.id)
+      drawnCallbacks.delete(e.data.id)
+      done?.()
+      return
+    }
     const waiting = pending.get(e.data.id)
     if (!waiting) return
     pending.delete(e.data.id)
@@ -60,8 +68,14 @@ async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, de
   return {
     geometry,
     resize: (width, height, dpr) => target.postMessage({ type: 'resize', id, width, height, dpr }),
-    frame: (rx, ry) => target.postMessage({ type: 'frame', id, rx, ry }),
-    dispose: () => target.postMessage({ type: 'dispose', id }),
+    frame: (rx, ry, lift, drawn) => {
+      drawnCallbacks.set(id, drawn)
+      target.postMessage({ type: 'frame', id, rx, ry, lift })
+    },
+    dispose: () => {
+      drawnCallbacks.delete(id)
+      target.postMessage({ type: 'dispose', id })
+    },
   }
 }
 
@@ -69,18 +83,20 @@ async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, devi
   const { createDeviceRenderer } = await import('./render')
   const r = await createDeviceRenderer(canvas, w, h, dprFor(w, h), device, fov, { rx: rest.pitch, ry: rest.yaw })
   r.render(rest.pitch, rest.yaw)
-  return { geometry: r.geometry, resize: r.resize, frame: r.render, dispose: r.dispose }
+  return { geometry: r.geometry, resize: r.resize, frame: (rx, ry, lift, drawn) => { r.render(rx, ry, lift); drawn() }, dispose: r.dispose }
 }
 
 /** The CSS matrix that lays the screen (fw px wide) on the display: the device's rotation
     (three.js XYZ order, z = 0) applied to the screen plane, at s px per world unit, y flipped.
     World units are the screen's layout pixels (render.ts scales the model so). The device turns
-    about pivot, which carries the display to pivot − R·pivot */
-function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number, pivot: [number, number, number]) {
+    about pivot, which carries the display to pivot − R·pivot, and rises by lift along its tilted
+    floor's up (render.ts) */
+function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number, pivot: [number, number, number], lift: number) {
   const ca = Math.cos(rx), sa = Math.sin(rx), cb = Math.cos(ry), sb = Math.sin(ry)
   const r = [[cb, 0, sb], [sa * sb, ca, -sa * cb], [-ca * sb, sa, ca * cb]]
   const tx = -fw / 2, ty = fh / 2
-  const t = [0, 1, 2].map(i => r[i][0] * tx + r[i][1] * ty + pivot[i] - (r[i][0] * pivot[0] + r[i][1] * pivot[1] + r[i][2] * pivot[2]))
+  const up = [0, ca * lift, sa * lift]
+  const t = [0, 1, 2].map(i => r[i][0] * tx + r[i][1] * ty + pivot[i] - (r[i][0] * pivot[0] + r[i][1] * pivot[1] + r[i][2] * pivot[2]) + up[i])
   return `matrix3d(${[
     s * r[0][0], -s * r[1][0], s * r[2][0], 0,
     -s * r[0][1], s * r[1][1], -s * r[2][1], 0,
@@ -137,23 +153,17 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${screenAspect}`
   art.classList.add('is-3d')
 
-  // The last angle drawn: the model and the screen only redraw when it changes (or on resize)
-  let drawn: [number, number] | null = null
+  // The last angle and lift drawn: the model and the screen only redraw when they change (or on
+  // resize). One frame is in flight at a time, and the DOM screen moves when the model's frame is
+  // drawn, so the two stay together even while the worker runs behind the page
+  let drawn: [number, number, number] | null = null
+  let busy = false
   // The screen's scale and shift follow the renderer's framing (render.ts)
   const [cx, cy] = backend.geometry.center
   let scale = 1
-  // The floor shadow sits under the body and spans most of its width, whichever way it fits
-  const floor = art.querySelector<HTMLElement>('.floor')
-  const { fill } = DEVICES[device]
   const fit = (nw: number, nh: number) => {
     scale = nh / viewHeightAt(backend.geometry, nw, nh)
     view.style.translate = `${-cx * scale}px ${cy * scale}px`
-    if (floor) {
-      floor.style.top = `${nh / 2 + backend.geometry.viewHeight * fill * scale / 2}px`
-      const span = backend.geometry.viewWidth * fill * scale * 0.8
-      floor.style.width = `${span}px`
-      floor.style.height = `${span * 0.14}px`
-    }
   }
   fit(w, h)
   const ro = new ResizeObserver(() => {
@@ -168,9 +178,14 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
 
   let rx = rest.pitch
   let ry = rest.yaw
+  // 0 resting on the floor, 1 lifted while held: the shadow softens and lightens under it
+  let lift = 0
   let on = false
   let raf = 0
   let tick = 0
+  const pivot = backend.geometry.pivot
+  const liftHeight = backend.geometry.liftHeight
+  const place = (a: number, b: number, l: number) => { face.style.transform = screenMatrix(a, b, scale, fw, fh, pivot, l * liftHeight) }
 
   // Devices don't follow the pointer; they turn when dragged. The grab area is the device's own box
   // (the scene bleeds past it, over the caption's link), and a vertical swipe still scrolls the page
@@ -223,6 +238,9 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
       const offset = Math.round(-fromCenter * tilt.parallax)
       if (offset !== parallax) art.style.setProperty('--parallax', `${(parallax = offset)}px`)
     }
+    const liftTo = drag ? 1 : 0
+    lift = reduced ? liftTo : lift + (liftTo - lift) * 0.18
+    if (Math.abs(lift - liftTo) < 0.002) lift = liftTo
     if (dragTo) {
       rx += (dragTo[0] - rx) * 0.4
       ry += (dragTo[1] - ry) * 0.4
@@ -235,13 +253,14 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
       ry += (ty - ry) * rate
       if (returning && Math.abs(tx - rx) + Math.abs(ty - ry) < 0.01) returning = false
     }
-    if (drawn && Math.abs(rx - drawn[0]) + Math.abs(ry - drawn[1]) < 1e-5) return
+    if (busy) return
+    if (drawn && Math.abs(rx - drawn[0]) + Math.abs(ry - drawn[1]) + Math.abs(lift - drawn[2]) < 1e-5) return
     if (t - lastInput > 1000 && tick++ % 2) return
-    drawn = [rx, ry]
-    backend.frame(rx, ry)
-    face.style.transform = screenMatrix(rx, ry, scale, fw, fh, backend.geometry.pivot)
+    const [a, b, l] = drawn = [rx, ry, lift]
+    busy = true
+    backend.frame(a, b, l, () => { busy = false; place(a, b, l) })
   }
-  face.style.transform = screenMatrix(rx, ry, scale, fw, fh, backend.geometry.pivot)
+  place(rx, ry, 0)
   const io = new IntersectionObserver(([e]) => {
     on = e.isIntersecting
     cancelAnimationFrame(raf)

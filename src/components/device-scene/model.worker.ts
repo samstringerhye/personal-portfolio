@@ -8,7 +8,7 @@ import type { DeviceName } from './shared'
 type Message =
   | { type: 'init'; id: number; canvas: OffscreenCanvas; width: number; height: number; dpr: number; device: DeviceName; fov: number; rx: number; ry: number }
   | { type: 'resize'; id: number; width: number; height: number; dpr: number }
-  | { type: 'frame'; id: number; rx: number; ry: number }
+  | { type: 'frame'; id: number; rx: number; ry: number; lift: number }
   | { type: 'dispose'; id: number }
 
 const renderers = new Map<number, Awaited<ReturnType<typeof createDeviceRenderer>>>()
@@ -31,7 +31,9 @@ self.onmessage = async (e: MessageEvent<Message>) => {
   } else if (msg.type === 'resize') {
     renderers.get(msg.id)?.resize(msg.width, msg.height, msg.dpr)
   } else if (msg.type === 'frame') {
-    renderers.get(msg.id)?.render(msg.rx, msg.ry)
+    renderers.get(msg.id)?.render(msg.rx, msg.ry, msg.lift)
+    // The page moves the DOM screen to this frame's angle once it's drawn, so the two stay together
+    self.postMessage({ type: 'drawn', id: msg.id })
   } else if (msg.type === 'dispose') {
     const r = renderers.get(msg.id)
     if (r) { r.dispose(); renderers.delete(msg.id) } else disposed.add(msg.id)

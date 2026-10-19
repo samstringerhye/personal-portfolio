@@ -11,6 +11,10 @@ import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.j
 
 import { DEVICES, modelUrl, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
 import { studioScene } from './studio'
+import { contactShadow } from './contact-shadow'
+
+// How far a held device rises off the floor, as a share of its height
+const LIFT = 0.05
 
 // three.js probes WebP support with new Image(), which a worker doesn't have. Every browser this
 // site supports decodes WebP, so this takes the extension's texture as is
@@ -89,27 +93,39 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   const dc = screen.getCenter(new Vector3())
   const k = spec.screenWidth / ds.x
 
-  // The display's center is the origin, at the DOM screen's scale
-  const device3d = new Group()
+  // The display's center is the origin, at the DOM screen's scale. The device turns in two steps,
+  // the same rotation as Euler (rx, ry): it spins (ry) on a floor that tilts toward the camera (rx),
+  // so its shadow on that floor stays put while it spins
+  const tilt = new Group()
+  const spin = new Group()
   const holder = new Group()
-  scene.add(device3d)
-  device3d.add(holder)
+  scene.add(tilt)
+  tilt.add(spin)
+  spin.add(holder)
   holder.add(roll)
   holder.scale.setScalar(k)
   holder.position.copy(dc).multiplyScalar(-k)
   // It turns about the middle of its body, like a product on a turntable: about the display, a
   // laptop's base swings wide when it's dragged round. model.ts offsets the screen to match
-  device3d.updateMatrixWorld(true)
-  const pivot = new Box3().setFromObject(device3d, true).getCenter(new Vector3())
-  device3d.position.copy(pivot)
+  tilt.updateMatrixWorld(true)
+  const standing = new Box3().setFromObject(spin, true)
+  const pivot = standing.getCenter(new Vector3())
+  tilt.position.copy(pivot)
   holder.position.sub(pivot)
+
+  // The floor under the device, wide enough for its footprint at any spin
+  const size = standing.getSize(new Vector3())
+  const shadow = contactShadow(Math.hypot(size.x, size.z) * 1.6, size.y)
+  shadow.group.position.y = standing.min.y - pivot.y
+  tilt.add(shadow.group)
 
   // Framed on the whole device as it sits at rest, centered and as large as the stage allows. The
   // camera stands back so the stage spans viewHeightAt(): the DOM screen then matches the display
   // with the same scale and a CSS perspective of the same angle (model.ts)
-  device3d.rotation.set(rest.rx, rest.ry, 0)
-  device3d.updateMatrixWorld(true)
-  const body = new Box3().setFromObject(device3d, true)
+  tilt.rotation.x = rest.rx
+  spin.rotation.y = rest.ry
+  tilt.updateMatrixWorld(true)
+  const body = new Box3().setFromObject(spin, true)
   const center = body.getCenter(new Vector3())
   const geometry: DeviceGeometry = {
     screenAspect: ds.x / ds.y,
@@ -117,6 +133,7 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
     viewWidth: (body.max.x - body.min.x) / spec.fill,
     center: [center.x, center.y],
     pivot: [pivot.x, pivot.y, pivot.z],
+    liftHeight: size.y * LIFT,
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
@@ -141,8 +158,14 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   await gl.compileAsync(scene, camera)
   textures.forEach(t => gl.initTexture(t))
 
-  const render = (rx: number, ry: number) => {
-    device3d.rotation.set(rx, ry, 0)
+  // The shadow only changes as the device spins or lifts
+  let shadowAt = ''
+  const render = (rx: number, ry: number, lift = 0) => {
+    tilt.rotation.x = rx
+    spin.rotation.y = ry
+    spin.position.y = lift * geometry.liftHeight
+    const at = `${ry},${lift}`
+    if (at !== shadowAt) { shadow.update(gl, scene, lift); shadowAt = at }
     gl.render(scene, camera)
   }
   // One worker outlives its scenes, so free the model's GPU memory explicitly
@@ -156,6 +179,7 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
       mat.dispose()
     })
     scene.environment?.dispose()
+    shadow.dispose()
     pmrem.dispose()
     gl.dispose()
   }
