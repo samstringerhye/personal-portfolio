@@ -523,14 +523,14 @@ html.ek .work-list-meta > span:first-child {
 }
 
 /* Desktop: Selected Work heads the list, and each project is a row on the 1:3 grid How I lead and
-   Experience use: its text centered in the left quarter, its art the full height of the row */
+   Experience use: its text at the bottom of the left quarter, its art the full height of the row */
 @media (min-width: 64.0625rem) {
   html.ek .work-list-card {
     --work-caption-height: 0rem;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
     column-gap: var(--grid-gutter);
-    align-items: center;
+    align-items: end;
   }
 
   /* The art's own width, not the row's, for the --narrow-* sizing (cqw) */
@@ -974,7 +974,7 @@ html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-c
 
   html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .not-found-link):hover,
   html.ek .cs-nav-link:hover .cs-nav-title,
-  html.ek .work-list-card:hover .work-list-title {
+  html.ek .work-list-caption:hover .work-list-title {
     text-decoration-color: currentColor;
     opacity: 1;
   }

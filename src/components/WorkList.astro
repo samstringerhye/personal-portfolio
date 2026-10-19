@@ -38,7 +38,7 @@ const featured = (await getCollection('work'))
   <ul class="work-list" role="list" data-no-reveal>
     {featured.map((entry, i) => (
       <li class:list={['work-list-item', { 'work-list-item--light': entry.data.thumbnailText === 'light' }]}>
-        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailScene ? 'transparent' : entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox, entry.data.thumbnailLayers.subjectBounds)}` : undefined}>
+        <div class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailScene ? 'transparent' : entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox, entry.data.thumbnailLayers.subjectBounds)}` : undefined}>
           <div
             class="work-list-media"
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
@@ -91,7 +91,7 @@ const featured = (await getCollection('work'))
               </div>
             )}
           </div>
-          <div class="work-list-caption">
+          <a href={`/work/${entry.id}`} class="work-list-caption">
             <p class="work-list-meta typo-ui-caps">
               <span>{entry.data.yearLabel ?? entry.data.year}</span>
               {entry.data.tags?.slice(0, 2).map(tag => <span class="work-list-tag">{tag}</span>)}
@@ -106,8 +106,8 @@ const featured = (await getCollection('work'))
               <CardTitleTag class={`work-list-title typo-${cardTitleRole}`}>{entry.data.title}</CardTitleTag>
               <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </li>
     ))}
   </ul>
@@ -154,9 +154,13 @@ const featured = (await getCollection('work'))
     position: relative;
     display: block;
     color: var(--color-text-primary);
-    text-decoration: none;
     container-type: inline-size;
-    /* The tap flash would tint the image while it zooms into the case study */
+  }
+
+  /* Only the text is the link: the device beside it plays without taking hovers or clicks */
+  .work-list-caption {
+    color: inherit;
+    text-decoration: none;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -282,10 +286,11 @@ const featured = (await getCollection('work'))
     color: white;
   }
 
-  .work-list-card:focus-visible {
+  .work-list-caption:focus-visible {
     /* Transparent outline keeps a ring in forced-colors mode, where box-shadow is dropped */
     outline: 2px solid transparent;
-    box-shadow: inset var(--focus-ring);
+    box-shadow: var(--focus-ring);
+    border-radius: 4px;
   }
 
 
