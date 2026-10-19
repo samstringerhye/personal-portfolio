@@ -296,7 +296,22 @@
       "description": "Homepage work card flipbook (thumbnailLayers.frames)",
       "properties": {
         "flipHold": { "$ref": "#/definitions/duration", "description": "How long each frame holds before the next" },
-        "flipFade": { "$ref": "#/definitions/duration", "description": "Crossfade between frames" }
+        "flipFade": { "$ref": "#/definitions/duration", "description": "Crossfade between frames" },
+        "phone": {
+          "type": "object",
+          "description": "3D phone on coded work cards (PhoneScene). Angles in radians",
+          "properties": {
+            "restYaw": { "type": "number", "description": "Turn at rest; negative shows the left side" },
+            "restPitch": { "type": "number", "description": "Tilt at rest; positive leans the top back" },
+            "pointerYaw": { "type": "number", "description": "Turn across the full width of the window" },
+            "pointerPitch": { "type": "number", "description": "Tilt across the full height of the window" },
+            "scrollPitch": { "type": "number", "description": "Tilt from the card's place in the viewport, bottom to top" },
+            "sway": { "type": "number", "description": "Idle turn amplitude" },
+            "swayPeriod": { "$ref": "#/definitions/duration", "description": "Idle sway period" },
+            "follow": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the distance to the target angle covered each frame" }
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     }

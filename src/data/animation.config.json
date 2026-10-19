@@ -226,6 +226,16 @@
   },
   "workCards": {
     "flipHold": 1.4,
-    "flipFade": 0.35
+    "flipFade": 0.35,
+    "phone": {
+      "restYaw": -0.46,
+      "restPitch": 0.06,
+      "pointerYaw": 0.8,
+      "pointerPitch": 0.28,
+      "scrollPitch": 0.22,
+      "sway": 0.04,
+      "swayPeriod": 2.6,
+      "follow": 0.06
+    }
   }
 }
