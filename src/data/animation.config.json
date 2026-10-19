@@ -229,7 +229,47 @@
       "sway": 0.04,
       "swayPeriod": 2.6,
       "follow": 0.06,
-      "lensMm": 85
+      "lensMm": 100
+    },
+    "myfrontier": {
+      "moves": {
+        "tap": 0.65,
+        "signedIn": 0.76,
+        "push": 0.7,
+        "sheetUp": 0.56,
+        "sheetUpDim": 0.42,
+        "sheetDown": 0.46,
+        "sheetDownDim": 0.38,
+        "sheetDownDimDelay": 0.08,
+        "islandOpen": 0.52,
+        "islandClose": 0.38,
+        "refreshPull": 0.52,
+        "refreshSpin": 0.9,
+        "refreshSettle": 0.48,
+        "payWash": 0.7,
+        "matchCut": 0.64,
+        "relaunch": 0.6
+      },
+      "holds": {
+        "splash": 2.5,
+        "signIn": 0.9,
+        "faceIdScan": 2.5,
+        "home": 1.3,
+        "billPay": 1.1,
+        "methodSheet": 1,
+        "methodPicked": 0.5,
+        "dateSheet": 0.7,
+        "daySelected": 0.35,
+        "datePicked": 0.6,
+        "coin": 1.5,
+        "confirmation": 1.2,
+        "paymentSent": 1.9,
+        "support": 1.2,
+        "orderStatus": 2.2,
+        "refreshing": 0.9,
+        "statusUpdate": 2,
+        "statusFinal": 2.2
+      }
     }
   }
 }

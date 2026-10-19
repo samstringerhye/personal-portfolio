@@ -91,7 +91,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.sway` | radians | `0.04` | Idle turn amplitude |
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
-| `workCards.phone.lensMm` | mm | `85` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
+| `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
+| `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-phone-scenemyfrontierts) |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
 | `smoothScroll.lerp` | 0–1 | `0.5` | Lenis smooth scroll interpolation (lower = smoother, higher = snappier) |
 | `smoothScroll.wheelMultiplier` | number | `1` | Mouse wheel scroll speed multiplier |
@@ -185,6 +186,37 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `heroPhoneScroll.scrollAt` | `0.4` | When the endless scroll starts |
 | `decisionStepper.hold` | `3.5` | How long each step of the Bespoke decision stepper shows before the next, while it plays on its own |
 | `decisionStepper.fade` | `0.3` | Step image fading in |
+
+---
+
+## workCards.myfrontier (phone-scene/myfrontier.ts)
+
+The MyFrontier card's app tour, in seconds. Reduced motion skips the tour and holds on the home screen.
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `moves.tap` | `0.65` | Tap ripple |
+| `moves.signedIn` | `0.76` | Home screen rising over the receding sign-in screen |
+| `moves.push` | `0.7` | Push to the next screen |
+| `moves.sheetUp` / `sheetUpDim` | `0.56` / `0.42` | Bottom sheet rising, and the screen dimming behind it |
+| `moves.sheetDown` / `sheetDownDim` / `sheetDownDimDelay` | `0.46` / `0.38` / `0.08` | Bottom sheet dropping, and the dim lifting after a short delay |
+| `moves.islandOpen` / `islandClose` | `0.52` / `0.38` | Dynamic Island opening into the Face ID glyph and closing |
+| `moves.refreshPull` / `refreshSettle` | `0.52` / `0.48` | Pull to refresh: the screen pulling down, then the new state settling up |
+| `moves.refreshSpin` | `0.9` | One turn of the refresh spinner |
+| `moves.payWash` | `0.7` | Red wash spreading from the Pay button |
+| `moves.matchCut` | `0.64` | Red closing down onto the check on the Payment sent screen |
+| `moves.relaunch` | `0.6` | Launch screen zooming out of the icon at the loop seam |
+| `holds.splash` / `signIn` | `2.5` / `0.9` | Launch animation, then the sign-in screen before the Face ID tap |
+| `holds.faceIdScan` | `2.5` | Face ID glyph scanning and checking |
+| `holds.home` | `1.3` | Home screen before Make a payment |
+| `holds.billPay` | `1.1` | Bill pay screen before the method tap |
+| `holds.methodSheet` / `methodPicked` | `1` / `0.5` | Payment method sheet open, then the screen after it closes |
+| `holds.dateSheet` / `daySelected` / `datePicked` | `0.7` / `0.35` / `0.6` | Date sheet open, the 14th selected, then the screen after it closes |
+| `holds.coin` / `confirmation` | `1.5` / `1.2` | Coin and confirmation Lottie animations |
+| `holds.paymentSent` | `1.9` | Payment sent screen |
+| `holds.support` / `orderStatus` | `1.2` / `2.2` | Support tab, then the order status screen |
+| `holds.refreshing` | `0.9` | Spinner turning before the new status arrives |
+| `holds.statusUpdate` / `statusFinal` | `2` / `2.2` | First and second status updates, before the next refresh and the relaunch |
 
 ---
 

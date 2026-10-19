@@ -300,6 +300,24 @@
             "lensMm": { "type": "number", "minimum": 10, "description": "Camera focal length, full-frame equivalent (vertical field of view on a 24mm sensor)" }
           },
           "additionalProperties": false
+        },
+        "myfrontier": {
+          "type": "object",
+          "description": "The MyFrontier card's app tour (phone-scene/myfrontier.ts). Seconds",
+          "properties": {
+            "moves": {
+              "type": "object",
+              "description": "Transition durations",
+              "additionalProperties": { "$ref": "#/definitions/duration" }
+            },
+            "holds": {
+              "type": "object",
+              "description": "Pauses between steps, in tour order",
+              "additionalProperties": { "$ref": "#/definitions/duration" }
+            }
+          },
+          "required": ["moves", "holds"],
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
