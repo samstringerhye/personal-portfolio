@@ -27,8 +27,8 @@ html.ek {
   --narrow-art-pad: calc(3 * var(--narrow-pad));
   --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
   --ek-prose: 40rem;
-  /* 1440px: the studio-portfolio range, where the work is the page */
-  --ek-figure: 90rem;
+  /* 1600px: the studio-portfolio range, where the work is the page */
+  --ek-figure: 100rem;
   /* Space above every section, and between a section heading and its content */
   --ek-section: clamp(6rem, 14vw, 13rem);
   --ek-heading-gap: clamp(2rem, 4vw, 3.5rem);
@@ -40,6 +40,7 @@ html.ek {
 
 /* ── Layout: one column. Nav, every section and figure, running prose and the footer all share
    the --ek-figure column's left and right edges; prose just stops short at --ek-prose. ── */
+html.ek .grid-12,
 html.ek .nav-inner,
 html.ek .footer-container {
   max-width: calc(var(--ek-figure) + 2 * var(--page-margin));
@@ -150,8 +151,14 @@ html.ek .footer-bottom {
   padding-inline: 0;
 }
 
+/* The page closes on one large line and the email pill, like a studio's sign-off */
 html.ek .home-contact {
-  gap: var(--space-3);
+  gap: var(--space-6);
+}
+
+html.ek .home-contact h2 {
+  max-width: 14ch;
+  text-wrap: balance;
 }
 
 /* The other pages (about, colophon, blog) sit on the same column. They used the page-wide
@@ -175,8 +182,107 @@ html.ek :is(.colophon-body, .blog-post-header, .blog-post-body) {
   padding-inline: 0;
 }
 
+/* About: title on the left, content on the right, the same split as the homepage sections. Each
+   row is spaced like a section; the photo gets the window corners; the skills become panels. */
+html.ek .about-page {
+  padding-bottom: var(--ek-section);
+}
+
+html.ek .about-heading {
+  padding: var(--ek-section) 0 var(--ek-heading-gap);
+}
+
+html.ek .about-row + .about-row {
+  margin-top: var(--ek-section);
+}
+
 html.ek .about-portrait-cell {
   margin-inline-end: 0;
+}
+
+html.ek .about-portrait {
+  border-radius: var(--ek-window-radius);
+}
+
+html.ek .about-intro-right {
+  padding: 0;
+  justify-content: flex-start;
+}
+
+html.ek .about-skills-heading,
+html.ek .about-row-body {
+  padding: 0 0 var(--ek-heading-gap);
+}
+
+html.ek .about-section-label {
+  margin: 0;
+}
+
+html.ek .about-page .skill-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
+
+html.ek .about-page .skill-cell,
+html.ek .about-page .skill-cell:nth-child(n) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: clamp(12rem, 15vw, 16rem);
+  padding: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  border: 0;
+  border-radius: var(--ek-window-radius);
+  background: var(--ek-panel);
+}
+
+/* The number sits at the top; title and line settle together at the bottom */
+html.ek .about-page .skill-index {
+  margin: 0 0 auto;
+  padding-bottom: var(--space-5);
+  font-family: var(--font-serif);
+  font-size: var(--text-400);
+  line-height: 1;
+}
+
+html.ek .about-page .skill-title {
+  margin: 0;
+}
+
+html.ek .about-page .skill-desc {
+  color: var(--ek-ink-body);
+}
+
+@media (--1x) {
+  html.ek .about-page .skill-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 64.0625rem) {
+  html.ek .about-portrait-cell {
+    grid-column: 1 / 5;
+  }
+
+  html.ek .about-intro-right {
+    grid-column: 5 / -1;
+    padding-left: var(--grid-gutter);
+  }
+
+  html.ek :is(.about-skills-heading, .about-row-body) {
+    grid-column: 1 / 5;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+    padding: 0;
+  }
+
+  html.ek :is(.about-page .skill-grid, .about-logos-wrap) {
+    grid-column: 5 / -1;
+  }
+
+  html.ek .about-logos-wrap {
+    padding: 0;
+  }
 }
 
 html.ek .skill-cell {
@@ -397,6 +503,18 @@ html.ek .work-list-item .work-list-card .work-list-text {
 
 html.ek .work-list-item .work-list-card .work-list-meta {
   gap: var(--space-2);
+}
+
+/* The project's first two tags, so the list says what kind of work each one is */
+html.ek .work-list-tag {
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  background: var(--ek-panel);
+  color: var(--ek-ink-body);
+}
+
+html.ek .work-list-meta > span:first-child {
+  margin-right: var(--space-1);
 }
 
 html.ek .work-list-lock svg {
@@ -655,10 +773,12 @@ html.ek .cs-hero {
   flex-direction: column;
 }
 
+/* Wide heroes are 4:3 until that would push the title off the first screen; then they get wider
+   rather than taller, leaving room for the back link and the title under the art */
 @container (min-width: 781px) {
   html.ek .cs-hero.cs-hero .cs-hero-size {
     flex: none;
-    height: calc(100cqw * 3 / 4);
+    height: max(24rem, min(calc(100cqw * 3 / 4), calc(100svh - var(--nav-height) - 2 * var(--touch-target) - 6rem)));
     min-height: 0;
     max-height: none;
     margin-top: var(--touch-target);
