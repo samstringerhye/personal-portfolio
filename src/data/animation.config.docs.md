@@ -91,6 +91,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.sway` | radians | `0.04` | Idle turn amplitude |
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
+| `workCards.phone.lensMm` | mm | `85` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
 | `smoothScroll.lerp` | 0–1 | `0.5` | Lenis smooth scroll interpolation (lower = smoother, higher = snappier) |
 | `smoothScroll.wheelMultiplier` | number | `1` | Mouse wheel scroll speed multiplier |

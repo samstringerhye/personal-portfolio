@@ -4,7 +4,7 @@
 // OffscreenCanvas WebGL is missing.
 import {
   ACESFilmicToneMapping, Box3, DirectionalLight, DoubleSide, Group, MeshBasicMaterial, NoBlending,
-  OrthographicCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
+  PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
   type Mesh, type MeshPhysicalMaterial, type Texture,
 } from 'three'
 import { GLTFLoader, type GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -28,7 +28,7 @@ class WebPTextures {
   }
 }
 
-export async function createPhoneRenderer(canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number, url: string) {
+export async function createPhoneRenderer(canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number, url: string, fov: number) {
   const gltf = (await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).register(p => new WebPTextures(p) as any).loadAsync(url)).scene
 
   const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
@@ -78,18 +78,15 @@ export async function createPhoneRenderer(canvas: HTMLCanvasElement | OffscreenC
   holder.rotation.y = front < 0 ? Math.PI : 0
   holder.position.set(-oc.x * k * front, -oc.y * k, -oc.z * k * front)
 
-  // Orthographic, so the DOM screen needs only an affine transform to stay on the display
+  // The camera stands back so the display plane spans viewHeight: the DOM screen then matches it
+  // with the same scale and a CSS perspective of the same angle (model.ts)
   const geometry: PhoneGeometry = { screenAspect: os.x / os.y, viewHeight: (body.max.y - body.min.y) * k / FILL }
-  const camera = new OrthographicCamera(-1, 1, 1, -1, 1, 20000)
-  camera.position.z = 5000
+  const camera = new PerspectiveCamera(fov, width / height, 10, 100000)
+  camera.position.z = (geometry.viewHeight / 2) / Math.tan((fov / 2) * Math.PI / 180)
   const resize = (w: number, h: number) => {
     if (!w || !h) return
     gl.setSize(w, h, false)
-    const u = geometry.viewHeight / h
-    camera.left = -w / 2 * u
-    camera.right = w / 2 * u
-    camera.top = h / 2 * u
-    camera.bottom = -h / 2 * u
+    camera.aspect = w / h
     camera.updateProjectionMatrix()
   }
   resize(width, height)

@@ -228,7 +228,8 @@
       "scrollPitch": 0.22,
       "sway": 0.04,
       "swayPeriod": 2.6,
-      "follow": 0.06
+      "follow": 0.06,
+      "lensMm": 85
     }
   }
 }

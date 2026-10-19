@@ -13,6 +13,9 @@ interface Backend {
 }
 
 const tilt = animations.workCards.phone
+// Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
+const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
+const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
 // The phone is small on the page; past 1.5x the extra pixels cost more than they show
 const dpr = () => Math.min(1.5, window.devicePixelRatio || 1)
 
@@ -35,13 +38,13 @@ function workerBackend(canvas: HTMLCanvasElement, w: number, h: number): Promise
         dispose: () => worker.terminate(),
       })
     }
-    worker.postMessage({ type: 'init', canvas: offscreen, width: w, height: h, dpr: dpr(), url: MODEL_URL, rx: tilt.restPitch, ry: tilt.restYaw }, [offscreen])
+    worker.postMessage({ type: 'init', canvas: offscreen, width: w, height: h, dpr: dpr(), url: MODEL_URL, fov, rx: tilt.restPitch, ry: tilt.restYaw }, [offscreen])
   })
 }
 
 async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number): Promise<Backend> {
   const { createPhoneRenderer } = await import('./phone-render')
-  const phone = await createPhoneRenderer(canvas, w, h, dpr(), MODEL_URL)
+  const phone = await createPhoneRenderer(canvas, w, h, dpr(), MODEL_URL, fov)
   phone.render(tilt.restPitch, tilt.restYaw)
   return { geometry: phone.geometry, resize: phone.resize, frame: phone.render, dispose: phone.dispose }
 }
@@ -90,10 +93,10 @@ export async function mountPhoneModel(art: HTMLElement, face: HTMLElement, stage
   const { screenAspect, viewHeight } = backend.geometry
   const fh = SCREEN_WIDTH / screenAspect
 
-  // The camera is orthographic, so the screen needs only an affine transform: Safari renders
-  // CSS perspective differently from WebGL, and the screen would drift off the display
+  // One perspective container and one transformed element, the screen at the display's scale
   const view = document.createElement('div')
   view.className = 'phone-scene-view'
+  view.style.perspective = perspective(h)
   view.append(face)
   stage.append(view, canvas)
   face.style.cssText += `;position:absolute;left:50%;top:50%;transform-origin:0 0;aspect-ratio:${screenAspect}`
@@ -104,6 +107,7 @@ export async function mountPhoneModel(art: HTMLElement, face: HTMLElement, stage
     const nw = stage.clientWidth, nh = stage.clientHeight
     if (!nw || !nh) return
     scale = nh / viewHeight
+    view.style.perspective = perspective(nh)
     backend.resize(nw, nh)
   })
   ro.observe(stage)
