@@ -1,5 +1,8 @@
 ---
 import ContactEmail from './ContactEmail.astro'
+import { animations } from '../data/tokens'
+
+const logoSpin = `${animations.footerLogo.spinDuration}s`
 
 const year = new Date().getFullYear()
 ---
@@ -8,14 +11,12 @@ const year = new Date().getFullYear()
   <div class="footer-container">
     <!-- Name bar -->
     <div class="footer-bar">
-      <div class="footer-palette" aria-hidden="true">
-        <span style="background:#24F266"></span>
-        <span style="background:#F22434"></span>
-        <span style="background:#FBE91E"></span>
-        <span style="background:#2471F2"></span>
-        <span style="background:#0B0D1B"></span>
-        <span style="background:white"></span>
-      </div>
+      <svg class="footer-logo" viewBox="0 0 1100 1100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M250.5 0C388.295 0 500 111.929 500 250V500H250.5C112.705 500 1 388.071 1 250C1 111.929 112.705 0 250.5 0Z" fill="#F22434"/>
+        <path d="M500 850C500 988.071 388.071 1100 250 1100C111.929 1100 -1.60836e-06 988.071 0 850C1.81059e-05 711.929 111.929 600 250 600H500V850Z" fill="#E5C800"/>
+        <path d="M850 0C988.071 6.03528e-06 1100 111.929 1100 250C1100 388.071 988.071 500 850 500H600V250C600 111.929 711.929 2.21346e-06 850 0Z" fill="#00CC55"/>
+        <path d="M850 600C988.071 600 1100 711.929 1100 850C1100 988.071 988.071 1100 850 1100C711.929 1100 600 988.071 600 850V600H850Z" fill="#2471F2"/>
+      </svg>
       <div class="footer-bar-text">
         <p class="footer-wordmark-text">Sam Stringer-Hye</p>
         <nav class="footer-links" aria-label="Footer links">
@@ -34,7 +35,7 @@ const year = new Date().getFullYear()
   </div>
 </footer>
 
-<style>
+<style define:vars={{ logoSpin }}>
   .footer {
     margin-top: 0;
     position: relative;
@@ -81,15 +82,23 @@ const year = new Date().getFullYear()
     transform-origin: left;
   }
 
-  .footer-palette {
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
+  /* The site mark, turning slowly beside the name; still under reduced motion */
+  .footer-logo {
+    flex-shrink: 0;
+    align-self: center;
+    width: var(--wordmark-size);
+    height: var(--wordmark-size);
+    animation: footer-logo-spin var(--logoSpin) linear infinite;
   }
 
-  .footer-palette span {
-    width: calc(var(--nav-height) / 6);
-    height: calc(var(--nav-height) / 6);
+  @keyframes footer-logo-spin {
+    to { transform: rotate(1turn); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-logo {
+      animation: none;
+    }
   }
 
   .footer-bar-text {
@@ -160,14 +169,9 @@ const year = new Date().getFullYear()
 
     /* Swatch column matches the wordmark row only, not the full bar.
        The wordmark box is its font-size (line-height 1) plus its block padding. */
-    .footer-palette {
+    .footer-logo {
       align-self: flex-start;
-      height: calc(var(--wordmark-size) + var(--space-4) * 2);
-    }
-
-    .footer-palette span {
-      flex: 1;
-      height: auto;
+      margin-top: var(--space-4);
     }
 
     .footer-bar-text {
@@ -204,46 +208,3 @@ const year = new Date().getFullYear()
   }
 </style>
 
-<script>
-  const PALETTE_COLORS = [
-    '#24F266', '#F22434', '#FBE91E', '#2471F2', '#0B0D1B', '#ffffff',
-  ]
-
-  let paletteIntervalId: ReturnType<typeof setInterval> | null = null
-
-  function initPaletteCycle() {
-    // Clear previous interval to prevent accumulation across page navigations
-    if (paletteIntervalId !== null) {
-      clearInterval(paletteIntervalId)
-      paletteIntervalId = null
-    }
-
-    const spans = document.querySelectorAll<HTMLSpanElement>('.footer-palette span')
-    if (!spans.length) return
-
-    // Respect reduced motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    let offset = 0
-    function paint() {
-      spans.forEach((span, i) => {
-        span.style.background = PALETTE_COLORS[((i + offset) % PALETTE_COLORS.length + PALETTE_COLORS.length) % PALETTE_COLORS.length]
-      })
-    }
-    paint()
-
-    // Shift all colors down by one position each tick
-    paletteIntervalId = setInterval(() => { offset--; paint() }, 200)
-  }
-
-  initPaletteCycle()
-  document.addEventListener('astro:page-load', () => {
-    initPaletteCycle()
-  })
-  document.addEventListener('astro:before-swap', () => {
-    if (paletteIntervalId !== null) {
-      clearInterval(paletteIntervalId)
-      paletteIntervalId = null
-    }
-  })
-</script>

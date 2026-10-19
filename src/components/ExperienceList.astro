@@ -1,0 +1,99 @@
+---
+/**
+ * Experience as a typographic index: years, role and company, and one line on the work, for each
+ * job, newest first. Replaces the year-grid Timeline in the Editorial Kit direction. Same data
+ * (home.json experience).
+ */
+import homeData from '../content/home.json'
+import type { HomeContent } from '../types/content'
+
+const home = homeData as HomeContent
+const { headline = 'Experience', jobs } = home.experience
+
+const yearOf = (d: string | null) => (d ? d.split('-')[0] : null)
+const rows = jobs.map(j => ({
+  ...j,
+  years: `${yearOf(j.startDate)}–${yearOf(j.endDate) ?? 'Present'}`,
+  current: !j.endDate,
+}))
+---
+
+<section class="experience-section xp" aria-labelledby="xp-heading">
+  <div class="xp-intro">
+    <h2 id="xp-heading" class="experience-heading xp-heading typo-headline-lg">{headline}</h2>
+  </div>
+  <ol class="xp-list" role="list">
+    {rows.map(job => (
+      <li class:list={['xp-row', { 'xp-row--current': job.current }]}>
+        <p class="xp-years typo-body-sm">{job.years}</p>
+        <div class="xp-body">
+          <h3 class="xp-title typo-headline-sm">{job.title}</h3>
+          <p class="xp-company typo-body-lg">{job.company}</p>
+          {job.highlights?.[0] && <p class="xp-note typo-body-lg">{job.highlights[0]}</p>}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .xp-heading {
+    margin: 0;
+  }
+
+  .xp-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Years in a narrow first column, the role and its line beside them */
+  .xp-row {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    column-gap: var(--grid-gutter);
+    align-items: baseline;
+  }
+
+  .xp-years {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .xp-row--current .xp-years {
+    color: var(--color-text-primary);
+  }
+
+  .xp-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .xp-title,
+  .xp-company,
+  .xp-note {
+    margin: 0;
+  }
+
+  .xp-company {
+    color: var(--color-text-secondary);
+  }
+
+  .xp-note {
+    max-width: var(--prose-measure);
+    margin-top: var(--space-1);
+  }
+
+  /* Phones: years above the role */
+  @media (--1x) {
+    .xp-row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-1);
+    }
+  }
+</style>

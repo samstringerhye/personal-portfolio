@@ -93,6 +93,12 @@ html.ek .hero-text {
   padding-inline: var(--page-margin);
 }
 
+/* The hero's dot field fades out over its last quarter, where the hero meets the page below */
+html.ek #hero-canvas-root {
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+}
+
 /* The hero's dot field runs up behind the nav to the top of the window and fills exactly one screen.
    The nav starts clear over it and fills in as the page scrolls; browsers without scroll timelines
    keep the solid nav. The height counts the nav it sits under. */
@@ -201,6 +207,30 @@ html.ek .skill-grid {
   html.ek .footer-links {
     margin-left: 0;
     padding-left: 0;
+  }
+}
+
+/* Desktop: Selected Work and Experience keep their heading pinned in a left column while the
+   cards and roles scroll past on the right */
+@media (min-width: 64.0625rem) {
+  html.ek :is(.work-list-section, .experience-section.xp) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+
+  html.ek :is(.work-list-intro, .xp-intro) {
+    align-self: stretch;
+  }
+
+  html.ek :is(.work-list-section, .xp) :is(.work-list-intro-inner, .xp-heading) {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  html.ek :is(.work-list-section, .xp) :is(.work-list-heading, .xp-heading) {
+    margin-bottom: 0;
   }
 }
 
@@ -527,8 +557,46 @@ html.ek .case-study-body .image-grid .cs-figure {
   box-shadow: none;
 }
 
-html.ek .case-study-body :is(.image-pair, .image-grid) {
+html.ek .case-study-body .image-grid {
   background: var(--ek-hairline);
+}
+
+/* Image pairs: two separate cards side by side, each caption under its own card */
+html.ek .case-study-body .image-pair {
+  column-gap: var(--grid-gutter);
+  row-gap: var(--space-5);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  overflow: visible;
+}
+
+html.ek .case-study-body .image-pair--captioned > .image-pair-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: none;
+  overflow: visible;
+  line-height: normal;
+  border: 0 !important;
+}
+
+/* The card is the media box with a caption, or the whole cell without one */
+html.ek .case-study-body .image-pair--captioned .image-pair-media,
+html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: var(--ek-shadow);
+  line-height: 0;
+}
+
+html.ek .case-study-body .image-pair figcaption {
+  border-top: 0 !important;
+  padding: 0;
+  text-align: left;
 }
 
 html.ek .case-study-body .lottie-grid,

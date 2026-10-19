@@ -87,6 +87,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `dotGrid.spacing` | px | `30` | Gap between dots in the interests section background grid |
 | `dotGrid.radius` | px | `1` | Dot radius in that grid |
 | `dotGrid.opacity` | 0–1 | `0.5` | Grid opacity before the reveal multiplier |
+| `footerLogo.spinDuration` | seconds | `12` | One full turn of the site mark beside the name in the footer (still under reduced motion) |
 
 ---
 

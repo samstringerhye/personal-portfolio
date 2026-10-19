@@ -66,6 +66,9 @@
       "highlightsHideEase": { "$ref": "sys.motion.gsapEasing.bounceIn" }
     }
   },
+  "footerLogo": {
+    "spinDuration": 12
+  },
   "dotGrid": {
     "spacing": 30,
     "radius": 1,

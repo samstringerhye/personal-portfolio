@@ -205,6 +205,14 @@
       },
       "additionalProperties": false
     },
+    "footerLogo": {
+      "type": "object",
+      "description": "The site mark beside the name in the footer",
+      "properties": {
+        "spinDuration": { "type": "number", "minimum": 1, "maximum": 120, "description": "Seconds per full turn" }
+      },
+      "additionalProperties": false
+    },
     "dotGrid": {
       "type": "object",
       "description": "Background dot grid overlay parameters",
