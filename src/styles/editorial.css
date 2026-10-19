@@ -327,9 +327,9 @@ html.ek .work-list-item + .work-list-item {
 /* No text on the art: the narrow card layout (art framed on the project color, text below) at every
    width. work-transition.ts reads this layout from the computed styles, so the card-to-hero zoom
    follows it. */
-/* Card and hero art frames: 3:2 landscape on desktop, 2:3 portrait on phones and small tablets */
+/* Card and hero art frames: 4:3 landscape on desktop, 2:3 portrait on phones and small tablets */
 html.ek .work-list-card {
-  --narrow-frame-height: calc(100cqw * 2 / 3);
+  --narrow-frame-height: calc(100cqw * 3 / 4);
 }
 
 @media (--2x) {
@@ -614,7 +614,7 @@ html.ek .cs-hero {
 @container (min-width: 781px) {
   html.ek .cs-hero.cs-hero .cs-hero-size {
     flex: none;
-    height: calc(100cqw * 2 / 3);
+    height: calc(100cqw * 3 / 4);
     min-height: 0;
     max-height: none;
     margin-top: var(--touch-target);
