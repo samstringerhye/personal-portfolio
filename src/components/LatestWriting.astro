@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content'
+
+// The two newest posts; the AI adoption panel above links the design-system post too, so a single
+// "latest" link would only repeat it
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf())
+  .slice(0, 2)
+---
+
+{posts.length > 0 && (
+  <aside class="latest-writing" aria-label="Writing">
+    <a href="/blog" class="latest-writing-label typo-ui-caps">Writing</a>
+    <ul class="latest-writing-list" role="list">
+      {posts.map(post => (
+        <li><a href={`/blog/${post.id}`} class="latest-writing-link typo-body-lg">{post.data.title}&nbsp;<span aria-hidden="true">→</span></a></li>
+      ))}
+    </ul>
+  </aside>
+)}
+
+<style>
+  .latest-writing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-4) var(--content-inset-md);
+    border-top: var(--border-width-1) solid var(--color-rule);
+  }
+
+  .latest-writing-label {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .latest-writing-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .latest-writing-link {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (--2x) {
+    .latest-writing {
+      padding-inline: var(--content-inset-sm);
+    }
+  }
+</style>

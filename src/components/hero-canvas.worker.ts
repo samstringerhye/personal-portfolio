@@ -13,7 +13,12 @@ import {
   generateSpiral,
   sizeTaper,
   updateDots,
+  emptyLens,
+  lensToWorld,
+  LAYER_TRIAD,
   type ArrangementGenerator,
+  type LensConfig,
+  type LensInput,
 } from './hero-canvas-shared'
 
 const generators: Record<string, ArrangementGenerator> = {
@@ -54,6 +59,7 @@ interface InitMessage {
     accentOpacity: number
     cmyStagger: number
     wavePaused?: boolean
+    lens: LensConfig
   }
   colors: {
     accent1: string
@@ -74,7 +80,12 @@ interface VisibilityMessage {
   visible: boolean
 }
 
-type WorkerMessage = InitMessage | ResizeMessage | VisibilityMessage
+interface LensMessage {
+  type: 'lens'
+  lens: LensInput | null
+}
+
+type WorkerMessage = InitMessage | ResizeMessage | VisibilityMessage | LensMessage
 
 let frameId: number | null = null
 
@@ -92,6 +103,10 @@ self.onmessage = async (e: MessageEvent<WorkerMessage>) => {
     handleResize(msg.width, msg.height)
   } else if (msg.type === 'visibility') {
     handleVisibility(msg.visible)
+  } else if (msg.type === 'lens') {
+    lensInput = msg.lens
+    // Reduced motion draws one frame at a time, so the loupe redraws as the pointer moves
+    if (prefersReduced && renderer) tick()
   }
 }
 
@@ -112,6 +127,10 @@ let hiddenAt = 0
 let pauseAccum = 0
 let startTime = 0
 let prefersReduced = false
+let viewW = 0
+let viewH = 0
+let lensInput: LensInput | null = null
+const lens = emptyLens()
 
 async function initScene(msg: InitMessage) {
   cfg = msg.config
@@ -192,6 +211,8 @@ async function initScene(msg: InitMessage) {
 
 function applySize(w: number, h: number) {
   if (!renderer || w === 0 || h === 0) return
+  viewW = w
+  viewH = h
   renderer.setSize(w, h, false) // false = don't set style (no DOM in worker)
   camera.left = -w / 2
   camera.right = w / 2
@@ -227,14 +248,19 @@ function tick() {
   const elapsed = (performance.now() - startTime - pauseAccum) / 1000
   const time = (cfg.wavePaused || prefersReduced) ? 0 : elapsed
   const cmyDelay = cfg.cmyStagger
+  const lensOn = lensToWorld(lens, lensInput, viewW, viewH, cfg.zoom, cfg.lens, cfg.dotRadius)
+  lens.t0 = time
 
   for (let i = 0; i < meshes.length; i++) {
     const mesh = meshes[i]
+    lens.sign = LAYER_TRIAD[i].sign
+    lens.fade = LAYER_TRIAD[i].fade
     updateDots(
       mesh.instanceMatrix.array as Float32Array, total,
       posX, posY, dist, dotScales, time - delays[i] * cmyDelay,
       cfg.waveSpeed, cfg.propagation, cfg.waveSharpness,
       cfg.waveAmplitude, cfg.waveFrequency, cfg.baseScale, cfg.twistAmount,
+      lensOn ? lens : null,
     )
     mesh.instanceMatrix.needsUpdate = true
   }

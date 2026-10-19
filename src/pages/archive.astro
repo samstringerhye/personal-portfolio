@@ -1,0 +1,225 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import LottiePlayer from '../components/LottiePlayer.astro'
+import homeData from '../content/home.json'
+import type { HomeContent } from '../types/content'
+
+const home = homeData as HomeContent
+const jobs = home.experience.jobs
+const year = (d: string | null) => (d ? d.slice(0, 4) : 'Now')
+
+// Reels Sam still has to supply files for (and clear rights on). Drafts show only on preview builds
+const reels = [
+  { where: 'NowThis News', years: '2012–2014', what: 'The brand identity, and the motion templates behind its daily social video.' },
+  { where: 'Mashable', years: '2014–2016', what: "Art direction for Mashable's Snapchat Discover launch." },
+  { where: 'Independent', years: '2016–2018', what: "New-business pitch work for Walmart and McDonald's." },
+]
+---
+
+<BaseLayout title="Archive | Sam Stringer-Hye" description="Motion, editorial and product work by Sam Stringer-Hye, from NowThis and Mashable to Razorfish.">
+  <section class="archive-page" aria-label="Archive">
+    <h1 class="archive-heading typo-display-md">Archive</h1>
+
+    <div class="archive-row">
+      <p class="archive-intro typo-title-lg">Motion, editorial and product work from 2012 on. Loops where I have the files and the rights, a line for everything else.</p>
+    </div>
+
+    <div class="archive-row archive-row--motion">
+      <div class="archive-row-head">
+        <h2 class="typo-headline-lg">Motion inside product work</h2>
+        <p class="typo-body-lg">MyFrontier, 2022. I built every Lottie file in After Effects and handed off the easing, timing and specs with them. <a href="/work/myfrontier-app">Read the case study</a>.</p>
+      </div>
+      <div class="archive-lotties">
+        <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
+        <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
+        <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
+        <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
+      </div>
+    </div>
+
+    {__SHOW_DRAFTS__ && (
+      <div class="archive-row">
+        <div class="archive-row-head">
+          <h2 class="typo-headline-lg">Reels</h2>
+          <p class="typo-body-lg archive-draft"><span class="typo-ui-caps">Draft</span> Loops to come, once the files are found and the rights are clear.</p>
+        </div>
+        <ul class="archive-reels" role="list">
+          {reels.map(r => (
+            <li class="archive-reel">
+              <div class="archive-slot typo-ui-caps" aria-hidden="true">Loop to come</div>
+              <p class="typo-ui-caps archive-reel-meta">{r.where} · {r.years}</p>
+              <p class="typo-body-lg">{r.what}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <div class="archive-row">
+      <div class="archive-row-head">
+        <h2 class="typo-headline-lg">By year</h2>
+      </div>
+      <ol class="archive-ledger" role="list">
+        {jobs.map(job => (
+          <li class="archive-entry">
+            <span class="archive-years typo-ui-caps">{year(job.startDate)}–{year(job.endDate)}</span>
+            <span class="archive-role typo-body-lg">{job.title}, {job.company}</span>
+            <span class="archive-what typo-body-lg">{job.highlights[0]}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-page {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  .archive-heading {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding-block: var(--space-6);
+    padding-inline: var(--content-inset-md);
+    color: var(--color-text-primary);
+  }
+
+  .archive-row {
+    position: relative;
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: var(--border-width-1) solid var(--color-rule);
+  }
+
+  .archive-intro,
+  .archive-row-head {
+    max-width: 44rem;
+    margin: 0;
+    padding-inline: var(--content-inset-md);
+    color: var(--color-text-primary);
+  }
+
+  .archive-row-head {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .archive-row-head :is(h2, p) {
+    margin: 0;
+  }
+
+  .archive-row-head a {
+    color: inherit;
+  }
+
+  /* Same frame the case study gives them: four up on Frontier red */
+  .archive-row--motion {
+    padding-bottom: 0;
+  }
+
+  .archive-lotties {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    background: var(--color-accent-1);
+    border-top: var(--border-width-1) solid var(--color-text-primary);
+  }
+
+  .archive-lotties :global(.lottie-player) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6);
+  }
+
+  /* nth-of-type, not sibling combinators: Astro puts the player's script between the first two */
+  .archive-lotties :global(.lottie-player:not(:first-of-type)) {
+    border-left: var(--border-width-1) solid var(--color-text-primary);
+  }
+
+  .archive-reels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0 var(--content-inset-md);
+  }
+
+  .archive-reel p {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-primary);
+  }
+
+  .archive-slot {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    border: var(--border-width-1) dashed var(--color-text-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .archive-reel-meta,
+  .archive-draft {
+    color: var(--color-text-secondary);
+  }
+
+  .archive-draft span {
+    margin-right: 0.5em;
+  }
+
+  .archive-ledger {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .archive-entry {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: baseline;
+    padding: var(--space-3) var(--content-inset-md);
+    border-top: var(--border-width-1) solid var(--color-rule);
+    color: var(--color-text-primary);
+  }
+
+  .archive-years {
+    color: var(--color-text-secondary);
+  }
+
+  @media (--2x) {
+    .archive-heading,
+    .archive-intro,
+    .archive-row-head {
+      padding-inline: var(--content-inset-sm);
+    }
+
+    .archive-lotties {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .archive-lotties :global(.lottie-player:nth-of-type(3)) {
+      border-left: none;
+    }
+
+    .archive-lotties :global(.lottie-player:nth-of-type(n + 3)) {
+      border-top: var(--border-width-1) solid var(--color-text-primary);
+    }
+
+    .archive-reels {
+      grid-template-columns: 1fr;
+      padding-inline: var(--content-inset-sm);
+    }
+
+    .archive-entry {
+      grid-template-columns: 1fr;
+      padding-inline: var(--content-inset-sm);
+    }
+  }
+</style>

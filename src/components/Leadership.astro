@@ -28,10 +28,9 @@ const HeadingTag = headingTag as any
       <HeadingTag id="leadership-heading" class:list={["leadership-heading", `typo-${headingRole}`]} data-reveal>{headline}</HeadingTag>
     </div>
   </div>
-  <ol class="ld-list" role="list" data-reveal-group>
-    {items.map((item, i) => (
+  <ul class="ld-list" role="list" data-reveal-group>
+    {items.map(item => (
       <li class="ld-item" data-reveal="fade">
-        <span class="ld-index typo-headline-lg" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
         <div class="ld-text">
           <h3 class:list={["ld-title", `typo-${itemTitleRole}`]}>{item.title}</h3>
           <p class:list={["ld-body", `typo-${itemBodyRole}`]}>{item.body}</p>
@@ -41,7 +40,7 @@ const HeadingTag = headingTag as any
         </div>
       </li>
     ))}
-  </ol>
+  </ul>
 </section>
 
 <style>
@@ -59,22 +58,16 @@ const HeadingTag = headingTag as any
     list-style: none;
   }
 
-  /* Number at the top, text settled at the bottom, so a row of panels reads as one band */
+  /* Text settled at the bottom, so a row of panels reads as one band */
   .ld-item {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--space-7);
     min-height: clamp(14rem, 18vw, 18rem);
     padding: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
     border-radius: var(--ek-window-radius, 24px);
     background: var(--ek-panel, var(--color-bg-alt));
-  }
-
-  .ld-index {
-    color: var(--color-text-secondary);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
   }
 
   .ld-text {

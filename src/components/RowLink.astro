@@ -1,0 +1,47 @@
+---
+// A one-line pointer between homepage sections: label, link, optional date
+interface Props {
+  label: string
+  href: string
+  text: string
+  meta?: string
+  datetime?: string
+}
+
+const { label, href, text, meta, datetime } = Astro.props as Props
+---
+
+<aside class="row-link" aria-label={label}>
+  <span class="row-link-label typo-ui-caps">{label}</span>
+  <a href={href} class="row-link-link typo-body-lg">{text}&nbsp;<span aria-hidden="true">→</span></a>
+  {meta && (datetime ? <time class="row-link-meta typo-ui-caps" datetime={datetime}>{meta}</time> : <span class="row-link-meta typo-ui-caps">{meta}</span>)}
+</aside>
+
+<style>
+  .row-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-4) var(--content-inset-md);
+    border-top: var(--border-width-1) solid var(--color-rule);
+  }
+
+  .row-link-label,
+  .row-link-meta {
+    color: var(--color-text-secondary);
+  }
+
+  .row-link-link {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (--2x) {
+    .row-link {
+      padding-inline: var(--content-inset-sm);
+    }
+  }
+</style>

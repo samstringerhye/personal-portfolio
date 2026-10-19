@@ -5,6 +5,9 @@ import WorkList from '../components/WorkList.astro'
 import Leadership from '../components/Leadership.astro'
 import ExperienceList from '../components/ExperienceList.astro'
 import ScrollingInterests from '../components/ScrollingInterests.astro'
+import OffHours from '../components/OffHours.astro'
+import LatestWriting from '../components/LatestWriting.astro'
+import RowLink from '../components/RowLink.astro'
 import HomeContact from '../components/HomeContact.astro'
 
 import homeData from '../content/home.json'
@@ -12,6 +15,8 @@ import type { HomeContent } from '../types/content'
 
 // JSON imports widen fields like headingTag to string; home.schema.json enforces the allowed values
 const home = homeData as HomeContent
+// Off hours replaces the marquee once it has something to show (drafts count only on preview builds)
+const showOffHours = home.offHours.items.some(item => item.caption) || __SHOW_DRAFTS__
 ---
 
 <BaseLayout title="Sam Stringer-Hye | Associate Design Director" description="Sam Stringer-Hye is an Associate Design Director who leads Razorfish design teams on client work for Amica, Samsung, CVS, and Frontier.">
@@ -40,13 +45,19 @@ const home = homeData as HomeContent
     itemTitleRole={home.leadership.itemTitleRole}
     itemBodyRole={home.leadership.itemBodyRole}
   />
+  <LatestWriting />
   <hr class="section-rule" />
   <ExperienceList />
+  <RowLink label="Archive" href="/archive" text="Motion and editorial work, 2012 on" />
   <hr class="section-rule" />
-  <ScrollingInterests
-    interests={home.interests.items}
-    textRole={home.interests.textRole}
-  />
+  {showOffHours ? (
+    <OffHours headline={home.offHours.headline} items={home.offHours.items} />
+  ) : (
+    <ScrollingInterests
+      interests={home.interests.items}
+      textRole={home.interests.textRole}
+    />
+  )}
   <hr class="section-rule" />
   <HomeContact headline={home.contact.headline} />
 </BaseLayout>

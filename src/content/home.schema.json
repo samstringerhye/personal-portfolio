@@ -155,8 +155,33 @@
       },
       "required": ["items"],
       "additionalProperties": false
+    },
+    "offHours": {
+      "type": "object",
+      "description": "Off-hours proof in place of the interests marquee. An item without a caption is a draft: shown in dev and on preview branches, never on main",
+      "properties": {
+        "headline": { "type": "string", "minLength": 1 },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "label":    { "type": "string", "minLength": 1 },
+              "caption":  { "type": "string", "minLength": 1, "description": "One line in Sam's voice; its presence marks the item done" },
+              "image":    { "type": "string", "description": "File name in src/assets/off-hours/" },
+              "imageAlt": { "type": "string" },
+              "draft":    { "type": "string", "description": "What Sam still has to supply" }
+            },
+            "required": ["label"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["headline", "items"],
+      "additionalProperties": false
     }
   },
-  "required": ["hero", "work", "leadership", "experience", "contact", "interests"],
+  "required": ["hero", "work", "leadership", "experience", "contact", "interests", "offHours"],
   "additionalProperties": false
 }

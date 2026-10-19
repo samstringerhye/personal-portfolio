@@ -11,9 +11,13 @@ thumbnailLayers:
   subject: "../../assets/work/bespoke-design-studio/bespoke-design-studio-subject-32.png"
   background: "#D7E4EC"
   heroOffset: 0.070
-  subjectBox: { top: 0.146, right: 0.699, bottom: 0.551, left: 0.302 }
+  subjectBox: { top: 0.146, right: 0.74, bottom: 0.551, left: 0.261 }
+  frames:
+    - "../../assets/work/bespoke-design-studio/bespoke-design-studio-frame-1.png"
+    - "../../assets/work/bespoke-design-studio/bespoke-design-studio-subject-32.png"
+    - "../../assets/work/bespoke-design-studio/bespoke-design-studio-frame-2.png"
 heroImageAlt: "iPad and iPhone showing the Bespoke Design Studio configurator: a rendered kitchen beside a Choose Colors panel with finish swatches for all four fridge door zones"
-thumbnailAlt: "iPad and iPhone showing the Bespoke Design Studio appliance configurator in a showroom setting"
+thumbnailAlt: "The Bespoke configurator's Choose Type step, with the Bespoke 4-Door French Door starting at $2499 at the top of the list"
 heroImage: "../../assets/work/bespoke-design-studio/scene-2-1.png"
 featured: true
 sortOrder: 2
@@ -36,6 +40,10 @@ import userFlowBespokeKitchenSrc from '../../assets/work/bespoke-design-studio/u
 import kitchenConfiguratorOverviewSrc from '../../assets/work/bespoke-design-studio/ha-bespoke-kitchen-desktop-006.jpg'
 import configuratorColorSelectionSrc from '../../assets/work/bespoke-design-studio/image-2.png'
 import configuratorFullColorPanelSrc from '../../assets/work/bespoke-design-studio/new-design.png'
+import DecisionStepper from '../../components/DecisionStepper.astro'
+import productSelectionSrc from '../../assets/work/bespoke-design-studio/frame-37444.webp'
+import chooseTypeSrc from '../../assets/work/bespoke-design-studio/frame-37443.webp'
+import chooseColorsSrc from '../../assets/work/bespoke-design-studio/frame-37442.webp'
 
 <Meta client="Samsung" role="Associate Design Director" agency="Razorfish" year="2022–2025" />
 
@@ -142,25 +150,15 @@ The sequencing call needed a visible spine. I designed a stepped progress indica
   </ProseGroup>
 </ZigzagSection>
 
-<Carousel label="Bespoke final designs" fullBleed>
-
-<Figure caption="Product selection">
-![Product selection grid, choosing which appliances to configure](../../assets/work/bespoke-design-studio/frame-37444.webp)
-</Figure>
-
-<Figure caption="Model selection">
-![Mobile product type selection, choosing between fridge models](../../assets/work/bespoke-design-studio/frame-37443.webp)
-</Figure>
-
-<Figure caption="Color picker, desktop">
-![Desktop color picker showing panel finish options](../../assets/work/bespoke-design-studio/frame-37442.webp)
-</Figure>
-
-<Figure caption="Color picker, mobile">
-![Mobile color picker, step 4 of the configuration flow](../../assets/work/bespoke-design-studio/frame-37445.webp)
-</Figure>
-
-</Carousel>
+<DecisionStepper
+  label="The configurator's decision sequence"
+  steps={[
+    { label: 'Products', caption: 'Pick which appliances to configure. Models, depths and finishes wait.', image: productSelectionSrc, alt: 'Product selection grid: refrigerator, range, wall oven, dishwasher and microwave' },
+    { label: 'Type', caption: 'Choose the fridge type, each with its starting price. Step 1 of 4.', image: chooseTypeSrc, alt: 'Choose Type, step 1 of 4: Bespoke 4-Door French Door, 3-Door French Door and Side-by-Side with starting prices' },
+    { label: 'Depth', caption: 'Choose depth, only after the model is set. Step 3 of 4.', image: desktop06Src, alt: 'Desktop configurator: rendered kitchen beside the Choose Depth step' },
+    { label: 'Colors', caption: 'Pick a finish for each door panel, grouped by material. Step 4 of 4.', image: chooseColorsSrc, alt: 'Desktop color picker showing finishes for the top left and top right door panels' },
+  ]}
+/>
 
 <Figure flush>
 ![Final checkout step showing selected configuration with pricing](../../assets/work/bespoke-design-studio/desktop-13.png)

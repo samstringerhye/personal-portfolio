@@ -1,0 +1,218 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+/**
+ * A sequence of decisions, one screen each: pick a step to see what it shows and what it holds back.
+ * Steps advance on their own while in view until someone picks one; reduced motion leaves them still.
+ */
+interface Step {
+  label: string
+  caption: string
+  image: ImageMetadata
+  alt: string
+}
+
+interface Props {
+  label: string
+  steps: Step[]
+}
+
+const { label, steps } = Astro.props as Props
+const id = `stepper-${Math.random().toString(36).slice(2, 8)}`
+---
+
+<section class="decision-stepper" aria-label={label} data-stepper>
+  <div class="ds-tabs" role="tablist" aria-label={label} aria-orientation="vertical">
+    {steps.map((step, i) => (
+      <button
+        type="button"
+        role="tab"
+        id={`${id}-tab-${i}`}
+        class="ds-tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+        aria-controls={`${id}-panel-${i}`}
+        tabindex={i === 0 ? 0 : -1}
+      >
+        <span class="ds-step typo-ui-caps">{step.label}</span>
+        <span class="ds-caption typo-body-lg">{step.caption}</span>
+        <span class="ds-progress" aria-hidden="true"></span>
+      </button>
+    ))}
+  </div>
+  <div class="ds-panels">
+    {steps.map((step, i) => (
+      <div role="tabpanel" id={`${id}-panel-${i}`} class="ds-panel" aria-labelledby={`${id}-tab-${i}`} hidden={i !== 0}>
+        <Image src={step.image} alt={step.alt} format="webp" sizes="(max-width: 768px) 100vw, 66vw" />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .decision-stepper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+
+  .ds-tabs {
+    display: flex;
+    flex-direction: column;
+    border-right: var(--border-width-1) solid var(--color-text-primary);
+  }
+
+  .ds-tab {
+    position: relative;
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    text-align: left;
+    color: var(--color-text-secondary);
+    background: none;
+    border: 0;
+    border-bottom: var(--border-width-1) solid var(--color-rule);
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .ds-tab[aria-selected='true'] {
+    color: var(--color-text-primary);
+  }
+
+  .ds-tab:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: inset var(--focus-ring);
+  }
+
+  /* Fills over the hold time on the active step while the steps advance on their own */
+  .ds-progress {
+    position: absolute;
+    left: 0;
+    bottom: calc(var(--border-width-1) * -1);
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .decision-stepper[data-playing] .ds-tab[aria-selected='true'] .ds-progress {
+    animation: ds-fill var(--ds-hold) linear forwards;
+  }
+
+  @keyframes ds-fill {
+    to { transform: scaleX(1); }
+  }
+
+  .ds-panels {
+    display: grid;
+    background: var(--color-bg-alt);
+  }
+
+  .ds-panel {
+    grid-area: 1 / 1;
+    display: grid;
+    place-items: center;
+    padding: var(--space-5);
+    animation: ds-in var(--ds-fade) ease;
+  }
+
+  .ds-panel img {
+    max-width: 100%;
+    height: auto;
+    max-height: 32rem;
+    object-fit: contain;
+  }
+
+  .ds-panel[hidden] {
+    display: none;
+  }
+
+  @keyframes ds-in {
+    from { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-panel {
+      animation: none;
+    }
+  }
+
+  @media (--2x) {
+    .decision-stepper {
+      grid-template-columns: 1fr;
+    }
+
+    .ds-tabs {
+      border-right: 0;
+      border-bottom: var(--border-width-1) solid var(--color-text-primary);
+    }
+
+    .ds-panel {
+      padding: var(--space-3);
+    }
+  }
+</style>
+
+<script>
+  import { animations } from '../data/tokens'
+
+  function initSteppers() {
+    const { hold, fade } = animations.caseStudy.decisionStepper
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    document.querySelectorAll<HTMLElement>('[data-stepper]').forEach(root => {
+      if (root.dataset.stepperBound) return
+      root.dataset.stepperBound = 'true'
+      root.style.setProperty('--ds-hold', `${hold}s`)
+      root.style.setProperty('--ds-fade', `${fade}s`)
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')]
+      const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')]
+      let at = 0
+      let timer = 0
+
+      const select = (n: number, focus = false) => {
+        at = (n + tabs.length) % tabs.length
+        tabs.forEach((t, k) => {
+          t.setAttribute('aria-selected', String(k === at))
+          t.tabIndex = k === at ? 0 : -1
+        })
+        panels.forEach((p, k) => { p.hidden = k !== at })
+        if (focus) tabs[at].focus()
+      }
+      const stop = () => {
+        window.clearInterval(timer)
+        timer = 0
+        delete root.dataset.playing
+      }
+      // Restarting the interval restarts the progress fill, so the bar and the step change stay in step
+      const play = () => {
+        if (reduced || timer || root.dataset.chosen) return
+        root.dataset.playing = ''
+        timer = window.setInterval(() => select(at + 1), hold * 1000)
+      }
+
+      tabs.forEach((tab, k) => tab.addEventListener('click', () => {
+        root.dataset.chosen = 'true'
+        stop()
+        select(k)
+      }))
+      root.querySelector('[role="tablist"]')?.addEventListener('keydown', e => {
+        const key = (e as KeyboardEvent).key
+        const step = key === 'ArrowDown' || key === 'ArrowRight' ? 1 : key === 'ArrowUp' || key === 'ArrowLeft' ? -1 : 0
+        if (!step) return
+        e.preventDefault()
+        root.dataset.chosen = 'true'
+        stop()
+        select(at + step, true)
+      })
+      root.addEventListener('pointerenter', stop)
+      root.addEventListener('pointerleave', play)
+      root.addEventListener('focusin', stop)
+
+      new IntersectionObserver(([entry]) => (entry.isIntersecting ? play() : stop()), { threshold: 0.5 }).observe(root)
+    })
+  }
+
+  document.addEventListener('astro:page-load', initSteppers)
+</script>

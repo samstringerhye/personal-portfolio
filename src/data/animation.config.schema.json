@@ -135,6 +135,18 @@
           },
           "additionalProperties": false
         },
+        "lens": {
+          "type": "object",
+          "description": "Pixel-peeper loupe over the hero dot field",
+          "properties": {
+            "radius":        { "type": "number", "minimum": 0, "description": "Loupe radius (CSS px)" },
+            "magnification": { "type": "number", "minimum": 1, "description": "How much the loupe enlarges the dots" },
+            "subpixelSplit": { "type": "number", "minimum": 0, "description": "How far apart the red, green and blue layers sit inside the loupe, in magnified dot widths" },
+            "follow":        { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the distance to the pointer the loupe covers each frame (1 = locked to the pointer)" },
+            "open":          { "$ref": "#/definitions/duration", "description": "Loupe opening and closing time" }
+          },
+          "additionalProperties": false
+        },
         "text": {
           "type": "object",
           "description": "Hero-specific text animation overrides",
@@ -276,6 +288,15 @@
         "stagger":   { "$ref": "#/definitions/stagger" },
         "ease":      { "$ref": "#/definitions/gsapEase" },
         "exitDelay": { "$ref": "#/definitions/duration", "description": "Pause before the panel reveals the new page" }
+      },
+      "additionalProperties": false
+    },
+    "workCards": {
+      "type": "object",
+      "description": "Homepage work card flipbook (thumbnailLayers.frames)",
+      "properties": {
+        "flipHold": { "$ref": "#/definitions/duration", "description": "How long each frame holds before the next" },
+        "flipFade": { "$ref": "#/definitions/duration", "description": "Crossfade between frames" }
       },
       "additionalProperties": false
     }

@@ -10,7 +10,13 @@ Run order for the layered cards (what the site uses):
 node scripts/thumbnails/layers32.mjs "$PWD"   # transparent subject cutouts (*-subject-32.png) from the original photos
 node scripts/thumbnails/wab-layer.mjs "$PWD"  # Whataburger phone, traced along its edge (needs wab-thumbnail-32.jpeg)
 node scripts/thumbnails/balance.mjs "$PWD"    # size and place each subject: anchored above the headline, Amica centered
+node scripts/thumbnails/readable.mjs "$PWD"   # Bespoke, CVS, Samsung.com, MyFrontier: readable crops in place of device mockups
 ```
+
+`readable.mjs` builds those four cards from tight crops of screens their case studies already publish, sized so
+UI text reads at card size, and writes each card's hover flipbook (`*-frame-N.png`, listed under
+`thumbnailLayers.frames`). It runs last because balance.mjs would rescale its subjects. It prints each card's
+`subjectBox`; the hand-tuned `heroOffset` values in the frontmatter stay as they are while the band doesn't change.
 
 - `recompose32.mjs` builds the flat 3:2 composites (`*-thumbnail-32.*`), used for link previews and as the
   `thumbnail` fallback.

@@ -58,9 +58,9 @@ html.ek .footer-links :is(.footer-link):last-child {
   padding-right: 0;
 }
 
-html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .home-contact),
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .off-hours, .home-contact),
 html.ek .cs-hero,
-html.ek .case-study-body > :is(.zigzag-section, .carousel, .cs-figure, .image-pair, .image-grid, .case-study-cta),
+html.ek .case-study-body > :is(.zigzag-section, .carousel, .cs-figure, .image-pair, .image-grid, .decision-stepper, .case-study-cta),
 html.ek main > :is(.cs-nav, .case-study-cta) {
   grid-column: 1 / -1;
   width: 100%;
@@ -69,7 +69,7 @@ html.ek main > :is(.cs-nav, .case-study-cta) {
   margin-inline: auto;
 }
 
-html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .home-contact) {
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .off-hours, .home-contact) {
   padding-block: var(--ek-section) 0;
 }
 
@@ -233,16 +233,10 @@ html.ek .about-page .skill-cell:nth-child(n) {
   border: 0;
   border-radius: var(--ek-window-radius);
   background: var(--ek-panel);
+  /* Title and line settle together at the bottom */
+  justify-content: flex-end;
 }
 
-/* The number sits at the top; title and line settle together at the bottom */
-html.ek .about-page .skill-index {
-  margin: 0 0 auto;
-  padding-bottom: var(--space-5);
-  font-family: var(--font-serif);
-  font-size: var(--text-400);
-  line-height: 1;
-}
 
 html.ek .about-page .skill-title {
   margin: 0;
@@ -640,7 +634,7 @@ html.ek .case-study-body :is(.prose-group, .zigzag-prose) * + p {
 }
 
 /* Every visual block becomes a window: hairline, 10px corners, one soft shadow */
-html.ek .case-study-body :is(.image-pair, .carousel, .cs-figure, .image-grid, .lottie-grid),
+html.ek .case-study-body :is(.image-pair, .carousel, .cs-figure, .image-grid, .lottie-grid, .decision-stepper),
 html.ek .case-study-body > img {
   grid-column: 1 / -1;
   width: 100%;
@@ -1007,3 +1001,64 @@ html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-c
     translate: none !important;
   }
 }
+
+/* ── Personality pass: off hours, the Bespoke stepper and the archive on the column ── */
+html.ek .off-hours-heading {
+  padding: 0 0 var(--space-6);
+}
+
+html.ek .off-hours-grid {
+  gap: var(--grid-gutter);
+}
+
+html.ek .off-hours-cell {
+  padding: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  border-radius: var(--ek-window-radius);
+  background: var(--ek-panel);
+}
+
+html.ek .off-hours-cell::before {
+  display: none;
+}
+
+html.ek :is(.off-hours-photo, .off-hours-slot) {
+  border-radius: calc(var(--ek-window-radius) / 2);
+}
+
+html.ek .decision-stepper .ds-tabs {
+  border-color: var(--ek-hairline);
+}
+
+html.ek .decision-stepper .ds-tab {
+  border-bottom-color: var(--ek-hairline);
+}
+
+html.ek .decision-stepper .ds-panels {
+  background: var(--ek-panel);
+}
+
+html.ek :is(.archive-heading, .archive-intro, .archive-row-head, .archive-reels, .archive-entry) {
+  padding-inline: 0;
+}
+
+html.ek .archive-page > * {
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek .archive-lotties {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  box-shadow: var(--ek-shadow);
+}
+
+html.ek .archive-lotties .lottie-player:not(:first-of-type) {
+  border-left-color: rgb(255 255 255 / 0.35);
+}
+
+html.ek .archive-row--motion {
+  padding-bottom: var(--space-5);
+}
+

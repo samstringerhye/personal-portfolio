@@ -107,29 +107,122 @@ export function sizeTaper(n: number, sizeStart: number, sizeMid: number, sizeEnd
   return inv * inv * sizeStart + 2 * inv * n * sizeMid + n * n * sizeEnd
 }
 
+/**
+ * The pixel-peeper loupe, in world units. Dots under it are drawn `mag` times larger from a smaller
+ * patch around its center, and each dot's red, green and blue layers line up side by side.
+ */
+export interface Lens {
+  x: number
+  y: number
+  r: number
+  mag: number
+  /** Shared wave time under the glass, so a dot's layers sit together instead of trailing */
+  t0: number
+  /** This layer's place in the triad: -1 red, 0 green, 1 blue */
+  sign: number
+  /** 1 hides this layer under the glass (the ink dot) */
+  fade: number
+  /** Gap between subpixels, in magnified dot widths */
+  split: number
+  dotRadius: number
+}
+
+/** The loupe as the main thread tracks it, in CSS px over the canvas; strength 0–1 opens it */
+export interface LensInput {
+  x: number
+  y: number
+  strength: number
+}
+
+export interface LensConfig {
+  radius: number
+  magnification: number
+  subpixelSplit: number
+}
+
+/** Fills `lens` (layer fields untouched) from CSS-px input; false when the loupe is closed */
+export function lensToWorld(lens: Lens, input: LensInput | null, w: number, h: number, zoom: number, cfg: LensConfig, dotRadius: number): boolean {
+  if (!input || input.strength <= 0) return false
+  const e = input.strength * input.strength * (3 - 2 * input.strength)
+  lens.x = (input.x - w / 2) / zoom
+  lens.y = (h / 2 - input.y) / zoom
+  lens.r = (cfg.radius * e) / zoom
+  lens.mag = 1 + (cfg.magnification - 1) * e
+  lens.split = cfg.subpixelSplit * e
+  lens.dotRadius = dotRadius
+  return true
+}
+
+/** Each layer's place in the loupe, in the order both renderers build them: red, green, blue, ink */
+export const LAYER_TRIAD = [
+  { sign: -1, fade: 0 },
+  { sign: 0, fade: 0 },
+  { sign: 1, fade: 0 },
+  { sign: 0, fade: 1 },
+]
+
+export function emptyLens(): Lens {
+  return { x: 0, y: 0, r: 0, mag: 1, t0: 0, sign: 0, fade: 0, split: 0, dotRadius: 0 }
+}
+
+let placedX = 0
+let placedY = 0
+
+function placeDot(
+  x0: number, y0: number, d: number, time: number,
+  waveSpeed: number, propagation: number, waveSharpness: number,
+  waveAmplitude: number, waveFrequency: number, baseScale: number, twistAmount: number,
+): void {
+  const t = time * waveSpeed - d / propagation
+  const wave = roundedSquareWave(t, waveSharpness + (0.2 * d) / 50, waveAmplitude, waveFrequency)
+  const scale = wave + baseScale
+  const tw = wave * twistAmount
+  const px = x0 * scale
+  const py = y0 * scale
+  const cosT = Math.cos(tw)
+  const sinT = Math.sin(tw)
+  placedX = px * cosT - py * sinT
+  placedY = px * sinT + py * cosT
+}
+
 export function updateDots(
   matArr: Float32Array, total: number,
   posX: Float32Array, posY: Float32Array, dist: Float32Array,
   dotScales: Float32Array, time: number,
   waveSpeed: number, propagation: number, waveSharpness: number,
   waveAmplitude: number, waveFrequency: number, baseScale: number, twistAmount: number,
+  lens: Lens | null = null,
 ): void {
+  const r2 = lens ? lens.r * lens.r : 0
   for (let i = 0; i < total; i++) {
-    const d = dist[i]
-    const t = time * waveSpeed - d / propagation
-    const wave = roundedSquareWave(t, waveSharpness + (0.2 * d) / 50, waveAmplitude, waveFrequency)
-    const scale = wave + baseScale
-    const tw = wave * twistAmount
-    const px = posX[i] * scale
-    const py = posY[i] * scale
-    const cosT = Math.cos(tw)
-    const sinT = Math.sin(tw)
-    const s = dotScales[i]
+    placeDot(posX[i], posY[i], dist[i], time, waveSpeed, propagation, waveSharpness, waveAmplitude, waveFrequency, baseScale, twistAmount)
+    let x = placedX
+    let y = placedY
+    let s = dotScales[i]
+    if (lens) {
+      const dx = x - lens.x
+      const dy = y - lens.y
+      if (dx * dx + dy * dy < r2) {
+        placeDot(posX[i], posY[i], dist[i], lens.t0, waveSpeed, propagation, waveSharpness, waveAmplitude, waveFrequency, baseScale, twistAmount)
+        const mx = lens.x + (placedX - lens.x) * lens.mag
+        const my = lens.y + (placedY - lens.y) * lens.mag
+        const ex = mx - lens.x
+        const ey = my - lens.y
+        // Dots magnified past the rim are covered by the glass
+        if (ex * ex + ey * ey < r2) {
+          x = mx + lens.sign * lens.split * 2 * lens.dotRadius * s * lens.mag
+          y = my
+          s *= lens.mag * (1 - lens.fade)
+        } else {
+          s = 0
+        }
+      }
+    }
     const o = i * 16
     matArr[o] = s
     matArr[o + 5] = s
     matArr[o + 10] = s
-    matArr[o + 12] = px * cosT - py * sinT
-    matArr[o + 13] = px * sinT + py * cosT
+    matArr[o + 12] = x
+    matArr[o + 13] = y
   }
 }

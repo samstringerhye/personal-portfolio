@@ -37,6 +37,8 @@ const work = defineCollection({
       heroOffset: z.number().default(0),
       subjectBox: z.object({ top: z.number(), right: z.number(), bottom: z.number(), left: z.number() }).optional(),
       subjectBounds: z.object({ top: z.number(), right: z.number(), bottom: z.number(), left: z.number() }).optional(),
+      // Hover flipbook: art the same size and place as the subject, played in this order
+      frames: z.array(image()).optional(),
     }).optional(),
   }),
 })

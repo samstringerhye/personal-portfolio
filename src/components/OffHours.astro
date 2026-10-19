@@ -1,0 +1,155 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+import type { HeadingTag, TypographyRole } from '../types/typography'
+import type { OffHoursItem } from '../types/content'
+
+interface Props {
+  headline: string
+  items: OffHoursItem[]
+  headingTag?: HeadingTag
+  headingRole?: TypographyRole
+}
+
+const { headline, items, headingTag = 'h2', headingRole = 'headline-lg' } = Astro.props as Props
+const HeadingTag = headingTag as any
+
+// Photos live in src/assets/off-hours/ and are named in home.json
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/off-hours/*.{jpg,jpeg,png,webp}', { eager: true })
+const photo = (name?: string) => (name ? photos[`../assets/off-hours/${name}`]?.default : undefined)
+
+// An item is done once it has a caption. Until then it's a draft, shown only where drafts are (astro.config.mjs)
+const visible = items.filter(item => item.caption || __SHOW_DRAFTS__)
+---
+
+{visible.length > 0 && (
+  <section class="off-hours" aria-labelledby="off-hours-heading">
+    <div class="off-hours-header">
+      <HeadingTag id="off-hours-heading" class:list={['off-hours-heading', `typo-${headingRole}`]} data-reveal>{headline}</HeadingTag>
+    </div>
+    <ul class="off-hours-grid" role="list" data-reveal-group>
+      {visible.map(item => {
+        const img = photo(item.image)
+        return (
+          <li class:list={['off-hours-cell', { 'off-hours-cell--draft': !item.caption }]}>
+            {img ? (
+              <Image class="off-hours-photo" src={img} alt={item.imageAlt ?? ''} widths={[400, 640, 800]} sizes="(max-width: 768px) 100vw, 33vw" format="webp" />
+            ) : (
+              <div class="off-hours-slot typo-ui-caps" aria-hidden="true">Photo to come</div>
+            )}
+            <h3 class="off-hours-label typo-headline-sm" data-reveal="fade">{item.label}</h3>
+            {item.caption ? (
+              <p class="off-hours-caption typo-body-lg" data-reveal="fade">{item.caption}</p>
+            ) : (
+              <p class="off-hours-caption off-hours-draft typo-body-lg"><span class="typo-ui-caps">Draft</span> {item.draft}</p>
+            )}
+          </li>
+        )
+      })}
+    </ul>
+  </section>
+)}
+
+<style>
+  .off-hours-header {
+    position: relative;
+  }
+
+  .off-hours-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--border-width-1);
+    background: var(--color-rule);
+  }
+
+  .off-hours-heading {
+    margin: 0;
+    padding: var(--content-inset-md);
+    color: var(--color-text-primary);
+  }
+
+  .off-hours-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .off-hours-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .off-hours-cell + .off-hours-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--border-width-1);
+    background: var(--color-rule);
+  }
+
+  .off-hours-photo,
+  .off-hours-slot {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /* An empty frame the photo will fill, so the layout reads before the content exists */
+  .off-hours-slot {
+    display: grid;
+    place-items: center;
+    border: var(--border-width-1) dashed var(--color-text-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .off-hours-label,
+  .off-hours-caption {
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  .off-hours-draft {
+    color: var(--color-text-secondary);
+  }
+
+  .off-hours-draft span {
+    margin-right: 0.5em;
+  }
+
+  @media (--2x) {
+    .off-hours-header::after {
+      left: calc(var(--page-margin) * -1);
+      right: calc(var(--page-margin) * -1);
+    }
+
+    .off-hours-heading {
+      padding: var(--content-inset-sm);
+    }
+
+    .off-hours-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .off-hours-cell {
+      padding: var(--space-4) var(--content-inset-sm);
+    }
+
+    .off-hours-cell::before {
+      display: none;
+    }
+
+    .off-hours-cell + .off-hours-cell {
+      border-top: var(--border-width-1) solid var(--color-rule);
+    }
+  }
+</style>

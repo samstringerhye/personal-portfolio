@@ -80,7 +80,14 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | Section.Key | Type | Value | What it controls |
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
-| `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between CMY color channels in the hero dot wave (independent from text reveal stagger) |
+| `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
+| `hero.lens.radius` | px | `150` | Pixel-peeper loupe radius |
+| `hero.lens.magnification` | × | `3` | How much the loupe enlarges the dots |
+| `hero.lens.subpixelSplit` | dot widths | `0.9` | Gap between a dot's red, green and blue layers under the loupe |
+| `hero.lens.follow` | 0–1 | `0.25` | Share of the distance to the pointer the loupe covers each frame (reduced motion locks it to the pointer) |
+| `hero.lens.open` | seconds | `0.3` | Loupe opening and closing |
+| `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
+| `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
 | `smoothScroll.lerp` | 0–1 | `0.5` | Lenis smooth scroll interpolation (lower = smoother, higher = snappier) |
 | `smoothScroll.wheelMultiplier` | number | `1` | Mouse wheel scroll speed multiplier |
@@ -139,7 +146,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ---
 
-## caseStudy (Amica and Whataburger diagrams)
+## caseStudy (Amica and Whataburger diagrams, Bespoke stepper)
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|
@@ -172,6 +179,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `heroPhoneScroll.phonesAt` | `0.25` | When the side phones start |
 | `heroPhoneScroll.phoneFade` / `phoneSlide` / `phoneStagger` | `0.08` / `0.7` / `0.18` | Side phones fading and sliding in, one after another |
 | `heroPhoneScroll.scrollAt` | `0.4` | When the endless scroll starts |
+| `decisionStepper.hold` | `3.5` | How long each step of the Bespoke decision stepper shows before the next, while it plays on its own |
+| `decisionStepper.fade` | `0.3` | Step image fading in |
 
 ---
 
