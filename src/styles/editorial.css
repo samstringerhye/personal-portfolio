@@ -519,13 +519,13 @@ html.ek .work-list-meta > span:first-child {
   margin-right: var(--space-1);
 }
 
-/* Desktop: Selected Work stays pinned in the left third; each project is a row in the other two
-   thirds, the art with its text beside it. The art frame is its own container so the subject
+/* Desktop: Selected Work stays pinned in the left quarter; each project is a row in the other
+   three quarters, the art with its text beside it. The art frame is its own container so the subject
    framing (cqw) measures the frame, not the whole row. */
 @media (min-width: 64.0625rem) {
   html.ek .work-list-section {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
     column-gap: var(--grid-gutter);
     align-items: start;
   }
@@ -543,14 +543,14 @@ html.ek .work-list-meta > span:first-child {
     margin-bottom: 0;
   }
 
-  /* Rows are shorter than stacked cards, so they sit closer together */
+  /* Rows are shorter than stacked cards, so they sit a little closer than sections */
   html.ek .work-list {
-    gap: clamp(3rem, 6vw, 6rem);
+    gap: clamp(5rem, 9vw, 9rem);
   }
 
   html.ek .work-list-item .work-list-card {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
     column-gap: var(--grid-gutter);
     align-items: center;
   }
