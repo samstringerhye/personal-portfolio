@@ -278,6 +278,31 @@
         "exitDelay": { "$ref": "#/definitions/duration", "description": "Pause before the panel reveals the new page" }
       },
       "additionalProperties": false
+    },
+    "workCards": {
+      "type": "object",
+      "description": "Homepage work card flipbook (thumbnailLayers.frames)",
+      "properties": {
+        "flipHold": { "$ref": "#/definitions/duration", "description": "How long each frame holds before the next" },
+        "flipFade": { "$ref": "#/definitions/duration", "description": "Crossfade between frames" },
+        "phone": {
+          "type": "object",
+          "description": "3D phone on coded work cards (PhoneScene). Angles in radians",
+          "properties": {
+            "restYaw": { "type": "number", "description": "Turn at rest; negative shows the left side" },
+            "restPitch": { "type": "number", "description": "Tilt at rest; positive leans the top back" },
+            "pointerYaw": { "type": "number", "description": "Turn across the full width of the window" },
+            "pointerPitch": { "type": "number", "description": "Tilt across the full height of the window" },
+            "scrollPitch": { "type": "number", "description": "Tilt from the card's place in the viewport, bottom to top" },
+            "sway": { "type": "number", "description": "Idle turn amplitude" },
+            "swayPeriod": { "$ref": "#/definitions/duration", "description": "Idle sway period" },
+            "follow": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the distance to the target angle covered each frame" },
+            "lensMm": { "type": "number", "minimum": 10, "description": "Camera focal length, full-frame equivalent (vertical field of view on a 24mm sensor)" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

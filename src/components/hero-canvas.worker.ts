@@ -235,6 +235,7 @@ function tick() {
       posX, posY, dist, dotScales, time - delays[i] * cmyDelay,
       cfg.waveSpeed, cfg.propagation, cfg.waveSharpness,
       cfg.waveAmplitude, cfg.waveFrequency, cfg.baseScale, cfg.twistAmount,
+      null,
     )
     mesh.instanceMatrix.needsUpdate = true
   }
