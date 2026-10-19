@@ -1,44 +1,85 @@
-// Mounts device scenes on any page (homepage cards, case study heroes) and carries a live device
-// across the page change between them. Each scene starts as it nears the viewport: the tour first,
-// then the 3D model once three.js and the model have loaded and the browser is idle. It shows
-// (data-ready) once the model is up, or the flat screen if WebGL isn't available.
+// Mounts device scenes on any page (homepage cards, case study heroes) and carries a live
+// arrangement across the page change between them. Each scene starts as it nears the viewport: the
+// screens first, then the 3D arrangement once three.js and the models have loaded and the browser is
+// idle. It shows (data-ready) once the models are up, or the lead device's flat screen if WebGL
+// isn't available.
 //
 // A card and its case study hero share a transition:persist id, so the router moves the same live
 // element (canvas, worker and tour included) from one page to the other. During that navigation the
 // element is the view transition's only named part: the device glides to its new place while the
 // rest of the page crossfades (data-device-nav, global.css) and the color shutter stands aside.
 import { animations } from '../../data/tokens'
-import type { SceneName } from '../DeviceScene.astro'
+import { arrangementOf, type ScreenSource, type SceneName } from './arrangements'
 import type { DeviceName } from './shared'
 
 const stops = new Map<HTMLElement, Array<() => void>>()
 const idle = () => new Promise<void>(resolve => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200)))
 
+// Builds one device's screen inside host
+async function mountScreen(host: HTMLElement, screen: ScreenSource, device: DeviceName): Promise<() => void> {
+  if (screen.kind === 'myfrontier') {
+    const { mountMyFrontier } = await import('./myfrontier')
+    return mountMyFrontier(host)
+  }
+  if (screen.kind === 'myfrontier-still') {
+    const { mountMyFrontierStill } = await import('./myfrontier')
+    return mountMyFrontierStill(host, screen.shot as never)
+  }
+  if (screen.kind === 'home') {
+    const { mountHomeScreen } = await import('./homescreen')
+    return mountHomeScreen(host)
+  }
+  const { mountTour } = await import('./tours')
+  return mountTour(host, screen.name, device)
+}
+
+// A browser keeps only so many WebGL contexts, so the 3D arrangements stay live only within about
+// a viewport and a half of the screen; the screens themselves keep playing
+const near = new IntersectionObserver(entries => entries.forEach(e => {
+  const scene = e.target as HTMLElement
+  const state = live.get(scene)
+  if (!state) return
+  state.wanted = e.isIntersecting
+  if (state.wanted) build(scene, state)
+  else if (state.stop) { state.stop(); state.stop = null }
+}), { rootMargin: '150% 0px' })
+const live = new Map<HTMLElement, { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null }>()
+
+async function build(scene: HTMLElement, state: { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null }) {
+  if (state.building || state.stop) return
+  state.building = true
+  try {
+    await idle()
+    const { mountArrangement } = await import('./model')
+    if (scene.isConnected && state.wanted) state.stop = await mountArrangement(scene, state.faces, scene.dataset.deviceScene as SceneName)
+    // Scrolled away while the models loaded
+    if (!state.wanted && state.stop) { state.stop(); state.stop = null }
+  } catch (e) {
+    // No WebGL or the models failed to load: the lead device's flat screen stands in
+    console.warn('3D devices unavailable', e)
+  }
+  state.building = false
+  scene.dataset.ready = ''
+}
+
 async function mount(scene: HTMLElement) {
   const own: Array<() => void> = []
   stops.set(scene, own)
   const name = scene.dataset.deviceScene as SceneName
-  if (name === 'myfrontier') {
-    const { mountMyFrontier } = await import('./myfrontier')
-    own.push(mountMyFrontier(scene))
-  } else if (name === 'whataburger') {
-    const { mountHomeScreen } = await import('./homescreen')
-    own.push(mountHomeScreen(scene))
-  } else {
-    const { mountTour } = await import('./tours')
-    own.push(mountTour(scene, name))
-  }
-  try {
-    await idle()
-    const { mountDeviceModel } = await import('./model')
-    const face = scene.querySelector<HTMLElement>('.device')
-    const stage = scene.querySelector<HTMLElement>('.stage')
-    if (face && stage && scene.isConnected) own.push(await mountDeviceModel(scene, face, stage, scene.dataset.device as DeviceName))
-  } catch (e) {
-    // No WebGL or the model failed to load: the flat screen stands in
-    console.warn('3D device unavailable', e)
-  }
-  scene.dataset.ready = ''
+  const { placements } = arrangementOf(name)
+  // One host per device, each holding that device's screen. Without WebGL the lead device's host
+  // shows its flat screen; in 3D the screens move into the arrangement's view (model.ts)
+  const hosts = placements.map((_, i) => scene.querySelector<HTMLElement>(`.device-scene-host[data-index="${i}"]`)!)
+  own.push(...await Promise.all(placements.map((p, i) => mountScreen(hosts[i], p.screen, p.device))))
+  const state = { faces: hosts.map(h => h.querySelector<HTMLElement>('.device')!), wanted: true, building: false, stop: null as (() => void) | null }
+  live.set(scene, state)
+  near.observe(scene)
+  own.push(() => {
+    near.unobserve(scene)
+    live.delete(scene)
+    state.stop?.()
+  })
+  build(scene, state)
 }
 
 let io: IntersectionObserver | null = null

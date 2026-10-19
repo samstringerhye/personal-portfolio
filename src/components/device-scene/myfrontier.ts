@@ -54,6 +54,19 @@ const TEMPLATE = `  <div class="floor" aria-hidden="true"></div>
     </div></div></div>
   </div>`
 
+/** One published screen held still, built like the tour's layers: the second phone in the
+    MyFrontier arrangement */
+export function mountMyFrontierStill(art: HTMLElement, name: Screen): () => void {
+  const [bg, fg] = SCREENS[name]
+  art.insertAdjacentHTML('beforeend', `<div class="floor" aria-hidden="true"></div>
+  <div class="stage"></div>
+  <div class="device phone"><div class="band"><div class="bezel"><div class="screen">
+    <div class="stack"><div class="layer"><img class="view" src="${BASE}screens/${name}.webp" alt=""><div class="notch" style="background:${bg}"></div><img class="sb l" src="${BASE}screens/${name}-t.png" alt="">${icons(fg)}</div></div>
+    <div class="island"></div>
+  </div></div></div></div>`)
+  return () => {}
+}
+
 // Builds the phone screen inside art and loops the tour while it is on screen. Returns a stop function
 export function mountMyFrontier(art: HTMLElement): () => void {
   art.insertAdjacentHTML('beforeend', TEMPLATE)

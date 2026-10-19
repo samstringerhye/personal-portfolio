@@ -1,20 +1,27 @@
-// Renders a device model (shared.ts) with a transparent hole where its display is, so the live
-// DOM screen behind the canvas shows through and the real bezel, frame and glass draw over it.
-// Runs in model.worker.ts, or on the main thread where OffscreenCanvas WebGL is missing.
+// Renders a card's device arrangement (arrangements.ts) in one scene: each model at its real size
+// and pose, with a transparent hole where its display is, so the live DOM screens behind the canvas
+// show through and the real bezels, frames and glass draw over them. Each frame reports where every
+// display sits, so the page lays its screen exactly on it. Runs in model.worker.ts, or on the main
+// thread where OffscreenCanvas WebGL is missing.
 import {
-  Box3, NeutralToneMapping, DirectionalLight, DoubleSide, Group, MeshBasicMaterial, NoBlending,
+  Box3, NeutralToneMapping, DirectionalLight, DoubleSide, Euler, Group, MeshBasicMaterial, NoBlending, Object3D,
   PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
   type Mesh, type MeshPhysicalMaterial, type Texture,
 } from 'three'
 import { GLTFLoader, type GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 
-import { DEVICES, modelUrl, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
+import { DEVICES, modelUrl, viewHeightAt, type ArrangementGeometry, type DeviceName, type DeviceSpec } from './shared'
+import { arrangementOf, type SceneName } from './arrangements'
 import { studioScene } from './studio'
 import { contactShadow } from './contact-shadow'
 
-// How far a held device rises off the floor, as a share of its height
+// How far a held arrangement rises off the floor, as a share of its height
 const LIFT = 0.05
+
+/** Floating devices: bob height (m) and period (s), the lean that goes with it (rad), and how far
+    below its place a device starts before it drifts up as the card scrolls in (m) */
+export interface FloatMotion { bob: number; period: number; wobble: number; drift: number }
 
 // three.js probes WebP support with new Image(), which a worker doesn't have. Every browser this
 // site supports decodes WebP, so this takes the extension's texture as is
@@ -28,29 +35,10 @@ class WebPTextures {
   }
 }
 
-export async function createDeviceRenderer(canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number, device: DeviceName, fov: number, rest: { rx: number; ry: number }) {
-  const spec = DEVICES[device]
-  const gltf = (await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).register(p => new WebPTextures(p) as any).loadAsync(modelUrl(device))).scene
-
-  const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
-  gl.setPixelRatio(dpr)
-  // Khronos PBR Neutral keeps the screens' and finishes' colors true, where ACES darkens and shifts them
-  gl.toneMapping = NeutralToneMapping
-  gl.outputColorSpace = SRGBColorSpace
-  gl.setClearColor(0, 0)
-
-  const scene = new Scene()
-  const pmrem = new PMREMGenerator(gl)
-  // Lit mostly by the studio's softboxes (studio.ts); a soft key adds direction to the shading
-  scene.environment = pmrem.fromScene(studioScene(), 0.02).texture
-  scene.environmentIntensity = 1
-  const key = new DirectionalLight(0xffffff, 0.8)
-  key.position.set(-600, 900, 1200)
-  scene.add(key)
-
+/** Readies a model's materials for the site and returns its display meshes, now holes */
+function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures: Set<Texture>, hole: MeshBasicMaterial): Mesh[] {
   const displays: Mesh[] = []
-  const textures = new Set<Texture>()
-  gltf.traverse(o => {
+  model.traverse(o => {
     const mesh = o as Mesh
     if (!mesh.isMesh) return
     const mat = mesh.material as MeshPhysicalMaterial
@@ -72,68 +60,136 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
     Object.values(mat).forEach(v => { if ((v as Texture)?.isTexture) textures.add(v as Texture) })
   })
   if (!displays.length) throw new Error(`${device} has no ${spec.display} mesh`)
-  const hole = new MeshBasicMaterial({ color: 0, transparent: true, opacity: 0, blending: NoBlending, side: DoubleSide })
   displays.forEach(d => { d.material = hole; d.renderOrder = 1 })
+  return displays
+}
 
-  // Face the display to the camera (+z): flip it if the file has it facing away, stand it upright
-  // if it leans, then roll
-  const flip = new Group()
-  flip.rotation.y = spec.front < 0 ? Math.PI : 0
-  flip.add(gltf)
-  const upright = new Group()
-  upright.rotation.x = spec.pitch ?? 0
-  upright.add(flip)
-  const roll = new Group()
-  roll.rotation.z = spec.roll
-  roll.add(upright)
-  roll.updateMatrixWorld(true)
-  const screen = new Box3()
-  displays.forEach(d => screen.expandByObject(d))
-  const ds = screen.getSize(new Vector3())
-  const dc = screen.getCenter(new Vector3())
-  const k = spec.screenWidth / ds.x
+export async function createArrangementRenderer(
+  canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number,
+  name: SceneName, fov: number, rest: { rx: number; ry: number }, float: FloatMotion,
+) {
+  const arrangement = arrangementOf(name)
+  const placements = arrangement.placements
+  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).register(p => new WebPTextures(p) as any)
+  const kinds = [...new Set(placements.map(p => p.device))]
+  const loaded = new Map(await Promise.all(kinds.map(async d => [d, (await loader.loadAsync(modelUrl(d))).scene] as const)))
+  // A device that appears twice is cloned before any material is touched, so each copy still finds
+  // its display by name
+  const seen = new Set<DeviceName>()
+  const models = placements.map(p => {
+    const model = loaded.get(p.device)!
+    if (!seen.has(p.device)) { seen.add(p.device); return model }
+    return model.clone(true)
+  })
 
-  // The display's center is the origin, at the DOM screen's scale. The device turns in two steps,
-  // the same rotation as Euler (rx, ry): it spins (ry) on a floor that tilts toward the camera (rx),
-  // so its shadow on that floor stays put while it spins
+  const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
+  gl.setPixelRatio(dpr)
+  // Khronos PBR Neutral keeps the screens' and finishes' colors true, where ACES darkens and shifts them
+  gl.toneMapping = NeutralToneMapping
+  gl.outputColorSpace = SRGBColorSpace
+  gl.setClearColor(0, 0)
+
+  const scene = new Scene()
+  const pmrem = new PMREMGenerator(gl)
+  // Lit mostly by the studio's softboxes (studio.ts); a soft key adds direction to the shading
+  scene.environment = pmrem.fromScene(studioScene(), 0.02).texture
+  scene.environmentIntensity = 1
+  const key = new DirectionalLight(0xffffff, 0.8)
+  key.position.set(-6, 9, 12)
+  scene.add(key)
+
+  // The arrangement turns in two steps, the same rotation as Euler (rx, ry): it spins (ry) on a
+  // floor that tilts toward the camera (rx), so the shadow stays on the floor while it spins
   const tilt = new Group()
   const spin = new Group()
-  const holder = new Group()
+  const content = new Group()
   scene.add(tilt)
   tilt.add(spin)
-  spin.add(holder)
-  holder.add(roll)
-  holder.scale.setScalar(k)
-  holder.position.copy(dc).multiplyScalar(-k)
-  // It turns about the middle of its body, like a product on a turntable: about the display, a
-  // laptop's base swings wide when it's dragged round. model.ts offsets the screen to match
+  spin.add(content)
+
+  const hole = new MeshBasicMaterial({ color: 0, transparent: true, opacity: 0, blending: NoBlending, side: DoubleSide })
+  const textures = new Set<Texture>()
+  const markers: Object3D[] = []
+  const aspects: number[] = []
+  const floating: { place: Group; at: Vector3; turn: Euler; phase: number }[] = []
+  const places: Group[] = []
+  placements.forEach((p, i) => {
+    const spec = DEVICES[p.device]
+    const displays = prepare(models[i], spec, p.device, textures, hole)
+    // Face the display to the camera (+z): flip it if the file has it facing away, stand it
+    // upright if it leans, then roll
+    const flip = new Group()
+    flip.rotation.y = spec.front < 0 ? Math.PI : 0
+    flip.add(models[i])
+    const upright = new Group()
+    upright.rotation.x = spec.pitch ?? 0
+    upright.add(flip)
+    const roll = new Group()
+    roll.rotation.z = spec.roll
+    roll.add(upright)
+    roll.updateMatrixWorld(true)
+    const screen = new Box3()
+    displays.forEach(d => screen.expandByObject(d))
+    const ds = screen.getSize(new Vector3())
+    const dc = screen.getCenter(new Vector3())
+    // Real size: the display spans its real width in meters, centered on the placement's origin
+    const k = spec.realWidth / ds.x
+    const holder = new Group()
+    holder.scale.setScalar(k)
+    holder.position.copy(dc).multiplyScalar(-k)
+    holder.add(roll)
+    const place = new Group()
+    place.position.set(...p.at)
+    place.rotation.set(p.turn[0], p.turn[1], p.turn[2], 'YXZ')
+    place.add(holder)
+    // The display's own frame: origin at its center, x along its width, y up its height
+    const marker = new Object3D()
+    place.add(marker)
+    content.add(place)
+    markers.push(marker)
+    places.push(place)
+    aspects.push(ds.x / ds.y)
+    if (p.float) floating.push({ place, at: place.position.clone(), turn: place.rotation.clone(), phase: i * 1.7 })
+  })
+
+  // It turns about the middle of the arrangement, like products on one turntable
   tilt.updateMatrixWorld(true)
   const standing = new Box3().setFromObject(spin, true)
   const pivot = standing.getCenter(new Vector3())
   tilt.position.copy(pivot)
-  holder.position.sub(pivot)
-
-  // The floor under the device, wide enough for its footprint at any spin
+  content.position.copy(pivot).negate()
   const size = standing.getSize(new Vector3())
-  const shadow = contactShadow(Math.hypot(size.x, size.z) * 1.6, size.y)
-  shadow.group.position.y = standing.min.y - pivot.y
+
+  // The floor: under the grounded devices, with floating ones hovering over it; under everything,
+  // a little below, when they all float. Wide enough for the footprint at any spin, and reaching
+  // high enough to catch the floating devices' shadows
+  tilt.updateMatrixWorld(true)
+  let grounded = Infinity
+  let lowest = Infinity
+  placements.forEach((p, i) => {
+    const b = new Box3().setFromObject(places[i], true)
+    lowest = Math.min(lowest, b.min.y)
+    if (!p.float) grounded = Math.min(grounded, b.min.y)
+  })
+  const gap = size.y * 0.06
+  const floorY = Math.min(grounded, lowest - gap)
+  const shadow = contactShadow(Math.hypot(size.x, size.z) * 1.6, standing.max.y - floorY, floating.length ? 0.6 : 0.25)
+  shadow.group.position.y = floorY - pivot.y
   tilt.add(shadow.group)
 
-  // Framed on the whole device as it sits at rest, centered and as large as the stage allows. The
-  // camera stands back so the stage spans viewHeightAt(): the DOM screen then matches the display
-  // with the same scale and a CSS perspective of the same angle (model.ts)
+  // Framed on the whole arrangement as it sits at rest, centered and as large as the stage allows.
+  // The camera stands back so the stage spans viewHeightAt(): each DOM screen then matches its
+  // display with the same scale and a CSS perspective of the same angle (model.ts)
   tilt.rotation.x = rest.rx
   spin.rotation.y = rest.ry
   tilt.updateMatrixWorld(true)
   const body = new Box3().setFromObject(spin, true)
   const center = body.getCenter(new Vector3())
-  const geometry: DeviceGeometry = {
-    screenAspect: ds.x / ds.y,
-    viewHeight: (body.max.y - body.min.y) / spec.fill,
-    viewWidth: (body.max.x - body.min.x) / spec.fill,
+  const geometry: ArrangementGeometry = {
+    viewHeight: (body.max.y - body.min.y) / arrangement.fill,
+    viewWidth: (body.max.x - body.min.x) / arrangement.fill,
     center: [center.x, center.y],
-    pivot: [pivot.x, pivot.y, pivot.z],
-    liftHeight: size.y * LIFT,
+    aspects,
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
@@ -144,10 +200,10 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
     const vh = viewHeightAt(geometry, w, h)
     const distance = (vh / 2) / tan
     camera.position.z = distance
-    camera.near = distance / 10
+    camera.near = distance / 20
     camera.far = distance * 10
     camera.aspect = w / h
-    // The camera stays on the display; the picture shifts so the body centers in the stage
+    // The camera stays on the axis; the picture shifts so the arrangement centers in the stage
     const s = h / vh
     camera.setViewOffset(w, h, geometry.center[0] * s, -geometry.center[1] * s, w, h)
     camera.updateProjectionMatrix()
@@ -158,17 +214,26 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   await gl.compileAsync(scene, camera)
   textures.forEach(t => gl.initTexture(t))
 
-  // The shadow only changes as the device spins or lifts
+  // t in seconds; enter (0–1) is how far the card has scrolled in, carrying floating devices up
+  // into place. The shadow re-renders only when something it sees has moved
   let shadowAt = ''
-  const render = (rx: number, ry: number, lift = 0) => {
+  const render = (rx: number, ry: number, lift = 0, t = 0, enter = 1): Float32Array => {
     tilt.rotation.x = rx
     spin.rotation.y = ry
-    spin.position.y = lift * geometry.liftHeight
-    const at = `${ry},${lift}`
+    spin.position.y = lift * size.y * LIFT
+    for (const f of floating) {
+      const wave = Math.sin((t / float.period) * Math.PI * 2 + f.phase)
+      f.place.position.set(f.at.x, f.at.y + wave * float.bob - (1 - enter) * float.drift, f.at.z)
+      f.place.rotation.set(f.turn.x, f.turn.y, f.turn.z + wave * float.wobble, 'YXZ')
+    }
+    const at = floating.length ? `${ry},${lift},${t},${enter}` : `${ry},${lift}`
     if (at !== shadowAt) { shadow.update(gl, scene, lift); shadowAt = at }
     gl.render(scene, camera)
+    const out = new Float32Array(16 * markers.length)
+    markers.forEach((m, i) => out.set(m.matrixWorld.elements, i * 16))
+    return out
   }
-  // One worker outlives its scenes, so free the model's GPU memory explicitly
+  // One worker outlives its scenes, so free the models' GPU memory explicitly
   const dispose = () => {
     scene.traverse(o => {
       const mesh = o as Mesh

@@ -329,6 +329,19 @@
             "additionalProperties": false
           }
         },
+        "float": {
+          "type": "object",
+          "description": "Floating devices in the arrangements (device-scene/arrangements.ts): their bob, and how they drift up into place as the card scrolls in",
+          "properties": {
+            "bob": { "type": "number", "minimum": 0, "description": "Bob height, meters" },
+            "period": { "$ref": "#/definitions/duration", "description": "One bob, seconds" },
+            "wobble": { "type": "number", "description": "Lean that goes with the bob, radians" },
+            "drift": { "type": "number", "minimum": 0, "description": "How far below its place a floating device starts, meters" },
+            "enterFrom": { "type": "number", "description": "Where the card's center is (share of the viewport's height from the top) when the drift starts" },
+            "enterTo": { "type": "number", "description": "Where it is when the device has arrived" }
+          },
+          "additionalProperties": false
+        },
         "deviceNav": {
           "type": "object",
           "description": "A device carried between its homepage card and case study hero (device-scene/mount.ts, global.css)",

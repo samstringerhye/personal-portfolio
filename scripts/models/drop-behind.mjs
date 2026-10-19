@@ -1,10 +1,11 @@
-// Unlinks every mesh whose world-space center sits behind z = 0, then writes the GLB back out.
-// The Galaxy Z Fold8 source file shows an unfolded phone in front (z > 0) and a folded one behind
-// it; this keeps the unfolded one. gltf-transform optimize then prunes the orphaned data.
-// Usage: node scripts/models/drop-behind.mjs in.glb out.glb
+// Splits a GLB at z = 0: unlinks every mesh whose world-space center sits on the other side, then
+// writes the GLB back out. The Galaxy Z Fold8 source file shows an unfolded phone in front (z > 0)
+// and a folded one behind it: keep "front" for the unfolded phone, "back" for the folded one.
+// gltf-transform optimize then prunes the orphaned data.
+// Usage: node scripts/models/drop-behind.mjs in.glb out.glb [front|back]
 import { readFileSync, writeFileSync } from 'node:fs'
 
-const [, , input, output] = process.argv
+const [, , input, output, keep = 'front'] = process.argv
 const glb = readFileSync(input)
 const jsonLen = glb.readUInt32LE(12)
 const json = JSON.parse(glb.subarray(20, 20 + jsonLen).toString('utf8'))
@@ -39,7 +40,8 @@ const walk = (i, parent) => {
       return [0, 1, 2, 3, 4, 5, 6, 7].map(k => apply(world, [k & 1 ? max[0] : min[0], k & 2 ? max[1] : min[1], k & 4 ? max[2] : min[2]]))
     })
     const zs = corners.map(c => c[2])
-    if ((Math.min(...zs) + Math.max(...zs)) / 2 < 0) { delete node.mesh; dropped++ } else kept++
+    const behind = (Math.min(...zs) + Math.max(...zs)) / 2 < 0
+    if (behind === (keep === 'front')) { delete node.mesh; dropped++ } else kept++
   }
   for (const c of node.children ?? []) walk(c, world)
 }

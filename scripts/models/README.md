@@ -1,7 +1,7 @@
 # Device models and screens
 
-The coded work cards (`src/components/DeviceScene.astro`) put a published screen tour inside a 3D
-device. Models live in `public/motion/models/`, screens in `public/motion/<scene>/`. Each device's
+The coded work cards (`src/components/DeviceScene.astro`) arrange two or so 3D devices, each playing
+a published screen tour or holding a published screen (`src/components/device-scene/arrangements.ts`). Models live in `public/motion/models/`, screens in `public/motion/<scene>/`. Each device's
 display material, orientation and finish are set in `src/components/device-scene/shared.ts`; model
 credits are in the colophon.
 
@@ -17,11 +17,15 @@ npx @gltf-transform/cli optimize "3d models/<source>.glb" public/motion/models/<
   --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
 ```
 
-The Galaxy Z Fold8 file shows an unfolded phone in front of a folded one. Drop the folded one first:
+The Galaxy Z Fold8 file shows an unfolded phone in front of a folded one; each becomes its own
+device. Split the file first, keeping the front (unfolded) or back (folded) phone:
 
 ```bash
-node scripts/models/drop-behind.mjs "3d models/samsung_galaxy_z_fold8.glb" /tmp/fold8-front.glb
+node scripts/models/drop-behind.mjs "3d models/samsung_galaxy_z_fold8.glb" /tmp/fold8-front.glb front
 npx @gltf-transform/cli optimize /tmp/fold8-front.glb public/motion/models/galaxy-z-fold8.glb \
+  --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
+node scripts/models/drop-behind.mjs "3d models/samsung_galaxy_z_fold8.glb" /tmp/fold8-back.glb back
+npx @gltf-transform/cli optimize /tmp/fold8-back.glb public/motion/models/galaxy-z-fold8-folded.glb \
   --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
 ```
 

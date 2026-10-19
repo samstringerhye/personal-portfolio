@@ -100,6 +100,9 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame while scrolling (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
 | `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.float.bob` / `period` / `wobble` | m / s / rad | `0.004` / `4.6` / `0.025` | Floating devices in the arrangements bob this high, this slowly, leaning a touch as they go |
+| `workCards.float.drift` | m | `0.06` | A floating device starts this far below its place and drifts up as its card scrolls in |
+| `workCards.float.enterFrom` / `enterTo` | share of viewport | `0.95` / `0.45` | The drift runs while the card's center moves from near the bottom of the viewport to just above its middle (reduced motion: in place, no bob) |
 | `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
 | `workCards.deviceNav.fadeOut` / `fadeIn` / `fadeInDelay` | seconds | `0.3` / `0.4` / `0.15` | The rest of the page crossfading around it (the color shutter sits these out) |
 | `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |

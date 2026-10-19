@@ -10,15 +10,16 @@ import { HorizontalBlurShader } from 'three/examples/jsm/shaders/HorizontalBlurS
 import { VerticalBlurShader } from 'three/examples/jsm/shaders/VerticalBlurShader.js'
 
 const SIZE = 512
-// How far up the device the shadow reaches, as a share of its height: low, so the shadow is
-// darkest where the device meets the ground and fades within a short distance
+// How far up the devices the shadow reaches, as a share of their height: low, so the shadow is
+// darkest where a device meets the ground and fades within a short distance. Arrangements with
+// floating devices reach higher, so those cast a softer shadow from above the floor
 const REACH = 0.25
 // Blur in texels of the 512px texture, and how dark the silhouette starts
 const BLUR = 5
 const DARKNESS = 4
 const OPACITY = 0.7
 
-export function contactShadow(span: number, height: number) {
+export function contactShadow(span: number, height: number, reach = REACH) {
   const group = new Group()
   const target = new WebGLRenderTarget(SIZE, SIZE)
   const blurTarget = new WebGLRenderTarget(SIZE, SIZE)
@@ -34,7 +35,7 @@ export function contactShadow(span: number, height: number) {
   blurPlane.visible = false
   group.add(blurPlane)
 
-  const camera = new OrthographicCamera(-span / 2, span / 2, span / 2, -span / 2, 0, height * REACH)
+  const camera = new OrthographicCamera(-span / 2, span / 2, span / 2, -span / 2, 0, height * reach)
   camera.rotation.x = Math.PI / 2
   group.add(camera)
 

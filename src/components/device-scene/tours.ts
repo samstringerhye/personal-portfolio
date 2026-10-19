@@ -1,6 +1,7 @@
-// Screen tours for the CVS.com, Samsung.com and Bespoke cards: published screens stepped through
-// with taps, pushes and scrolls, looping while the card is on screen. Timings live in
-// animations.workCards.tours; reduced motion holds on the first screen.
+// Screens for the device arrangements: published screens stepped through with taps, pushes and
+// scrolls, looping while the card is on screen, or a single published screen held still (a tour
+// with no steps). Timings live in animations.workCards.tours; reduced motion holds on the first
+// screen.
 import { animations } from '../../data/tokens'
 import { DEVICES, type DeviceName } from './shared'
 
@@ -16,10 +17,7 @@ type Step =
   | { push: string } | { drop: string } | { fade: string }
 
 interface Tour {
-  device: DeviceName
-  /** What the card shows, for screen readers */
-  label: string
-  /** Screens under /motion/<slug>/, with their width over height */
+  /** Screens under /motion/<tour>/, with their width over height */
   shots: Record<string, number>
   steps: Step[]
 }
@@ -27,8 +25,6 @@ interface Tour {
 // Every screen is one the case study publishes (scripts/motion/device-screens.mjs)
 export const TOURS = {
   cvs: {
-    device: 'macbook-neo',
-    label: 'CVS.com on a laptop: the homepage, the Shop menu opening, then the Neutrogena skin care brand page',
     shots: { home: 1280 / 798, shop: 1280 / 798, brand: 1280 / 821 },
     steps: [
       { hold: 'home' }, { tap: [0.169, 0.082] }, { drop: 'shop' },
@@ -37,8 +33,6 @@ export const TOURS = {
     ],
   },
   samsung: {
-    device: 'galaxy-z-fold8',
-    label: 'Samsung.com on an unfolded Galaxy Z Fold: the homepage scrolling to Appliances, then the Washers & Dryers page',
     shots: { home: 1100 / 2464, category: 1100 / 1584 },
     steps: [
       { hold: 'home' }, { scroll: 1, over: 'homeScroll' }, { hold: 'appliances' },
@@ -48,8 +42,6 @@ export const TOURS = {
     ],
   },
   amica: {
-    device: 'macbook-air-15',
-    label: 'Amica.com on a laptop: the homepage, then Get a quote, scrolling to Empathy is our best policy',
     shots: { home: 1440 / 900, quote: 1440 / 2159 },
     steps: [
       { hold: 'home' }, { tap: [0.352, 0.54] }, { push: 'quote' },
@@ -58,8 +50,6 @@ export const TOURS = {
     ],
   },
   bespoke: {
-    device: 'ipad-mini-6',
-    label: 'The Bespoke configurator on an iPad: choosing depth, then colors, then the finished kitchen with its price',
     shots: { depth: 1200 / 853, colors: 1200 / 853, summary: 1200 / 853 },
     steps: [
       { hold: 'depth' }, { tap: [0.85, 0.2] }, { fade: 'colors' },
@@ -67,6 +57,11 @@ export const TOURS = {
       { hold: 'summary' }, { fade: 'depth' },
     ],
   },
+  // The phones beside them, each on one published mobile screen
+  'cvs-mobile': { shots: { home: 720 / 1606 }, steps: [] },
+  'amica-mobile': { shots: { home: 720 / 1561 }, steps: [] },
+  'samsung-mobile': { shots: { menu: 800 / 1240 }, steps: [] },
+  'bespoke-mobile': { shots: { sheet: 800 / 1240 }, steps: [] },
 } satisfies Record<string, Tour>
 export type TourName = keyof typeof TOURS
 
@@ -78,12 +73,13 @@ const TEMPLATE = `<div class="floor" aria-hidden="true"></div>
   <div class="stage"></div>
   <div class="device"><div class="screen"></div></div>`
 
-// Builds the screen inside art and loops the tour while it is on screen. Returns a stop function
-export function mountTour(art: HTMLElement, name: TourName): () => void {
+// Builds the screen inside art, sized for device, and loops the tour while it is on screen.
+// Returns a stop function
+export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): () => void {
   const tour: Tour = TOURS[name]
   const { moves } = animations.workCards.tours
-  const times = animations.workCards.tours[name] as Record<string, number>
-  const spec = DEVICES[tour.device]
+  const times = ((animations.workCards.tours as Record<string, unknown>)[name] ?? {}) as Record<string, number>
+  const spec = DEVICES[kind]
   art.insertAdjacentHTML('beforeend', TEMPLATE)
   const device = art.querySelector<HTMLElement>('.device')!
   const screen = art.querySelector<HTMLElement>('.screen')!
@@ -121,7 +117,7 @@ export function mountTour(art: HTMLElement, name: TourName): () => void {
     current = shot
   }
   show(first)
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => ro.disconnect()
+  if (!tour.steps.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => ro.disconnect()
 
   const anim = (el: HTMLElement, kf: Keyframe[], s: number, easing = 'ease') =>
     el.animate(kf, { duration: ms(s), easing, fill: 'forwards' }).finished

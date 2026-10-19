@@ -260,6 +260,14 @@
         "restPitch": 0.08
       }
     },
+    "float": {
+      "bob": 0.004,
+      "period": 4.6,
+      "wobble": 0.025,
+      "drift": 0.06,
+      "enterFrom": 0.95,
+      "enterTo": 0.45
+    },
     "deviceNav": {
       "move": 0.7,
       "fadeOut": 0.3,

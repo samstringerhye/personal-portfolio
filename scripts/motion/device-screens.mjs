@@ -33,6 +33,23 @@ const screens = {
       quote: ['amica-design-system/prototype-v2/get-a-quote-desktop.png'],
     },
   },
+  // Phones beside the desktops in the arrangements, each one published mobile screen
+  'cvs-mobile': {
+    width: 720,
+    shots: { home: ['cvs-redesign/frame-10669.png', { left: 145, top: 430, width: 390, height: 870 }] },
+  },
+  'amica-mobile': {
+    width: 720,
+    shots: { home: ['amica-design-system/prototype/home-mobile.png'] },
+  },
+  'samsung-mobile': {
+    width: 800,
+    shots: { menu: ['samsung-redesign/samsung-section-3-gnb-desktop.jpg', { left: 712, top: 420, width: 1100, height: 1705 }] },
+  },
+  'bespoke-mobile': {
+    width: 800,
+    shots: { sheet: ['bespoke-design-studio/mobile-04b.png', { left: 0, top: 370, width: 2500, height: 3876 }] },
+  },
   bespoke: {
     width: 1200,
     shots: {

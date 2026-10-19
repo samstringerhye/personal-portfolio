@@ -1,19 +1,24 @@
-// Puts a device scene's screen into its 3D model. The models render in one shared worker, each on
-// its own OffscreenCanvas, where the browser supports it (model.worker.ts), on the main thread
-// otherwise (render.ts). This module only turns the device and keeps the DOM screen on its display,
-// so the page never loads three.js here.
+// Puts a card's DOM screens into its 3D device arrangement. The arrangements render in one shared
+// worker, each on its own OffscreenCanvas, where the browser supports it (model.worker.ts), on the
+// main thread otherwise (render.ts). This module turns the arrangement and lays each screen on its
+// display from the matrices the renderer reports, so the page never loads three.js here.
 import { animations } from '../../data/tokens'
-import { DEVICES, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
+import { DEVICES, viewHeightAt, type ArrangementGeometry, type DeviceName } from './shared'
+import { arrangementOf, type SceneName } from './arrangements'
+import type { FloatMotion } from './render'
 
 interface Backend {
-  geometry: DeviceGeometry
+  geometry: ArrangementGeometry
+  /** Where each display sits in the first frame */
+  first: Float32Array
   resize: (w: number, h: number, dpr: number) => void
-  /** Draws the model at this angle and lift, then calls drawn once it's on the canvas */
-  frame: (rx: number, ry: number, lift: number, drawn: () => void) => void
+  /** Draws a frame, then hands back where each display sits once it's on the canvas */
+  frame: (rx: number, ry: number, lift: number, t: number, enter: number, drawn: (matrices: Float32Array) => void) => void
   dispose: () => void
 }
 
 const tilt = animations.workCards.phone
+const float: FloatMotion & { enterFrom: number; enterTo: number } = animations.workCards.float
 // Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
 const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
 const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
@@ -29,8 +34,8 @@ const offscreen = () => typeof HTMLCanvasElement.prototype.transferControlToOffs
 // One worker for every scene, so three.js loads and parses once. Replies are routed by scene id
 let worker: Worker | null = null
 let nextId = 0
-const pending = new Map<number, { resolve: (geometry: DeviceGeometry) => void; reject: (e: Error) => void }>()
-const drawnCallbacks = new Map<number, () => void>()
+const pending = new Map<number, { resolve: (r: { geometry: ArrangementGeometry; matrices: Float32Array }) => void; reject: (e: Error) => void }>()
+const drawnCallbacks = new Map<number, (matrices: Float32Array) => void>()
 function sharedWorker(): Worker {
   if (worker) return worker
   const w = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
@@ -38,13 +43,13 @@ function sharedWorker(): Worker {
     if (e.data.type === 'drawn') {
       const done = drawnCallbacks.get(e.data.id)
       drawnCallbacks.delete(e.data.id)
-      done?.()
+      if (e.data.matrices) done?.(e.data.matrices)
       return
     }
     const waiting = pending.get(e.data.id)
     if (!waiting) return
     pending.delete(e.data.id)
-    if (e.data.type === 'ready') waiting.resolve(e.data.geometry)
+    if (e.data.type === 'ready') waiting.resolve(e.data)
     else waiting.reject(new Error(e.data.message))
   }
   // The worker itself failed to start: every waiting scene falls back to the main thread
@@ -57,20 +62,21 @@ function sharedWorker(): Worker {
   return (worker = w)
 }
 
-async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
-  const offscreen = canvas.transferControlToOffscreen()
+async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, scene: SceneName, rest: Rest): Promise<Backend> {
+  const offscreenCanvas = canvas.transferControlToOffscreen()
   const target = sharedWorker()
   const id = nextId++
-  const geometry = await new Promise<DeviceGeometry>((resolve, reject) => {
+  const { geometry, matrices } = await new Promise<{ geometry: ArrangementGeometry; matrices: Float32Array }>((resolve, reject) => {
     pending.set(id, { resolve, reject })
-    target.postMessage({ type: 'init', id, canvas: offscreen, width: w, height: h, dpr: dprFor(w, h), device, fov, rx: rest.pitch, ry: rest.yaw }, [offscreen])
+    target.postMessage({ type: 'init', id, canvas: offscreenCanvas, width: w, height: h, dpr: dprFor(w, h), scene, fov, rx: rest.pitch, ry: rest.yaw, float }, [offscreenCanvas])
   })
   return {
     geometry,
+    first: matrices,
     resize: (width, height, dpr) => target.postMessage({ type: 'resize', id, width, height, dpr }),
-    frame: (rx, ry, lift, drawn) => {
+    frame: (rx, ry, lift, t, enter, drawn) => {
       drawnCallbacks.set(id, drawn)
-      target.postMessage({ type: 'frame', id, rx, ry, lift })
+      target.postMessage({ type: 'frame', id, rx, ry, lift, t, enter })
     },
     dispose: () => {
       drawnCallbacks.delete(id)
@@ -79,86 +85,97 @@ async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, de
   }
 }
 
-async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
-  const { createDeviceRenderer } = await import('./render')
-  const r = await createDeviceRenderer(canvas, w, h, dprFor(w, h), device, fov, { rx: rest.pitch, ry: rest.yaw })
-  r.render(rest.pitch, rest.yaw)
-  return { geometry: r.geometry, resize: r.resize, frame: (rx, ry, lift, drawn) => { r.render(rx, ry, lift); drawn() }, dispose: r.dispose }
+async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, scene: SceneName, rest: Rest): Promise<Backend> {
+  const { createArrangementRenderer } = await import('./render')
+  const r = await createArrangementRenderer(canvas, w, h, dprFor(w, h), scene, fov, { rx: rest.pitch, ry: rest.yaw }, float)
+  return {
+    geometry: r.geometry,
+    first: r.render(rest.pitch, rest.yaw),
+    resize: r.resize,
+    frame: (rx, ry, lift, t, enter, drawn) => drawn(r.render(rx, ry, lift, t, enter)),
+    dispose: r.dispose,
+  }
 }
 
-/** The CSS matrix that lays the screen (fw px wide) on the display: the device's rotation
-    (three.js XYZ order, z = 0) applied to the screen plane, at s px per world unit, y flipped.
-    World units are the screen's layout pixels (render.ts scales the model so). The device turns
-    about pivot, which carries the display to pivot − R·pivot, and rises by lift along its tilted
-    floor's up (render.ts) */
-function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number, pivot: [number, number, number], lift: number) {
-  const ca = Math.cos(rx), sa = Math.sin(rx), cb = Math.cos(ry), sb = Math.sin(ry)
-  const r = [[cb, 0, sb], [sa * sb, ca, -sa * cb], [-ca * sb, sa, ca * cb]]
-  const tx = -fw / 2, ty = fh / 2
-  const up = [0, ca * lift, sa * lift]
-  const t = [0, 1, 2].map(i => r[i][0] * tx + r[i][1] * ty + pivot[i] - (r[i][0] * pivot[0] + r[i][1] * pivot[1] + r[i][2] * pivot[2]) + up[i])
-  return `matrix3d(${[
-    s * r[0][0], -s * r[1][0], s * r[2][0], 0,
-    -s * r[0][1], s * r[1][1], -s * r[2][1], 0,
-    s * r[0][2], -s * r[1][2], s * r[2][2], 0,
-    s * t[0], -s * t[1], s * t[2], 1,
-  ].join(',')})`
+/** The CSS matrix3d that lays a screen (fw × fh CSS px, top left origin) on its display. w holds
+    the display's world matrix at o (column-major, meters, origin at its center, y up), a is the
+    meters per screen pixel, s the stage's CSS px per meter; CSS y runs down */
+function screenMatrix(w: ArrayLike<number>, o: number, a: number, s: number, fw: number, fh: number) {
+  // A: screen px → display meters; then W; then world → CSS (y flipped)
+  const A = [[a, 0, 0, -a * fw / 2], [0, -a, 0, a * fh / 2], [0, 0, 1, 0], [0, 0, 0, 1]]
+  const flip = [s, -s, s, 1]
+  const m: number[] = new Array(16)
+  for (let c = 0; c < 4; c++) {
+    for (let r = 0; r < 4; r++) {
+      let v = 0
+      for (let k = 0; k < 4; k++) v += w[o + k * 4 + r] * A[k][c]
+      m[c * 4 + r] = v * flip[r]
+    }
+  }
+  return `matrix3d(${m.join(',')})`
 }
 
 let tracking = false
 // When the page last scrolled or a device was last dragged: while neither happens, only the idle
-// sway is moving the devices, and they redraw at half rate
+// motion is moving the devices, and they redraw at half rate
 let lastInput = 0
 
 interface Rest { yaw: number; pitch: number }
-// Each device can set its own rest angle; the rest of the motion is shared
+// The lead device sets the arrangement's rest angle; the rest of the motion is shared
 const restOf = (device: DeviceName): Rest => {
   const own = (animations.workCards.devices as Record<string, { restYaw: number; restPitch: number }>)[device]
   return { yaw: own?.restYaw ?? tilt.restYaw, pitch: own?.restPitch ?? tilt.restPitch }
 }
 
-// Mounts the device's model in art around face (the scene's .device). Returns a stop function
-export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stage: HTMLElement, device: DeviceName) {
+// Mounts the scene's arrangement in art, with faces (each placement's DOM screen, in order) laid on
+// their displays. Returns a stop function
+export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], scene: SceneName) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!tracking) {
     tracking = true
     window.addEventListener('scroll', () => { lastInput = performance.now() }, { passive: true })
   }
+  const arrangement = arrangementOf(scene)
+  const rest = restOf(arrangement.placements[0].device)
+  const floats = !reduced && arrangement.placements.some(p => p.float)
 
-  const rest = restOf(device)
+  const stage = document.createElement('div')
+  stage.className = 'stage device-scene-stage'
+  art.append(stage)
   const w = stage.clientWidth, h = stage.clientHeight
   let canvas = document.createElement('canvas')
   let backend: Backend
   if (offscreen()) {
     try {
-      backend = await workerBackend(canvas, w, h, device, rest)
+      backend = await workerBackend(canvas, w, h, scene, rest)
     } catch {
       // The transfer used up that canvas
       canvas = document.createElement('canvas')
-      backend = await mainBackend(canvas, w, h, device, rest)
+      backend = await mainBackend(canvas, w, h, scene, rest)
     }
   } else {
-    backend = await mainBackend(canvas, w, h, device, rest)
+    backend = await mainBackend(canvas, w, h, scene, rest)
   }
-  const { screenAspect } = backend.geometry
-  const fw = DEVICES[device].screenWidth
-  const fh = fw / screenAspect
 
-  // One perspective container and one transformed element, the screen at the display's scale
+  // One perspective container behind the canvas holding every screen, each with one transform
   const view = document.createElement('div')
   view.className = 'device-scene-view'
   view.style.perspective = perspective(h)
-  view.append(face)
   stage.append(view, canvas)
-  face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${screenAspect}`
+  // Each screen's own styles and place, restored when the arrangement is torn down
+  const homes = faces.map(face => ({ parent: face.parentElement!, css: face.style.cssText }))
+  const sizes = arrangement.placements.map((p, i) => {
+    const spec = DEVICES[p.device]
+    const fw = spec.screenWidth, fh = fw / backend.geometry.aspects[i]
+    const face = faces[i]
+    view.append(face)
+    face.dataset.device = p.device
+    face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${backend.geometry.aspects[i]}`
+    return { fw, fh, a: spec.realWidth / fw }
+  })
   art.classList.add('is-3d')
 
-  // The last angle and lift drawn: the model and the screen only redraw when they change (or on
-  // resize). One frame is in flight at a time, and the DOM screen moves when the model's frame is
-  // drawn, so the two stay together even while the worker runs behind the page
-  let drawn: [number, number, number] | null = null
-  let busy = false
-  // The screen's scale and shift follow the renderer's framing (render.ts)
+  // The screens' scale and shift follow the renderer's framing (render.ts)
   const [cx, cy] = backend.geometry.center
   let scale = 1
   const fit = (nw: number, nh: number) => {
@@ -166,6 +183,22 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
     view.style.translate = `${-cx * scale}px ${cy * scale}px`
   }
   fit(w, h)
+  // Lays every screen on its display; nearer displays stack over farther ones
+  const place = (m: Float32Array) => {
+    const order = faces.map((_, i) => i).sort((p, q) => m[p * 16 + 14] - m[q * 16 + 14])
+    faces.forEach((face, i) => {
+      const { fw, fh, a } = sizes[i]
+      face.style.transform = screenMatrix(m, i * 16, a, scale, fw, fh)
+      face.style.zIndex = String(order.indexOf(i) + 1)
+    })
+  }
+  place(backend.first)
+
+  // The last state drawn: the arrangement and its screens only redraw when it changes (or on
+  // resize). One frame is in flight at a time, and the screens move when the model's frame is
+  // drawn, so the two stay together even while the worker runs behind the page
+  let drawn: number[] | null = null
+  let busy = false
   const ro = new ResizeObserver(() => {
     const nw = stage.clientWidth, nh = stage.clientHeight
     if (!nw || !nh) return
@@ -183,18 +216,16 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   let on = false
   let raf = 0
   let tick = 0
-  const pivot = backend.geometry.pivot
-  const liftHeight = backend.geometry.liftHeight
-  const place = (a: number, b: number, l: number) => { face.style.transform = screenMatrix(a, b, scale, fw, fh, pivot, l * liftHeight) }
 
-  // Devices don't follow the pointer; they turn when dragged. The grab area is the device's own box
-  // (the scene bleeds past it, over the caption's link), and a vertical swipe still scrolls the page
+  // The devices don't follow the pointer; the arrangement turns as one when dragged. The grab area
+  // is the card's own box (the scene bleeds past it, over the caption), and a vertical swipe still
+  // scrolls the page
   const grab = document.createElement('div')
   grab.className = 'device-scene-grab'
   art.append(grab)
   let drag: { id: number; x: number; y: number; rx: number; ry: number } | null = null
   let dragTo: [number, number] | null = null
-  // After a drag the device eases back to rest at dragReturn, then follows the scroll again
+  // After a drag the arrangement eases back to rest at dragReturn, then follows the scroll again
   let returning = false
   const limit = tilt.dragPitchLimit
   grab.addEventListener('pointerdown', e => {
@@ -226,10 +257,11 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   grab.addEventListener('pointerup', release)
   grab.addEventListener('pointercancel', release)
 
-  // Scroll parallax: the device sits a share of its box's distance from the viewport's center back
-  // toward it, so it drifts against the page. Read from the box, which the offset doesn't move
+  // Scroll parallax: the arrangement sits a share of its box's distance from the viewport's center
+  // back toward it, so it drifts against the page. Read from the box, which the offset doesn't move
   let parallax = 0
-  const frame = (t: number) => {
+  const smooth = (x: number) => { const c = Math.max(0, Math.min(1, x)); return c * c * (3 - 2 * c) }
+  const frame = (now: number) => {
     if (!on) return
     raf = requestAnimationFrame(frame)
     const box = (art.parentElement ?? art).getBoundingClientRect()
@@ -238,6 +270,10 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
       const offset = Math.round(-fromCenter * tilt.parallax)
       if (offset !== parallax) art.style.setProperty('--parallax', `${(parallax = offset)}px`)
     }
+    // Floating devices drift up into place as the card's center rises through the viewport
+    const at = (box.top + box.height / 2) / window.innerHeight
+    const enter = floats ? smooth((float.enterFrom - at) / (float.enterFrom - float.enterTo)) : 1
+    const t = floats ? now / 1000 : 0
     const liftTo = drag ? 1 : 0
     lift = reduced ? liftTo : lift + (liftTo - lift) * 0.18
     if (Math.abs(lift - liftTo) < 0.002) lift = liftTo
@@ -247,20 +283,20 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
     } else if (!reduced) {
       const scroll = Math.max(-1, Math.min(1, fromCenter / window.innerHeight * 2))
       const tx = rest.pitch + scroll * tilt.scrollPitch
-      const ty = rest.yaw + Math.sin(t / (tilt.swayPeriod * 1000)) * tilt.sway
+      const ty = rest.yaw + Math.sin(now / (tilt.swayPeriod * 1000)) * tilt.sway
       const rate = returning ? tilt.dragReturn : tilt.follow
       rx += (tx - rx) * rate
       ry += (ty - ry) * rate
       if (returning && Math.abs(tx - rx) + Math.abs(ty - ry) < 0.01) returning = false
     }
     if (busy) return
-    if (drawn && Math.abs(rx - drawn[0]) + Math.abs(ry - drawn[1]) + Math.abs(lift - drawn[2]) < 1e-5) return
-    if (t - lastInput > 1000 && tick++ % 2) return
-    const [a, b, l] = drawn = [rx, ry, lift]
+    const state = [rx, ry, lift, enter]
+    if (!floats && drawn && state.every((v, i) => Math.abs(v - drawn![i]) < 1e-5)) return
+    if (now - lastInput > 1000 && tick++ % 2) return
+    drawn = state
     busy = true
-    backend.frame(a, b, l, () => { busy = false; place(a, b, l) })
+    backend.frame(rx, ry, lift, t, enter, m => { busy = false; place(m) })
   }
-  place(rx, ry, 0)
   const io = new IntersectionObserver(([e]) => {
     on = e.isIntersecting
     cancelAnimationFrame(raf)
@@ -268,12 +304,17 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   })
   io.observe(art)
 
+  // Tears the 3D down and puts the screens back in their hosts, still playing, ready for the next
+  // mount (mount.ts keeps only the arrangements near the viewport live)
   return () => {
     on = false
     cancelAnimationFrame(raf)
     io.disconnect()
     ro.disconnect()
-    grab.remove()
     backend.dispose()
+    faces.forEach((face, i) => { homes[i].parent.append(face); face.style.cssText = homes[i].css })
+    grab.remove()
+    stage.remove()
+    art.classList.remove('is-3d')
   }
 }
