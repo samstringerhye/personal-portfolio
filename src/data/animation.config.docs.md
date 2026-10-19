@@ -93,6 +93,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
 | `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
+| `workCards.deviceNav.fadeOut` / `fadeIn` / `fadeInDelay` | seconds | `0.3` / `0.4` / `0.15` | The rest of the page crossfading around it (the color shutter sits these out) |
 | `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |
 | `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-device-scenemyfrontierts) |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |

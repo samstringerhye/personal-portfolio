@@ -3,6 +3,8 @@ import type { SubjectBox } from '../components/narrow-art'
 import BaseLayout from './BaseLayout.astro'
 import CaseStudyNav from '../components/CaseStudyNav.astro'
 import CaseStudyHero from '../components/CaseStudyHero.astro'
+import DeviceHero from '../components/DeviceHero.astro'
+import type { SceneName } from '../components/DeviceScene.astro'
 import ContactEmail from '../components/ContactEmail.astro'
 import BackToWork from '../components/BackToWork.astro'
 import ImageZoom from '../components/ImageZoom.astro'
@@ -24,18 +26,23 @@ interface Props {
   heroAlt?: string
   heroYear?: number | string
   heroTone?: 'light' | 'dark'
+  // A coded device scene: the hero is the live device, carried over from its homepage card
+  heroScene?: SceneName
   // Locked password-protected case study: hero with the password form, no body, CTA or pager
   gate?: { error?: boolean; rateLimited?: boolean }
 }
 
-const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, heroLayers, heroAlt, heroYear, heroTone, gate } = Astro.props
+const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, heroLayers, heroAlt, heroYear, heroTone, heroScene, gate } = Astro.props
+// The device hero has no password form, so a locked case study keeps the framed hero
+const deviceHero = heroScene && !gate
 ---
 
 <BaseLayout title={`${title} | Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
-  {!heroLayers && <div class="cs-back-bar grid-12"><BackToWork /></div>}
+  {!heroLayers && !deviceHero && <div class="cs-back-bar grid-12"><BackToWork /></div>}
   <article class="case-study-body">
-    {heroLayers && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
+    {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} />}
+    {heroLayers && !deviceHero && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
     <slot />
   </article>
 

@@ -524,3 +524,21 @@ html[data-flip-nav]::view-transition-new(root) {
 html[data-flip-nav]::view-transition-old(root) {
   display: none;
 }
+
+/* A device carried between its card and its case study hero (device-scene/mount.ts): it glides to
+   its new place while the rest of the page crossfades. Timings come from workCards.deviceNav */
+html[data-device-nav]::view-transition-old(root) {
+  animation: var(--device-nav-fadeOut) ease both device-nav-out !important;
+}
+
+html[data-device-nav]::view-transition-new(root) {
+  animation: var(--device-nav-fadeIn) ease var(--device-nav-fadeInDelay) both device-nav-in !important;
+}
+
+html[data-device-nav]::view-transition-group(device) {
+  animation-duration: var(--device-nav-move);
+  animation-timing-function: cubic-bezier(.32, .72, 0, 1);
+}
+
+@keyframes device-nav-out { to { opacity: 0; } }
+@keyframes device-nav-in { from { opacity: 0; } }

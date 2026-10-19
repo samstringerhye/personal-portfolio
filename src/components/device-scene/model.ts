@@ -111,12 +111,27 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${screenAspect}`
   art.classList.add('is-3d')
 
-  // The screen's scale follows the renderer's framing (render.ts)
-  let scale = h / viewHeightAt(backend.geometry, w, h)
+  // The screen's scale and shift follow the renderer's framing (render.ts)
+  const [cx, cy] = backend.geometry.center
+  let scale = 1
+  // The floor shadow sits under the body and spans most of its width, whichever way it fits
+  const floor = art.querySelector<HTMLElement>('.floor')
+  const { fill } = DEVICES[device]
+  const fit = (nw: number, nh: number) => {
+    scale = nh / viewHeightAt(backend.geometry, nw, nh)
+    view.style.translate = `${-cx * scale}px ${cy * scale}px`
+    if (floor) {
+      floor.style.top = `${nh / 2 + backend.geometry.viewHeight * fill * scale / 2}px`
+      const span = backend.geometry.viewWidth * fill * scale * 0.8
+      floor.style.width = `${span}px`
+      floor.style.height = `${span * 0.14}px`
+    }
+  }
+  fit(w, h)
   const ro = new ResizeObserver(() => {
     const nw = stage.clientWidth, nh = stage.clientHeight
     if (!nw || !nh) return
-    scale = nh / viewHeightAt(backend.geometry, nw, nh)
+    fit(nw, nh)
     view.style.perspective = perspective(nh)
     backend.resize(nw, nh)
   })

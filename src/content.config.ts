@@ -41,7 +41,7 @@ const work = defineCollection({
       frames: z.array(image()).optional(),
     }).optional(),
     // A coded device scene (DeviceScene) that plays on the card in place of the subject
-    thumbnailScene: z.enum(['myfrontier', 'cvs', 'samsung', 'bespoke']).optional(),
+    thumbnailScene: z.enum(['myfrontier', 'whataburger', 'cvs', 'samsung', 'bespoke']).optional(),
   }),
 })
 

@@ -313,6 +313,17 @@
             "additionalProperties": false
           }
         },
+        "deviceNav": {
+          "type": "object",
+          "description": "A device carried between its homepage card and case study hero (device-scene/mount.ts, global.css)",
+          "properties": {
+            "move": { "$ref": "#/definitions/duration", "description": "Device gliding to its new place" },
+            "fadeOut": { "$ref": "#/definitions/duration", "description": "Outgoing page fading out" },
+            "fadeIn": { "$ref": "#/definitions/duration", "description": "Incoming page fading in" },
+            "fadeInDelay": { "$ref": "#/definitions/duration", "description": "Wait before the incoming page fades in" }
+          },
+          "additionalProperties": false
+        },
         "tours": {
           "type": "object",
           "description": "Screen tours on the CVS, Samsung.com and Bespoke cards (device-scene/tours.ts). Seconds",

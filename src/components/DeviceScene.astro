@@ -1,29 +1,36 @@
 ---
-// A coded device scene for a work card: the live screen plays a scripted tour, inside the device's
-// 3D model once it loads (device-scene/model.ts). Until then, or if WebGL is unavailable, the flat
-// screen shows. Reduced motion holds on the first screen.
+// A coded device scene, on a homepage work card or a case study hero: the live screen plays a
+// scripted tour inside the device's 3D model (device-scene/model.ts), or on a flat screen if WebGL
+// is unavailable. It fades in once ready. The card and the hero share a persist id, so the same
+// live device carries across the page change (device-scene/mount.ts). Reduced motion holds on the
+// first screen.
 import { TOURS, type TourName } from './device-scene/tours'
 import type { DeviceName } from './device-scene/shared'
 
-export type SceneName = 'myfrontier' | TourName
+export type SceneName = 'myfrontier' | 'whataburger' | TourName
 interface Props {
   scene: SceneName
   label: string
 }
 const { scene, label } = Astro.props
-const tour = scene === 'myfrontier' ? undefined : TOURS[scene]
+const tour = scene === 'myfrontier' || scene === 'whataburger' ? undefined : TOURS[scene]
 const device: DeviceName = tour?.device ?? 'iphone-17-pro'
 ---
 
-<div class="device-scene" data-device-scene={scene} data-device={device} role="img" aria-label={tour?.label ?? label}></div>
+<div class="device-scene" data-device-scene={scene} data-device={device} role="img" aria-label={tour?.label ?? label} transition:persist={`device-${scene}`}></div>
+
+<script>
+  import './device-scene/mount'
+</script>
 
 <style is:global>
   /* The scene builds its own DOM, so these rules are global, scoped by .device-scene */
-  .device-scene { position: absolute; inset: 0; display: grid; place-items: center; container-type: size; pointer-events: none; }
-  .device-scene .floor { position: absolute; left: 50%; top: 95%; width: 34cqh; height: 6cqh; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 13, 27, 0.3), rgba(11, 13, 27, 0)); translate: -50% -50%; filter: blur(1.4cqh); }
-  .device-scene:is([data-device="ipad-mini-6"], [data-device="galaxy-z-fold8"]) .floor { width: 80cqh; }
-  /* The laptop's base runs off the bottom of the card */
-  .device-scene[data-device="macbook-neo"] .floor { display: none; }
+  /* Bleeds past its box so a device tilting toward the edge isn't cut off by the canvas */
+  .device-scene { position: absolute; inset: -10%; display: grid; place-items: center; container-type: size; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+  .device-scene[data-ready] { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .device-scene { transition: none; } }
+  .device-scene .floor { position: absolute; left: 50%; top: 88%; width: 34cqh; height: 6cqh; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 13, 27, 0.3), rgba(11, 13, 27, 0)); translate: -50% -50%; filter: blur(1.4cqh); }
+  .device-scene:not([data-device="iphone-17-pro"]) .floor { width: 58cqw; }
   .device-scene .stage, .device-scene .stage > * { position: absolute; inset: 0; }
   .device-scene .stage canvas { width: 100%; height: 100%; }
   .device-scene-view { overflow: hidden; }
@@ -31,19 +38,33 @@ const device: DeviceName = tour?.device ?? 'iphone-17-pro'
   /* Screen tours (tours.ts): screens laid out at the device's width, a flat bezel until the model loads */
   .device-scene .device { position: relative; width: var(--layout-w); aspect-ratio: var(--aspect); container-type: inline-size; }
   .device-scene:not([data-device="iphone-17-pro"]):not(.is-3d) .device { width: min(76%, calc(80cqh * var(--aspect))); border-radius: 1.2cqw; box-shadow: 0 0 0 1.6cqw #111; }
-  .device-scene:not([data-device="iphone-17-pro"]) .screen { position: relative; width: 100%; height: 100%; overflow: hidden; background: #fff; }
+  .device-scene:not([data-device="iphone-17-pro"]) .screen, .device-scene .home .screen { position: relative; width: 100%; height: 100%; overflow: hidden; }
+  .device-scene:not([data-device="iphone-17-pro"]) .screen { background: #fff; }
   .device-scene .shot { position: absolute; inset: 0 0 auto 0; }
+  /* Whataburger (homescreen.ts): the app icon alone on a light home screen. Sizes in cqw of the
+     360px screen */
+  .device-scene .home .screen { display: grid; place-items: center; background: linear-gradient(160deg, #F2F3F5 0%, #DADDE3 100%); }
+  .device-scene .home-time { position: absolute; top: 4.4cqw; left: 11cqw; margin: 0; font: 600 4.6cqw/1 var(--font-sans); color: #0B0D1B; }
+  .device-scene .home-app { display: grid; justify-items: center; gap: 3cqw; }
+  .device-scene .home-icon { width: 30cqw; aspect-ratio: 1; border-radius: 22.5%; background: #FD7801; box-shadow: 0 1.5cqw 5cqw rgba(11, 13, 27, 0.16); display: grid; }
+  .device-scene .home-icon::before { content: ''; background: #FFFFFF; -webkit-mask: url(/logos/whataburger.svg) center / 66% no-repeat; mask: url(/logos/whataburger.svg) center / 66% no-repeat; }
+  .device-scene:not(.is-3d) .home { width: auto; height: 80%; border-radius: 13cqw; box-shadow: 0 0 0 2.4cqw #111; overflow: hidden; }
+  .device-scene .home-label { font: 500 4.4cqw/1 var(--font-sans); color: #0B0D1B; }
   .device-scene .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .device-scene .shot .tap { position: absolute; width: 3.6cqw; aspect-ratio: 1; border-radius: 50%; background: rgba(11, 15, 26, .28); box-shadow: 0 0 0 .3cqw rgba(255, 255, 255, .7); translate: -50% -50%; opacity: 0; }
   /* Black behind the screen, a little past its edges: where the display's cut runs wider than the
      screen, it reads as bezel instead of letting the card color through */
-  .device-scene.is-3d .device { background: #000; box-shadow: 0 0 0 5px #000; }
+  .device-scene.is-3d .device { background: #000; box-shadow: 0 0 0 5px #000; overflow: hidden; }
+  /* Rounded like each display (in its layout pixels) so the black stays inside the body's corners */
+  .device-scene[data-device="macbook-neo"].is-3d .device { border-radius: 14px; }
+  .device-scene[data-device="ipad-mini-6"].is-3d .device { border-radius: 40px; }
+  .device-scene[data-device="galaxy-z-fold8"].is-3d .device { border-radius: 36px; }
 
   /* The MyFrontier phone (myfrontier.ts). Flat fallback: fit the stage. In 3D the model supplies
      the band and bezel */
   .device-scene:not(.is-3d) .phone { width: auto; height: 84%; }
-  /* Rounded (in the 360px layout) to stay inside the body's corners */
-  .device-scene.is-3d .phone { border-radius: 54px; }
+  /* Rounded (in the 360px layout) to stay inside the iPhone body's corners */
+  .device-scene[data-device="iphone-17-pro"].is-3d .device { border-radius: 54px; overflow: hidden; }
   .device-scene.is-3d .band, .device-scene.is-3d .bezel { padding: 0; background: none; border-radius: 0; width: 100%; height: 100%; }
 
   .device-scene .phone { width: 360px; aspect-ratio: 0.4785; }

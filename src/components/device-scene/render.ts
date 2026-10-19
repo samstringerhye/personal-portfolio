@@ -84,28 +84,33 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   holder.scale.setScalar(k)
   holder.position.copy(dc).multiplyScalar(-k)
 
-  // Framed on the display as it sits at rest: the screen fills the card and the body can run off
-  // its edges. The camera stands back so the stage spans viewHeightAt(): the DOM screen then
-  // matches the display with the same scale and a CSS perspective of the same angle (model.ts)
+  // Framed on the whole device as it sits at rest, centered and as large as the stage allows. The
+  // camera stands back so the stage spans viewHeightAt(): the DOM screen then matches the display
+  // with the same scale and a CSS perspective of the same angle (model.ts)
   device3d.rotation.set(rest.rx, rest.ry, 0)
   device3d.updateMatrixWorld(true)
-  const seen = new Box3()
-  displays.forEach(d => seen.expandByObject(d, true))
+  const body = new Box3().setFromObject(device3d, true)
+  const center = body.getCenter(new Vector3())
   const geometry: DeviceGeometry = {
     screenAspect: ds.x / ds.y,
-    viewHeight: (seen.max.y - seen.min.y) / spec.fill,
-    viewWidth: (seen.max.x - seen.min.x) / spec.fill,
+    viewHeight: (body.max.y - body.min.y) / spec.fill,
+    viewWidth: (body.max.x - body.min.x) / spec.fill,
+    center: [center.x, center.y],
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
   const resize = (w: number, h: number) => {
     if (!w || !h) return
     gl.setSize(w, h, false)
-    const distance = (viewHeightAt(geometry, w, h) / 2) / tan
+    const vh = viewHeightAt(geometry, w, h)
+    const distance = (vh / 2) / tan
     camera.position.z = distance
     camera.near = distance / 10
     camera.far = distance * 10
     camera.aspect = w / h
+    // The camera stays on the display; the picture shifts so the body centers in the stage
+    const s = h / vh
+    camera.setViewOffset(w, h, geometry.center[0] * s, -geometry.center[1] * s, w, h)
     camera.updateProjectionMatrix()
   }
   resize(width, height)

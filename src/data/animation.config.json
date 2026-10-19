@@ -245,6 +245,12 @@
         "restPitch": 0.08
       }
     },
+    "deviceNav": {
+      "move": 0.7,
+      "fadeOut": 0.3,
+      "fadeIn": 0.4,
+      "fadeInDelay": 0.15
+    },
     "tours": {
       "moves": {
         "tap": 0.65,

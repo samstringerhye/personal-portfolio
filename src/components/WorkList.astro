@@ -38,7 +38,7 @@ const featured = (await getCollection('work'))
   <ul class="work-list" role="list" data-no-reveal>
     {featured.map((entry, i) => (
       <li class:list={['work-list-item', { 'work-list-item--light': entry.data.thumbnailText === 'light' }]}>
-        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox, entry.data.thumbnailLayers.subjectBounds)}` : undefined}>
+        <a href={`/work/${entry.id}`} class="work-list-card" style={entry.data.thumbnailLayers ? `--work-bg: ${entry.data.thumbnailScene ? 'transparent' : entry.data.thumbnailLayers.background}; ${narrowArtStyle(entry.data.thumbnailLayers.subjectBox, entry.data.thumbnailLayers.subjectBounds)}` : undefined}>
           <div
             class="work-list-media"
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
@@ -219,33 +219,15 @@ const featured = (await getCollection('work'))
     opacity: 0;
   }
 
-  /* ── Coded scene cards: the device plays centered in the art, its body free to run off the
-     card's edges. The subject holds until the 3D device (or, without WebGL, the flat screen) is
-     ready, then the two crossfade; the subject stays for the zoom into the case study ── */
+  /* ── Coded scene cards: the device stands on the page in place of the framed art; the scene's
+     label describes it, so the art underneath stays hidden ── */
   .work-list-scene {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    transition: opacity 0.5s ease;
   }
 
-  .work-list-media[data-scene-on] .work-list-scene {
-    opacity: 1;
-  }
-
-  .work-list-media[data-scene] .work-list-subject {
-    transition: opacity 0.5s ease;
-  }
-
-  .work-list-media[data-scene-on] .work-list-subject {
-    opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .work-list-scene,
-    .work-list-media[data-scene] .work-list-subject {
-      transition: none;
-    }
+  .work-list-media[data-scene] .work-list-plane {
+    visibility: hidden;
   }
 
   /* Groups the year and text for the narrow layout; no box of its own on wider cards */
@@ -456,49 +438,3 @@ const featured = (await getCollection('work'))
   document.addEventListener('astro:page-load', initFlip)
 </script>
 
-<script>
-  import type { SceneName } from './DeviceScene.astro'
-  import type { DeviceName } from './device-scene/shared'
-
-  // Coded device scenes start as their card nears the viewport: the tour first, then the 3D model
-  // once three.js and the model have loaded and the browser is idle. Both stop when the page swaps
-  const stops: Array<() => void> = []
-  const idle = () => new Promise<void>(resolve => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200)))
-
-  async function mountScene(scene: HTMLElement) {
-    const name = scene.dataset.deviceScene as SceneName
-    if (name === 'myfrontier') {
-      const { mountMyFrontier } = await import('./device-scene/myfrontier')
-      stops.push(mountMyFrontier(scene))
-    } else {
-      const { mountTour } = await import('./device-scene/tours')
-      stops.push(mountTour(scene, name))
-    }
-    try {
-      await idle()
-      const { mountDeviceModel } = await import('./device-scene/model')
-      const face = scene.querySelector<HTMLElement>('.device')
-      const stage = scene.querySelector<HTMLElement>('.stage')
-      if (face && stage && scene.isConnected) stops.push(await mountDeviceModel(scene, face, stage, scene.dataset.device as DeviceName))
-    } catch (e) {
-      // No WebGL or the model failed to load: the flat screen stands in
-      console.warn('3D device unavailable', e)
-    }
-    scene.closest<HTMLElement>('.work-list-media')?.setAttribute('data-scene-on', '')
-  }
-
-  function initScenes() {
-    const scenes = [...document.querySelectorAll<HTMLElement>('.device-scene[data-device-scene]:not([data-bound])')]
-    if (!scenes.length) return
-    const io = new IntersectionObserver(entries => entries.forEach(e => {
-      if (!e.isIntersecting) return
-      io.unobserve(e.target)
-      mountScene(e.target as HTMLElement)
-    }), { rootMargin: '100% 0px' })
-    scenes.forEach(scene => { scene.dataset.bound = ''; io.observe(scene) })
-    stops.push(() => io.disconnect())
-  }
-
-  document.addEventListener('astro:page-load', initScenes)
-  document.addEventListener('astro:before-swap', () => stops.splice(0).forEach(stop => stop()))
-</script>
