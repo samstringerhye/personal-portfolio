@@ -61,13 +61,17 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   const hole = new MeshBasicMaterial({ color: 0, transparent: true, opacity: 0, blending: NoBlending, side: DoubleSide })
   displays.forEach(d => { d.material = hole; d.renderOrder = 1 })
 
-  // Face the display to the camera (+z): flip it if the file has it facing away, then roll
+  // Face the display to the camera (+z): flip it if the file has it facing away, stand it upright
+  // if it leans, then roll
   const flip = new Group()
   flip.rotation.y = spec.front < 0 ? Math.PI : 0
   flip.add(gltf)
+  const upright = new Group()
+  upright.rotation.x = spec.pitch ?? 0
+  upright.add(flip)
   const roll = new Group()
   roll.rotation.z = spec.roll
-  roll.add(flip)
+  roll.add(upright)
   roll.updateMatrixWorld(true)
   const screen = new Box3()
   displays.forEach(d => screen.expandByObject(d))

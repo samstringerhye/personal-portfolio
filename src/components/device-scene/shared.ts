@@ -1,6 +1,6 @@
 // Shared by the main thread and the renderer, kept apart so importing it doesn't pull in three.js
 
-export type DeviceName = 'iphone-17-pro' | 'macbook-neo' | 'ipad-mini-6' | 'galaxy-z-fold8'
+export type DeviceName = 'iphone-17-pro' | 'macbook-neo' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8'
 
 export interface DeviceSpec {
   /** GLB under /motion/models/ */
@@ -13,6 +13,9 @@ export interface DeviceSpec {
   front: 1 | -1
   /** Turn about the view axis, radians: a quarter turn stands a tablet in landscape */
   roll: number
+  /** Tilt about the horizontal axis, radians, so a display modeled leaning back faces the camera
+      (the laptop's base tilts instead) */
+  pitch?: number
   /** The DOM screen is laid out at this width in CSS px; the model scales so its display matches */
   screenWidth: number
   /** Display width over height, for the flat fallback before (or without) the model */
@@ -32,6 +35,11 @@ export const DEVICES: Record<DeviceName, DeviceSpec> = {
   'macbook-neo': {
     model: 'macbook-neo.glb', display: 'material', glass: ['Display_glass'], front: 1, roll: 0, screenWidth: 1280, aspect: 1.6, fill: 0.74,
     finish: { Anodized_aluminum: '#c4c7cc', Touchpad_tint: '#c4c7cc', Touchpad_glass: '#c4c7cc', Keycap: '#2a2c30' },
+  },
+  // akshatmittal, CC BY 4.0. Material names are scrambled in the file: the display is VNZklasZKSWjWUk,
+  // its lid open about 110°. Space gray as modeled
+  'macbook-air-15': {
+    model: 'macbook-air-15.glb', display: 'VNZklasZKSWjWUk', glass: [], front: 1, roll: 0, pitch: 0.35, screenWidth: 1440, aspect: 1.55, fill: 0.74,
   },
   // DatSketch, CC BY 4.0
   'ipad-mini-6': {

@@ -92,7 +92,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
-| `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
 | `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
 | `workCards.deviceNav.fadeOut` / `fadeIn` / `fadeInDelay` | seconds | `0.3` / `0.4` / `0.15` | The rest of the page crossfading around it (the color shutter sits these out) |
 | `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |
@@ -195,7 +195,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ## workCards.tours (device-scene/tours.ts)
 
-The CVS.com (MacBook Neo), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6) card tours, in seconds. Each tour's steps are listed in `tours.ts`; the keys below are the names those steps use. Reduced motion skips the tours and holds on the first screen.
+The CVS.com (MacBook Neo), Amica.com (MacBook Air 15), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6) card tours, in seconds. Each tour's steps are listed in `tours.ts`; the keys below are the names those steps use. Reduced motion skips the tours and holds on the first screen.
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|
@@ -208,6 +208,8 @@ The CVS.com (MacBook Neo), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6
 | `samsung.homeScroll` | `5` | Homepage scrolling down to Appliances |
 | `samsung.appliances` | `1.2` | Appliances section before the tap |
 | `samsung.category` / `categoryScroll` / `bestSellers` | `1.4` / `3.5` / `2.2` | Washers & Dryers page: at the top, scrolling, then holding on Best Sellers |
+| `amica.home` | `2.2` | Amica.com homepage before the Get a quote tap |
+| `amica.quote` / `quoteScroll` / `empathy` | `1.4` / `3.5` / `2.2` | Get a quote page: at the top, scrolling, then holding on Empathy is our best policy |
 | `bespoke.depth` / `colors` / `summary` | `2` / `2.2` / `2.8` | Choose Depth, Choose Colors, then Your Design |
 
 ---

@@ -47,6 +47,16 @@ export const TOURS = {
       { fade: 'home' },
     ],
   },
+  amica: {
+    device: 'macbook-air-15',
+    label: 'Amica.com on a laptop: the homepage, then Get a quote, scrolling to Empathy is our best policy',
+    shots: { home: 1440 / 900, quote: 1440 / 2159 },
+    steps: [
+      { hold: 'home' }, { tap: [0.352, 0.54] }, { push: 'quote' },
+      { hold: 'quote' }, { scroll: 0.5, over: 'quoteScroll' }, { hold: 'empathy' },
+      { fade: 'home' },
+    ],
+  },
   bespoke: {
     device: 'ipad-mini-6',
     label: 'The Bespoke configurator on an iPad: choosing depth, then colors, then the finished kitchen with its price',

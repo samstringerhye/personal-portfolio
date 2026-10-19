@@ -326,7 +326,7 @@
         },
         "tours": {
           "type": "object",
-          "description": "Screen tours on the CVS, Samsung.com and Bespoke cards (device-scene/tours.ts). Seconds",
+          "description": "Screen tours on the CVS.com, Amica.com, Samsung.com and Bespoke cards (device-scene/tours.ts). Seconds",
           "properties": {
             "moves": {
               "type": "object",

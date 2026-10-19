@@ -26,6 +26,13 @@ const screens = {
       category: ['samsung-redesign/revamp-pcd.jpg', { left: 0, top: 0, width: 2500, height: 3600 }],
     },
   },
+  amica: {
+    width: 1440,
+    shots: {
+      home: ['amica-design-system/hero.png'],
+      quote: ['amica-design-system/prototype-v2/get-a-quote-desktop.png'],
+    },
+  },
   bespoke: {
     width: 1200,
     shots: {

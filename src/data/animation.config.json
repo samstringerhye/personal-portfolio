@@ -236,6 +236,10 @@
         "restYaw": -0.42,
         "restPitch": 0.3
       },
+      "macbook-air-15": {
+        "restYaw": -0.42,
+        "restPitch": 0.05
+      },
       "ipad-mini-6": {
         "restYaw": -0.42,
         "restPitch": 0.08
@@ -270,6 +274,12 @@
         "category": 1.4,
         "categoryScroll": 3.5,
         "bestSellers": 2.2
+      },
+      "amica": {
+        "home": 2.2,
+        "quote": 1.4,
+        "quoteScroll": 3.5,
+        "empathy": 2.2
       },
       "bespoke": {
         "depth": 2,
