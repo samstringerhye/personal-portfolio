@@ -432,8 +432,14 @@ html.ek .work-list-intro-inner {
 html.ek .work-list {
   display: flex;
   flex-direction: column;
-  gap: var(--ek-section);
+  gap: 0;
   padding-top: 0;
+}
+
+/* Each project fills the viewport under the nav: a page margin above and below, the caption under
+   the art, and the art taking whatever height the caption leaves */
+html.ek .work-list-item {
+  padding-block: var(--page-margin);
 }
 
 html.ek .work-list-item + .work-list-item {
@@ -443,15 +449,16 @@ html.ek .work-list-item + .work-list-item {
 /* No text on the art: the narrow card layout (art framed on the project color, text below) at every
    width. work-transition.ts reads this layout from the computed styles, so the card-to-hero zoom
    follows it. */
-/* Card art frames: 3:2 landscape on desktop (heroes stay 4:3), 2:3 portrait on phones and small
-   tablets, where heroes match */
+/* Card art frames: the viewport height less the nav, the margins and the caption's room (more lines
+   of tagline on phones). Heroes stay 4:3 on desktop and 2:3 on phones and small tablets */
 html.ek .work-list-card {
-  --narrow-frame-height: calc(100cqw * 2 / 3);
+  --work-caption-height: 8.5rem;
+  --narrow-frame-height: calc(100svh - var(--nav-height) - 2 * var(--page-margin) - var(--work-caption-height));
 }
 
 @media (--2x) {
   html.ek .work-list-card {
-    --narrow-frame-height: calc(100cqw * 3 / 2);
+    --work-caption-height: 11rem;
   }
 
   html.ek .cs-hero.cs-hero .cs-hero-size {
@@ -479,8 +486,8 @@ html.ek .work-list-item .work-list-card .work-list-caption {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  min-height: 0;
-  padding: var(--space-5) 0 0;
+  min-height: var(--work-caption-height);
+  padding: var(--space-4) 0 0;
   background: none;
 }
 
@@ -513,9 +520,8 @@ html.ek .work-list-meta > span:first-child {
   margin-right: var(--space-1);
 }
 
-/* Desktop: Selected Work stays pinned in the left quarter; each project is a row in the other
-   three quarters, the art with its text beside it. The art frame is its own container so the subject
-   framing (cqw) measures the frame, not the whole row. */
+/* Desktop: Selected Work stays pinned in the left quarter; the projects stack in the other three
+   quarters, each art frame with its caption under it */
 @media (min-width: 64.0625rem) {
   html.ek .work-list-section {
     display: grid;
@@ -535,28 +541,6 @@ html.ek .work-list-meta > span:first-child {
 
   html.ek .work-list-section .work-list-heading {
     margin-bottom: 0;
-  }
-
-  /* Rows are shorter than stacked cards, so they sit a little closer than sections */
-  html.ek .work-list {
-    gap: clamp(5rem, 9vw, 9rem);
-  }
-
-  html.ek .work-list-item .work-list-card {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
-    column-gap: var(--grid-gutter);
-    align-items: center;
-  }
-
-  html.ek .work-list-item .work-list-card .work-list-media {
-    container-type: inline-size;
-    height: auto;
-    aspect-ratio: 3 / 2;
-  }
-
-  html.ek .work-list-item .work-list-card .work-list-caption {
-    padding: 0;
   }
 }
 

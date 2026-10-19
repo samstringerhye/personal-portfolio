@@ -81,11 +81,6 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
 | `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
-| `hero.lens.radius` | px | `150` | Pixel-peeper loupe radius |
-| `hero.lens.magnification` | × | `3` | How much the loupe enlarges the dots |
-| `hero.lens.subpixelSplit` | dot widths | `0.9` | Gap between a dot's red, green and blue layers under the loupe |
-| `hero.lens.follow` | 0–1 | `0.25` | Share of the distance to the pointer the loupe covers each frame (reduced motion locks it to the pointer) |
-| `hero.lens.open` | seconds | `0.3` | Loupe opening and closing |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
 | `workCards.phone.restYaw` | radians | `-0.46` | 3D phone's turn at rest (negative shows its left side) |

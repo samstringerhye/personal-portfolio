@@ -439,30 +439,37 @@ const featured = (await getCollection('work'))
 </script>
 
 <script>
-  // Coded phone scenes: the tour starts right away, the 3D model joins once three.js and the
-  // model load. Both stop when the page swaps out
+  // Coded phone scenes start as their card nears the viewport: the tour first, then the 3D model
+  // once three.js and the model have loaded and the browser is idle. Both stop when the page swaps
   const stops: Array<() => void> = []
+  const idle = () => new Promise<void>(resolve => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200)))
 
-  async function initScenes() {
-    const scenes = [...document.querySelectorAll<HTMLElement>('.phone-scene[data-phone-scene]:not([data-bound])')]
-    if (!scenes.length) return
+  async function mountScene(scene: HTMLElement) {
     const { mountMyFrontier } = await import('./phone-scene/myfrontier')
-    scenes.forEach(scene => {
-      scene.dataset.bound = ''
-      stops.push(mountMyFrontier(scene))
-      scene.closest<HTMLElement>('.work-list-media')?.setAttribute('data-scene-on', '')
-    })
+    stops.push(mountMyFrontier(scene))
+    scene.closest<HTMLElement>('.work-list-media')?.setAttribute('data-scene-on', '')
     try {
+      await idle()
       const { mountPhoneModel } = await import('./phone-scene/model')
-      for (const scene of scenes) {
-        const face = scene.querySelector<HTMLElement>('.phone')
-        const stage = scene.querySelector<HTMLElement>('.stage')
-        if (face && stage) stops.push(await mountPhoneModel(scene, face, stage))
-      }
+      const face = scene.querySelector<HTMLElement>('.phone')
+      const stage = scene.querySelector<HTMLElement>('.stage')
+      if (face && stage && scene.isConnected) stops.push(await mountPhoneModel(scene, face, stage))
     } catch (e) {
       // No WebGL or the model failed to load: the flat phone stays
       console.warn('3D phone unavailable', e)
     }
+  }
+
+  function initScenes() {
+    const scenes = [...document.querySelectorAll<HTMLElement>('.phone-scene[data-phone-scene]:not([data-bound])')]
+    if (!scenes.length) return
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return
+      io.unobserve(e.target)
+      mountScene(e.target as HTMLElement)
+    }), { rootMargin: '100% 0px' })
+    scenes.forEach(scene => { scene.dataset.bound = ''; io.observe(scene) })
+    stops.push(() => io.disconnect())
   }
 
   document.addEventListener('astro:page-load', initScenes)

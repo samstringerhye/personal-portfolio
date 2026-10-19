@@ -6,16 +6,10 @@ import {
   generateSpiral,
   sizeTaper,
   updateDots,
-  emptyLens,
-  lensToWorld,
-  LAYER_TRIAD,
   type ArrangementGenerator,
-  type LensInput,
 } from './hero-canvas-shared'
-import { createLoupe } from './hero-loupe'
 
 const cfg = animations.hero.canvas
-const lensCfg = animations.hero.lens
 
 const MOBILE_FACTOR = 0.5
 
@@ -74,8 +68,6 @@ function initWithWorker(
     { type: 'module' },
   )
 
-  let stopLoupe: () => void = () => {}
-
   // If the worker errors (e.g. Safari WebGL on OffscreenCanvas), fall back
   let fellBack = false
   function fallbackToInline() {
@@ -85,7 +77,6 @@ function initWithWorker(
     worker.terminate()
     ro.disconnect()
     io.disconnect()
-    stopLoupe()
     // Re-create canvas since transferControlToOffscreen consumed the original
     const newCanvas = document.createElement('canvas')
     newCanvas.style.cssText = 'display:block;width:100%;height:100%'
@@ -147,7 +138,6 @@ function initWithWorker(
       accentOpacity: cfg.accentOpacity,
       cmyStagger: cfg.cmyStagger,
       wavePaused: cfg.wavePaused,
-      lens: { radius: lensCfg.radius, magnification: lensCfg.magnification, subpixelSplit: lensCfg.subpixelSplit },
     },
     colors: {
       accent1: accentColors['1'],
@@ -177,13 +167,10 @@ function initWithWorker(
   )
   io.observe(container)
 
-  stopLoupe = createLoupe(container, lens => worker.postMessage({ type: 'lens', lens }), prefersReduced)
-
   return () => {
     clearTimeout(readyTimeout)
     ro.disconnect()
     io.disconnect()
-    stopLoupe()
     worker.terminate()
   }
 }
@@ -300,8 +287,6 @@ async function initFallback(
 
   const startTime = performance.now()
   const cmyDelay = cfg.cmyStagger
-  const lens = emptyLens()
-  let lensInput: LensInput | null = null
 
   function tick() {
     if (!prefersReduced) {
@@ -309,17 +294,13 @@ async function initFallback(
     }
     const elapsed = (performance.now() - startTime - pauseAccum) / 1000
     const time = (cfg.wavePaused || prefersReduced) ? 0 : elapsed
-    const lensOn = lensToWorld(lens, lensInput, container.clientWidth, container.clientHeight, effectiveZoom, lensCfg, cfg.dotRadius)
-    lens.t0 = time
     meshes.forEach((mesh, i) => {
-      lens.sign = LAYER_TRIAD[i].sign
-      lens.fade = LAYER_TRIAD[i].fade
       updateDots(
         mesh.instanceMatrix.array as Float32Array, total,
         posX, posY, dist, dotScales, time - delays[i] * cmyDelay,
         cfg.waveSpeed, cfg.propagation, cfg.waveSharpness,
         cfg.waveAmplitude, cfg.waveFrequency, cfg.baseScale, cfg.twistAmount,
-        lensOn ? lens : null,
+        null,
       )
       mesh.instanceMatrix.needsUpdate = true
     })
@@ -329,14 +310,7 @@ async function initFallback(
   tick()
   requestAnimationFrame(() => container.classList.add('is-ready'))
 
-  const stopLoupe = createLoupe(container, input => {
-    lensInput = input
-    // Reduced motion draws one frame at a time, so the loupe redraws as the pointer moves
-    if (prefersReduced) tick()
-  }, prefersReduced)
-
   return () => {
-    stopLoupe()
     cancelAnimationFrame(frameId)
     observer.disconnect()
     ro.disconnect()

@@ -45,9 +45,6 @@ const heroWordStagger = `${revealCfg.wordStagger}s`
 const heroWordStart = `${animations.hero.text.startDelay}s`
 const heroWordSlide = `${revealCfg.slideUp}px`
 const heroWordEase = revealCfg.cssEase
-
-const lens = animations.hero.lens
-const loupeRadius = `${lens.radius}px`
 ---
 
 <section class="hero" aria-label="Introduction">
@@ -55,7 +52,6 @@ const loupeRadius = `${lens.radius}px`
   <div id="hero-canvas-root" aria-hidden="true">
     <canvas style="display:block;width:100%;height:100%"></canvas>
   </div>
-  <div class="hero-loupe" data-hero-loupe aria-hidden="true"><span class="hero-loupe-mag typo-ui-caps">{lens.magnification}×</span></div>
   <div class="hero-text">
     <div class="hero-copy">
       <HeroTag class:list={["hero-block", heroRole]} data-hero-text>
@@ -68,11 +64,9 @@ const loupeRadius = `${lens.radius}px`
       )}
     </div>
   </div>
-  <!-- Shown by hero-loupe.ts once the dot field runs on a mouse or trackpad -->
-  <p class="hero-hint typo-ui-caps" data-hero-hint hidden>Pixel peeper? Hover the dots.</p>
 </section>
 
-<style define:vars={{ heroInitBlur, heroWordDuration, heroWordStagger, heroWordStart, heroWordSlide, heroWordEase, loupeRadius }}>
+<style define:vars={{ heroInitBlur, heroWordDuration, heroWordStagger, heroWordStart, heroWordSlide, heroWordEase }}>
   .hero {
     position: relative;
     width: 100%;
@@ -112,46 +106,6 @@ const loupeRadius = `${lens.radius}px`
 
   #hero-canvas-root.is-ready {
     opacity: 1;
-  }
-
-  /* The loupe's rim; hero-loupe.ts moves and scales it. Sits under the copy so the text stays crisp */
-  .hero-loupe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: var(--z-base);
-    width: calc(var(--loupeRadius) * 2);
-    height: calc(var(--loupeRadius) * 2);
-    margin: calc(var(--loupeRadius) * -1) 0 0 calc(var(--loupeRadius) * -1);
-    border: var(--border-width-1) solid var(--color-text-primary);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-    will-change: transform;
-  }
-
-  /* Top right: the copy's fade covers the lower half of the rim when the loupe sits over the headline */
-  .hero-loupe-mag {
-    position: absolute;
-    top: 4%;
-    right: 4%;
-    transform: translate(50%, -50%);
-    padding: 0.15em 0.4em;
-    background: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    border: var(--border-width-1) solid var(--color-text-primary);
-    border-radius: var(--radius-full);
-  }
-
-  .hero-hint {
-    position: absolute;
-    left: 50%;
-    bottom: var(--space-4);
-    z-index: var(--z-base);
-    margin: 0;
-    transform: translateX(-50%);
-    color: var(--color-text-secondary);
-    white-space: nowrap;
   }
 
   .hero-text {

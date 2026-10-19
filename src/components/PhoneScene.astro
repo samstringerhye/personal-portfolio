@@ -20,6 +20,10 @@ const { scene, label } = Astro.props
   .phone-scene-view { overflow: hidden; }
   /* Flat fallback: fit the stage. In 3D the model supplies the band and bezel */
   .phone-scene:not(.is-3d) .phone { width: auto; height: 84%; }
+  /* The model fades in over the flat phone once it has warmed up */
+  .phone-scene.is-3d .stage { animation: phone-scene-in 0.5s ease both; }
+  @keyframes phone-scene-in { from { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .phone-scene.is-3d .stage { animation: none; } }
   .phone-scene.is-3d .band, .phone-scene.is-3d .bezel { padding: 0; background: none; border-radius: 0; width: 100%; height: 100%; }
 
   .phone-scene .phone { position: relative; width: 360px; aspect-ratio: 0.4785; container-type: inline-size; }

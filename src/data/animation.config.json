@@ -38,13 +38,6 @@
       "accentOpacity": 0.6,
       "bgColor": { "$ref": "sys.color.bg.primary" }
     },
-    "lens": {
-      "radius": 150,
-      "magnification": 3,
-      "subpixelSplit": 0.9,
-      "follow": 0.25,
-      "open": 0.3
-    },
     "text": {
       "startDelay": 0.25
     }
