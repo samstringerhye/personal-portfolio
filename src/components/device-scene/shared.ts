@@ -68,6 +68,9 @@ export interface DeviceGeometry {
   /** The body's center at rest relative to the display's, in world units (x right, y up). The
       picture shifts by this so the whole device centers, not just its display */
   center: [number, number]
+  /** The point the device turns about (its body's middle) relative to the display's center, in
+      world units: the display sits at pivot − R·pivot once turned by R */
+  pivot: [number, number, number]
 }
 
 /** World units the stage height spans: the device fits by height or, in a narrow stage, by width */

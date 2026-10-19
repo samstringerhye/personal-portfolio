@@ -85,12 +85,14 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
 | `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices can override it in `workCards.devices` |
 | `workCards.phone.restPitch` | radians | `0.06` | 3D device's tilt at rest; devices can override it in `workCards.devices` |
-| `workCards.phone.pointerYaw` | radians | `0.8` | Turn as the pointer crosses the window |
-| `workCards.phone.pointerPitch` | radians | `0.28` | Tilt as the pointer moves down the window |
+| `workCards.phone.dragYaw` / `dragPitch` | radians | `3` / `1.2` | Turn and tilt for a drag across the full width and height of the device's box (devices don't follow the pointer; they turn when dragged) |
+| `workCards.phone.dragPitchLimit` | radians | `0.6` | Furthest a drag tilts the device from its rest, either way |
+| `workCards.phone.dragReturn` | 0–1 | `0.05` | Share of the way back to rest covered each frame after a drag (reduced motion snaps back) |
+| `workCards.phone.parallax` | ratio | `0.12` | Scroll parallax: the device sits this share of its row's distance from the viewport's center back toward it, so it drifts against the page (off under reduced motion) |
 | `workCards.phone.scrollPitch` | radians | `0.22` | Tilt as the card scrolls through the viewport (the only motion on touch screens) |
 | `workCards.phone.sway` | radians | `0.04` | Idle turn amplitude |
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
-| `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
+| `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame while scrolling (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
 | `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
 | `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |

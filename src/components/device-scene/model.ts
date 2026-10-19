@@ -73,12 +73,14 @@ async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, devi
 }
 
 /** The CSS matrix that lays the screen (fw px wide) on the display: the device's rotation
-    (three.js XYZ order, z = 0) applied to the screen plane, at s px per world unit, y flipped */
-function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number) {
+    (three.js XYZ order, z = 0) applied to the screen plane, at s px per world unit, y flipped.
+    World units are the screen's layout pixels (render.ts scales the model so). The device turns
+    about pivot, which carries the display to pivot − R·pivot */
+function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number, pivot: [number, number, number]) {
   const ca = Math.cos(rx), sa = Math.sin(rx), cb = Math.cos(ry), sb = Math.sin(ry)
   const r = [[cb, 0, sb], [sa * sb, ca, -sa * cb], [-ca * sb, sa, ca * cb]]
   const tx = -fw / 2, ty = fh / 2
-  const t = [0, 1, 2].map(i => r[i][0] * tx + r[i][1] * ty)
+  const t = [0, 1, 2].map(i => r[i][0] * tx + r[i][1] * ty + pivot[i] - (r[i][0] * pivot[0] + r[i][1] * pivot[1] + r[i][2] * pivot[2]))
   return `matrix3d(${[
     s * r[0][0], -s * r[1][0], s * r[2][0], 0,
     -s * r[0][1], s * r[1][1], -s * r[2][1], 0,
@@ -87,11 +89,9 @@ function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number)
   ].join(',')})`
 }
 
-let px = 0
-let py = 0
 let tracking = false
-// When the pointer or the page last moved: while neither does, only the idle sway is moving the
-// devices, and they redraw at half rate
+// When the page last scrolled or a device was last dragged: while neither happens, only the idle
+// sway is moving the devices, and they redraw at half rate
 let lastInput = 0
 
 interface Rest { yaw: number; pitch: number }
@@ -106,7 +106,6 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!tracking) {
     tracking = true
-    window.addEventListener('pointermove', e => { px = e.clientX / window.innerWidth - 0.5; py = e.clientY / window.innerHeight - 0.5; lastInput = performance.now() }, { passive: true })
     window.addEventListener('scroll', () => { lastInput = performance.now() }, { passive: true })
   }
 
@@ -172,24 +171,77 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   let on = false
   let raf = 0
   let tick = 0
+
+  // Devices don't follow the pointer; they turn when dragged. The grab area is the device's own box
+  // (the scene bleeds past it, over the caption's link), and a vertical swipe still scrolls the page
+  const grab = document.createElement('div')
+  grab.className = 'device-scene-grab'
+  art.append(grab)
+  let drag: { id: number; x: number; y: number; rx: number; ry: number } | null = null
+  let dragTo: [number, number] | null = null
+  // After a drag the device eases back to rest at dragReturn, then follows the scroll again
+  let returning = false
+  const limit = tilt.dragPitchLimit
+  grab.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return
+    // Keep the drag when the pointer leaves the box (throws for a pointer that's already gone)
+    try { grab.setPointerCapture(e.pointerId) } catch {}
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, rx, ry }
+    dragTo = [rx, ry]
+    grab.classList.add('is-dragging')
+    lastInput = performance.now()
+  })
+  grab.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return
+    const b = grab.getBoundingClientRect()
+    const pitch = drag.rx + (e.clientY - drag.y) / b.height * tilt.dragPitch
+    dragTo = [Math.max(rest.pitch - limit, Math.min(rest.pitch + limit, pitch)), drag.ry + (e.clientX - drag.x) / b.width * tilt.dragYaw]
+    lastInput = performance.now()
+  })
+  const release = (e: PointerEvent) => {
+    if (!drag || e.pointerId !== drag.id) return
+    drag = null
+    dragTo = null
+    grab.classList.remove('is-dragging')
+    // Spun all the way round: come back the short way
+    ry = rest.yaw + Math.atan2(Math.sin(ry - rest.yaw), Math.cos(ry - rest.yaw))
+    returning = true
+    if (reduced) { rx = rest.pitch; ry = rest.yaw }
+  }
+  grab.addEventListener('pointerup', release)
+  grab.addEventListener('pointercancel', release)
+
+  // Scroll parallax: the device sits a share of its box's distance from the viewport's center back
+  // toward it, so it drifts against the page. Read from the box, which the offset doesn't move
+  let parallax = 0
   const frame = (t: number) => {
     if (!on) return
     raf = requestAnimationFrame(frame)
+    const box = (art.parentElement ?? art).getBoundingClientRect()
+    const fromCenter = box.top + box.height / 2 - window.innerHeight / 2
     if (!reduced) {
-      const r = art.getBoundingClientRect()
-      const scroll = Math.max(-1, Math.min(1, ((r.top + r.height / 2) / window.innerHeight - 0.5) * 2))
-      const tx = rest.pitch - py * tilt.pointerPitch + scroll * tilt.scrollPitch
-      const ty = rest.yaw + px * tilt.pointerYaw + Math.sin(t / (tilt.swayPeriod * 1000)) * tilt.sway
-      rx += (tx - rx) * tilt.follow
-      ry += (ty - ry) * tilt.follow
+      const offset = Math.round(-fromCenter * tilt.parallax)
+      if (offset !== parallax) art.style.setProperty('--parallax', `${(parallax = offset)}px`)
+    }
+    if (dragTo) {
+      rx += (dragTo[0] - rx) * 0.4
+      ry += (dragTo[1] - ry) * 0.4
+    } else if (!reduced) {
+      const scroll = Math.max(-1, Math.min(1, fromCenter / window.innerHeight * 2))
+      const tx = rest.pitch + scroll * tilt.scrollPitch
+      const ty = rest.yaw + Math.sin(t / (tilt.swayPeriod * 1000)) * tilt.sway
+      const rate = returning ? tilt.dragReturn : tilt.follow
+      rx += (tx - rx) * rate
+      ry += (ty - ry) * rate
+      if (returning && Math.abs(tx - rx) + Math.abs(ty - ry) < 0.01) returning = false
     }
     if (drawn && Math.abs(rx - drawn[0]) + Math.abs(ry - drawn[1]) < 1e-5) return
     if (t - lastInput > 1000 && tick++ % 2) return
     drawn = [rx, ry]
     backend.frame(rx, ry)
-    face.style.transform = screenMatrix(rx, ry, scale, fw, fh)
+    face.style.transform = screenMatrix(rx, ry, scale, fw, fh, backend.geometry.pivot)
   }
-  face.style.transform = screenMatrix(rx, ry, scale, fw, fh)
+  face.style.transform = screenMatrix(rx, ry, scale, fw, fh, backend.geometry.pivot)
   const io = new IntersectionObserver(([e]) => {
     on = e.isIntersecting
     cancelAnimationFrame(raf)
@@ -202,6 +254,7 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
     cancelAnimationFrame(raf)
     io.disconnect()
     ro.disconnect()
+    grab.remove()
     backend.dispose()
   }
 }

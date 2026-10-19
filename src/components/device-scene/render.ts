@@ -89,7 +89,7 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   const dc = screen.getCenter(new Vector3())
   const k = spec.screenWidth / ds.x
 
-  // Centered on the display, at the DOM screen's scale
+  // The display's center is the origin, at the DOM screen's scale
   const device3d = new Group()
   const holder = new Group()
   scene.add(device3d)
@@ -97,6 +97,12 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   holder.add(roll)
   holder.scale.setScalar(k)
   holder.position.copy(dc).multiplyScalar(-k)
+  // It turns about the middle of its body, like a product on a turntable: about the display, a
+  // laptop's base swings wide when it's dragged round. model.ts offsets the screen to match
+  device3d.updateMatrixWorld(true)
+  const pivot = new Box3().setFromObject(device3d, true).getCenter(new Vector3())
+  device3d.position.copy(pivot)
+  holder.position.sub(pivot)
 
   // Framed on the whole device as it sits at rest, centered and as large as the stage allows. The
   // camera stands back so the stage spans viewHeightAt(): the DOM screen then matches the display
@@ -110,6 +116,7 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
     viewHeight: (body.max.y - body.min.y) / spec.fill,
     viewWidth: (body.max.x - body.min.x) / spec.fill,
     center: [center.x, center.y],
+    pivot: [pivot.x, pivot.y, pivot.z],
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)

@@ -291,8 +291,11 @@
           "properties": {
             "restYaw": { "type": "number", "description": "Turn at rest; negative shows the left side" },
             "restPitch": { "type": "number", "description": "Tilt at rest; positive leans the top back" },
-            "pointerYaw": { "type": "number", "description": "Turn across the full width of the window" },
-            "pointerPitch": { "type": "number", "description": "Tilt across the full height of the window" },
+            "dragYaw": { "type": "number", "description": "Turn for a drag across the full width of the device's box" },
+            "dragPitch": { "type": "number", "description": "Tilt for a drag across the full height of the device's box" },
+            "dragPitchLimit": { "type": "number", "minimum": 0, "description": "Furthest a drag tilts the device either way from its rest" },
+            "dragReturn": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the way back to rest covered each frame after a drag" },
+            "parallax": { "type": "number", "description": "Device offset per pixel the row sits from the viewport's center (scroll parallax)" },
             "scrollPitch": { "type": "number", "description": "Tilt from the card's place in the viewport, bottom to top" },
             "sway": { "type": "number", "description": "Idle turn amplitude" },
             "swayPeriod": { "$ref": "#/definitions/duration", "description": "Idle sway period" },

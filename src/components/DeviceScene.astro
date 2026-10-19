@@ -32,6 +32,11 @@ const device: DeviceName = tour?.device ?? 'iphone-17-pro'
   .device-scene .floor { position: absolute; left: 50%; top: 88%; width: 34cqh; height: 6cqh; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 13, 27, 0.3), rgba(11, 13, 27, 0)); translate: -50% -50%; filter: blur(1.4cqh); }
   .device-scene:not([data-device="iphone-17-pro"]) .floor { width: 58cqw; }
   .device-scene .stage, .device-scene .stage > * { position: absolute; inset: 0; }
+  /* Scroll parallax (model.ts): the device and its shadow drift against the page */
+  .device-scene .stage, .device-scene .floor { transform: translateY(var(--parallax, 0px)); }
+  /* The device's own box (the scene runs 10% past it on every side), where it can be dragged round */
+  .device-scene-grab { position: absolute; inset: calc(100% / 12); pointer-events: auto; cursor: grab; touch-action: pan-y; }
+  .device-scene-grab.is-dragging { cursor: grabbing; }
   .device-scene .stage canvas { width: 100%; height: 100%; }
   .device-scene-view { overflow: hidden; }
 
