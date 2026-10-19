@@ -10,7 +10,7 @@ import { GLTFLoader, type GLTFParser } from 'three/examples/jsm/loaders/GLTFLoad
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 
-import { DEVICES, modelUrl, type DeviceGeometry, type DeviceName } from './shared'
+import { DEVICES, modelUrl, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
 
 // three.js probes WebP support with new Image(), which a worker doesn't have. Every browser this
 // site supports decodes WebP, so this takes the extension's texture as is
@@ -84,24 +84,27 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   holder.scale.setScalar(k)
   holder.position.copy(dc).multiplyScalar(-k)
 
-  // Framed as it sits at rest, so a laptop's base swinging toward the camera stays in the card.
-  // The camera stands back so the display plane spans viewHeight: the DOM screen then matches it
-  // with the same scale and a CSS perspective of the same angle (model.ts)
+  // Framed on the display as it sits at rest: the screen fills the card and the body can run off
+  // its edges. The camera stands back so the stage spans viewHeightAt(): the DOM screen then
+  // matches the display with the same scale and a CSS perspective of the same angle (model.ts)
   device3d.rotation.set(rest.rx, rest.ry, 0)
   device3d.updateMatrixWorld(true)
-  const body = new Box3().setFromObject(device3d, true)
-  const viewHeight = (body.max.y - body.min.y) / spec.fill
+  const seen = new Box3()
+  displays.forEach(d => seen.expandByObject(d, true))
   const geometry: DeviceGeometry = {
     screenAspect: ds.x / ds.y,
-    viewHeight,
-    lift: -body.getCenter(new Vector3()).y / viewHeight,
+    viewHeight: (seen.max.y - seen.min.y) / spec.fill,
+    viewWidth: (seen.max.x - seen.min.x) / spec.fill,
   }
-  const distance = (viewHeight / 2) / Math.tan((fov / 2) * Math.PI / 180)
-  const camera = new PerspectiveCamera(fov, width / height, distance / 10, distance * 10)
-  camera.position.z = distance
+  const tan = Math.tan((fov / 2) * Math.PI / 180)
+  const camera = new PerspectiveCamera(fov, width / height)
   const resize = (w: number, h: number) => {
     if (!w || !h) return
     gl.setSize(w, h, false)
+    const distance = (viewHeightAt(geometry, w, h) / 2) / tan
+    camera.position.z = distance
+    camera.near = distance / 10
+    camera.far = distance * 10
     camera.aspect = w / h
     camera.updateProjectionMatrix()
   }

@@ -21,7 +21,7 @@ html.ek {
   --ek-hairline: #E6EAEE;
   --ek-panel: #F7F8FA;
   /* Work cards and case study heroes: one gray for every project, a step darker than the panel */
-  --ek-card: #ECEEF1;
+  --ek-card: #F2F3F5;
   --ek-ink-body: #34475C;
   --ek-window-radius: 24px;
   --ek-image-radius: 16px;
@@ -297,13 +297,12 @@ html.ek .skill-grid {
   }
 }
 
-/* Desktop: How I lead and Experience keep their heading pinned in the left half while the
-   principles and roles scroll past in the right half */
+/* Desktop: How I lead and Experience keep their heading pinned in the left quarter while the
+   principles and roles scroll past in the other three, on the same grid as Selected Work */
 @media (min-width: 64.0625rem) {
   html.ek :is(.leadership-section.ld, .experience-section.xp) {
     display: grid;
-    /* Half and half: at two thirds the 4:3 card art ran ~790px tall on a 1600px column */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
     column-gap: var(--grid-gutter);
     align-items: start;
   }

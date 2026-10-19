@@ -3,7 +3,7 @@
 // (render.ts). This module only turns the device and keeps the DOM screen on its display, so the
 // page never loads three.js here.
 import { animations } from '../../data/tokens'
-import { DEVICES, type DeviceGeometry, type DeviceName } from './shared'
+import { DEVICES, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
 
 interface Backend {
   geometry: DeviceGeometry
@@ -98,7 +98,7 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   } else {
     backend = await mainBackend(canvas, w, h, device, rest)
   }
-  const { screenAspect, viewHeight, lift } = backend.geometry
+  const { screenAspect } = backend.geometry
   const fw = DEVICES[device].screenWidth
   const fh = fw / screenAspect
 
@@ -109,15 +109,14 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   view.append(face)
   stage.append(view, canvas)
   face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${screenAspect}`
-  // Center the whole device rather than its display: canvas and screen move together
-  stage.style.translate = `0 ${-lift * 100}%`
   art.classList.add('is-3d')
 
-  let scale = h / viewHeight
+  // The screen's scale follows the renderer's framing (render.ts)
+  let scale = h / viewHeightAt(backend.geometry, w, h)
   const ro = new ResizeObserver(() => {
     const nw = stage.clientWidth, nh = stage.clientHeight
     if (!nw || !nh) return
-    scale = nh / viewHeight
+    scale = nh / viewHeightAt(backend.geometry, nw, nh)
     view.style.perspective = perspective(nh)
     backend.resize(nw, nh)
   })

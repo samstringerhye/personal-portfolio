@@ -17,7 +17,8 @@ export interface DeviceSpec {
   screenWidth: number
   /** Display width over height, for the flat fallback before (or without) the model */
   aspect: number
-  /** Share of the stage height the device's body fills */
+  /** Share of the stage the display fills, by height or by width in a narrow stage. The body
+      around it may run off the card */
   fill: number
   /** Body materials repainted neutral (material name to color) so every card reads as one gray system */
   finish?: Record<string, string>
@@ -26,20 +27,20 @@ export interface DeviceSpec {
 // Credits for every model are in the colophon (src/pages/colophon.astro)
 export const DEVICES: Record<DeviceName, DeviceSpec> = {
   // Ranguel, CC BY 4.0
-  'iphone-17-pro': { model: 'iphone-17-pro.glb', display: 'OLED', glass: ['Glass'], front: -1, roll: 0, screenWidth: 360, aspect: 0.4785, fill: 0.84 },
+  'iphone-17-pro': { model: 'iphone-17-pro.glb', display: 'OLED', glass: ['Glass'], front: -1, roll: 0, screenWidth: 360, aspect: 0.4785, fill: 0.86 },
   // Ranguel, CC BY 4.0. Lid at 90°, display facing the keyboard
   'macbook-neo': {
-    model: 'macbook-neo.glb', display: 'material', glass: ['Display_glass'], front: 1, roll: 0, screenWidth: 1280, aspect: 1.6, fill: 0.74,
+    model: 'macbook-neo.glb', display: 'material', glass: ['Display_glass'], front: 1, roll: 0, screenWidth: 1280, aspect: 1.6, fill: 0.8,
     finish: { Anodized_aluminum: '#c4c7cc', Touchpad_tint: '#c4c7cc', Touchpad_glass: '#c4c7cc', Keycap: '#2a2c30' },
   },
   // DatSketch, CC BY 4.0
   'ipad-mini-6': {
-    model: 'ipad-mini-6.glb', display: 'Screen', glass: [], front: -1, roll: Math.PI / 2, screenWidth: 1200, aspect: 1.511, fill: 0.7,
+    model: 'ipad-mini-6.glb', display: 'Screen', glass: [], front: -1, roll: Math.PI / 2, screenWidth: 1200, aspect: 1.511, fill: 0.8,
     finish: { BaseColor: '#c4c7cc', BaseColorMatte: '#c4c7cc', BaseColorLogo: '#c4c7cc' },
   },
   // zhe_kan, CC BY-NC-SA 4.0. Unfolded; the display is two panels either side of the hinge
   'galaxy-z-fold8': {
-    model: 'galaxy-z-fold8.glb', display: 'Screen', glass: ['Glass_screen'], front: 1, roll: 0, screenWidth: 1100, aspect: 1.307, fill: 0.72,
+    model: 'galaxy-z-fold8.glb', display: 'Screen', glass: ['Glass_screen'], front: 1, roll: 0, screenWidth: 1100, aspect: 1.307, fill: 0.8,
     finish: { Frame_Lavender: '#b9bcc2', 'Frame_Lavender.001': '#b9bcc2' },
   },
 }
@@ -49,9 +50,11 @@ export const modelUrl = (device: DeviceName) => `/motion/models/${DEVICES[device
 export interface DeviceGeometry {
   /** Display width over height */
   screenAspect: number
-  /** World units the stage height spans; the screen's CSS scale is stage height / this */
+  /** World units the stage must span vertically for the display to fill its share of the height */
   viewHeight: number
-  /** How far the display's center sits above the body's at rest, as a share of viewHeight. The
-      stage shifts by this so the whole device, not just its display, centers in the card */
-  lift: number
+  /** The same across, for stages too narrow to fit by height */
+  viewWidth: number
 }
+
+/** World units the stage height spans: the display fits by height or, in a narrow stage, by width */
+export const viewHeightAt = (g: DeviceGeometry, w: number, h: number) => Math.max(g.viewHeight, g.viewWidth * h / w)

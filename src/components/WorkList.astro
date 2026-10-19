@@ -219,15 +219,33 @@ const featured = (await getCollection('work'))
     opacity: 0;
   }
 
-  /* ── Coded scene cards: the device plays centered in the art. Once it mounts it stands in for the
-     subject; the subject stays for the zoom into the case study ── */
+  /* ── Coded scene cards: the device plays centered in the art, its body free to run off the
+     card's edges. The subject holds until the 3D device (or, without WebGL, the flat screen) is
+     ready, then the two crossfade; the subject stays for the zoom into the case study ── */
   .work-list-scene {
     position: absolute;
-    inset: 4%;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .work-list-media[data-scene-on] .work-list-scene {
+    opacity: 1;
+  }
+
+  .work-list-media[data-scene] .work-list-subject {
+    transition: opacity 0.5s ease;
   }
 
   .work-list-media[data-scene-on] .work-list-subject {
     opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-list-scene,
+    .work-list-media[data-scene] .work-list-subject {
+      transition: none;
+    }
   }
 
   /* Groups the year and text for the narrow layout; no box of its own on wider cards */
@@ -456,7 +474,6 @@ const featured = (await getCollection('work'))
       const { mountTour } = await import('./device-scene/tours')
       stops.push(mountTour(scene, name))
     }
-    scene.closest<HTMLElement>('.work-list-media')?.setAttribute('data-scene-on', '')
     try {
       await idle()
       const { mountDeviceModel } = await import('./device-scene/model')
@@ -464,9 +481,10 @@ const featured = (await getCollection('work'))
       const stage = scene.querySelector<HTMLElement>('.stage')
       if (face && stage && scene.isConnected) stops.push(await mountDeviceModel(scene, face, stage, scene.dataset.device as DeviceName))
     } catch (e) {
-      // No WebGL or the model failed to load: the flat screen stays
+      // No WebGL or the model failed to load: the flat screen stands in
       console.warn('3D device unavailable', e)
     }
+    scene.closest<HTMLElement>('.work-list-media')?.setAttribute('data-scene-on', '')
   }
 
   function initScenes() {

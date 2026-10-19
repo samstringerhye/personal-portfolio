@@ -20,16 +20,13 @@ const device: DeviceName = tour?.device ?? 'iphone-17-pro'
 <style is:global>
   /* The scene builds its own DOM, so these rules are global, scoped by .device-scene */
   .device-scene { position: absolute; inset: 0; display: grid; place-items: center; container-type: size; pointer-events: none; }
-  .device-scene .floor { position: absolute; left: 50%; top: 93%; width: 34cqh; height: 6cqh; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 13, 27, 0.3), rgba(11, 13, 27, 0)); translate: -50% -50%; filter: blur(1.4cqh); }
-  .device-scene[data-device="macbook-neo"] .floor { width: 70cqh; top: 88%; }
-  .device-scene[data-device="ipad-mini-6"] .floor, .device-scene[data-device="galaxy-z-fold8"] .floor { width: 60cqh; top: 86%; }
+  .device-scene .floor { position: absolute; left: 50%; top: 95%; width: 34cqh; height: 6cqh; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 13, 27, 0.3), rgba(11, 13, 27, 0)); translate: -50% -50%; filter: blur(1.4cqh); }
+  .device-scene:is([data-device="ipad-mini-6"], [data-device="galaxy-z-fold8"]) .floor { width: 80cqh; }
+  /* The laptop's base runs off the bottom of the card */
+  .device-scene[data-device="macbook-neo"] .floor { display: none; }
   .device-scene .stage, .device-scene .stage > * { position: absolute; inset: 0; }
   .device-scene .stage canvas { width: 100%; height: 100%; }
   .device-scene-view { overflow: hidden; }
-  /* The model fades in over the flat screen once it has warmed up */
-  .device-scene.is-3d .stage { animation: device-scene-in 0.5s ease both; }
-  @keyframes device-scene-in { from { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .device-scene.is-3d .stage { animation: none; } }
 
   /* Screen tours (tours.ts): screens laid out at the device's width, a flat bezel until the model loads */
   .device-scene .device { position: relative; width: var(--layout-w); aspect-ratio: var(--aspect); container-type: inline-size; }
