@@ -17,15 +17,12 @@ npx @gltf-transform/cli optimize "3d models/<source>.glb" public/motion/models/<
   --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
 ```
 
-The Galaxy Z Fold8 file shows an unfolded phone in front of a folded one; each becomes its own
-device. Split the file first, keeping the front (unfolded) or back (folded) phone:
+The Galaxy Z Fold8 file shows an unfolded phone in front of a folded one. Keep the unfolded
+(front) one first; `back` keeps the folded one instead:
 
 ```bash
 node scripts/models/drop-behind.mjs "3d models/samsung_galaxy_z_fold8.glb" /tmp/fold8-front.glb front
 npx @gltf-transform/cli optimize /tmp/fold8-front.glb public/motion/models/galaxy-z-fold8.glb \
-  --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
-node scripts/models/drop-behind.mjs "3d models/samsung_galaxy_z_fold8.glb" /tmp/fold8-back.glb back
-npx @gltf-transform/cli optimize /tmp/fold8-back.glb public/motion/models/galaxy-z-fold8-folded.glb \
   --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
 ```
 

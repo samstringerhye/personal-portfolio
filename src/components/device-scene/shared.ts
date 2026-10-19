@@ -1,6 +1,6 @@
 // Shared by the main thread and the renderer, kept apart so importing it doesn't pull in three.js
 
-export type DeviceName = 'iphone-17-pro' | 'macbook-neo' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8' | 'galaxy-z-fold8-folded'
+export type DeviceName = 'iphone-17-pro' | 'macbook-neo' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8' | 'galaxy-s22-ultra' | 'galaxy-tab-s8-ultra'
 
 export interface DeviceSpec {
   /** GLB under /motion/models/ */
@@ -26,6 +26,9 @@ export interface DeviceSpec {
   finish?: Record<string, string>
   /** Materials whose texture keeps its detail (the legends on keycaps) but is shown in inverted gray */
   neutral?: string[]
+  /** Parts left out of the scene, by material or mesh name (an S Pen modeled floating beside its
+      device) */
+  hide?: string[]
 }
 
 // Credits for every model are in the colophon (src/pages/colophon.astro)
@@ -53,10 +56,16 @@ export const DEVICES: Record<DeviceName, DeviceSpec> = {
     model: 'galaxy-z-fold8.glb', display: 'Screen', glass: ['Glass_screen'], front: 1, roll: 0, screenWidth: 1100, realWidth: 0.1613, aspect: 1.307,
     finish: { Frame_Lavender: '#b9bcc2', 'Frame_Lavender.001': '#b9bcc2' },
   },
-  // The same file's folded phone (zhe_kan, CC BY-NC-SA 4.0): its cover screen, as a Samsung phone
-  'galaxy-z-fold8-folded': {
-    model: 'galaxy-z-fold8-folded.glb', display: 'Screen_2', glass: ['Glass_screen'], front: -1, roll: 0, screenWidth: 400, realWidth: 0.068, aspect: 0.645,
-    finish: { Frame_Lavender: '#b9bcc2', 'Frame_Lavender.001': '#b9bcc2' },
+  // DatSketch, CC BY-NC 4.0. Upright in the file, display facing +z; the S Pen floats beside it
+  'galaxy-s22-ultra': {
+    model: 'galaxy-s22-ultra.glb', display: 'Display_ActiveArea', glass: [], front: 1, roll: 0, screenWidth: 360, realWidth: 0.0731, aspect: 0.4667,
+    // Object_28 is the pen's slot cap, a separate mesh sharing the body's material
+    hide: ['Pen_Ball', 'Pen_Body', 'Pen_Button', 'Pen_Top', 'Object_28'],
+  },
+  // DatSketch, CC BY-NC 4.0. Landscape, display facing -z; the S Pen floats beside it
+  'galaxy-tab-s8-ultra': {
+    model: 'galaxy-tab-s8-ultra.glb', display: 'Wallpaper', glass: [], front: -1, roll: 0, screenWidth: 1440, realWidth: 0.315, aspect: 1.607,
+    hide: ['PenBody', 'PenTip'],
   },
 }
 

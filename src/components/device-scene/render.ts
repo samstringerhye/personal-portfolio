@@ -4,7 +4,7 @@
 // display sits, so the page lays its screen exactly on it. Runs in model.worker.ts, or on the main
 // thread where OffscreenCanvas WebGL is missing.
 import {
-  Box3, NeutralToneMapping, DirectionalLight, DoubleSide, Euler, Group, MeshBasicMaterial, NoBlending, Object3D,
+  Box3, DirectionalLight, DoubleSide, Euler, Group, MeshBasicMaterial, NoBlending, Object3D,
   PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
   type Mesh, type MeshPhysicalMaterial, type Texture,
 } from 'three'
@@ -15,6 +15,7 @@ import { DEVICES, modelUrl, viewHeightAt, type ArrangementGeometry, type DeviceN
 import { arrangementOf, type SceneName } from './arrangements'
 import { studioScene } from './studio'
 import { contactShadow } from './contact-shadow'
+import { grade } from './grade'
 
 // How far a held arrangement rises off the floor, as a share of its height
 const LIFT = 0.05
@@ -43,6 +44,7 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
     if (!mesh.isMesh) return
     const mat = mesh.material as MeshPhysicalMaterial
     if (mat.name === spec.display) displays.push(mesh)
+    if (spec.hide?.includes(mat.name) || spec.hide?.includes(mesh.name)) mesh.visible = false
     // Transmission renders the whole scene a second time each frame, and through the cover glass
     // it shows the device's insides; reflections are enough at this size
     if ('transmission' in mat) mat.transmission = 0
@@ -84,8 +86,8 @@ export async function createArrangementRenderer(
 
   const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
   gl.setPixelRatio(dpr)
-  // Khronos PBR Neutral keeps the screens' and finishes' colors true, where ACES darkens and shifts them
-  gl.toneMapping = NeutralToneMapping
+  // Khronos PBR Neutral, then the site's color grade (grade.ts)
+  grade(gl)
   gl.outputColorSpace = SRGBColorSpace
   gl.setClearColor(0, 0)
 

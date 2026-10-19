@@ -10,7 +10,7 @@
 // rest of the page crossfades (data-device-nav, global.css) and the color shutter stands aside.
 import { animations } from '../../data/tokens'
 import { arrangementOf, type ScreenSource, type SceneName } from './arrangements'
-import type { DeviceName } from './shared'
+import { DEVICES, type DeviceName } from './shared'
 
 const stops = new Map<HTMLElement, Array<() => void>>()
 const idle = () => new Promise<void>(resolve => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200)))
@@ -24,6 +24,15 @@ async function mountScreen(host: HTMLElement, screen: ScreenSource, device: Devi
   if (screen.kind === 'myfrontier-still') {
     const { mountMyFrontierStill } = await import('./myfrontier')
     return mountMyFrontierStill(host, screen.shot as never)
+  }
+  if (screen.kind === 'none') {
+    // A dark display, seen only if the device is spun round to face the camera
+    const spec = DEVICES[device]
+    host.insertAdjacentHTML('beforeend', '<div class="device device-off"></div>')
+    const face = host.querySelector<HTMLElement>('.device')!
+    face.style.setProperty('--aspect', String(spec.aspect))
+    face.style.setProperty('--layout-w', `${spec.screenWidth}px`)
+    return () => {}
   }
   if (screen.kind === 'home') {
     const { mountHomeScreen } = await import('./homescreen')

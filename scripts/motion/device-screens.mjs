@@ -43,12 +43,8 @@ const screens = {
     shots: { home: ['amica-design-system/prototype/home-mobile.png'] },
   },
   'samsung-mobile': {
-    width: 800,
-    shots: { menu: ['samsung-redesign/samsung-section-3-gnb-desktop.jpg', { left: 712, top: 420, width: 1100, height: 1705 }] },
-  },
-  'bespoke-mobile': {
-    width: 800,
-    shots: { sheet: ['bespoke-design-studio/mobile-04b.png', { left: 0, top: 370, width: 2500, height: 3876 }] },
+    width: 720,
+    shots: { menu: ['samsung-redesign/samsung-section-3-gnb-desktop.jpg', { left: 700, top: 420, width: 800, height: 1714 }] },
   },
   bespoke: {
     width: 1200,
