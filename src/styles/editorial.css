@@ -269,7 +269,7 @@ html.ek .about-page .skill-desc {
   }
 
   html.ek :is(.about-skills-heading, .about-row-body) {
-    grid-column: 1 / 5;
+    grid-column: 1 / 7;
     align-self: start;
     position: sticky;
     top: calc(var(--nav-height) + var(--space-4));
@@ -277,7 +277,7 @@ html.ek .about-page .skill-desc {
   }
 
   html.ek :is(.about-page .skill-grid, .about-logos-wrap) {
-    grid-column: 5 / -1;
+    grid-column: 7 / -1;
   }
 
   html.ek .about-logos-wrap {
@@ -301,12 +301,13 @@ html.ek .skill-grid {
   }
 }
 
-/* Desktop: Selected Work, How I lead and Experience keep their heading pinned in a left column
-   while the cards, principles and roles scroll past on the right */
+/* Desktop: Selected Work, How I lead and Experience keep their heading pinned in the left half
+   while the cards, principles and roles scroll past in the right half */
 @media (min-width: 64.0625rem) {
   html.ek :is(.work-list-section, .leadership-section.ld, .experience-section.xp) {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    /* Half and half: at two thirds the 4:3 card art ran ~790px tall on a 1600px column */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: var(--grid-gutter);
     align-items: start;
   }
