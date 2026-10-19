@@ -1,13 +1,13 @@
-// Puts a device scene's screen into its 3D model. The model renders in a worker on an
-// OffscreenCanvas where the browser supports it (model.worker.ts), on the main thread otherwise
-// (render.ts). This module only turns the device and keeps the DOM screen on its display, so the
-// page never loads three.js here.
+// Puts a device scene's screen into its 3D model. The models render in one shared worker, each on
+// its own OffscreenCanvas, where the browser supports it (model.worker.ts), on the main thread
+// otherwise (render.ts). This module only turns the device and keeps the DOM screen on its display,
+// so the page never loads three.js here.
 import { animations } from '../../data/tokens'
 import { DEVICES, viewHeightAt, type DeviceGeometry, type DeviceName } from './shared'
 
 interface Backend {
   geometry: DeviceGeometry
-  resize: (w: number, h: number) => void
+  resize: (w: number, h: number, dpr: number) => void
   frame: (rx: number, ry: number) => void
   dispose: () => void
 }
@@ -16,36 +16,58 @@ const tilt = animations.workCards.phone
 // Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
 const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
 const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
-// Full 2x on retina screens: the devices now fill most of each row, and at 1.5x their thin edges
-// and keycaps stair-step. Only on-screen scenes render, so the cost stays to one or two canvases
-const dpr = () => Math.min(2, window.devicePixelRatio || 1)
+// Up to 2x on retina screens, within a pixel budget: a full-row canvas at 2x is ~4M pixels a frame,
+// so large canvases settle near 1.5x while smaller ones get the full 2x
+const MAX_PIXELS = 2.4e6
+const dprFor = (w: number, h: number) => Math.min(2, window.devicePixelRatio || 1, Math.sqrt(MAX_PIXELS / Math.max(1, w * h)))
 
 // No probe context here: creating one costs a main-thread stall. A worker without WebGL reports
 // an error and the main thread takes over
 const offscreen = () => typeof HTMLCanvasElement.prototype.transferControlToOffscreen === 'function'
 
-function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
+// One worker for every scene, so three.js loads and parses once. Replies are routed by scene id
+let worker: Worker | null = null
+let nextId = 0
+const pending = new Map<number, { resolve: (geometry: DeviceGeometry) => void; reject: (e: Error) => void }>()
+function sharedWorker(): Worker {
+  if (worker) return worker
+  const w = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
+  w.onmessage = e => {
+    const waiting = pending.get(e.data.id)
+    if (!waiting) return
+    pending.delete(e.data.id)
+    if (e.data.type === 'ready') waiting.resolve(e.data.geometry)
+    else waiting.reject(new Error(e.data.message))
+  }
+  // The worker itself failed to start: every waiting scene falls back to the main thread
+  w.onerror = e => {
+    pending.forEach(p => p.reject(new Error(e.message)))
+    pending.clear()
+    w.terminate()
+    if (worker === w) worker = null
+  }
+  return (worker = w)
+}
+
+async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
   const offscreen = canvas.transferControlToOffscreen()
-  const worker = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
-  return new Promise((resolve, reject) => {
-    worker.onerror = e => { worker.terminate(); reject(e) }
-    worker.onmessage = e => {
-      if (e.data.type === 'error') { worker.terminate(); reject(new Error(e.data.message)); return }
-      if (e.data.type !== 'ready') return
-      resolve({
-        geometry: e.data.geometry,
-        resize: (width, height) => worker.postMessage({ type: 'resize', width, height }),
-        frame: (rx, ry) => worker.postMessage({ type: 'frame', rx, ry }),
-        dispose: () => worker.terminate(),
-      })
-    }
-    worker.postMessage({ type: 'init', canvas: offscreen, width: w, height: h, dpr: dpr(), device, fov, rx: rest.pitch, ry: rest.yaw }, [offscreen])
+  const target = sharedWorker()
+  const id = nextId++
+  const geometry = await new Promise<DeviceGeometry>((resolve, reject) => {
+    pending.set(id, { resolve, reject })
+    target.postMessage({ type: 'init', id, canvas: offscreen, width: w, height: h, dpr: dprFor(w, h), device, fov, rx: rest.pitch, ry: rest.yaw }, [offscreen])
   })
+  return {
+    geometry,
+    resize: (width, height, dpr) => target.postMessage({ type: 'resize', id, width, height, dpr }),
+    frame: (rx, ry) => target.postMessage({ type: 'frame', id, rx, ry }),
+    dispose: () => target.postMessage({ type: 'dispose', id }),
+  }
 }
 
 async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
   const { createDeviceRenderer } = await import('./render')
-  const r = await createDeviceRenderer(canvas, w, h, dpr(), device, fov, { rx: rest.pitch, ry: rest.yaw })
+  const r = await createDeviceRenderer(canvas, w, h, dprFor(w, h), device, fov, { rx: rest.pitch, ry: rest.yaw })
   r.render(rest.pitch, rest.yaw)
   return { geometry: r.geometry, resize: r.resize, frame: r.render, dispose: r.dispose }
 }
@@ -68,6 +90,9 @@ function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number)
 let px = 0
 let py = 0
 let tracking = false
+// When the pointer or the page last moved: while neither does, only the idle sway is moving the
+// devices, and they redraw at half rate
+let lastInput = 0
 
 interface Rest { yaw: number; pitch: number }
 // Each device can set its own rest angle; the rest of the motion is shared
@@ -81,7 +106,8 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!tracking) {
     tracking = true
-    window.addEventListener('pointermove', e => { px = e.clientX / window.innerWidth - 0.5; py = e.clientY / window.innerHeight - 0.5 }, { passive: true })
+    window.addEventListener('pointermove', e => { px = e.clientX / window.innerWidth - 0.5; py = e.clientY / window.innerHeight - 0.5; lastInput = performance.now() }, { passive: true })
+    window.addEventListener('scroll', () => { lastInput = performance.now() }, { passive: true })
   }
 
   const rest = restOf(device)
@@ -112,6 +138,8 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${screenAspect}`
   art.classList.add('is-3d')
 
+  // The last angle drawn: the model and the screen only redraw when it changes (or on resize)
+  let drawn: [number, number] | null = null
   // The screen's scale and shift follow the renderer's framing (render.ts)
   const [cx, cy] = backend.geometry.center
   let scale = 1
@@ -134,7 +162,8 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
     if (!nw || !nh) return
     fit(nw, nh)
     view.style.perspective = perspective(nh)
-    backend.resize(nw, nh)
+    backend.resize(nw, nh, dprFor(nw, nh))
+    drawn = null
   })
   ro.observe(stage)
 
@@ -142,8 +171,10 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
   let ry = rest.yaw
   let on = false
   let raf = 0
+  let tick = 0
   const frame = (t: number) => {
     if (!on) return
+    raf = requestAnimationFrame(frame)
     if (!reduced) {
       const r = art.getBoundingClientRect()
       const scroll = Math.max(-1, Math.min(1, ((r.top + r.height / 2) / window.innerHeight - 0.5) * 2))
@@ -152,9 +183,11 @@ export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stag
       rx += (tx - rx) * tilt.follow
       ry += (ty - ry) * tilt.follow
     }
+    if (drawn && Math.abs(rx - drawn[0]) + Math.abs(ry - drawn[1]) < 1e-5) return
+    if (t - lastInput > 1000 && tick++ % 2) return
+    drawn = [rx, ry]
     backend.frame(rx, ry)
     face.style.transform = screenMatrix(rx, ry, scale, fw, fh)
-    raf = requestAnimationFrame(frame)
   }
   face.style.transform = screenMatrix(rx, ry, scale, fw, fh)
   const io = new IntersectionObserver(([e]) => {

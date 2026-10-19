@@ -25,6 +25,8 @@ export interface DeviceSpec {
   fill: number
   /** Body materials repainted neutral (material name to color) so every card reads as one gray system */
   finish?: Record<string, string>
+  /** Materials whose texture keeps its detail (the legends on keycaps) but is shown in inverted gray */
+  neutral?: string[]
 }
 
 // Credits for every model are in the colophon (src/pages/colophon.astro)
@@ -34,7 +36,8 @@ export const DEVICES: Record<DeviceName, DeviceSpec> = {
   // Ranguel, CC BY 4.0. Lid at 90°, display facing the keyboard
   'macbook-neo': {
     model: 'macbook-neo.glb', display: 'material', glass: ['Display_glass'], front: 1, roll: 0, screenWidth: 1280, aspect: 1.6, fill: 0.74,
-    finish: { Anodized_aluminum: '#c4c7cc', Touchpad_tint: '#c4c7cc', Touchpad_glass: '#c4c7cc', Keycap: '#2a2c30' },
+    finish: { Anodized_aluminum: '#c4c7cc', Touchpad_tint: '#c4c7cc', Touchpad_glass: '#c4c7cc' },
+    neutral: ['Keycap'],
   },
   // akshatmittal, CC BY 4.0. Material names are scrambled in the file: the display is VNZklasZKSWjWUk,
   // its lid open about 110°. Space gray as modeled

@@ -57,6 +57,14 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
     if (spec.glass.includes(mat.name)) { mat.transparent = true; mat.opacity = 0.06; mesh.renderOrder = 2 }
     const paint = spec.finish?.[mat.name]
     if (paint) { mat.map = null; mat.color.set(paint); mat.needsUpdate = true }
+    // Invert the texture's brightness in the shader, color dropped: light keys with dark legends
+    // become dark keys with light legends, like a silver MacBook's
+    if (spec.neutral?.includes(mat.name)) {
+      mat.onBeforeCompile = shader => {
+        shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n\tdiffuseColor.rgb = vec3( 0.04 + 0.86 * ( 1.0 - dot( diffuseColor.rgb, vec3( 0.2126, 0.7152, 0.0722 ) ) ) );')
+      }
+      mat.customProgramCacheKey = () => 'neutral'
+    }
     Object.values(mat).forEach(v => { if ((v as Texture)?.isTexture) textures.add(v as Texture) })
   })
   if (!displays.length) throw new Error(`${device} has no ${spec.display} mesh`)
@@ -105,8 +113,9 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
-  const resize = (w: number, h: number) => {
+  const resize = (w: number, h: number, ratio = dpr) => {
     if (!w || !h) return
+    gl.setPixelRatio(ratio)
     gl.setSize(w, h, false)
     const vh = viewHeightAt(geometry, w, h)
     const distance = (vh / 2) / tan
@@ -129,7 +138,17 @@ export async function createDeviceRenderer(canvas: HTMLCanvasElement | Offscreen
     device3d.rotation.set(rx, ry, 0)
     gl.render(scene, camera)
   }
+  // One worker outlives its scenes, so free the model's GPU memory explicitly
   const dispose = () => {
+    scene.traverse(o => {
+      const mesh = o as Mesh
+      if (!mesh.isMesh) return
+      mesh.geometry.dispose()
+      const mat = mesh.material as MeshPhysicalMaterial
+      Object.values(mat).forEach(v => { if ((v as Texture)?.isTexture) (v as Texture).dispose() })
+      mat.dispose()
+    })
+    scene.environment?.dispose()
     pmrem.dispose()
     gl.dispose()
   }
