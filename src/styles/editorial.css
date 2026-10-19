@@ -431,10 +431,12 @@ html.ek .work-list-intro-inner {
   padding: 0;
 }
 
+/* Projects sit a section's space apart, like the page's sections: the unframed devices and their
+   scroll parallax need the room */
 html.ek .work-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--ek-section);
   padding-top: 0;
 }
 
