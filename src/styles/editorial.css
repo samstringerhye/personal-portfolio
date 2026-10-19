@@ -570,12 +570,19 @@ html.ek .work-list-lock svg {
 }
 
 html.ek .work-list-item .work-list-card .work-list-title {
-  font-size: var(--text-300);
-  line-height: 1.2;
+  font-size: var(--text-400);
+  line-height: 1.12;
 }
 
 html.ek .work-list-item .work-list-card .work-list-tagline {
+  font-size: var(--text-200);
+  line-height: 1.4;
   color: var(--ek-ink-body);
+}
+
+html.ek .work-list-item .work-list-card .work-list-cta {
+  align-self: flex-start;
+  margin-top: var(--space-3);
 }
 
 /* ── Contact and footer: hairlines, sans links ── */
@@ -939,17 +946,9 @@ html.ek .ek-arrow {
   transition: translate var(--duration-short) var(--ek-hover-ease);
 }
 
-/* Work cards: the title underlines on hover; the art on the right holds still */
+/* Work cards: the art on the right holds still; the case study button below the text is the link */
 html.ek .work-list-item .work-list-card .work-list-media {
   --work-hover-zoom: 1;
-}
-
-html.ek .work-list-item .work-list-card .work-list-title {
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  transition: text-decoration-color var(--duration-short) ease;
 }
 
 /* Case-study images open full screen on click: their window lifts instead of the image scaling */
@@ -975,8 +974,7 @@ html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-c
   }
 
   html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .not-found-link):hover,
-  html.ek .cs-nav-link:hover .cs-nav-title,
-  html.ek .work-list-caption:hover .work-list-title {
+  html.ek .cs-nav-link:hover .cs-nav-title {
     text-decoration-color: currentColor;
     opacity: 1;
   }

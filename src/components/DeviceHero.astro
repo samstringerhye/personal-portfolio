@@ -71,10 +71,16 @@ const heading = title.replaceAll('-', '\u2011')
     margin: 0;
   }
 
-  /* The card's title size, so the text reads as the same block when the device carries across */
+  /* The card's title and tagline sizes, so the text reads as the same block when the device
+     carries across */
   .cs-device-hero .cs-device-hero-title {
-    font-size: var(--text-300);
-    line-height: 1.2;
+    font-size: var(--text-400);
+    line-height: 1.12;
+  }
+
+  .cs-device-hero .cs-device-hero-tagline {
+    font-size: var(--text-200);
+    line-height: 1.4;
   }
 
   .cs-device-hero-tagline {

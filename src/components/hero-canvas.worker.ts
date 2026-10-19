@@ -14,6 +14,7 @@ import {
   sizeTaper,
   updateDots,
   type ArrangementGenerator,
+  type Push,
 } from './hero-canvas-shared'
 
 const generators: Record<string, ArrangementGenerator> = {
@@ -54,6 +55,7 @@ interface InitMessage {
     accentOpacity: number
     cmyStagger: number
     wavePaused?: boolean
+    pointer: { radius: number; push: number; grow: number; split: number; follow: number; fade: number }
   }
   colors: {
     accent1: string
@@ -74,7 +76,15 @@ interface VisibilityMessage {
   visible: boolean
 }
 
-type WorkerMessage = InitMessage | ResizeMessage | VisibilityMessage
+/** The pointer over the canvas, CSS px from its top left; active false once it leaves */
+interface PointerMessage {
+  type: 'pointer'
+  x: number
+  y: number
+  active: boolean
+}
+
+type WorkerMessage = InitMessage | ResizeMessage | VisibilityMessage | PointerMessage
 
 let frameId: number | null = null
 
@@ -92,8 +102,19 @@ self.onmessage = async (e: MessageEvent<WorkerMessage>) => {
     handleResize(msg.width, msg.height)
   } else if (msg.type === 'visibility') {
     handleVisibility(msg.visible)
+  } else if (msg.type === 'pointer') {
+    pointerTo = msg
+    // First touch: start at the pointer instead of sliding in from the last place
+    if (msg.active && pointer.strength === 0) { pointer.x = msg.x; pointer.y = msg.y }
   }
 }
+
+// The pointer's push, eased toward where it is (CSS px) and in and out as it enters and leaves
+let pointerTo: PointerMessage | null = null
+const pointer = { x: 0, y: 0, strength: 0 }
+let width = 0
+let height = 0
+const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: 0, grow: 0, amount: 1 }
 
 // Scene state (set during init)
 let renderer: any
@@ -192,6 +213,8 @@ async function initScene(msg: InitMessage) {
 
 function applySize(w: number, h: number) {
   if (!renderer || w === 0 || h === 0) return
+  width = w
+  height = h
   renderer.setSize(w, h, false) // false = don't set style (no DOM in worker)
   camera.left = -w / 2
   camera.right = w / 2
@@ -228,14 +251,33 @@ function tick() {
   const time = (cfg.wavePaused || prefersReduced) ? 0 : elapsed
   const cmyDelay = cfg.cmyStagger
 
+  // The push, in world units. Red is pushed further than green and blue less, so near the pointer
+  // each dot splits into its subpixels; the ink layer moves with green
+  const p = cfg.pointer
+  const active = !!pointerTo?.active
+  if (pointerTo) {
+    pointer.x += (pointerTo.x - pointer.x) * p.follow
+    pointer.y += (pointerTo.y - pointer.y) * p.follow
+  }
+  pointer.strength += ((active ? 1 : 0) - pointer.strength) * p.fade
+  if (!active && pointer.strength < 0.002) pointer.strength = 0
+  push.x = (pointer.x - width / 2) / cfg.zoom
+  push.y = (height / 2 - pointer.y) / cfg.zoom
+  push.r = p.radius / cfg.zoom
+  push.strength = pointer.strength
+  push.push = p.push
+  push.grow = p.grow
+  const amounts = [1 + p.split, 1, 1 - p.split, 1]
+
   for (let i = 0; i < meshes.length; i++) {
     const mesh = meshes[i]
+    push.amount = amounts[i]
     updateDots(
       mesh.instanceMatrix.array as Float32Array, total,
       posX, posY, dist, dotScales, time - delays[i] * cmyDelay,
       cfg.waveSpeed, cfg.propagation, cfg.waveSharpness,
       cfg.waveAmplitude, cfg.waveFrequency, cfg.baseScale, cfg.twistAmount,
-      null,
+      null, push,
     )
     mesh.instanceMatrix.needsUpdate = true
   }

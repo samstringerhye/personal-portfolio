@@ -81,6 +81,11 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
 | `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
+| `hero.canvas.accentOpacity` | 0–1 | `1` | Opacity of the red, green and blue dot layers (fully saturated) |
+| `hero.canvas.pointer.radius` | CSS px | `170` | How far around the pointer the dots react (off under reduced motion) |
+| `hero.canvas.pointer.push` / `grow` | ratio | `0.45` / `0.9` | Dots at the pointer are pushed out by this share of the radius and grow by this much |
+| `hero.canvas.pointer.split` | ratio | `0.35` | Red is pushed this much further than green, blue this much less, so dots near the pointer split into their subpixels |
+| `hero.canvas.pointer.follow` / `fade` | 0–1 | `0.18` / `0.08` | Easing toward the pointer, and in and out as it enters and leaves |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
 | `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices can override it in `workCards.devices` |

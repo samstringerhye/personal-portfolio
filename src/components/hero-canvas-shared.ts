@@ -165,6 +165,18 @@ export function emptyLens(): Lens {
   return { x: 0, y: 0, r: 0, mag: 1, t0: 0, sign: 0, fade: 0, split: 0, dotRadius: 0 }
 }
 
+/** The pointer's push on the dots, in world units: dots within r of (x, y) move out and grow,
+    eased by strength (0–1). amount is this layer's share of the push (the RGB split) */
+export interface Push {
+  x: number
+  y: number
+  r: number
+  strength: number
+  push: number
+  grow: number
+  amount: number
+}
+
 let placedX = 0
 let placedY = 0
 
@@ -192,13 +204,30 @@ export function updateDots(
   waveSpeed: number, propagation: number, waveSharpness: number,
   waveAmplitude: number, waveFrequency: number, baseScale: number, twistAmount: number,
   lens: Lens | null = null,
+  push: Push | null = null,
 ): void {
   const r2 = lens ? lens.r * lens.r : 0
+  const pr2 = push && push.strength > 0 ? push.r * push.r : 0
   for (let i = 0; i < total; i++) {
     placeDot(posX[i], posY[i], dist[i], time, waveSpeed, propagation, waveSharpness, waveAmplitude, waveFrequency, baseScale, twistAmount)
     let x = placedX
     let y = placedY
     let s = dotScales[i]
+    if (pr2) {
+      const dx = x - push!.x
+      const dy = y - push!.y
+      const d2 = dx * dx + dy * dy
+      if (d2 < pr2 && d2 > 1e-9) {
+        const d = Math.sqrt(d2)
+        // Smoothstep falloff to the rim
+        let f = 1 - d / push!.r
+        f = f * f * (3 - 2 * f) * push!.strength
+        const out = f * push!.push * push!.r * push!.amount / d
+        x += dx * out
+        y += dy * out
+        s *= 1 + f * push!.grow
+      }
+    }
     if (lens) {
       const dx = x - lens.x
       const dy = y - lens.y

@@ -131,6 +131,19 @@
             "maxDpr":        { "type": "number", "minimum": 0.5, "maximum": 3, "description": "Max device pixel ratio cap" },
             "cmyStagger":    { "$ref": "#/definitions/stagger", "description": "Delay between CMY color channels in hero dot wave (seconds)" },
             "accentOpacity": { "$ref": "#/definitions/opacity01", "description": "Opacity of accent color dot layers (0=invisible, 1=fully opaque)" },
+            "pointer": {
+              "type": "object",
+              "description": "Dots react to the pointer: pushed out and swollen near it, the red, green and blue layers pushed apart",
+              "properties": {
+                "radius": { "type": "number", "minimum": 0, "description": "Reach around the pointer, CSS px" },
+                "push": { "type": "number", "description": "Furthest a dot is pushed out, as a share of the radius" },
+                "grow": { "type": "number", "description": "Extra size at the pointer (1 doubles a dot)" },
+                "split": { "type": "number", "description": "How much more the red layer is pushed than green, and blue less" },
+                "follow": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the distance to the pointer covered each frame" },
+                "fade": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the way in or out covered each frame as the pointer enters or leaves" }
+              },
+              "additionalProperties": false
+            },
             "bgColor":       { "oneOf": [{ "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }, { "$ref": "#/definitions/tokenRef" }], "description": "Canvas background color (hex or token $ref)" }
           },
           "additionalProperties": false
