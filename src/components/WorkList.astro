@@ -176,12 +176,7 @@ const featured = (await getCollection('work'))
   }
 
   /* ── Layered cards: a background layer plus a transparent subject (the page transition zooms
-     these same layers into the case study hero). Hover zooms the image in slightly, inside the
-     card's frame. ── */
-  /* Hover zoom amount; work-transition.ts reads it so the zoom-back lands on the hovered size */
-  .work-list-media {
-    --work-hover-zoom: 1.04;
-  }
+     these same layers into the case study hero) ── */
 
   .work-list-plane {
     position: absolute;
@@ -293,24 +288,6 @@ const featured = (await getCollection('work'))
     box-shadow: inset var(--focus-ring);
   }
 
-  @media (hover: hover) {
-    .work-list-card:hover .work-list-plane,
-    .work-list-card:hover .work-list-media:not([data-layered]) img {
-      transform: scale(var(--work-hover-zoom));
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .work-list-media img,
-    .work-list-plane {
-      transition: none;
-    }
-
-    .work-list-card:hover .work-list-media img,
-    .work-list-card:hover .work-list-plane {
-      transform: none;
-    }
-  }
 
   /* ── Narrow cards (under ~780px, any screen): too narrow for the text to share the art, so the
      card stacks two boxes on the project's color, the same size on every card: the image box,

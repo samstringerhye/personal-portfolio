@@ -937,10 +937,9 @@ html.ek .ek-arrow {
   transition: translate var(--duration-short) var(--ek-hover-ease);
 }
 
-/* Work cards: the art zooms a touch in its frame and the frame lifts; the title underlines */
+/* Work cards: the title underlines on hover; the art on the right holds still */
 html.ek .work-list-item .work-list-card .work-list-media {
-  --work-hover-zoom: 1.03;
-  transition: box-shadow var(--duration-long) var(--ek-hover-ease);
+  --work-hover-zoom: 1;
 }
 
 html.ek .work-list-item .work-list-card .work-list-title {
@@ -984,7 +983,6 @@ html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-c
     translate: 3px 0;
   }
 
-  html.ek .work-list-card:hover .work-list-media,
   html.ek .case-study-body .cs-figure:not(.carousel .cs-figure, .image-grid .cs-figure, .zigzag-media .cs-figure):hover,
   html.ek .case-study-body .zigzag-media:hover,
   html.ek .case-study-body .image-pair-media:hover,
