@@ -19,6 +19,8 @@ export default defineConfig({
     '/contact': '/about',
     // The work index duplicated the homepage list
     '/work': '/#work',
+    // The résumé page became the homepage Experience section and its PDF download
+    '/resume': '/#experience',
   },
   integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/work/wab-2026') && !page.includes('/colophon') && !page.includes('/blog') }), icon()],
 

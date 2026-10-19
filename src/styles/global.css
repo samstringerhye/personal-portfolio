@@ -75,8 +75,7 @@ a {
 
 .blog-post-body a,
 .case-study-body a,
-.colophon-body a,
-.resume-body a {
+.colophon-body a {
   text-decoration: underline;
   text-underline-offset: 0.15em;
   text-decoration-thickness: 1px;

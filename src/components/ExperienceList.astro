@@ -2,8 +2,9 @@
 /**
  * Experience as a typographic index: years, role and company, and one line on the work, for each
  * job, newest first. Replaces the year-grid Timeline in the Editorial Kit direction. Same data
- * (home.json experience).
+ * (home.json experience). The résumé PDF downloads from here; the old /resume page redirects here.
  */
+import { Icon } from 'astro-icon/components'
 import homeData from '../content/home.json'
 import type { HomeContent } from '../types/content'
 
@@ -18,9 +19,15 @@ const rows = jobs.map(j => ({
 }))
 ---
 
-<section class="experience-section xp" aria-labelledby="xp-heading">
+<section class="experience-section xp" id="experience" aria-labelledby="xp-heading">
   <div class="xp-intro">
-    <h2 id="xp-heading" class="experience-heading xp-heading typo-headline-lg">{headline}</h2>
+    <div class="xp-intro-inner">
+      <h2 id="xp-heading" class="experience-heading xp-heading typo-headline-lg">{headline}</h2>
+      <a href="/assets/sam-stringer-hye-resume.pdf" class="ek-pill xp-download" download>
+        Download résumé
+        <Icon name="material-symbols:download-rounded" aria-hidden="true" />
+      </a>
+    </div>
   </div>
   <ol class="xp-list" role="list">
     {rows.map(job => (
@@ -37,6 +44,18 @@ const rows = jobs.map(j => ({
 </section>
 
 <style>
+  /* The nav's links land here; scroll-margin clears the sticky nav */
+  .xp {
+    scroll-margin-top: var(--nav-height);
+  }
+
+  .xp-intro-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
   .xp-heading {
     margin: 0;
   }

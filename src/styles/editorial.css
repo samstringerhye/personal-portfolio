@@ -16,7 +16,7 @@ html.ek {
   --color-rule: transparent;
   --color-border: #E6EAEE;
   --focus-ring-color: #1D61FF;
-  --page-margin: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  --page-margin: clamp(1.5rem, 0.5rem + 3.5vw, 5rem);
 
   --ek-hairline: #E6EAEE;
   --ek-panel: #F7F8FA;
@@ -26,10 +26,11 @@ html.ek {
   /* Color around the framed project art on cards and heroes (global.css default is 2x) */
   --narrow-art-pad: calc(3 * var(--narrow-pad));
   --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
-  --ek-prose: 38rem;
-  --ek-figure: 65rem;
+  --ek-prose: 40rem;
+  /* 1440px: the studio-portfolio range, where the work is the page */
+  --ek-figure: 90rem;
   /* Space above every section, and between a section heading and its content */
-  --ek-section: clamp(4.5rem, 10vw, 9rem);
+  --ek-section: clamp(6rem, 14vw, 13rem);
   --ek-heading-gap: clamp(2rem, 4vw, 3.5rem);
   /* Sections align to their column's edge, so the old inner insets go */
   --content-inset-sm: 0px;
@@ -128,22 +129,6 @@ html.ek :is(.work-list-heading, .leadership-heading, .experience-heading) {
   padding: 0;
 }
 
-html.ek .leadership-header,
-html.ek .experience-header {
-  display: block;
-}
-
-html.ek .leadership-grid {
-  column-gap: var(--grid-gutter);
-  row-gap: var(--space-5);
-}
-
-html.ek .leadership-cell,
-html.ek .leadership-cell:nth-child(n) {
-  padding: 0;
-  border-top: 0;
-}
-
 html.ek .tl-year {
   padding-inline: 0;
 }
@@ -169,10 +154,10 @@ html.ek .home-contact {
   gap: var(--space-3);
 }
 
-/* The other pages (about, résumé, colophon, blog) sit on the same column. They used the page-wide
+/* The other pages (about, colophon, blog) sit on the same column. They used the page-wide
    12-column subgrid; on the column they get their own 12 tracks, and content that started a few
    tracks in starts at the column edge. */
-html.ek main > :is(.about-page, .resume-page, .colophon-page, .blog-index, .blog-post) {
+html.ek main > :is(.about-page, .colophon-page, .blog-index, .blog-post) {
   grid-column: 1 / -1;
   width: 100%;
   min-width: 0;
@@ -180,12 +165,12 @@ html.ek main > :is(.about-page, .resume-page, .colophon-page, .blog-index, .blog
   margin-inline: auto;
 }
 
-html.ek :is(.about-page, .about-row, .resume-page, .colophon-page, .colophon-row, .blog-post) {
+html.ek :is(.about-page, .about-row, .colophon-page, .colophon-row, .blog-post) {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--grid-gutter);
 }
 
-html.ek :is(.resume-body, .colophon-body, .blog-post-header, .blog-post-body) {
+html.ek :is(.colophon-body, .blog-post-header, .blog-post-body) {
   grid-column: 1 / -1;
   padding-inline: 0;
 }
@@ -210,26 +195,26 @@ html.ek .skill-grid {
   }
 }
 
-/* Desktop: Selected Work and Experience keep their heading pinned in a left column while the
-   cards and roles scroll past on the right */
+/* Desktop: Selected Work, How I lead and Experience keep their heading pinned in a left column
+   while the cards, principles and roles scroll past on the right */
 @media (min-width: 64.0625rem) {
-  html.ek :is(.work-list-section, .experience-section.xp) {
+  html.ek :is(.work-list-section, .leadership-section.ld, .experience-section.xp) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
     column-gap: var(--grid-gutter);
     align-items: start;
   }
 
-  html.ek :is(.work-list-intro, .xp-intro) {
+  html.ek :is(.work-list-intro, .ld-intro, .xp-intro) {
     align-self: stretch;
   }
 
-  html.ek :is(.work-list-section, .xp) :is(.work-list-intro-inner, .xp-heading) {
+  html.ek :is(.work-list-section, .ld, .xp) :is(.work-list-intro-inner, .ld-intro-inner, .xp-intro-inner) {
     position: sticky;
     top: calc(var(--nav-height) + var(--space-4));
   }
 
-  html.ek :is(.work-list-section, .xp) :is(.work-list-heading, .xp-heading) {
+  html.ek :is(.work-list-section, .ld, .xp) :is(.work-list-heading, .leadership-heading, .xp-heading) {
     margin-bottom: 0;
   }
 }
@@ -429,15 +414,6 @@ html.ek .work-list-item .work-list-card .work-list-tagline {
 }
 
 /* ── Contact and footer: hairlines, sans links ── */
-html.ek .home-contact-link,
-html.ek .case-study-cta-link {
-  border-radius: 999px;
-  border-color: #C9D1DA;
-  font-family: var(--font-sans);
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
 html.ek :is(.footer, .footer-container, .footer-bar, .footer-bottom) {
   border-color: transparent;
 }
@@ -733,8 +709,132 @@ html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a:hover {
   text-decoration-color: currentColor;
 }
 
+/* Experience: heading and résumé download travel together; on phones the gap goes under the pair */
+html.ek .xp-intro-inner .xp-heading {
+  margin: 0;
+}
+
+html.ek .xp-intro {
+  margin-bottom: var(--ek-heading-gap);
+}
+
+@media (min-width: 64.0625rem) {
+  html.ek .xp-intro {
+    margin-bottom: 0;
+  }
+}
+
+/* ── Hover: one vocabulary. Text links draw an underline, pills fill with the panel tone and darken
+   their edge, art and figures lift on a deeper shadow, arrows lean the way they point. Touch screens
+   get none of it; reduced motion keeps the color changes and drops the movement. ── */
+html.ek {
+  --ek-shadow-hover: 0 36px 72px -30px rgba(11, 33, 64, 0.32);
+  --ek-hover-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Pills: contact, case-study CTA, résumé download */
+html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  padding: 0 1.375rem;
+  border: 1px solid #C9D1DA;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--duration-short) ease, border-color var(--duration-short) ease;
+}
+
+html.ek .ek-pill svg {
+  width: 1.15em;
+  height: 1.15em;
+  transition: translate var(--duration-short) var(--ek-hover-ease);
+}
+
+/* Text links outside prose: no underline at rest, a 1px one on hover (the nav's own treatment) */
+html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .cs-nav-title, .not-found-link) {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--duration-short) ease;
+}
+
+html.ek .ek-arrow {
+  display: inline-block;
+  margin-left: 0.35em;
+  transition: translate var(--duration-short) var(--ek-hover-ease);
+}
+
+/* Work cards: the art zooms a touch in its frame and the frame lifts; the title underlines */
+html.ek .work-list-item .work-list-card .work-list-media {
+  --work-hover-zoom: 1.03;
+  transition: box-shadow var(--duration-long) var(--ek-hover-ease);
+}
+
+html.ek .work-list-item .work-list-card .work-list-title {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color var(--duration-short) ease;
+}
+
+/* Case-study images open full screen on click: their window lifts instead of the image scaling */
+html.ek .case-study-body :is(.cs-figure, .image-pair, .image-grid) img:hover,
+html.ek .case-study-body .zigzag-media:hover {
+  scale: none;
+}
+
+html.ek .case-study-body :is(.cs-figure, .zigzag-media, .image-pair-media),
+html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell {
+  transition: box-shadow var(--duration-long) var(--ek-hover-ease);
+}
+
+@media (hover: hover) {
+  html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link):hover {
+    background: var(--ek-panel);
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
+  }
+
+  html.ek .ek-pill:hover svg {
+    translate: 0 2px;
+  }
+
+  html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .not-found-link):hover,
+  html.ek .cs-nav-link:hover .cs-nav-title,
+  html.ek .work-list-card:hover .work-list-title {
+    text-decoration-color: currentColor;
+    opacity: 1;
+  }
+
+  html.ek :is(.ek-link, a):hover > .ek-arrow {
+    translate: 3px 0;
+  }
+
+  html.ek .work-list-card:hover .work-list-media,
+  html.ek .case-study-body .cs-figure:not(.carousel .cs-figure, .image-grid .cs-figure, .zigzag-media .cs-figure):hover,
+  html.ek .case-study-body .zigzag-media:hover,
+  html.ek .case-study-body .image-pair-media:hover,
+  html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell:hover {
+    box-shadow: var(--ek-shadow-hover);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html.ek .nav-link {
     transition: none;
+  }
+
+  html.ek :is(.ek-pill svg, .ek-arrow) {
+    transition: none;
+    translate: none !important;
   }
 }
