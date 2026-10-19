@@ -1,12 +1,12 @@
-// Puts a phone scene's screen into the 3D iPhone. The model renders in a worker on an
-// OffscreenCanvas where the browser supports it (phone-model.worker.ts), on the main thread
-// otherwise (phone-render.ts). This module only turns the phone and keeps the DOM screen on its
-// display, so the page never loads three.js here.
+// Puts a device scene's screen into its 3D model. The model renders in a worker on an
+// OffscreenCanvas where the browser supports it (model.worker.ts), on the main thread otherwise
+// (render.ts). This module only turns the device and keeps the DOM screen on its display, so the
+// page never loads three.js here.
 import { animations } from '../../data/tokens'
-import { MODEL_URL, SCREEN_WIDTH, type PhoneGeometry } from './phone-shared'
+import { DEVICES, type DeviceGeometry, type DeviceName } from './shared'
 
 interface Backend {
-  geometry: PhoneGeometry
+  geometry: DeviceGeometry
   resize: (w: number, h: number) => void
   frame: (rx: number, ry: number) => void
   dispose: () => void
@@ -16,16 +16,16 @@ const tilt = animations.workCards.phone
 // Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
 const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
 const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
-// The phone is small on the page; past 1.5x the extra pixels cost more than they show
+// The device is small on the page; past 1.5x the extra pixels cost more than they show
 const dpr = () => Math.min(1.5, window.devicePixelRatio || 1)
 
 // No probe context here: creating one costs a main-thread stall. A worker without WebGL reports
 // an error and the main thread takes over
 const offscreen = () => typeof HTMLCanvasElement.prototype.transferControlToOffscreen === 'function'
 
-function workerBackend(canvas: HTMLCanvasElement, w: number, h: number): Promise<Backend> {
+function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
   const offscreen = canvas.transferControlToOffscreen()
-  const worker = new Worker(new URL('./phone-model.worker.ts', import.meta.url), { type: 'module' })
+  const worker = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
   return new Promise((resolve, reject) => {
     worker.onerror = e => { worker.terminate(); reject(e) }
     worker.onmessage = e => {
@@ -38,23 +38,23 @@ function workerBackend(canvas: HTMLCanvasElement, w: number, h: number): Promise
         dispose: () => worker.terminate(),
       })
     }
-    worker.postMessage({ type: 'init', canvas: offscreen, width: w, height: h, dpr: dpr(), url: MODEL_URL, fov, rx: tilt.restPitch, ry: tilt.restYaw }, [offscreen])
+    worker.postMessage({ type: 'init', canvas: offscreen, width: w, height: h, dpr: dpr(), device, fov, rx: rest.pitch, ry: rest.yaw }, [offscreen])
   })
 }
 
-async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number): Promise<Backend> {
-  const { createPhoneRenderer } = await import('./phone-render')
-  const phone = await createPhoneRenderer(canvas, w, h, dpr(), MODEL_URL, fov)
-  phone.render(tilt.restPitch, tilt.restYaw)
-  return { geometry: phone.geometry, resize: phone.resize, frame: phone.render, dispose: phone.dispose }
+async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, device: DeviceName, rest: Rest): Promise<Backend> {
+  const { createDeviceRenderer } = await import('./render')
+  const r = await createDeviceRenderer(canvas, w, h, dpr(), device, fov, { rx: rest.pitch, ry: rest.yaw })
+  r.render(rest.pitch, rest.yaw)
+  return { geometry: r.geometry, resize: r.resize, frame: r.render, dispose: r.dispose }
 }
 
-/** The CSS matrix that lays the 360px-wide screen on the display: the phone's rotation (three.js
-    XYZ order, z = 0) applied to the screen plane, at s px per world unit, y flipped for CSS */
-function screenMatrix(rx: number, ry: number, s: number, fh: number) {
+/** The CSS matrix that lays the screen (fw px wide) on the display: the device's rotation
+    (three.js XYZ order, z = 0) applied to the screen plane, at s px per world unit, y flipped */
+function screenMatrix(rx: number, ry: number, s: number, fw: number, fh: number) {
   const ca = Math.cos(rx), sa = Math.sin(rx), cb = Math.cos(ry), sb = Math.sin(ry)
   const r = [[cb, 0, sb], [sa * sb, ca, -sa * cb], [-ca * sb, sa, ca * cb]]
-  const tx = -SCREEN_WIDTH / 2, ty = fh / 2
+  const tx = -fw / 2, ty = fh / 2
   const t = [0, 1, 2].map(i => r[i][0] * tx + r[i][1] * ty)
   return `matrix3d(${[
     s * r[0][0], -s * r[1][0], s * r[2][0], 0,
@@ -68,38 +68,49 @@ let px = 0
 let py = 0
 let tracking = false
 
-// Mounts the model in art around face (the scene's .phone). Returns a stop function
-export async function mountPhoneModel(art: HTMLElement, face: HTMLElement, stage: HTMLElement) {
+interface Rest { yaw: number; pitch: number }
+// Each device can set its own rest angle; the rest of the motion is shared
+const restOf = (device: DeviceName): Rest => {
+  const own = (animations.workCards.devices as Record<string, { restYaw: number; restPitch: number }>)[device]
+  return { yaw: own?.restYaw ?? tilt.restYaw, pitch: own?.restPitch ?? tilt.restPitch }
+}
+
+// Mounts the device's model in art around face (the scene's .device). Returns a stop function
+export async function mountDeviceModel(art: HTMLElement, face: HTMLElement, stage: HTMLElement, device: DeviceName) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!tracking) {
     tracking = true
     window.addEventListener('pointermove', e => { px = e.clientX / window.innerWidth - 0.5; py = e.clientY / window.innerHeight - 0.5 }, { passive: true })
   }
 
+  const rest = restOf(device)
   const w = stage.clientWidth, h = stage.clientHeight
   let canvas = document.createElement('canvas')
   let backend: Backend
   if (offscreen()) {
     try {
-      backend = await workerBackend(canvas, w, h)
+      backend = await workerBackend(canvas, w, h, device, rest)
     } catch {
       // The transfer used up that canvas
       canvas = document.createElement('canvas')
-      backend = await mainBackend(canvas, w, h)
+      backend = await mainBackend(canvas, w, h, device, rest)
     }
   } else {
-    backend = await mainBackend(canvas, w, h)
+    backend = await mainBackend(canvas, w, h, device, rest)
   }
-  const { screenAspect, viewHeight } = backend.geometry
-  const fh = SCREEN_WIDTH / screenAspect
+  const { screenAspect, viewHeight, lift } = backend.geometry
+  const fw = DEVICES[device].screenWidth
+  const fh = fw / screenAspect
 
   // One perspective container and one transformed element, the screen at the display's scale
   const view = document.createElement('div')
-  view.className = 'phone-scene-view'
+  view.className = 'device-scene-view'
   view.style.perspective = perspective(h)
   view.append(face)
   stage.append(view, canvas)
-  face.style.cssText += `;position:absolute;left:50%;top:50%;transform-origin:0 0;aspect-ratio:${screenAspect}`
+  face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${screenAspect}`
+  // Center the whole device rather than its display: canvas and screen move together
+  stage.style.translate = `0 ${-lift * 100}%`
   art.classList.add('is-3d')
 
   let scale = h / viewHeight
@@ -112,8 +123,8 @@ export async function mountPhoneModel(art: HTMLElement, face: HTMLElement, stage
   })
   ro.observe(stage)
 
-  let rx = tilt.restPitch
-  let ry = tilt.restYaw
+  let rx = rest.pitch
+  let ry = rest.yaw
   let on = false
   let raf = 0
   const frame = (t: number) => {
@@ -121,16 +132,16 @@ export async function mountPhoneModel(art: HTMLElement, face: HTMLElement, stage
     if (!reduced) {
       const r = art.getBoundingClientRect()
       const scroll = Math.max(-1, Math.min(1, ((r.top + r.height / 2) / window.innerHeight - 0.5) * 2))
-      const tx = tilt.restPitch - py * tilt.pointerPitch + scroll * tilt.scrollPitch
-      const ty = tilt.restYaw + px * tilt.pointerYaw + Math.sin(t / (tilt.swayPeriod * 1000)) * tilt.sway
+      const tx = rest.pitch - py * tilt.pointerPitch + scroll * tilt.scrollPitch
+      const ty = rest.yaw + px * tilt.pointerYaw + Math.sin(t / (tilt.swayPeriod * 1000)) * tilt.sway
       rx += (tx - rx) * tilt.follow
       ry += (ty - ry) * tilt.follow
     }
     backend.frame(rx, ry)
-    face.style.transform = screenMatrix(rx, ry, scale, fh)
+    face.style.transform = screenMatrix(rx, ry, scale, fw, fh)
     raf = requestAnimationFrame(frame)
   }
-  face.style.transform = screenMatrix(rx, ry, scale, fh)
+  face.style.transform = screenMatrix(rx, ry, scale, fw, fh)
   const io = new IntersectionObserver(([e]) => {
     on = e.isIntersecting
     cancelAnimationFrame(raf)

@@ -231,6 +231,46 @@
       "follow": 0.06,
       "lensMm": 100
     },
+    "devices": {
+      "macbook-neo": {
+        "restYaw": -0.42,
+        "restPitch": 0.3
+      },
+      "ipad-mini-6": {
+        "restYaw": -0.42,
+        "restPitch": 0.08
+      },
+      "galaxy-z-fold8": {
+        "restYaw": -0.42,
+        "restPitch": 0.08
+      }
+    },
+    "tours": {
+      "moves": {
+        "tap": 0.65,
+        "push": 0.7,
+        "fade": 0.6,
+        "drop": 0.45
+      },
+      "cvs": {
+        "home": 1.8,
+        "shop": 2.2,
+        "brand": 2.8
+      },
+      "samsung": {
+        "home": 1.6,
+        "homeScroll": 5,
+        "appliances": 1.2,
+        "category": 1.4,
+        "categoryScroll": 3.5,
+        "bestSellers": 2.2
+      },
+      "bespoke": {
+        "depth": 2,
+        "colors": 2.2,
+        "summary": 2.8
+      }
+    },
     "myfrontier": {
       "moves": {
         "tap": 0.65,

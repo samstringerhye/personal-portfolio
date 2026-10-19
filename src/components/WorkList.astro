@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets'
 import { Icon } from 'astro-icon/components'
 import { boundsAttr, narrowArtStyle } from './narrow-art'
-import PhoneScene from './PhoneScene.astro'
+import DeviceScene from './DeviceScene.astro'
 import type { HeadingTag, TypographyRole } from '../types/typography'
 
 interface Props {
@@ -87,7 +87,7 @@ const featured = (await getCollection('work'))
             )}
             {entry.data.thumbnailScene && (
               <div class="work-list-scene">
-                <PhoneScene scene={entry.data.thumbnailScene} label={entry.data.thumbnailAlt ?? entry.data.title} />
+                <DeviceScene scene={entry.data.thumbnailScene} label={entry.data.thumbnailAlt ?? entry.data.title} />
               </div>
             )}
           </div>
@@ -219,7 +219,7 @@ const featured = (await getCollection('work'))
     opacity: 0;
   }
 
-  /* ── Coded scene cards: the phone plays centered in the art. Once it mounts it stands in for the
+  /* ── Coded scene cards: the device plays centered in the art. Once it mounts it stands in for the
      subject; the subject stays for the zoom into the case study ── */
   .work-list-scene {
     position: absolute;
@@ -439,29 +439,38 @@ const featured = (await getCollection('work'))
 </script>
 
 <script>
-  // Coded phone scenes start as their card nears the viewport: the tour first, then the 3D model
+  import type { SceneName } from './DeviceScene.astro'
+  import type { DeviceName } from './device-scene/shared'
+
+  // Coded device scenes start as their card nears the viewport: the tour first, then the 3D model
   // once three.js and the model have loaded and the browser is idle. Both stop when the page swaps
   const stops: Array<() => void> = []
   const idle = () => new Promise<void>(resolve => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200)))
 
   async function mountScene(scene: HTMLElement) {
-    const { mountMyFrontier } = await import('./phone-scene/myfrontier')
-    stops.push(mountMyFrontier(scene))
+    const name = scene.dataset.deviceScene as SceneName
+    if (name === 'myfrontier') {
+      const { mountMyFrontier } = await import('./device-scene/myfrontier')
+      stops.push(mountMyFrontier(scene))
+    } else {
+      const { mountTour } = await import('./device-scene/tours')
+      stops.push(mountTour(scene, name))
+    }
     scene.closest<HTMLElement>('.work-list-media')?.setAttribute('data-scene-on', '')
     try {
       await idle()
-      const { mountPhoneModel } = await import('./phone-scene/model')
-      const face = scene.querySelector<HTMLElement>('.phone')
+      const { mountDeviceModel } = await import('./device-scene/model')
+      const face = scene.querySelector<HTMLElement>('.device')
       const stage = scene.querySelector<HTMLElement>('.stage')
-      if (face && stage && scene.isConnected) stops.push(await mountPhoneModel(scene, face, stage))
+      if (face && stage && scene.isConnected) stops.push(await mountDeviceModel(scene, face, stage, scene.dataset.device as DeviceName))
     } catch (e) {
-      // No WebGL or the model failed to load: the flat phone stays
-      console.warn('3D phone unavailable', e)
+      // No WebGL or the model failed to load: the flat screen stays
+      console.warn('3D device unavailable', e)
     }
   }
 
   function initScenes() {
-    const scenes = [...document.querySelectorAll<HTMLElement>('.phone-scene[data-phone-scene]:not([data-bound])')]
+    const scenes = [...document.querySelectorAll<HTMLElement>('.device-scene[data-device-scene]:not([data-bound])')]
     if (!scenes.length) return
     const io = new IntersectionObserver(entries => entries.forEach(e => {
       if (!e.isIntersecting) return

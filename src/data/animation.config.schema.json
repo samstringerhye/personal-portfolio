@@ -287,7 +287,7 @@
         "flipFade": { "$ref": "#/definitions/duration", "description": "Crossfade between frames" },
         "phone": {
           "type": "object",
-          "description": "3D phone on coded work cards (PhoneScene). Angles in radians",
+          "description": "3D device on coded work cards (DeviceScene): motion shared by every device. Angles in radians",
           "properties": {
             "restYaw": { "type": "number", "description": "Turn at rest; negative shows the left side" },
             "restPitch": { "type": "number", "description": "Tilt at rest; positive leans the top back" },
@@ -301,9 +301,37 @@
           },
           "additionalProperties": false
         },
+        "devices": {
+          "type": "object",
+          "description": "Rest angle per device on coded cards (DeviceScene), in radians; devices not listed use phone.restYaw and phone.restPitch",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "restYaw": { "type": "number" },
+              "restPitch": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "tours": {
+          "type": "object",
+          "description": "Screen tours on the CVS, Samsung.com and Bespoke cards (device-scene/tours.ts). Seconds",
+          "properties": {
+            "moves": {
+              "type": "object",
+              "description": "Transition durations shared by every tour",
+              "additionalProperties": { "$ref": "#/definitions/duration" }
+            }
+          },
+          "additionalProperties": {
+            "type": "object",
+            "description": "One tour's holds and scrolls, keyed by the step names in tours.ts",
+            "additionalProperties": { "$ref": "#/definitions/duration" }
+          }
+        },
         "myfrontier": {
           "type": "object",
-          "description": "The MyFrontier card's app tour (phone-scene/myfrontier.ts). Seconds",
+          "description": "The MyFrontier card's app tour (device-scene/myfrontier.ts). Seconds",
           "properties": {
             "moves": {
               "type": "object",

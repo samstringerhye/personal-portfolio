@@ -83,8 +83,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
-| `workCards.phone.restYaw` | radians | `-0.46` | 3D phone's turn at rest (negative shows its left side) |
-| `workCards.phone.restPitch` | radians | `0.06` | 3D phone's tilt at rest |
+| `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices can override it in `workCards.devices` |
+| `workCards.phone.restPitch` | radians | `0.06` | 3D device's tilt at rest; devices can override it in `workCards.devices` |
 | `workCards.phone.pointerYaw` | radians | `0.8` | Turn as the pointer crosses the window |
 | `workCards.phone.pointerPitch` | radians | `0.28` | Tilt as the pointer moves down the window |
 | `workCards.phone.scrollPitch` | radians | `0.22` | Tilt as the card scrolls through the viewport (the only motion on touch screens) |
@@ -92,7 +92,9 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
-| `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-phone-scenemyfrontierts) |
+| `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |
+| `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-device-scenemyfrontierts) |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
 | `smoothScroll.lerp` | 0–1 | `0.5` | Lenis smooth scroll interpolation (lower = smoother, higher = snappier) |
 | `smoothScroll.wheelMultiplier` | number | `1` | Mouse wheel scroll speed multiplier |
@@ -189,7 +191,26 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ---
 
-## workCards.myfrontier (phone-scene/myfrontier.ts)
+## workCards.tours (device-scene/tours.ts)
+
+The CVS.com (MacBook Neo), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6) card tours, in seconds. Each tour's steps are listed in `tours.ts`; the keys below are the names those steps use. Reduced motion skips the tours and holds on the first screen.
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `moves.tap` | `0.65` | Tap ripple |
+| `moves.push` | `0.7` | Push to the next screen |
+| `moves.fade` | `0.6` | Crossfade to the next screen, and back to the first at the loop seam |
+| `moves.drop` | `0.45` | Menu dropping open (CVS Shop menu) |
+| `cvs.home` / `shop` / `brand` | `1.8` / `2.2` / `2.8` | Homepage, Shop menu open, Neutrogena brand page |
+| `samsung.home` | `1.6` | Homepage at the top, before it scrolls |
+| `samsung.homeScroll` | `5` | Homepage scrolling down to Appliances |
+| `samsung.appliances` | `1.2` | Appliances section before the tap |
+| `samsung.category` / `categoryScroll` / `bestSellers` | `1.4` / `3.5` / `2.2` | Washers & Dryers page: at the top, scrolling, then holding on Best Sellers |
+| `bespoke.depth` / `colors` / `summary` | `2` / `2.2` / `2.8` | Choose Depth, Choose Colors, then Your Design |
+
+---
+
+## workCards.myfrontier (device-scene/myfrontier.ts)
 
 The MyFrontier card's app tour, in seconds. Reduced motion skips the tour and holds on the home screen.
 

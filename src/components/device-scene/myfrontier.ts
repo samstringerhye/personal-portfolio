@@ -37,7 +37,7 @@ const icons = (c: string) => `<svg class="sb r" viewBox="0 0 68 14" aria-hidden=
 
 const TEMPLATE = `  <div class="floor" aria-hidden="true"></div>
   <div class="stage"></div>
-  <div class="phone">
+  <div class="device phone">
     
     <div class="band"><div class="bezel"><div class="screen">
       <div class="stack"></div>
