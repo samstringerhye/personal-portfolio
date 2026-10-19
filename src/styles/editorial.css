@@ -301,10 +301,10 @@ html.ek .skill-grid {
   }
 }
 
-/* Desktop: Selected Work, How I lead and Experience keep their heading pinned in the left half
-   while the cards, principles and roles scroll past in the right half */
+/* Desktop: How I lead and Experience keep their heading pinned in the left half while the
+   principles and roles scroll past in the right half */
 @media (min-width: 64.0625rem) {
-  html.ek :is(.work-list-section, .leadership-section.ld, .experience-section.xp) {
+  html.ek :is(.leadership-section.ld, .experience-section.xp) {
     display: grid;
     /* Half and half: at two thirds the 4:3 card art ran ~790px tall on a 1600px column */
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -312,16 +312,16 @@ html.ek .skill-grid {
     align-items: start;
   }
 
-  html.ek :is(.work-list-intro, .ld-intro, .xp-intro) {
+  html.ek :is(.ld-intro, .xp-intro) {
     align-self: stretch;
   }
 
-  html.ek :is(.work-list-section, .ld, .xp) :is(.work-list-intro-inner, .ld-intro-inner, .xp-intro-inner) {
+  html.ek :is(.ld, .xp) :is(.ld-intro-inner, .xp-intro-inner) {
     position: sticky;
     top: calc(var(--nav-height) + var(--space-4));
   }
 
-  html.ek :is(.work-list-section, .ld, .xp) :is(.work-list-heading, .leadership-heading, .xp-heading) {
+  html.ek :is(.ld, .xp) :is(.leadership-heading, .xp-heading) {
     margin-bottom: 0;
   }
 }
@@ -517,6 +517,28 @@ html.ek .work-list-tag {
 
 html.ek .work-list-meta > span:first-child {
   margin-right: var(--space-1);
+}
+
+/* Desktop: each project is a row, the art in the left half and its text beside it in the right,
+   lined up with the halves of How I lead and Experience below. The art frame is its own container
+   so the subject framing (cqw) measures the frame, not the whole row. */
+@media (min-width: 64.0625rem) {
+  html.ek .work-list-item .work-list-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--grid-gutter);
+    align-items: center;
+  }
+
+  html.ek .work-list-item .work-list-card .work-list-media {
+    container-type: inline-size;
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  html.ek .work-list-item .work-list-card .work-list-caption {
+    padding: 0;
+  }
 }
 
 html.ek .work-list-lock svg {
