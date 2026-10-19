@@ -13,6 +13,8 @@ import {
   generateSpiral,
   sizeTaper,
   updateDots,
+  newPointerSpring,
+  stepPointerSpring,
   type ArrangementGenerator,
   type Push,
 } from './hero-canvas-shared'
@@ -55,7 +57,7 @@ interface InitMessage {
     accentOpacity: number
     cmyStagger: number
     wavePaused?: boolean
-    pointer: { radius: number; push: number; grow: number; split: number; follow: number; fade: number }
+    pointer: { radius: number; push: number; grow: number; split: number; stiffness: number; damping: number }
   }
   colors: {
     accent1: string
@@ -104,14 +106,12 @@ self.onmessage = async (e: MessageEvent<WorkerMessage>) => {
     handleVisibility(msg.visible)
   } else if (msg.type === 'pointer') {
     pointerTo = msg
-    // First touch: start at the pointer instead of sliding in from the last place
-    if (msg.active && pointer.strength === 0) { pointer.x = msg.x; pointer.y = msg.y }
   }
 }
 
-// The pointer's push, eased toward where it is (CSS px) and in and out as it enters and leaves
+// The pointer's push, sprung toward where it is (CSS px) and in and out as it enters and leaves
 let pointerTo: PointerMessage | null = null
-const pointer = { x: 0, y: 0, strength: 0 }
+const pointer = newPointerSpring()
 let width = 0
 let height = 0
 const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: 0, grow: 0, amount: 1 }
@@ -254,13 +254,7 @@ function tick() {
   // The push, in world units. Red is pushed further than green and blue less, so near the pointer
   // each dot splits into its subpixels; the ink layer moves with green
   const p = cfg.pointer
-  const active = !!pointerTo?.active
-  if (pointerTo) {
-    pointer.x += (pointerTo.x - pointer.x) * p.follow
-    pointer.y += (pointerTo.y - pointer.y) * p.follow
-  }
-  pointer.strength += ((active ? 1 : 0) - pointer.strength) * p.fade
-  if (!active && pointer.strength < 0.002) pointer.strength = 0
+  if (pointerTo) stepPointerSpring(pointer, pointerTo.x, pointerTo.y, pointerTo.active, p.stiffness, p.damping)
   push.x = (pointer.x - width / 2) / cfg.zoom
   push.y = (height / 2 - pointer.y) / cfg.zoom
   push.r = p.radius / cfg.zoom

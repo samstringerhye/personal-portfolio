@@ -6,6 +6,8 @@ import {
   generateSpiral,
   sizeTaper,
   updateDots,
+  newPointerSpring,
+  stepPointerSpring,
   type ArrangementGenerator,
   type Push,
 } from './hero-canvas-shared'
@@ -307,14 +309,13 @@ async function initFallback(
   // The pointer's push, as in the worker
   const p = cfg.pointer
   const target = { x: 0, y: 0, active: false }
-  const pointer = { x: 0, y: 0, strength: 0 }
+  const pointer = newPointerSpring()
   const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: p.push, grow: p.grow, amount: 1 }
   const amounts = [1 + p.split, 1, 1 - p.split, 1]
   const onPointer = (e: PointerEvent) => {
     const r = container.getBoundingClientRect()
     const x = e.clientX - r.left, y = e.clientY - r.top
     const over = x >= 0 && y >= 0 && x <= r.width && y <= r.height && e.pointerType !== 'touch'
-    if (over && pointer.strength === 0) { pointer.x = x; pointer.y = y }
     Object.assign(target, { x, y, active: over })
   }
   if (!prefersReduced) window.addEventListener('pointermove', onPointer, { passive: true })
@@ -325,10 +326,7 @@ async function initFallback(
     }
     const elapsed = (performance.now() - startTime - pauseAccum) / 1000
     const time = (cfg.wavePaused || prefersReduced) ? 0 : elapsed
-    pointer.x += (target.x - pointer.x) * p.follow
-    pointer.y += (target.y - pointer.y) * p.follow
-    pointer.strength += ((target.active ? 1 : 0) - pointer.strength) * p.fade
-    if (!target.active && pointer.strength < 0.002) pointer.strength = 0
+    stepPointerSpring(pointer, target.x, target.y, target.active, p.stiffness, p.damping)
     const w = container.clientWidth, h = container.clientHeight
     push.x = (pointer.x - w / 2) / effectiveZoom
     push.y = (h / 2 - pointer.y) / effectiveZoom

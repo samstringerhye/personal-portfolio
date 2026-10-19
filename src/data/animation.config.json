@@ -37,12 +37,12 @@
       "cmyStagger": 0.03,
       "accentOpacity": 1,
       "pointer": {
-        "radius": 170,
-        "push": 0.45,
-        "grow": 0.9,
-        "split": 0.35,
-        "follow": 0.18,
-        "fade": 0.08
+        "radius": 150,
+        "push": 0.22,
+        "grow": 0.4,
+        "split": 0.2,
+        "stiffness": 0.06,
+        "damping": 0.8
       },
       "bgColor": { "$ref": "sys.color.bg.primary" }
     },

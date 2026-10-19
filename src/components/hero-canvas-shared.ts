@@ -177,6 +177,26 @@ export interface Push {
   amount: number
 }
 
+/** The pointer's push as a damped spring: position and strength trail their targets, overshoot a
+    little and settle. Positions in CSS px over the canvas */
+export interface PointerSpring { x: number; y: number; vx: number; vy: number; strength: number; vs: number }
+
+export function newPointerSpring(): PointerSpring {
+  return { x: 0, y: 0, vx: 0, vy: 0, strength: 0, vs: 0 }
+}
+
+export function stepPointerSpring(p: PointerSpring, tx: number, ty: number, active: boolean, stiffness: number, damping: number): void {
+  // First touch: start at the pointer instead of springing in from the last place
+  if (active && p.strength === 0 && p.vs === 0) { p.x = tx; p.y = ty }
+  p.vx = (p.vx + (tx - p.x) * stiffness) * damping
+  p.vy = (p.vy + (ty - p.y) * stiffness) * damping
+  p.x += p.vx
+  p.y += p.vy
+  p.vs = (p.vs + ((active ? 1 : 0) - p.strength) * stiffness) * damping
+  p.strength = Math.max(0, p.strength + p.vs)
+  if (!active && p.strength < 0.002 && Math.abs(p.vs) < 0.002) { p.strength = 0; p.vs = 0 }
+}
+
 let placedX = 0
 let placedY = 0
 

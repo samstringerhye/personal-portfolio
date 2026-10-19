@@ -139,8 +139,8 @@
                 "push": { "type": "number", "description": "Furthest a dot is pushed out, as a share of the radius" },
                 "grow": { "type": "number", "description": "Extra size at the pointer (1 doubles a dot)" },
                 "split": { "type": "number", "description": "How much more the red layer is pushed than green, and blue less" },
-                "follow": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the distance to the pointer covered each frame" },
-                "fade": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the way in or out covered each frame as the pointer enters or leaves" }
+                "stiffness": { "type": "number", "minimum": 0, "maximum": 1, "description": "Spring pull toward the pointer (and in or out as it enters or leaves), per frame" },
+                "damping": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the spring's speed kept each frame; lower settles sooner, higher bounces more" }
               },
               "additionalProperties": false
             },
