@@ -9,6 +9,11 @@ import cloudflare from '@astrojs/cloudflare';
 // astro dev keeps Astro's sharp endpoint; the built Worker resizes SSR images with the Images binding
 const isDev = process.argv.includes('dev')
 
+// Content Sam still has to supply shows as drafts in dev and on Workers Builds preview branches, never
+// on main or a local production build
+const branch = process.env.WORKERS_CI_BRANCH
+const showDrafts = isDev || (!!branch && branch !== 'main')
+
 export default defineConfig({
   devToolbar: { enabled: false },
   site: 'https://samstringerhye.com',
@@ -19,6 +24,8 @@ export default defineConfig({
     '/contact': '/about',
     // The work index duplicated the homepage list
     '/work': '/#work',
+    // The résumé page became the homepage Experience section and its PDF download
+    '/resume': '/#experience',
   },
   integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/work/wab-2026') && !page.includes('/colophon') && !page.includes('/blog') }), icon()],
 
@@ -40,6 +47,10 @@ export default defineConfig({
   },
 
   vite: {
+    define: {
+      __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+      __SHOW_DRAFTS__: JSON.stringify(showDrafts),
+    },
     worker: { format: 'es' },
     ssr: {
       noExternal: ['gsap'],

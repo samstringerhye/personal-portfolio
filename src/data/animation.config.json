@@ -66,6 +66,9 @@
       "highlightsHideEase": { "$ref": "sys.motion.gsapEasing.bounceIn" }
     }
   },
+  "footerLogo": {
+    "spinDuration": 12
+  },
   "dotGrid": {
     "spacing": 30,
     "radius": 1,
@@ -129,6 +132,10 @@
     "loopRepeatDelay": 0.5
   },
   "caseStudy": {
+    "decisionStepper": {
+      "hold": 3.5,
+      "fade": 0.3
+    },
     "beforeAfter": {
       "itemDuration": 0.5,
       "itemStagger": 0.08,
@@ -209,5 +216,20 @@
     "stagger": 0.04,
     "ease": "power2.inOut",
     "exitDelay": 0.05
+  },
+  "workCards": {
+    "flipHold": 1.4,
+    "flipFade": 0.35,
+    "phone": {
+      "restYaw": -0.46,
+      "restPitch": 0.06,
+      "pointerYaw": 0.8,
+      "pointerPitch": 0.28,
+      "scrollPitch": 0.22,
+      "sway": 0.04,
+      "swayPeriod": 2.6,
+      "follow": 0.06,
+      "lensMm": 85
+    }
   }
 }

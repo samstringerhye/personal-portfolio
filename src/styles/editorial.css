@@ -1,0 +1,1048 @@
+/* Editorial Kit direction (preview). Overrides the token-driven base without touching
+   tokens.json, so the hub's build is unaffected. Every rule hangs off html.ek, which outranks
+   the :root token block and the components' scoped styles. */
+
+html.ek {
+  /* No monospace in this direction: labels use the sans in caps */
+  --font-mono: var(--font-sans);
+
+  --color-text-primary: #0B2140;
+  --color-text-secondary: #5E7186;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-alt: #F7F8FA;
+  --color-bg-warm: #F7F8FA;
+  /* Structural rules (nav, section dividers, grids, timeline, footer) all draw in --color-rule;
+     this direction drops them. Hairlines remain only on windows, as --ek-hairline. */
+  --color-rule: transparent;
+  --color-border: #E6EAEE;
+  --focus-ring-color: #1D61FF;
+  --page-margin: clamp(1.5rem, 0.5rem + 3.5vw, 5rem);
+
+  --ek-hairline: #E6EAEE;
+  --ek-panel: #F7F8FA;
+  --ek-ink-body: #34475C;
+  --ek-window-radius: 24px;
+  --ek-image-radius: 16px;
+  /* Color around the framed project art on cards and heroes (global.css default is 2x) */
+  --narrow-art-pad: calc(3 * var(--narrow-pad));
+  --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
+  --ek-prose: 40rem;
+  /* 1600px: the studio-portfolio range, where the work is the page */
+  --ek-figure: 100rem;
+  /* Space above every section, and between a section heading and its content */
+  --ek-section: clamp(6rem, 14vw, 13rem);
+  --ek-heading-gap: clamp(2rem, 4vw, 3.5rem);
+  /* Sections align to their column's edge, so the old inner insets go */
+  --content-inset-sm: 0px;
+  --content-inset-md: 0px;
+  --content-inset-lg: 0px;
+}
+
+/* ── Layout: one column. Nav, every section and figure, running prose and the footer all share
+   the --ek-figure column's left and right edges; prose just stops short at --ek-prose. ── */
+html.ek .grid-12,
+html.ek .nav-inner,
+html.ek .footer-container {
+  max-width: calc(var(--ek-figure) + 2 * var(--page-margin));
+}
+
+html.ek .nav-logo {
+  padding-inline: 0 var(--space-3);
+}
+
+html.ek .nav-links li:last-child .nav-link {
+  padding-right: 0;
+}
+
+html.ek .footer-links :is(.footer-link):last-child {
+  padding-right: 0;
+}
+
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .off-hours, .home-contact),
+html.ek .cs-hero,
+html.ek .case-study-body > :is(.zigzag-section, .carousel, .cs-figure, .image-pair, .image-grid, .decision-stepper, .case-study-cta),
+html.ek main > :is(.cs-nav, .case-study-cta) {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .off-hours, .home-contact) {
+  padding-block: var(--ek-section) 0;
+}
+
+html.ek main > .home-contact {
+  padding-bottom: var(--ek-section);
+}
+
+/* The animated areas (hero dot field, interests marquee and its drifting dots) run edge to edge,
+   out past the column and the page margin */
+html.ek main > :is(.hero, .interests-section) {
+  width: 100vw;
+  max-width: none;
+  margin-inline: calc(50% - 50vw);
+}
+
+html.ek main > .interests-section {
+  margin-top: var(--ek-section);
+  padding-block: var(--ek-section);
+}
+
+/* Full-bleed sections keep their text on the page margin */
+html.ek .hero-text {
+  padding-inline: var(--page-margin);
+}
+
+/* The hero's dot field fades out over its last quarter, where the hero meets the page below */
+html.ek #hero-canvas-root {
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+}
+
+/* The hero's dot field runs up behind the nav to the top of the window and fills exactly one screen.
+   The nav starts clear over it and fills in as the page scrolls; browsers without scroll timelines
+   keep the solid nav. The height counts the nav it sits under. */
+html.ek main > .hero {
+  height: 100svh;
+  margin-top: calc(-1 * var(--nav-height));
+  padding-top: var(--nav-height);
+}
+
+@supports (animation-timeline: scroll()) {
+  html.ek:has(main > .hero) .nav {
+    animation: ek-nav-fill linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 30vh;
+  }
+}
+
+@keyframes ek-nav-fill {
+  from {
+    background: transparent;
+    backdrop-filter: none;
+  }
+}
+
+html.ek :is(.work-list-heading, .leadership-heading, .experience-heading) {
+  margin: 0 0 var(--ek-heading-gap);
+  padding: 0;
+}
+
+html.ek .tl-year {
+  padding-inline: 0;
+}
+
+/* The job rows bled to the page edge to meet the old rules; on the column they stop at its edge */
+html.ek .tl-job {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+@media (--2x) {
+  html.ek .experience-timeline {
+    margin-inline: 0;
+  }
+}
+
+/* Footer: the palette mark on the page margin, like the nav's logo, with the copyright under it */
+html.ek .footer-bottom {
+  padding-inline: 0;
+}
+
+/* The page closes on one large line and the email pill, like a studio's sign-off */
+html.ek .home-contact {
+  gap: var(--space-6);
+}
+
+html.ek .home-contact h2 {
+  max-width: 14ch;
+  text-wrap: balance;
+}
+
+/* The other pages (about, colophon, blog) sit on the same column. They used the page-wide
+   12-column subgrid; on the column they get their own 12 tracks, and content that started a few
+   tracks in starts at the column edge. */
+html.ek main > :is(.about-page, .colophon-page, .blog-index, .blog-post) {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek :is(.about-page, .about-row, .colophon-page, .colophon-row, .blog-post) {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+}
+
+html.ek :is(.colophon-body, .blog-post-header, .blog-post-body) {
+  grid-column: 1 / -1;
+  padding-inline: 0;
+}
+
+/* About: title on the left, content on the right, the same split as the homepage sections. Each
+   row is spaced like a section; the photo gets the window corners; the skills become panels. */
+html.ek .about-page {
+  padding-bottom: var(--ek-section);
+}
+
+html.ek .about-heading {
+  padding: var(--ek-section) 0 var(--ek-heading-gap);
+}
+
+html.ek .about-row + .about-row {
+  margin-top: var(--ek-section);
+}
+
+html.ek .about-portrait-cell {
+  margin-inline-end: 0;
+}
+
+html.ek .about-portrait {
+  border-radius: var(--ek-window-radius);
+}
+
+html.ek .about-intro-right {
+  padding: 0;
+  justify-content: flex-start;
+}
+
+html.ek .about-skills-heading,
+html.ek .about-row-body {
+  padding: 0 0 var(--ek-heading-gap);
+}
+
+html.ek .about-section-label {
+  margin: 0;
+}
+
+html.ek .about-page .skill-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
+
+html.ek .about-page .skill-cell,
+html.ek .about-page .skill-cell:nth-child(n) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: clamp(12rem, 15vw, 16rem);
+  padding: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  border: 0;
+  border-radius: var(--ek-window-radius);
+  background: var(--ek-panel);
+  /* Title and line settle together at the bottom */
+  justify-content: flex-end;
+}
+
+
+html.ek .about-page .skill-title {
+  margin: 0;
+}
+
+html.ek .about-page .skill-desc {
+  color: var(--ek-ink-body);
+}
+
+@media (--1x) {
+  html.ek .about-page .skill-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 64.0625rem) {
+  html.ek .about-portrait-cell {
+    grid-column: 1 / 5;
+  }
+
+  html.ek .about-intro-right {
+    grid-column: 5 / -1;
+    padding-left: var(--grid-gutter);
+  }
+
+  html.ek :is(.about-skills-heading, .about-row-body) {
+    grid-column: 1 / 7;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+    padding: 0;
+  }
+
+  html.ek :is(.about-page .skill-grid, .about-logos-wrap) {
+    grid-column: 7 / -1;
+  }
+
+  html.ek .about-logos-wrap {
+    padding: 0;
+  }
+}
+
+html.ek .skill-cell {
+  padding-inline: 0;
+}
+
+html.ek .skill-grid {
+  column-gap: var(--grid-gutter);
+}
+
+@media (--2x) {
+  /* Phone footer links stack on the page margin like everything else */
+  html.ek .footer-links {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+
+/* Desktop: How I lead and Experience keep their heading pinned in the left half while the
+   principles and roles scroll past in the right half */
+@media (min-width: 64.0625rem) {
+  html.ek :is(.leadership-section.ld, .experience-section.xp) {
+    display: grid;
+    /* Half and half: at two thirds the 4:3 card art ran ~790px tall on a 1600px column */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+
+  html.ek :is(.ld-intro, .xp-intro) {
+    align-self: stretch;
+  }
+
+  html.ek :is(.ld, .xp) :is(.ld-intro-inner, .xp-intro-inner) {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  html.ek :is(.ld, .xp) :is(.leadership-heading, .xp-heading) {
+    margin-bottom: 0;
+  }
+}
+
+/* Prev / next and the closing prompt: on the column edge, spaced like a section */
+html.ek .case-study-cta {
+  display: block;
+}
+
+html.ek .case-study-cta-content {
+  padding: var(--ek-section) 0 0;
+}
+
+html.ek .cs-nav {
+  display: block;
+  margin-top: var(--ek-section);
+}
+
+html.ek .cs-nav-inner {
+  padding: 0 0 var(--ek-section);
+}
+
+/* ── Type: the site's own Perfectly Nineties and DM Sans (tokens.json), no caps or italics ── */
+/* No italics in site copy (client brand mockups keep their own type) */
+html.ek :is(em, i, cite, address) {
+  font-style: normal;
+}
+
+/* No all caps: labels keep the ui-caps role's size and font but read in normal case */
+html.ek .typo-ui-caps,
+html.ek :is(.ba-label, .ba-stat-label) {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ── Frame: no grid guides, no crosshair rules ── */
+html.ek .grid-overlay {
+  display: none;
+}
+
+html.ek .section-rule {
+  border-top-color: transparent;
+}
+
+html.ek .section-rule::before,
+html.ek .section-rule::after {
+  content: none;
+}
+
+/* ── Nav: serif name, quiet sans links, underline for the current page ── */
+html.ek .nav {
+  background: color-mix(in srgb, #FFFFFF 92%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+html.ek .nav::after,
+html.ek .nav::before {
+  display: none;
+}
+
+html.ek .nav-logo::after,
+html.ek .nav-links li::before {
+  display: none;
+}
+
+html.ek .nav-links li {
+  background: transparent !important;
+}
+
+html.ek .nav-link {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--duration-short) ease;
+}
+
+html.ek .nav-link:hover,
+html.ek .nav-link.active {
+  text-decoration-color: currentColor;
+}
+
+@media (--2x) {
+  html.ek .nav-toggle {
+    border-left-color: transparent;
+  }
+}
+
+/* ── Home hero: the dot field and type stay as they were ── */
+html.ek .hero-bio {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+/* ── Work list: one centered column. Each project is just its art and a few lines of type, with
+   plenty of white between projects ── */
+html.ek .work-list-section {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html.ek .work-list-intro {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+html.ek .work-list-intro-inner {
+  position: static;
+  padding: 0;
+}
+
+html.ek .work-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 0;
+}
+
+/* Each project fills the viewport under the nav: a page margin above and below, the caption under
+   the art, and the art taking whatever height the caption leaves */
+html.ek .work-list-item {
+  padding-block: var(--page-margin);
+}
+
+html.ek .work-list-item + .work-list-item {
+  border-top: 0;
+}
+
+/* No text on the art: the narrow card layout (art framed on the project color, text below) at every
+   width. work-transition.ts reads this layout from the computed styles, so the card-to-hero zoom
+   follows it. */
+/* Card art frames: the viewport height less the nav, the margins and the caption's room (more lines
+   of tagline on phones). Heroes stay 4:3 on desktop and 2:3 on phones and small tablets */
+html.ek .work-list-card {
+  --work-caption-height: 8.5rem;
+  --narrow-frame-height: calc(100svh - var(--nav-height) - 2 * var(--page-margin) - var(--work-caption-height));
+}
+
+@media (--2x) {
+  html.ek .work-list-card {
+    --work-caption-height: 11rem;
+  }
+
+  html.ek .cs-hero.cs-hero .cs-hero-size {
+    height: calc(100cqw * 3 / 2);
+  }
+}
+
+html.ek .work-list-item .work-list-card .work-list-media {
+  aspect-ratio: auto;
+  height: var(--narrow-frame-height);
+  border-radius: var(--ek-window-radius);
+}
+
+html.ek .work-list-item .work-list-card .work-list-media[data-layered] .work-list-subject {
+  inset: auto;
+  left: var(--narrow-art-left);
+  top: var(--narrow-art-top);
+  width: var(--narrow-art-width);
+  height: var(--narrow-art-height);
+  max-width: none;
+  filter: none;
+}
+
+html.ek .work-list-item .work-list-card .work-list-caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: var(--work-caption-height);
+  padding: var(--space-4) 0 0;
+  background: none;
+}
+
+html.ek .work-list-item .work-list-card :is(.work-list-meta, .work-list-text) {
+  position: static;
+  max-width: 40rem;
+  padding: 0;
+  color: var(--color-text-primary);
+}
+
+/* Matches the page, so the zoom's copy of this block rides on white rather than the project color */
+html.ek .work-list-item .work-list-card .work-list-text {
+  gap: var(--space-1);
+  background: #FFFFFF;
+}
+
+html.ek .work-list-item .work-list-card .work-list-meta {
+  gap: var(--space-2);
+}
+
+/* The project's first two tags, so the list says what kind of work each one is */
+html.ek .work-list-tag {
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  background: var(--ek-panel);
+  color: var(--ek-ink-body);
+}
+
+html.ek .work-list-meta > span:first-child {
+  margin-right: var(--space-1);
+}
+
+/* Desktop: Selected Work stays pinned in the left quarter; the projects stack in the other three
+   quarters, each art frame with its caption under it */
+@media (min-width: 64.0625rem) {
+  html.ek .work-list-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+
+  html.ek .work-list-intro {
+    align-self: stretch;
+  }
+
+  html.ek .work-list-section .work-list-intro-inner {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  html.ek .work-list-section .work-list-heading {
+    margin-bottom: 0;
+  }
+}
+
+html.ek .work-list-lock svg {
+  width: 1em;
+  height: 1em;
+}
+
+html.ek .work-list-item .work-list-card .work-list-title {
+  font-size: var(--text-300);
+  line-height: 1.2;
+}
+
+html.ek .work-list-item .work-list-card .work-list-tagline {
+  color: var(--ek-ink-body);
+}
+
+/* ── Contact and footer: hairlines, sans links ── */
+html.ek :is(.footer, .footer-container, .footer-bar, .footer-bottom) {
+  border-color: transparent;
+}
+
+/* The footer's ink lines belong to the old grid look */
+html.ek .footer::before,
+html.ek .footer-bar::after {
+  display: none;
+}
+
+html.ek .footer-link {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+}
+
+/* ── Case study: centered essay column, figures as windows ── */
+html.ek .case-study-body {
+  padding-bottom: var(--space-7);
+}
+
+/* Prose shares the column's left edge; only its line length is shorter */
+html.ek .case-study-body .prose-group,
+html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
+html.ek .case-study-body .prose-group:has(> .cs-intro) {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek .case-study-body .prose-group > *,
+html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
+html.ek .case-study-cta-content {
+  max-width: var(--ek-prose);
+}
+
+html.ek .case-study-body .prose-group {
+  padding-block: var(--space-6) 0;
+}
+
+html.ek .case-study-body .prose-group:has(> .cs-intro) {
+  padding-block: var(--space-6) var(--space-4);
+}
+
+html.ek .case-study-body :is(.prose-group, .zigzag-prose) :is(p, li) {
+  color: var(--color-text-primary);
+  text-wrap: pretty;
+}
+
+html.ek .case-study-body :is(.prose-group, .zigzag-prose) h2 {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+html.ek .case-study-body :is(.prose-group, .zigzag-prose) * + p {
+  margin-top: 1.1em;
+}
+
+/* Every visual block becomes a window: hairline, 10px corners, one soft shadow */
+html.ek .case-study-body :is(.image-pair, .carousel, .cs-figure, .image-grid, .lottie-grid, .decision-stepper),
+html.ek .case-study-body > img {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin: var(--space-6) auto 0;
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  box-shadow: var(--ek-shadow);
+  background: #FFFFFF;
+}
+
+/* Its own 12 tracks instead of the page's subgrid, so it can sit on the narrower column */
+html.ek .case-study-body .zigzag-section {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  margin-top: var(--space-6);
+  border: 0;
+}
+
+html.ek .case-study-body .zigzag-section .zigzag-media {
+  grid-column: 1 / 7;
+}
+
+html.ek .case-study-body .zigzag-section .zigzag-prose {
+  grid-column: 8 / -1;
+  align-self: center;
+}
+
+html.ek .case-study-body .zigzag-reversed .zigzag-media {
+  grid-column: 7 / -1;
+}
+
+html.ek .case-study-body .zigzag-reversed .zigzag-prose {
+  grid-column: 1 / 6;
+}
+
+html.ek .case-study-body .zigzag-media {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  box-shadow: var(--ek-shadow);
+}
+
+html.ek .case-study-body .zigzag-media .cs-figure {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.ek .case-study-body .carousel .cs-figure,
+html.ek .case-study-body .image-grid .cs-figure {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.ek .case-study-body .image-grid {
+  background: var(--ek-hairline);
+}
+
+/* Image pairs: two separate cards side by side, each caption under its own card */
+html.ek .case-study-body .image-pair {
+  column-gap: var(--grid-gutter);
+  row-gap: var(--space-5);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  overflow: visible;
+}
+
+html.ek .case-study-body .image-pair--captioned > .image-pair-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: none;
+  overflow: visible;
+  line-height: normal;
+  border: 0 !important;
+}
+
+/* The card is the media box with a caption, or the whole cell without one */
+html.ek .case-study-body .image-pair--captioned .image-pair-media,
+html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: var(--ek-shadow);
+  line-height: 0;
+}
+
+html.ek .case-study-body .image-pair figcaption {
+  border-top: 0 !important;
+  padding: 0;
+  text-align: left;
+}
+
+html.ek .case-study-body .lottie-grid,
+html.ek .case-study-body .lottie-grid .lottie-player,
+html.ek .ba {
+  border-color: transparent;
+}
+
+html.ek .case-study-body .image-pair-cell + .image-pair-cell,
+html.ek .case-study-body .cs-meta-item + .cs-meta-item {
+  border-left-color: var(--ek-hairline);
+}
+
+/* Captions: small sans, muted, centered under the image */
+html.ek .case-study-body figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.84375rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  text-align: center;
+  border-top-color: var(--ek-hairline) !important;
+}
+
+html.ek .case-study-body .zigzag-media .cs-figure figcaption {
+  color: #FFFFFF;
+  text-align: left;
+}
+
+/* Meta line: labels over values, on the column edge */
+html.ek .case-study-body .cs-hero-meta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin: var(--space-6) auto 0;
+  padding: 0;
+  border: 0;
+}
+
+html.ek .case-study-body .cs-meta-item {
+  padding: 0;
+  border: 0 !important;
+}
+
+/* Hero: the art framed on the project color, the back link above it and the title below on white,
+   at every width. hero-fit.ts marks wide heroes cs-hero--stacked so the zoom lands on this layout. */
+html.ek .cs-hero .cs-hero-text,
+html.ek .cs-hero--light .cs-hero-text {
+  background: #FFFFFF;
+  color: var(--color-text-primary);
+}
+
+html.ek .cs-hero .cs-hero-back,
+html.ek .cs-hero--light .cs-hero-back {
+  color: var(--color-text-primary);
+}
+
+html.ek .cs-hero .cs-hero-text {
+  padding: var(--space-4) 0 0;
+}
+
+html.ek .cs-hero .cs-hero-back {
+  padding-inline: 0;
+}
+
+/* The hero art and the card-to-hero zoom copy round like the cards, so the zoom lands cleanly */
+html.ek .cs-hero .cs-hero-media,
+html.ek [data-copy-wrap] {
+  border-radius: var(--ek-window-radius);
+}
+
+html.ek .cs-hero.cs-hero--stacked {
+  min-height: 0;
+}
+
+html.ek .cs-hero {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Wide heroes are 4:3 until that would push the title off the first screen; then they get wider
+   rather than taller, leaving room for the back link and the title under the art */
+@container (min-width: 781px) {
+  html.ek .cs-hero.cs-hero .cs-hero-size {
+    flex: none;
+    height: max(24rem, min(calc(100cqw * 3 / 4), calc(100svh - var(--nav-height) - 2 * var(--touch-target) - 6rem)));
+    min-height: 0;
+    max-height: none;
+    margin-top: var(--touch-target);
+  }
+
+  html.ek .case-study-body .cs-hero .cs-hero-media img.cs-hero-subject {
+    position: absolute;
+    left: var(--narrow-art-left);
+    top: var(--narrow-art-top);
+    width: var(--narrow-art-width);
+    height: var(--narrow-art-height);
+    max-width: none;
+    translate: none;
+    filter: none;
+  }
+
+  html.ek .cs-hero.cs-hero .cs-hero-back {
+    padding: 0;
+  }
+
+  html.ek .cs-hero.cs-hero .cs-hero-text {
+    flex: none;
+    position: static;
+    max-width: none;
+    padding: var(--space-5) 0 0;
+  }
+}
+
+html.ek .cs-hero-tagline {
+  color: var(--ek-ink-body);
+}
+
+html.ek .scroll-progress {
+  background: #448AFF;
+}
+
+/* Previous / next links */
+html.ek :is(.cs-nav, .case-study-nav) {
+  border-color: var(--ek-hairline);
+}
+
+/* Inline links in prose: hairline underline that darkens on hover */
+html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a {
+  text-decoration-color: #A9B4C0;
+}
+
+html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Experience: heading and résumé download travel together; on phones the gap goes under the pair */
+html.ek .xp-intro-inner .xp-heading {
+  margin: 0;
+}
+
+html.ek .xp-intro {
+  margin-bottom: var(--ek-heading-gap);
+}
+
+@media (min-width: 64.0625rem) {
+  html.ek .xp-intro {
+    margin-bottom: 0;
+  }
+}
+
+/* ── Hover: one vocabulary. Text links draw an underline, pills fill with the panel tone and darken
+   their edge, art and figures lift on a deeper shadow, arrows lean the way they point. Touch screens
+   get none of it; reduced motion keeps the color changes and drops the movement. ── */
+html.ek {
+  --ek-shadow-hover: 0 36px 72px -30px rgba(11, 33, 64, 0.32);
+  --ek-hover-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Pills: contact, case-study CTA, résumé download */
+html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  padding: 0 1.375rem;
+  border: 1px solid #C9D1DA;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--duration-short) ease, border-color var(--duration-short) ease;
+}
+
+html.ek .ek-pill svg {
+  width: 1.15em;
+  height: 1.15em;
+  transition: translate var(--duration-short) var(--ek-hover-ease);
+}
+
+/* Text links outside prose: no underline at rest, a 1px one on hover (the nav's own treatment) */
+html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .cs-nav-title, .not-found-link) {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--duration-short) ease;
+}
+
+html.ek .ek-arrow {
+  display: inline-block;
+  margin-left: 0.35em;
+  transition: translate var(--duration-short) var(--ek-hover-ease);
+}
+
+/* Work cards: the art zooms a touch in its frame and the frame lifts; the title underlines */
+html.ek .work-list-item .work-list-card .work-list-media {
+  --work-hover-zoom: 1.03;
+  transition: box-shadow var(--duration-long) var(--ek-hover-ease);
+}
+
+html.ek .work-list-item .work-list-card .work-list-title {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color var(--duration-short) ease;
+}
+
+/* Case-study images open full screen on click: their window lifts instead of the image scaling */
+html.ek .case-study-body :is(.cs-figure, .image-pair, .image-grid) img:hover,
+html.ek .case-study-body .zigzag-media:hover {
+  scale: none;
+}
+
+html.ek .case-study-body :is(.cs-figure, .zigzag-media, .image-pair-media),
+html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell {
+  transition: box-shadow var(--duration-long) var(--ek-hover-ease);
+}
+
+@media (hover: hover) {
+  html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link):hover {
+    background: var(--ek-panel);
+    border-color: var(--color-text-primary);
+    color: var(--color-text-primary);
+  }
+
+  html.ek .ek-pill:hover svg {
+    translate: 0 2px;
+  }
+
+  html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .not-found-link):hover,
+  html.ek .cs-nav-link:hover .cs-nav-title,
+  html.ek .work-list-card:hover .work-list-title {
+    text-decoration-color: currentColor;
+    opacity: 1;
+  }
+
+  html.ek :is(.ek-link, a):hover > .ek-arrow {
+    translate: 3px 0;
+  }
+
+  html.ek .work-list-card:hover .work-list-media,
+  html.ek .case-study-body .cs-figure:not(.carousel .cs-figure, .image-grid .cs-figure, .zigzag-media .cs-figure):hover,
+  html.ek .case-study-body .zigzag-media:hover,
+  html.ek .case-study-body .image-pair-media:hover,
+  html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell:hover {
+    box-shadow: var(--ek-shadow-hover);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.ek .nav-link {
+    transition: none;
+  }
+
+  html.ek :is(.ek-pill svg, .ek-arrow) {
+    transition: none;
+    translate: none !important;
+  }
+}
+
+/* ── Personality pass: off hours, the Bespoke stepper and the archive on the column ── */
+html.ek .off-hours-heading {
+  padding: 0 0 var(--space-6);
+}
+
+html.ek .off-hours-grid {
+  gap: var(--grid-gutter);
+}
+
+html.ek .off-hours-cell {
+  padding: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  border-radius: var(--ek-window-radius);
+  background: var(--ek-panel);
+}
+
+html.ek .off-hours-cell::before {
+  display: none;
+}
+
+html.ek :is(.off-hours-photo, .off-hours-slot) {
+  border-radius: calc(var(--ek-window-radius) / 2);
+}
+
+html.ek .decision-stepper .ds-tabs {
+  border-color: var(--ek-hairline);
+}
+
+html.ek .decision-stepper .ds-tab {
+  border-bottom-color: var(--ek-hairline);
+}
+
+html.ek .decision-stepper .ds-panels {
+  background: var(--ek-panel);
+}
+
+html.ek :is(.archive-heading, .archive-intro, .archive-row-head, .archive-reels, .archive-entry) {
+  padding-inline: 0;
+}
+
+html.ek .archive-page > * {
+  width: 100%;
+  max-width: var(--ek-figure);
+  margin-inline: auto;
+}
+
+html.ek .archive-lotties {
+  border: 1px solid var(--ek-hairline);
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  box-shadow: var(--ek-shadow);
+}
+
+html.ek .archive-lotties .lottie-player:not(:first-of-type) {
+  border-left-color: rgb(255 255 255 / 0.35);
+}
+
+html.ek .archive-row--motion {
+  padding-bottom: var(--space-5);
+}
+

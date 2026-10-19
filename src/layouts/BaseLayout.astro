@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro'
 import RGBShutter from '../components/RGBShutter.astro'
 import { ref, sys, elementMap, animations } from '../data/tokens'
 import '../styles/global.css'
+import '../styles/editorial.css'
 
 interface Props {
   title?: string
@@ -249,7 +250,7 @@ const typoCss = `:root {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="ek">
   <head>
     <SEO title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
     <link rel="preload" href="/fonts/perfectlynineties-light.woff2" as="font" type="font/woff2" crossorigin />

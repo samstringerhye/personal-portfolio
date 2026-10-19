@@ -35,6 +35,19 @@ export interface HomeContent {
     textRole: TypographyRole
     items: string[]
   }
+  offHours: {
+    headline: string
+    items: OffHoursItem[]
+  }
+}
+
+/** Done once it has a caption; until then `draft` says what Sam still has to supply */
+export interface OffHoursItem {
+  label: string
+  caption?: string
+  image?: string
+  imageAlt?: string
+  draft?: string
 }
 
 export interface ExperienceJob {

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import HeroSection from '../components/HeroSection.astro'
 import WorkList from '../components/WorkList.astro'
 import Leadership from '../components/Leadership.astro'
-import Timeline from '../components/Timeline.astro'
+import ExperienceList from '../components/ExperienceList.astro'
 import ScrollingInterests from '../components/ScrollingInterests.astro'
 import HomeContact from '../components/HomeContact.astro'
 
@@ -41,7 +41,7 @@ const home = homeData as HomeContent
     itemBodyRole={home.leadership.itemBodyRole}
   />
   <hr class="section-rule" />
-  <Timeline />
+  <ExperienceList />
   <hr class="section-rule" />
   <ScrollingInterests
     interests={home.interests.items}

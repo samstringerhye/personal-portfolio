@@ -80,13 +80,25 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | Section.Key | Type | Value | What it controls |
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
-| `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between CMY color channels in the hero dot wave (independent from text reveal stagger) |
+| `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
+| `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
+| `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
+| `workCards.phone.restYaw` | radians | `-0.46` | 3D phone's turn at rest (negative shows its left side) |
+| `workCards.phone.restPitch` | radians | `0.06` | 3D phone's tilt at rest |
+| `workCards.phone.pointerYaw` | radians | `0.8` | Turn as the pointer crosses the window |
+| `workCards.phone.pointerPitch` | radians | `0.28` | Tilt as the pointer moves down the window |
+| `workCards.phone.scrollPitch` | radians | `0.22` | Tilt as the card scrolls through the viewport (the only motion on touch screens) |
+| `workCards.phone.sway` | radians | `0.04` | Idle turn amplitude |
+| `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
+| `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
+| `workCards.phone.lensMm` | mm | `85` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
 | `smoothScroll.lerp` | 0–1 | `0.5` | Lenis smooth scroll interpolation (lower = smoother, higher = snappier) |
 | `smoothScroll.wheelMultiplier` | number | `1` | Mouse wheel scroll speed multiplier |
 | `dotGrid.spacing` | px | `30` | Gap between dots in the interests section background grid |
 | `dotGrid.radius` | px | `1` | Dot radius in that grid |
 | `dotGrid.opacity` | 0–1 | `0.5` | Grid opacity before the reveal multiplier |
+| `footerLogo.spinDuration` | seconds | `12` | One full turn of the site mark beside the name in the footer (still under reduced motion) |
 
 ---
 
@@ -138,7 +150,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ---
 
-## caseStudy (Amica and Whataburger diagrams)
+## caseStudy (Amica and Whataburger diagrams, Bespoke stepper)
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|
@@ -171,6 +183,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `heroPhoneScroll.phonesAt` | `0.25` | When the side phones start |
 | `heroPhoneScroll.phoneFade` / `phoneSlide` / `phoneStagger` | `0.08` / `0.7` / `0.18` | Side phones fading and sliding in, one after another |
 | `heroPhoneScroll.scrollAt` | `0.4` | When the endless scroll starts |
+| `decisionStepper.hold` | `3.5` | How long each step of the Bespoke decision stepper shows before the next, while it plays on its own |
+| `decisionStepper.fade` | `0.3` | Step image fading in |
 
 ---
 

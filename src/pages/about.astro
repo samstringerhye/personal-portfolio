@@ -20,10 +20,10 @@ const aboutJsonLd = {
 }
 
 const skills = [
-  { index: '01', title: 'Design Leadership', desc: 'Leading teams of three to six designers, including six on Amica.com' },
-  { index: '02', title: 'Brand & Content Platforms', desc: 'Brand direction for Whataburger and Mashable, and the content authoring model behind Amica.com' },
-  { index: '03', title: 'Design Systems', desc: 'Systems for Amica, MyFrontier, CVS, Samsung.com, and Whataburger' },
-  { index: '04', title: 'Product Design', desc: 'Flows, prototypes, and motion for Bespoke, Whataburger, and Frontier' },
+  { title: 'Design Leadership', desc: 'Leading teams of three to six designers, including six on Amica.com' },
+  { title: 'Brand & Content Platforms', desc: 'Brand direction for Whataburger and Mashable, and the content authoring model behind Amica.com' },
+  { title: 'Design Systems', desc: 'Systems for Amica, MyFrontier, CVS, Samsung.com, and Whataburger' },
+  { title: 'Product Design', desc: 'Flows, prototypes, and motion for Bespoke, Whataburger, and Frontier' },
 ]
 ---
 
@@ -61,7 +61,6 @@ const skills = [
       <ul class="skill-grid" role="list">
         {skills.map(s => (
           <li class="skill-cell">
-            <span class="skill-index typo-ui-caps">{s.index}</span>
             <h3 class="skill-title typo-headline-sm">{s.title}</h3>
             <p class="skill-desc typo-body-lg">{s.desc}</p>
           </li>
@@ -203,12 +202,6 @@ const skills = [
     background: var(--color-rule);
     transform: scaleY(var(--border-draw, 1));
     transform-origin: top;
-  }
-
-  .skill-index {
-    display: block;
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-3);
   }
 
   .skill-title {

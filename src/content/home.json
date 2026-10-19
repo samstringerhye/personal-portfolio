@@ -4,7 +4,7 @@
     "headline": "Every pixel, on purpose.",
     "headlineTag": "h1",
     "headlineRole": "display-lg",
-    "body": "I'm Sam Stringer-Hye, an Associate Design Director at Razorfish with 14 years leading brand, product, and design systems work.",
+    "body": "I'm Sam Stringer-Hye, an Associate Design Director at Razorfish. I'm the person who notices when the spacing is off, when a transition feels wrong, or when a component system only works in the deck.",
     "bodyHighlights": ["Sam Stringer-Hye", "Associate Design Director", "Razorfish"],
     "bodyRole": "title-lg"
   },
@@ -105,7 +105,15 @@
     ]
   },
   "contact": {
-    "headline": "Want to work together?"
+    "headline": "Building a design system, or rebuilding one?"
+  },
+  "offHours": {
+    "headline": "Off hours",
+    "items": [
+      { "label": "Vinylhead", "draft": "A photo of the record on the platter this week, and one line on it." },
+      { "label": "Homelabber", "draft": "A photo of the rack, and one line on what it runs." },
+      { "label": "Horror fiend", "draft": "This month's horror pick, and one line on why." }
+    ]
   },
   "interests": {
     "textRole": "display-lg",

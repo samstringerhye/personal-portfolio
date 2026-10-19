@@ -42,6 +42,13 @@ function lineRects(el: Element | null): DOMRect[] {
  * their own container query), so this leaves them alone.
  */
 export function fitHero(hero: HTMLElement, frame: HTMLElement, bounds: SubjectBox, offset: number): boolean {
+  // Editorial Kit: text never sits on the art, so every wide hero stacks (narrow ones stack by
+  // their own container query, at the same 780px as the work cards)
+  if (document.documentElement.classList.contains('ek')) {
+    const stacked = hero.getBoundingClientRect().width > 780
+    hero.classList.toggle(STACKED, stacked)
+    return stacked
+  }
   hero.classList.remove(STACKED)
   const text = hero.querySelector<HTMLElement>('.cs-hero-text')
   if (!text || getComputedStyle(text).position !== 'absolute') return false

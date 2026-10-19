@@ -1,4 +1,8 @@
 ---
+/**
+ * How I lead: the heading pinned on the left (desktop) beside numbered principle panels, two up.
+ * Same split as Selected Work and Experience. Data in home.json leadership.
+ */
 import type { HeadingTag, TypographyRole } from '../types/typography'
 
 interface Props {
@@ -18,132 +22,83 @@ const {
 const HeadingTag = headingTag as any
 ---
 
-<section class="leadership-section" aria-labelledby="leadership-heading">
-  <div class="leadership-header">
-    <HeadingTag id="leadership-heading" class:list={["leadership-heading", `typo-${headingRole}`]} data-reveal>{headline}</HeadingTag>
+<section class="leadership-section ld" aria-labelledby="leadership-heading">
+  <div class="ld-intro">
+    <div class="ld-intro-inner">
+      <HeadingTag id="leadership-heading" class:list={["leadership-heading", `typo-${headingRole}`]} data-reveal>{headline}</HeadingTag>
+    </div>
   </div>
-  <ul class="leadership-grid" role="list" data-reveal-group>
-    {items.map((item, i) => (
-      <li class="leadership-cell">
-        <span class="leadership-index typo-ui-caps" data-reveal="fade">{String(i + 1).padStart(2, '0')}</span>
-        <h3 class:list={["leadership-title", `typo-${itemTitleRole}`]} data-reveal="fade">{item.title}</h3>
-        <p class:list={["leadership-body", `typo-${itemBodyRole}`]} data-reveal="fade">{item.body}</p>
-        {item.link && (
-          <a href={item.link.href} class:list={["leadership-link", `typo-${itemBodyRole}`]} data-reveal="fade">{item.link.label} <span aria-hidden="true">→</span></a>
-        )}
+  <ul class="ld-list" role="list" data-reveal-group>
+    {items.map(item => (
+      <li class="ld-item" data-reveal="fade">
+        <div class="ld-text">
+          <h3 class:list={["ld-title", `typo-${itemTitleRole}`]}>{item.title}</h3>
+          <p class:list={["ld-body", `typo-${itemBodyRole}`]}>{item.body}</p>
+          {item.link && (
+            <a href={item.link.href} class:list={["ld-link ek-link", `typo-${itemBodyRole}`]}>{item.link.label}<span class="ek-arrow" aria-hidden="true">→</span></a>
+          )}
+        </div>
       </li>
     ))}
   </ul>
 </section>
 
 <style>
-  .leadership-header {
-    position: relative;
-  }
-
-  .leadership-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: var(--border-width-1);
-    background: var(--color-rule);
-  }
-
   .leadership-heading {
     margin: 0;
-    padding: var(--content-inset-md);
     color: var(--color-text-primary);
   }
 
-  .leadership-grid {
+  .ld-list {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    list-style: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--grid-gutter);
     margin: 0;
     padding: 0;
+    list-style: none;
   }
 
-  .leadership-cell {
-    position: relative;
-    padding: var(--space-4);
+  /* Text settled at the bottom, so a row of panels reads as one band */
+  .ld-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-7);
+    min-height: clamp(14rem, 18vw, 18rem);
+    padding: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+    border-radius: var(--ek-window-radius, 24px);
+    background: var(--ek-panel, var(--color-bg-alt));
   }
 
-  .leadership-cell + .leadership-cell::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: var(--border-width-1);
-    background: var(--color-rule);
+  .ld-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
   }
 
-  .leadership-index {
-    display: block;
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-3);
-  }
-
-  .leadership-title {
-    margin: 0 0 var(--space-3);
-    color: var(--color-text-primary);
-  }
-
-  .leadership-body {
+  .ld-title,
+  .ld-body {
     margin: 0;
     color: var(--color-text-primary);
   }
 
-  .leadership-link {
-    display: inline-block;
-    margin-top: var(--space-3);
-    color: var(--color-text-primary);
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
-    text-decoration-thickness: 1px;
+  .ld-body {
+    color: var(--ek-ink-body, var(--color-text-primary));
   }
 
-  @media (--3x) {
-    .leadership-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    /* Two columns: only the right-hand cell keeps a left rule, and the second row gets a top rule */
-    .leadership-cell:nth-child(odd)::before {
-      display: none;
-    }
-
-    .leadership-cell:nth-child(n + 3) {
-      border-top: var(--border-width-1) solid var(--color-rule);
-    }
+  .ld-link {
+    align-self: flex-start;
+    margin-top: var(--space-2);
   }
 
   @media (--2x) {
-    .leadership-header::after {
-      left: calc(var(--page-margin) * -1);
-      right: calc(var(--page-margin) * -1);
+    .ld-list {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .leadership-heading {
-      padding: var(--content-inset-sm);
-    }
-
-    .leadership-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .leadership-cell {
-      padding: var(--space-4) var(--content-inset-sm);
-    }
-
-    .leadership-cell::before {
-      display: none;
-    }
-
-    .leadership-cell + .leadership-cell {
-      border-top: var(--border-width-1) solid var(--color-rule);
+    .ld-item {
+      gap: var(--space-5);
+      min-height: 0;
     }
   }
 </style>
