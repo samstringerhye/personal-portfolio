@@ -24,6 +24,10 @@ const { scene, label } = Astro.props
   .phone-scene.is-3d .stage { animation: phone-scene-in 0.5s ease both; }
   @keyframes phone-scene-in { from { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .phone-scene.is-3d .stage { animation: none; } }
+  /* Black behind the screen, a little past its edges: where the display's cut runs wider than the
+     screen's rounded corners, it reads as bezel instead of letting the card color through. Rounded
+     (in the 360px layout) to stay inside the body's corners */
+  .phone-scene.is-3d .phone { background: #000; border-radius: 54px; box-shadow: 0 0 0 5px #000; }
   .phone-scene.is-3d .band, .phone-scene.is-3d .bezel { padding: 0; background: none; border-radius: 0; width: 100%; height: 100%; }
 
   .phone-scene .phone { position: relative; width: 360px; aspect-ratio: 0.4785; container-type: inline-size; }
@@ -33,7 +37,7 @@ const { scene, label } = Astro.props
     transform: translateZ(0); }
   .phone-scene .bezel { width: 100%; height: 100%; border-radius: 16.1cqw; padding: 1.6cqw; background: #050506; }
   .phone-scene .screen { position: relative; width: 100%; height: 100%; border-radius: 14.4cqw; overflow: hidden; background: #151A2A; }
-  .phone-scene .layer { position: absolute; inset: 0; }
+  .phone-scene .layer { position: absolute; inset: 0; overflow: hidden; }
   .phone-scene .layer img.view { display: block; width: 100%; height: 100%; object-fit: cover; }
   /* The published art was drawn on an older notched phone: cover its status bar, then set the
      time and icons back down level with the Dynamic Island */
@@ -43,7 +47,6 @@ const { scene, label } = Astro.props
   .phone-scene .sb.r { right: 7%; height: 1.45%; top: 2.05%; }
   .phone-scene .sheet .notch, .phone-scene .sheet .sb { display: none; }
   .phone-scene .dim { position: absolute; inset: 0; background: rgba(10, 14, 30, .55); opacity: 0; }
-  .phone-scene .dots { position: absolute; inset: 0; width: 100%; height: 100%; display: none; z-index: 2; }
   .phone-scene .wash { position: absolute; inset: 0; background: #ff033a; clip-path: circle(0 at 50% 85%); }
   .phone-scene .lottie { position: absolute; left: 50%; top: 50%; width: 52cqw; aspect-ratio: 1; translate: -50% -50%; }
   .phone-scene .lottie.intro { top: var(--intro-y, 47.5%); width: var(--intro-w, 70cqw); opacity: 0; }

@@ -1,7 +1,7 @@
 // @ts-nocheck: ported as-is from the motion prototype; typed once the direction is settled
 // The MyFrontier card: a tour of the app built from the published screens and the project's
-// Lottie files. Inside the app every move is the shipped iOS behavior; only the loop seam
-// runs through the site's dot grid.
+// Lottie files. Every move is the shipped iOS behavior, the loop included: it ends by relaunching
+// the app.
 import lottie from 'lottie-web/build/player/lottie_light'
 
 const BASE = '/motion/myfrontier/'
@@ -34,7 +34,6 @@ const TEMPLATE = `  <div class="floor" aria-hidden="true"></div>
       <div class="stack"></div>
       <div class="dim"></div>
       <div class="sheets"></div>
-      <canvas class="dots" aria-hidden="true"></canvas>
       <div class="wash"></div>
       <div class="lottie intro" data-l="Intro"></div>
       <div class="lottie" data-l="Coin"></div>
@@ -120,52 +119,13 @@ export function mountMyFrontier(art) {
   };
   const sheetUp = async name => { anim(dim, [{ opacity: 0 }, { opacity: 1 }], 420); await anim(L[name], [{ transform: 'translateY(100%)' }, { transform: 'none' }], 560, push); };
   const sheetDown = async name => { anim(dim, [{ opacity: 1 }, { opacity: 0 }], 380, 'ease', 80); await anim(L[name], [{ transform: 'none' }, { transform: 'translateY(100%)' }], 460, 'cubic-bezier(.5,0,.75,0)'); };
-  // The seam of the loop: the screen breaks into the site's dot grid, a wave warps it outward
-  // from the Frontier mark, and it settles back as the launch screen
-  const dotsEl = $('.dots');
-  const plate = name => {
-    const el = L[name], img = el.querySelector('img.view'), c = document.createElement('canvas');
-    c.width = img.naturalWidth; c.height = img.naturalHeight; const x = c.getContext('2d');
-    x.drawImage(img, 0, 0); x.fillStyle = SCREENS[name][0]; x.fillRect(0, 0, c.width, c.height * 0.044);
-    const t = el.querySelector('img.sb.l'); if (t) x.drawImage(t, c.width * 0.085, c.height * 0.0155, t.naturalWidth, c.height * 0.0235);
-    return c;
+  // The seam of the loop: the app relaunches, its launch screen zooming up out of the icon the
+  // way iOS opens an app
+  const relaunch = async name => {
+    const from = L[current], to = top(name);
+    anim(from, [{ transform: 'none', filter: 'none' }, { transform: 'scale(.9)', filter: 'brightness(.55)' }], 600, push);
+    await anim(to, [{ transform: 'scale(.16)', borderRadius: '24%' }, { transform: 'none', borderRadius: '0' }], 600, push); set(name);
   };
-  const cells = (plateC, cols, rows) => { const c = document.createElement('canvas'); c.width = cols; c.height = rows; const x = c.getContext('2d'); x.drawImage(plateC, 0, 0, cols, rows); return x.getImageData(0, 0, cols, rows).data; };
-  const hexRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-  const dotWarp = (name, [ox, oy], ms = 1900) => new Promise(done => {
-    const scr = $('.screen'), W = scr.clientWidth, H = scr.clientHeight, dpr = Math.min(2, devicePixelRatio || 1);
-    dotsEl.width = W * dpr; dotsEl.height = H * dpr; const g = dotsEl.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const cols = 30, cell = W / cols, rows = Math.ceil(H / cell);
-    const pa = plate(current), pb = plate(name), A = cells(pa, cols, rows), B = cells(pb, cols, rows);
-    const bgA = hexRgb(SCREENS[current][0]), bgB = hexRgb(SCREENS[name][0]);
-    const sx = pa.width / W, sy = pa.height / H, tx = pb.width / W, ty = pb.height / H;
-    const cx = ox * W, cy = oy * H, far = Math.hypot(Math.max(ox, 1 - ox) * W, Math.max(oy, 1 - oy) * H);
-    const ease = k => k * k * (3 - 2 * k);
-    dotsEl.style.display = 'block'; let swapped = false; const t0 = performance.now();
-    (function frame(now) {
-      const t = Math.min(1, (now - t0) / ms);
-      const bg = bgA.map((v, i) => Math.round(v + (bgB[i] - v) * ease(t)));
-      g.fillStyle = `rgb(${bg})`; g.fillRect(0, 0, W, H);
-      const live = [];
-      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-        const x0 = c * cell, y0 = r * cell, mx = x0 + cell / 2, my = y0 + cell / 2;
-        const dx = mx - cx, dy = my - cy, d = Math.hypot(dx, dy) || 1;
-        // Local progress: a front that leaves the mark, crosses the screen and passes
-        const k = Math.max(0, Math.min(1, t * 1.9 - (d / far) * 0.9));
-        if (k <= 0) { g.drawImage(pa, x0 * sx, y0 * sy, cell * sx, cell * sy, x0, y0, cell + .5, cell + .5); continue; }
-        if (k >= 1) { g.drawImage(pb, x0 * tx, y0 * ty, cell * tx, cell * ty, x0, y0, cell + .5, cell + .5); continue; }
-        live.push([r, c, k, mx, my, dx / d, dy / d]);
-      }
-      for (const [r, c, k, mx, my, ux, uy] of live) {
-        const bump = Math.sin(Math.PI * k), i = (r * cols + c) * 4, m = ease(k);
-        const push = bump * cell * 2.4, rad = cell * (0.62 - 0.36 * bump);
-        g.fillStyle = `rgb(${Math.round(A[i] + (B[i] - A[i]) * m)},${Math.round(A[i + 1] + (B[i + 1] - A[i + 1]) * m)},${Math.round(A[i + 2] + (B[i + 2] - A[i + 2]) * m)})`;
-        g.beginPath(); g.arc(mx + ux * push, my + uy * push, rad, 0, Math.PI * 2); g.fill();
-      }
-      if (!swapped && t > 0.5) { set(name); stack.appendChild(L[name]); swapped = true; }
-      if (t < 1) requestAnimationFrame(frame); else { dotsEl.style.display = 'none'; done(); }
-    })(t0);
-  });
 
   const spring = 'cubic-bezier(.34,1.56,.64,1)';
   async function loop() {
@@ -214,8 +174,8 @@ export function mountMyFrontier(art) {
     await tap(T.order); await pushTo('support-2'); await wait(2200);
     await refresh('support-3'); await wait(2000);
     await refresh('support-4'); await wait(2200);
-    // Back to launch through the dot grid
-    await dotWarp('intro-1', [0.12, 0.2]);
+    // Relaunch
+    await relaunch('intro-1');
   }
 
   let on = false, running = false, stopped = false;
