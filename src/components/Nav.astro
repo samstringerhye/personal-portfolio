@@ -243,12 +243,14 @@ function isActive(href: string) {
       padding: 0;
     }
 
+    /* The nav's backdrop-filter makes it the containing block for this fixed panel, so bottom: 0
+       would end the panel at the nav's own bottom edge; an explicit height reaches the screen's */
     .nav-links {
       position: fixed;
       top: calc(var(--nav-height) + env(safe-area-inset-top));
       left: 0;
       right: 0;
-      bottom: 0;
+      height: calc(100dvh - var(--nav-height) - env(safe-area-inset-top));
       flex-direction: column;
       align-items: stretch;
       padding: 0;
@@ -274,10 +276,10 @@ function isActive(href: string) {
       transition: transform var(--duration-long) ease, visibility 0s 0s;
     }
 
+    /* Labels on the page margin, in line with the logo */
     .nav-link {
       margin-inline: var(--page-margin);
-      /* Match the wordmark's inset so menu labels line up with the nav bar */
-      padding: var(--space-3);
+      padding: var(--space-3) 0;
       font-family: var(--font-sans);
       font-size: var(--text-200);
       font-weight: var(--font-weight-light);

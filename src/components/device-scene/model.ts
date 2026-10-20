@@ -336,6 +336,8 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   // Scroll parallax: the arrangement sits a share of its box's distance from the viewport's center
   // back toward it, so it drifts against the page. Read from the box, which the offset doesn't move
   let parallax = 0
+  // No parallax where the layout stacks: text and device share one column there
+  const stacked = window.matchMedia('(max-width: 64rem)')
   const smooth = (x: number) => { const c = Math.max(0, Math.min(1, x)); return c * c * (3 - 2 * c) }
   const frame = (now: number) => {
     if (!on) return
@@ -346,7 +348,7 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
       // Held within a viewport's height of the center: a frame that runs mid-jump, before the card
       // stops, mustn't leave it far out of place
       const near = Math.max(-window.innerHeight, Math.min(window.innerHeight, fromCenter))
-      const offset = Math.round(-near * tilt.parallax)
+      const offset = stacked.matches ? 0 : Math.round(-near * tilt.parallax)
       if (offset !== parallax) art.style.setProperty('--parallax', `${(parallax = offset)}px`)
     }
     // Floating devices drift up into place as the card's center rises through the viewport
