@@ -22,82 +22,80 @@ featured: true
 sortOrder: 5
 tags: ["Design System", "E-commerce", "Global", "Navigation"]
 ---
-import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import ImagePair from '../../components/ImagePair.astro'
-import Device from '../../components/Device.astro'
 import Trio from '../../components/Trio.astro'
+import Mock from '../../components/Mock.astro'
 import Metrics from '../../components/Metrics.astro'
-import uiMosaicOverviewSrc from '../../assets/work/samsung-redesign/revamp-ui-mosaic.jpg'
-import gnbMobileSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop.jpg'
-import gnbCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
-import gnbDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
 import homeSrc from '../../assets/work/samsung-redesign/revamp-hp.jpg'
-import detailSrc from '../../assets/work/samsung-redesign/revamp-pd.jpg'
 import categorySrc from '../../assets/work/samsung-redesign/revamp-pcd.jpg'
-import familySrc from '../../assets/work/samsung-redesign/revamp-pfs.jpg'
+import pdOptionsSrc from '../../assets/work/samsung-redesign/mock/pd-options.webp'
+import pfCardsSrc from '../../assets/work/samsung-redesign/mock/pf-cards.webp'
+import iconsSrc from '../../assets/work/samsung-redesign/mock/icons.webp'
+import pdGallerySrc from '../../assets/work/samsung-redesign/mock/pd-gallery.webp'
+import gnbDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
+import gnbCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
+import buttonsSrc from '../../assets/work/samsung-redesign/mock/buttons.webp'
 import showcaseSrc from '../../assets/work/samsung-redesign/samsung-section-4-showcase-desktop.jpg'
-import detailTabSrc from '../../assets/work/samsung-redesign/samsung-section-5-pd-desktop.jpg'
-import finderSrc from '../../assets/work/samsung-redesign/samsung-section-6-pf-desktop.jpg'
 
 <Meta client="Samsung" role="Senior Designer" agency="Razorfish" year={2020} />
 
 <ProseGroup>
 
-<p class="cs-intro">I was one of twelve designers who redesigned Samsung.com across 12+ markets in six months. I set the global navigation's visual direction, designed four core page types and contributed design system components.</p>
+<p class="cs-intro">One of twelve designers on Samsung.com's redesign: 12+ markets, six months. I set the navigation's visual direction and designed four core page types.</p>
 
 </ProseGroup>
 
-<ImagePair leftCaption="The redesigned homepage" rightCaption="The new navigation on mobile, every model shown with a picture">
-  <Fragment slot="left"><Device kind="laptop" page><Image src={homeSrc} alt="Samsung.com homepage, full page" format="webp" sizes="(max-width: 768px) 100vw, 55vw" /></Device></Fragment>
-  <Fragment slot="right"><Image src={gnbMobileSrc} alt="Mobile global navigation: the Mobile menu drilled into Smartphones, each model shown with a product image" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+<ImagePair leftCaption="The homepage" rightCaption="The homepage on a phone">
+  <Fragment slot="left"><Mock kind="browser" src={homeSrc} alt="Samsung.com homepage with the Galaxy S20 hero" url="samsung.com" /></Fragment>
+  <Fragment slot="right"><Mock kind="phone" src="/motion/samsung-mobile/home.webp" alt="Samsung.com on a phone: the Galaxy S20 hero" /></Fragment>
 </ImagePair>
 
 <ProseGroup>
 
 ## The challenge.
 
-Years of market-by-market additions left the navigation with a different hierarchy, string length and workaround in every market, and right-to-left scripts flipped its layout. It had to read as one brand everywhere and flex enough that no market needed to break it.
+Every market had added its own categories, string lengths and workarounds. The navigation had to read as one brand everywhere, including right-to-left scripts.
 
 </ProseGroup>
 
-<Trio captions={["Category pages hold catalogs of very different sizes from market to market", "Product detail: every page type carries the same navigation", "Product family: one line, every model"]}>
-  <Fragment slot="one"><Device kind="laptop" page><Image src={categorySrc} alt="Samsung.com product category page, full page" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device></Fragment>
-  <Fragment slot="two"><Device kind="laptop" page><Image src={detailSrc} alt="Samsung.com product detail page, full page" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
-  <Fragment slot="three"><Device kind="laptop" page><Image src={familySrc} alt="Samsung.com product family page, full page" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+<Trio captions={["Category pages, catalogs of every size", "Product detail", "Product family"]}>
+  <Fragment slot="one"><Mock kind="browser" src={categorySrc} alt="Samsung.com washers and dryers category page" url="samsung.com" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={pdOptionsSrc} alt="Galaxy A50 product detail: trade-in and color options" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={pfCardsSrc} alt="Two Galaxy product cards with prices and buttons" /></Fragment>
 </Trio>
 
 <ProseGroup>
 
 ## The approach.
 
-Cutting depth couldn't mean hiding products, so every category got a product image, from the desktop panel to the mobile drill-in, stress-tested against right-to-left scripts and deep catalogs. Regional teams got components they could compose without breaking the brand.
+A product image beside every category, from the desktop panel to the mobile drill-in, so shoppers spot a product before reading its label.
 
 </ProseGroup>
 
-<Trio captions={["Desktop: categories, products and a promotion in one panel", "Mobile: TVs grouped by size, each with a picture", "Shared components regional teams compose into their own pages"]}>
-  <Fragment slot="one"><Image src={gnbDesktopSrc} alt="Desktop navigation menu: categories, product thumbnails, and a featured promotion in one panel" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="two"><Image src={gnbCloseupSrc} alt="Mobile navigation accordion: TV by Size, each size range shown with a TV image" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
-  <Fragment slot="three"><Image src={uiMosaicOverviewSrc} alt="Mosaic of Samsung.com UI components and page modules" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["Desktop: products beside every category", "Mobile: TVs by size, with pictures", "Shared buttons and controls"]}>
+  <Fragment slot="one"><Mock kind="plain" src={gnbDesktopSrc} alt="Desktop navigation menu: categories, product thumbnails and a promotion" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={gnbCloseupSrc} alt="Mobile navigation accordion: TVs by size, each with a picture" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={buttonsSrc} alt="Samsung.com buttons in their states" /></Fragment>
 </Trio>
 
 <ProseGroup>
 
 ## The outcome.
 
-Over six months I delivered the navigation's visual direction, layouts for four core page types and components for the shared design system.
+Over six months I delivered the navigation's direction, four page types and components for the shared system.
 
 </ProseGroup>
 
-<Trio captions={["Product showcase", "Product detail", "Product finder"]}>
-  <Fragment slot="one"><Image src={showcaseSrc} alt="Samsung.com product showcase on a Galaxy Book" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="two"><Image src={detailTabSrc} alt="Samsung.com product detail page on a Galaxy Tab" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
-  <Fragment slot="three"><Image src={finderSrc} alt="Samsung.com product finder on a Galaxy Tab" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["The showcase page", "One icon set", "Galleries with AR and 360° views"]}>
+  <Fragment slot="one"><Mock kind="plain" src={showcaseSrc} alt="Samsung.com product showcase on a Galaxy Book" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={iconsSrc} alt="Samsung.com line icons: filter, device, edit, download and more" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={pdGallerySrc} alt="Product gallery: the phone, AR and 360° buttons, and videos" /></Fragment>
 </Trio>
 
 <Metrics items={[
   { value: '12+', label: 'Markets on one navigation' },
-  { value: '4', label: 'Core page types designed' },
-  { value: '6', label: 'Months, with a team of twelve designers' },
+  { value: '4', label: 'Core page types' },
+  { value: '6', label: 'Months, twelve designers' },
 ]} />

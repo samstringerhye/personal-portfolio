@@ -63,12 +63,14 @@ import lifestyleAccountSrc from '../../assets/work/wab-2026/lifestyle-account.pn
 import screensGridSrc from '../../assets/work/wab-2026/screens-grid.jpeg'
 import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.png'
 import Trio from '../../components/Trio.astro'
+import Mock from '../../components/Mock.astro'
+import moodboardSrc from '../../assets/work/wab-2026/direction-vibrant-moodboard.png'
 
 <Meta client="Whataburger" role="Associate Design Director" agency="Razorfish" year={2026} />
 
 <ProseGroup>
 
-<p class="cs-intro">I cut Whataburger's path from home to checkout from 14 taps to 6 and handed off a rebuilt design system, 258 tokens and 90+ components, with every production screen in May 2026.</p>
+<p class="cs-intro">I cut Whataburger's path from home to checkout from 14 taps to 6, and handed off a rebuilt design system and every production screen in May 2026.</p>
 
 </ProseGroup>
 
@@ -93,13 +95,13 @@ import Trio from '../../components/Trio.astro'
 
 ## The challenge.
 
-The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, the interface leaned on generic QSR patterns, and ordering, rewards and location finding felt like separate products.
+The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, and ordering, rewards and locations felt like separate products.
 
 </ProseGroup>
 
-<Trio captions={["Three visual directions explored for a brand that felt generic", "The same home screen tested in each direction", "Values invented screen by screen, before the system"]}>
-  <Fragment slot="one"><DirectionExploration /></Fragment>
-  <Fragment slot="two"><Image src={directionTestingSrc} alt="Three visual directions tested against the same home screen wireframe: vibrant orange, clean modern, and dark premium" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+<Trio captions={["One wireframe, three directions", "The bold direction's moodboard", "Values invented screen by screen"]}>
+  <Fragment slot="one"><Mock kind="plain" src={directionTestingSrc} alt="Three visual directions tested on the same home screen" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={moodboardSrc} alt="Moodboard for the vibrant direction" /></Fragment>
   <Fragment slot="three"><ChaosToOrder /></Fragment>
 </Trio>
 
@@ -107,14 +109,14 @@ The old app worked, but it didn't feel like Whataburger. Ordering took too many 
 
 ## The approach.
 
-I merged the two strongest directions, then cut the order path: home leads with reorders and the nearest location, and customization shows only what's relevant at each step. Underneath, the rebuilt system, Pele, gives every screen 258 tokens named to map to React props.
+I merged the two strongest directions, then cut the order path: home leads with reorders, and customization shows only what matters at each step.
 
 </ProseGroup>
 
-<Trio captions={["Pele: primitives, semantic tokens and components in three tiers", "Customize: each ingredient one tap from the burger", "Confirm your meal: every change summarized before adding"]}>
-  <Fragment slot="one"><TokenArchitecture /></Fragment>
-  <Fragment slot="two"><DeviceFrame src={menuCustomizationSrc} alt="Customize your burger: progressive disclosure of toppings and ingredients" /></Fragment>
-  <Fragment slot="three"><DeviceFrame src={orderSummarySrc} alt="Order summary: full customization detail with consistent component patterns" /></Fragment>
+<Trio captions={["Customize in a tap", "Each ingredient one tap away", "Every change, summed up"]}>
+  <Fragment slot="one"><Mock kind="bleed" src={lifestyleMenuSrc} alt="A hand holding a phone, customizing a burger" /></Fragment>
+  <Fragment slot="two"><Mock kind="phone" src={menuCustomizationSrc} alt="Customize your burger" /></Fragment>
+  <Fragment slot="three"><Mock kind="phone" src={orderSummarySrc} alt="Confirm your meal: every change summarized" /></Fragment>
 </Trio>
 
 <ProseGroup>
@@ -126,17 +128,17 @@ I handed off the full system and every production screen in May 2026. The app la
 
 </ProseGroup>
 
-<Trio captions={["Every production screen, handed off together", "Rewards: tier progress and offers in one place", "Scan: earn, redeem and pay at the register"]}>
-  <Fragment slot="one"><Image src={screensGridSrc} alt="Complete screen inventory: all major flows shown together including home, onboarding, menu, rewards, scan, account, locations" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="two"><Image src={lifestyleRewardsSrc} alt="Rewards experience in context: phone on couch showing earn-as-you-eat screen with points balance" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="three"><Image src={lifestyleScanSrc} alt="Scan in-store: hand holding phone showing QR code for earning points at the register" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+<Trio captions={["Every screen, handed off together", "Rewards", "Scan at the register"]}>
+  <Fragment slot="one"><Mock kind="bleed" src={screensGridSrc} alt="Every production screen, shown together" /></Fragment>
+  <Fragment slot="two"><Mock kind="bleed" src={lifestyleRewardsSrc} alt="The rewards screen on a phone" /></Fragment>
+  <Fragment slot="three"><Mock kind="bleed" src={lifestyleScanSrc} alt="Scanning a QR code to earn points at the register" /></Fragment>
 </Trio>
 
 <Metrics items={[
   { value: '14 → 6', label: 'Taps from home to checkout' },
-  { value: '258', label: 'Tokens across three collections' },
+  { value: '258', label: 'Tokens' },
   { value: '90+', label: 'Components' },
-  { value: '11', label: 'Interactive color states' },
+  { value: '11', label: 'Color states' },
 ]} />
 
 <DiagramAnimations />

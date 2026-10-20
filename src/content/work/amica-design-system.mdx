@@ -20,83 +20,82 @@ featured: true
 sortOrder: 0
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
 ---
-import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import ButtonStates from '../../components/amica/ButtonStates.astro'
-import Device from '../../components/Device.astro'
 import ImagePair from '../../components/ImagePair.astro'
+import Trio from '../../components/Trio.astro'
+import Mock from '../../components/Mock.astro'
 import Metrics from '../../components/Metrics.astro'
 import homeDesktop from '../../assets/work/amica-design-system/figma/home-desktop.webp'
 import homeMobile from '../../assets/work/amica-design-system/figma/home-mobile.webp'
-import colorRule from '../../assets/work/amica-design-system/figma/color-rule.webp'
-import quoteSummary from '../../assets/work/amica-design-system/figma/quote-summary.webp'
-import coverAem from '../../assets/work/amica-design-system/figma/cover-aem.webp'
-import coverReact from '../../assets/work/amica-design-system/figma/cover-react.webp'
-import Trio from '../../components/Trio.astro'
-import legacyHomeSrc from '../../assets/work/amica-design-system/proof/amica-legacy-homepage.png'
-import templatesSrc from '../../assets/work/amica-design-system/homepage.png'
-import colorTokensSrc from '../../assets/work/amica-design-system/color-tokens.png'
-import autoPageSrc from '../../assets/work/amica-design-system/prototype/pcp-desktop.png'
+import legacyHome from '../../assets/work/amica-design-system/proof/amica-legacy-homepage.png'
+import legacyCard from '../../assets/work/amica-design-system/mock/legacy-hero-card.webp'
+import legacyPhoto from '../../assets/work/amica-design-system/mock/legacy-photo.webp'
+import lightDark from '../../assets/work/amica-design-system/mock/light-dark.webp'
+import quoteCard from '../../assets/work/amica-design-system/mock/quote-card.webp'
+import quoteSummaryMobile from '../../assets/work/amica-design-system/mock/quote-summary-mobile.webp'
+import autoPage from '../../assets/work/amica-design-system/mock/auto-page.webp'
+import quoteStep from '../../assets/work/amica-design-system/mock/quote-step.webp'
+import quoteBundle from '../../assets/work/amica-design-system/mock/quote-bundle.webp'
 
 <Meta client="Amica" role="Associate Design Director" agency="Razorfish" year={2026} />
 
 <ProseGroup>
 
-<p class="cs-intro">Amica relaunched amica.com on October 2, 2026. I led six designers to rebuild the design system underneath it: 615 pages, one library, two platforms.</p>
+<p class="cs-intro">Amica relaunched amica.com on October 2, 2026. I led six designers to rebuild the design system underneath it: 615 pages, two platforms.</p>
 
 </ProseGroup>
 
-<ImagePair leftCaption="The new homepage: a quote starts in the hero, the everyday tasks sit right under it" rightCaption="The same page on a phone">
-  <Fragment slot="left"><Device kind="laptop"><Image src={homeDesktop} alt="Amica.com homepage: a parent helping his son with a backpack in the kitchen, the Trustpilot rating and a quote form over it, quick links below" format="webp" sizes="(max-width: 768px) 100vw, 55vw" /></Device></Fragment>
-  <Fragment slot="right"><Device kind="phone"><Image src={homeMobile} alt="Amica.com homepage on mobile: the quote form under the hero photo" format="webp" sizes="(max-width: 768px) 100vw, 25vw" /></Device></Fragment>
+<ImagePair leftCaption="The new homepage" rightCaption="On a phone">
+  <Fragment slot="left"><Mock kind="browser" src={homeDesktop} alt="Amica.com homepage: a parent and son in the kitchen, the quote card over the photo" url="amica.com" /></Fragment>
+  <Fragment slot="right"><Mock kind="phone" src={homeMobile} alt="Amica.com homepage on a phone" /></Fragment>
 </ImagePair>
 
 <ProseGroup>
 
 ## The challenge.
 
-The library behind the old site had no tokens. Color was hard-coded, dark mode meant a second copy of every component, and components were filed by page type. The rebuild had to happen without pausing a sprint.
+The old library had no tokens. Color was hard-coded, dark mode meant a second copy of every component, and the rebuild couldn't pause a sprint.
 
 </ProseGroup>
 
-<Trio captions={["Amica.com before the relaunch, on the library I inherited", "The page templates the rebuild had to cover", "Color across the library: the ramps and the tokens on top of them"]}>
-  <Fragment slot="one"><Device kind="laptop"><Image src={legacyHomeSrc} alt="Amica.com homepage before the relaunch, with a purple call-to-action and legacy color palette" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device></Fragment>
-  <Fragment slot="two"><Image src={templatesSrc} alt="Homepage templates laid out on the Figma canvas, desktop and mobile" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
-  <Fragment slot="three"><Image src={colorTokensSrc} alt="Color documentation in Figma: ramps and token tables" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["Amica.com before the relaunch", "The old quote card", "The old photography"]}>
+  <Fragment slot="one"><Mock kind="browser" src={legacyHome} alt="Amica.com before the relaunch, with a purple call to action" url="amica.com" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={legacyCard} alt="The old quote card with a purple Get a Quote button" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={legacyPhoto} alt="The old hero photo: a family in their kitchen" /></Fragment>
 </Trio>
 
 <ProseGroup>
 
 ## The approach.
 
-Tokens name what you're painting, not where, so one button reads the right color on light and dark with no second copy. Each component carries its own states, sizes and rules, and the quote flow runs on the same parts, from the homepage ZIP code to the bundle summary.
+Tokens name what you paint, not where, so one button works on light and dark. The quote flow runs on the same parts, start to finish.
 
 </ProseGroup>
 
-<Trio captions={["The rule: the same elements on light and dark, and the token each one uses", "Buttons that carry their own states, sizes and colors", "The bundle quote: auto and home together, three packages side by side"]}>
-  <Fragment slot="one"><Image src={colorRule} alt="Two panels, light and dark green, each with a headline, supporting copy, a text link and a button, listing the color token behind every element" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="two"><ButtonStates /></Fragment>
-  <Fragment slot="three"><Device kind="laptop" page><Image src={quoteSummary} alt="Quote summary: bundled options for auto and home with a total price, and Essential, Advantage and Signature auto packages compared" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+<Trio captions={["One button, light and dark", "The new quote card", "Quoting, step by step"]}>
+  <Fragment slot="one"><Mock kind="plain" src={lightDark} alt="The same headline, link and button on a light and a dark panel" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={quoteCard} alt="The new quote card: product, ZIP code and Start my quote" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={quoteStep} alt="Quote flow, Vehicle Info step, under its progress bar" /></Fragment>
 </Trio>
 
 <ProseGroup>
 
 ## The outcome.
 
-Amica relaunched on the system on October 2, 2026, built to WCAG 2.1 AA, with a library and documentation for each platform: Adobe Experience Manager and React. A concept study before launch tested the direction with 500 people.
+Amica relaunched on the system in October 2026, built to WCAG 2.1 AA, on Adobe Experience Manager and React.
 
 </ProseGroup>
 
-<Trio captions={["The auto insurance page, built from the library", "The AEM system documentation", "The React system documentation"]}>
-  <Fragment slot="one"><Device kind="laptop"><Image src={autoPageSrc} alt="Amica auto insurance page: a driver smiling at the wheel, the quote card over the photo" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device></Fragment>
-  <Fragment slot="two"><Image src={coverAem} alt="Cover of the AEM System Documentation file, white type on dark green" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
-  <Fragment slot="three"><Image src={coverReact} alt="Cover of the React System Documentation file, dark type on mint" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["The auto insurance page", "Auto and home, quoted together", "The bundle quote on a phone"]}>
+  <Fragment slot="one"><Mock kind="browser" src={autoPage} alt="Amica auto insurance page: a driver at the wheel, the quote card beside him" url="amica.com" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={quoteBundle} alt="Quote summary: a house and car illustration over the auto and home prices" /></Fragment>
+  <Fragment slot="three"><Mock kind="phone" src={quoteSummaryMobile} alt="Quote summary on a phone" /></Fragment>
 </Trio>
 
 <Metrics items={[
   { value: '615', label: 'Pages on one system' },
-  { value: '62%', label: 'Rated it more trustworthy than the old site' },
-  { value: '70%', label: 'Associated it with a premium carrier' },
-  { value: '59%', label: 'Said it raised their intent to request a quote' },
+  { value: '62%', label: 'Rated it more trustworthy' },
+  { value: '70%', label: 'Saw a premium carrier' },
+  { value: '59%', label: 'More likely to get a quote' },
 ]} />
