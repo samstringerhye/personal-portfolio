@@ -107,6 +107,11 @@ const arrangement = arrangementOf(scene)
      short and fill the status bars' transparent overlays: not for the screens */
   html .device-scene img { max-height: none; background: none; }
   .device-scene .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  /* A video in its box on a shot (tours.ts): the page's dimmed nav bar and its cut-out UI over it */
+  .device-scene .shot .shot-video { position: absolute; overflow: hidden; }
+  .device-scene .shot .shot-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .device-scene .shot .shot-video-dim { position: absolute; left: 0; right: 0; background: rgb(0 0 0 / 0.42); }
+  .device-scene .shot .shot-video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
   .device-scene .shot .tap { position: absolute; width: 3.6cqw; aspect-ratio: 1; border-radius: 50%; background: rgba(11, 15, 26, .28); box-shadow: 0 0 0 .3cqw rgba(255, 255, 255, .7); translate: -50% -50%; opacity: 0; }
   /* Black behind the screen, a little past its edges: where the display's cut runs wider than the
      screen, it reads as bezel instead of letting the card color through */

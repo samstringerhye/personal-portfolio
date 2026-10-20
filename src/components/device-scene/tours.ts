@@ -24,6 +24,10 @@ interface Tour {
   /** A website: the domain in its browser's address bar, and the color at the top of its pages,
       under the status bar (browser.ts) */
   site?: { url: string; page: string }
+  /** A looping video on a screen, over the part of the image it stands in for: the shot it plays
+      on, its box as fractions of that image (x, y, width, height), the file under /motion/<tour>/,
+      and an overlay image (the page's UI over the video) cut to the same box */
+  video?: { shot: string; box: readonly [number, number, number, number]; src: string; overlay?: string; dim?: readonly [number, number] }
 }
 
 // Every screen is one the case study publishes (scripts/motion/device-screens.mjs)
@@ -47,13 +51,15 @@ export const TOURS = {
       { fade: 'home' },
     ],
   },
+  // The relaunched homepage from the Figma templates, its hero playing the brand anthem, scrolled
+  // down through the products to the dividend story
   amica: {
     site: { url: 'amica.com', page: '#00a890' },
-    shots: { home: 1440 / 900, quote: 1440 / 2159 },
+    shots: { home: 1440 / 2207 },
+    video: { shot: 'home', box: [0, 58 / 2207, 1, 793 / 2207], src: 'anthem.mp4', overlay: 'home-overlay.webp', dim: [0, 88 / 793] },
     steps: [
-      { hold: 'home' }, { tap: [0.352, 0.54] }, { push: 'quote' },
-      { hold: 'quote' }, { scroll: 0.5, over: 'quoteScroll' }, { hold: 'empathy' },
-      { fade: 'home' },
+      { hold: 'hero' }, { scroll: 0.55, over: 'homeScroll' }, { hold: 'products' },
+      { scroll: 1, over: 'restScroll' }, { hold: 'dividends' }, { scroll: 0, over: 'backScroll' },
     ],
   },
   bespoke: {
@@ -104,6 +110,26 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
     screen.append(d)
     shots[shot] = d
   }
+  // The video plays in its box on its shot, the page's UI cut out over it; it pauses with the tour
+  let video: HTMLVideoElement | null = null
+  if (tour.video) {
+    const [x, y, w, h] = tour.video.box
+    const box = document.createElement('div')
+    box.className = 'shot-video'
+    Object.assign(box.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${w * 100}%`, height: `${h * 100}%` })
+    video = document.createElement('video')
+    Object.assign(video, { src: `/motion/${name}/${tour.video.src}`, muted: true, loop: true, playsInline: true, preload: 'metadata' })
+    video.setAttribute('aria-hidden', 'true')
+    box.append(video)
+    if (tour.video.dim) {
+      const bar = document.createElement('div')
+      bar.className = 'shot-video-dim'
+      Object.assign(bar.style, { top: `${tour.video.dim[0] * 100}%`, height: `${tour.video.dim[1] * 100}%` })
+      box.append(bar)
+    }
+    if (tour.video.overlay) box.insertAdjacentHTML('beforeend', `<img src="/motion/${name}/${tour.video.overlay}" alt="" decoding="async">`)
+    shots[tour.video.shot].append(box)
+  }
   const first = Object.keys(tour.shots)[0]
   // Each screen is as tall as its image at the screen's width, and never shorter than the screen
   const fit = () => {
@@ -126,7 +152,11 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
     current = shot
   }
   show(first)
-  if (!tour.steps.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => ro.disconnect()
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // The video plays only while its card is on screen, and not at all under reduced motion
+  const vio = video && !reduced ? new IntersectionObserver(([e]) => { if (e.isIntersecting) video!.play().catch(() => {}); else video!.pause() }, { threshold: 0.2 }) : null
+  vio?.observe(art)
+  if (!tour.steps.length || reduced) return () => { ro.disconnect(); vio?.disconnect() }
 
   const anim = (el: HTMLElement, kf: Keyframe[], s: number, easing = 'ease') =>
     el.animate(kf, { duration: ms(s), easing, fill: 'forwards' }).finished
@@ -175,5 +205,5 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
   const io = new IntersectionObserver(([e]) => { on = e.isIntersecting && !stopped; if (on && !running) start() }, { threshold: 0.4 })
   io.observe(art)
   async function start() { running = true; while (on) await loop(); running = false }
-  return () => { stopped = true; on = false; io.disconnect(); ro.disconnect() }
+  return () => { stopped = true; on = false; io.disconnect(); ro.disconnect(); vio?.disconnect(); video?.pause() }
 }

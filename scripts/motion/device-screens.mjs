@@ -26,13 +26,8 @@ const screens = {
       category: ['samsung-redesign/revamp-pcd.jpg', { left: 0, top: 0, width: 2500, height: 3600 }],
     },
   },
-  amica: {
-    width: 1440,
-    shots: {
-      home: ['amica-design-system/hero.png'],
-      quote: ['amica-design-system/prototype-v2/get-a-quote-desktop.png'],
-    },
-  },
+  // amica: the homepage tour's home.webp, home-overlay.webp and anthem.mp4 come from the Figma
+  // templates and the brand anthem, outside this script (see public/motion/amica/README.md)
   // Phones beside the desktops in the arrangements, each one published mobile screen
   'cvs-mobile': {
     width: 720,

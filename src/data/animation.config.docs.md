@@ -234,8 +234,9 @@ The CVS.com (MacBook Air M2), Amica.com (MacBook Air 15), Samsung.com (Galaxy Z 
 | `samsung.homeScroll` | `5` | Homepage scrolling down to Appliances |
 | `samsung.appliances` | `1.2` | Appliances section before the tap |
 | `samsung.category` / `categoryScroll` / `bestSellers` | `1.4` / `3.5` / `2.2` | Washers & Dryers page: at the top, scrolling, then holding on Best Sellers |
-| `amica.home` | `2.2` | Amica.com homepage before the Get a quote tap |
-| `amica.quote` / `quoteScroll` / `empathy` | `1.4` / `3.5` / `2.2` | Get a quote page: at the top, scrolling, then holding on Empathy is our best policy |
+| `amica.hero` | `4` | Amica.com homepage holding on its hero, the brand anthem playing in it |
+| `amica.homeScroll` / `products` | `3.5` / `2.2` | Scrolling down to the product grid, then holding |
+| `amica.restScroll` / `dividends` / `backScroll` | `2.5` / `2.2` / `2.5` | On to the dividend story, holding, then back to the top |
 | `bespoke.depth` / `colors` / `summary` | `2` / `2.2` / `2.8` | Choose Depth, Choose Colors, then Your Design |
 
 ---

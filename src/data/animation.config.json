@@ -325,10 +325,12 @@
         "bestSellers": 2.2
       },
       "amica": {
-        "home": 2.2,
-        "quote": 1.4,
-        "quoteScroll": 3.5,
-        "empathy": 2.2
+        "hero": 4,
+        "homeScroll": 3.5,
+        "products": 2.2,
+        "restScroll": 2.5,
+        "dividends": 2.2,
+        "backScroll": 2.5
       },
       "bespoke": {
         "depth": 2,
