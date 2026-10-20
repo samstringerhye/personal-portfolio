@@ -166,6 +166,15 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ---
 
+## about (about.astro)
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `icons.float` | `10` | How far, in px, each 3D icon around the headshot bobs up and down |
+| `icons.tilt` | `6` | How far, in degrees, each icon rocks as it floats |
+| `icons.duration` | `3.6` | One float cycle |
+| `icons.stagger` | `0.45` | Offset between icons, so they don't move in step |
+
 ## caseStudy (Amica and Whataburger diagrams, Bespoke stepper)
 
 | Key | Default | What it controls |

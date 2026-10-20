@@ -268,6 +268,25 @@
     "carousel":    { "$ref": "#/definitions/seconds", "description": "Case study carousel" },
     "clientLogos": { "$ref": "#/definitions/seconds", "description": "About page client logo marquee" },
     "lottie":      { "$ref": "#/definitions/seconds", "description": "Looping Lottie players" },
+    "about": {
+      "type": "object",
+      "description": "About page: the 3D icons floating around the headshot",
+      "properties": {
+        "icons": {
+          "type": "object",
+          "properties": {
+            "float": { "type": "number", "minimum": 0, "description": "Bob distance, px" },
+            "tilt": { "type": "number", "minimum": 0, "description": "Rock angle, degrees" },
+            "duration": { "$ref": "#/definitions/duration" },
+            "stagger": { "$ref": "#/definitions/duration" }
+          },
+          "required": ["float", "tilt", "duration", "stagger"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["icons"],
+      "additionalProperties": false
+    },
     "caseStudy": {
       "type": "object",
       "description": "Case study diagrams (Amica and Whataburger)",

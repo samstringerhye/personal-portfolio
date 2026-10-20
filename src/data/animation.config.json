@@ -139,6 +139,14 @@
     "loopDuration": 2,
     "loopRepeatDelay": 0.5
   },
+  "about": {
+    "icons": {
+      "float": 10,
+      "tilt": 6,
+      "duration": 3.6,
+      "stagger": 0.45
+    }
+  },
   "caseStudy": {
     "buttonStates": {
       "hold": 1.6,

@@ -3,6 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import ClientLogos from '../components/ClientLogos.astro'
 import { Image } from 'astro:assets'
 import portrait from '../assets/about/sam-portrait.jpg'
+import { animations } from '../data/tokens'
+import headphone from '../assets/about/icons/headphone.png'
+import videoGame from '../assets/about/icons/video_game.png'
+import ghost from '../assets/about/icons/ghost.png'
+import flyingSaucer from '../assets/about/icons/flying_saucer.png'
+import clapperBoard from '../assets/about/icons/clapper_board.png'
+import books from '../assets/about/icons/books.png'
+import watch from '../assets/about/icons/watch.png'
+import jeans from '../assets/about/icons/jeans.png'
+import hammerAndWrench from '../assets/about/icons/hammer_and_wrench.png'
+import floppyDisk from '../assets/about/icons/floppy_disk.png'
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -19,6 +30,24 @@ const aboutJsonLd = {
   },
 }
 
+// Things from the interests list, as Fluent 3D emoji (MIT, Microsoft), on a ring around the photo
+const ICONS = [
+  { src: headphone, alt: 'Audiophile' },
+  { src: books, alt: 'Reader' },
+  { src: videoGame, alt: 'Gamer' },
+  { src: watch, alt: 'Watch nerd' },
+  { src: ghost, alt: 'Horror fiend' },
+  { src: clapperBoard, alt: 'Cinephile' },
+  { src: floppyDisk, alt: 'Archivist' },
+  { src: jeans, alt: 'Denim nerd' },
+  { src: flyingSaucer, alt: 'Sci-fi nerd' },
+  { src: hammerAndWrench, alt: 'Tinkerer' },
+].map((icon, i, all) => {
+  const a = (i / all.length) * Math.PI * 2 - Math.PI / 2
+  return { ...icon, x: 50 + 46 * Math.cos(a), y: 50 + 46 * Math.sin(a), size: i % 3 === 0 ? 17 : i % 3 === 1 ? 14 : 12 }
+})
+const float = animations.about.icons
+
 const skills = [
   { title: 'Design Leadership', desc: 'Leading teams of three to six designers, including six on Amica.com' },
   { title: 'Brand & Content Platforms', desc: 'Brand direction for Whataburger and Mashable, and the content authoring model behind Amica.com' },
@@ -29,30 +58,37 @@ const skills = [
 
 <BaseLayout title="About | Sam Stringer-Hye" description="About Sam Stringer-Hye | Associate Design Director at Razorfish." jsonLd={aboutJsonLd}>
   <section class="about-page" aria-label="About">
-    <h1 class="about-heading typo-display-md">About</h1>
-
     <div class="about-row about-row--intro">
-      <div class="about-portrait-cell" data-no-reveal>
-        <Image
-          src={portrait}
-          alt="Sam Stringer-Hye in glasses and a navy work jacket, standing in front of a red corrugated wall"
-          widths={[400, 640, 720, 960]}
-          sizes="(max-width: 768px) 100vw, 33vw"
-          format="webp"
-          quality={85}
-          loading="eager"
-          fetchpriority="high"
-          class="about-portrait"
-        />
-      </div>
       <div class="about-intro-right">
-        <h2 class="about-name typo-display-md">All that screen time actually led somewhere</h2>
+        <h1 class="about-name typo-display-md">All that screen time actually led somewhere</h1>
         <p class="about-bio typo-body-lg">
           I got my first computer at seven and never really looked up. That turned into 14 years across brand, editorial, and product, from Mashable and NowThis to leading client teams at Razorfish.
         </p>
         <p class="about-bio typo-body-lg">
           I'm the person who notices when the spacing is off, when a transition feels wrong, or when a component system only works in the deck.
         </p>
+      </div>
+      <div class="about-portrait-cell" data-no-reveal style={`--float: ${float.float}px; --tilt: ${float.tilt}deg; --float-duration: ${float.duration}s`}>
+        <div class="about-orbit">
+          <Image
+            src={portrait}
+            alt="Sam Stringer-Hye in glasses and a navy work jacket, standing in front of a red corrugated wall"
+            widths={[400, 640, 720, 960]}
+            sizes="(max-width: 768px) 80vw, 33vw"
+            format="webp"
+            quality={85}
+            loading="eager"
+            fetchpriority="high"
+            class="about-portrait"
+          />
+          <ul class="about-icons" aria-label="Things I'm into">
+            {ICONS.map((icon, i) => (
+              <li class="about-icon" style={`left: ${icon.x.toFixed(1)}%; top: ${icon.y.toFixed(1)}%; width: ${icon.size}%; animation-delay: -${(i * float.stagger).toFixed(2)}s`}>
+                <Image src={icon.src} alt={icon.alt} width={160} format="webp" loading="eager" />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -86,13 +122,6 @@ const skills = [
     grid-template-columns: subgrid;
   }
 
-  .about-heading {
-    grid-column: 1 / -1;
-    color: var(--color-text-primary);
-    margin: 0;
-    padding-block: var(--space-6);
-    padding-inline: var(--content-inset-md);
-  }
 
   .about-row {
     position: relative;
@@ -231,10 +260,6 @@ const skills = [
 
   /* ── Mobile ── */
   @media (--2x) {
-    .about-heading {
-      grid-column: 1 / -1;
-      padding-inline: var(--content-inset-sm);
-    }
 
     .about-portrait-cell,
     .about-intro-right {
