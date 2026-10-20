@@ -1140,11 +1140,20 @@ html.ek .case-study-body .cs-meta-value {
     grid-column: 1 / 11;
   }
 
-  html.ek .cs-section {
+  html.ek :is(.cs-section, .cs-section-pin) {
     display: grid;
     grid-template-columns: subgrid;
     column-gap: var(--grid-gutter);
     align-items: start;
+  }
+
+  html.ek .cs-section-pin {
+    grid-column: 1 / -1;
+  }
+
+  /* A body part after a full-width block keeps to the right 8 */
+  html.ek .cs-section > .cs-section-body {
+    grid-column: 5 / -1;
   }
 
   /* Sticky within its grid row, which is as tall as the body beside it */

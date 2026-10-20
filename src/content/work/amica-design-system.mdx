@@ -25,7 +25,7 @@ import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
 import ButtonStates from '../../components/amica/ButtonStates.astro'
 import Device from '../../components/Device.astro'
-import Carousel from '../../components/Carousel.astro'
+import ImagePair from '../../components/ImagePair.astro'
 import Metrics from '../../components/Metrics.astro'
 import TokenTiers from '../../components/amica/TokenTiers.astro'
 import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
@@ -130,29 +130,10 @@ A React prototype runs on the Figma tokens, and its quote flyout routes eight st
   thumbnailAlt="Amica home insurance product page in the prototype"
 />
 
-<Carousel label="Amica quote flow prototype">
-
-<Figure caption="Quote flyout, ZIP detected">
-  <BrowserFrame src={quoteFlyoutAddressSrc} alt="Quote flyout coverage picker with a ZIP code entered and location auto-detected as Forest Hills, NY" />
-</Figure>
-
-<Figure caption="Quote flyout, auto unavailable for a Hawaii ZIP">
-  <BrowserFrame src={quoteFlyoutNotAvailableSrc} alt="Quote flyout picker with the auto option disabled for a ZIP code where auto insurance isn't sold online" />
-</Figure>
-
-</Carousel>
-
-<Carousel label="Amica quote flow prototype">
-
-<Figure caption="Quote flyout, ZIP detected">
-  <BrowserFrame src={quoteFlyoutAddressSrc} alt="Quote flyout coverage picker with a ZIP code entered and location auto-detected as Forest Hills, NY" />
-</Figure>
-
-<Figure caption="Quote flyout, auto unavailable for a Hawaii ZIP">
-  <BrowserFrame src={quoteFlyoutNotAvailableSrc} alt="Quote flyout picker with the auto option disabled for a ZIP code where auto insurance isn't sold online" />
-</Figure>
-
-</Carousel>
+<ImagePair leftCaption="Quote flyout, ZIP detected" rightCaption="Quote flyout, auto unavailable for a Hawaii ZIP">
+  <Fragment slot="left"><BrowserFrame src={quoteFlyoutAddressSrc} alt="Quote flyout coverage picker with a ZIP code entered and location auto-detected as Forest Hills, NY" /></Fragment>
+  <Fragment slot="right"><BrowserFrame src={quoteFlyoutNotAvailableSrc} alt="Quote flyout picker with the auto option disabled for a ZIP code where auto insurance isn't sold online" /></Fragment>
+</ImagePair>
 
 <EmbeddedPrototype
   src="/work/amica-design-system/ambient-hero"
