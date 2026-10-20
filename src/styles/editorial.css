@@ -52,8 +52,11 @@ html.ek .nav-logo {
   padding-inline: 0 var(--space-3);
 }
 
-html.ek .nav-links li:last-child .nav-link {
-  padding-right: 0;
+/* The last pill's text lines up with the page margin */
+@media (min-width: 48.0625rem) {
+  html.ek .nav-links {
+    margin-right: calc(-1 * var(--space-3));
+  }
 }
 
 html.ek .footer-links :is(.footer-link):last-child {
@@ -399,16 +402,33 @@ html.ek .nav-links li {
 html.ek .nav-link {
   font-family: var(--font-sans);
   color: var(--color-text-primary);
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 0.35em;
-  text-decoration-thickness: 1px;
-  transition: text-decoration-color var(--duration-short) ease;
+  text-decoration: none;
 }
 
-html.ek .nav-link:hover,
-html.ek .nav-link.active {
-  text-decoration-color: currentColor;
+/* Desktop: the links are pills, the current page filled in the card gray, a lighter tint on hover.
+   The phone menu keeps its full-width rows */
+@media (min-width: 48.0625rem) {
+  html.ek .nav-links {
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  html.ek .nav-link,
+  html.ek .nav-links li:last-child .nav-link {
+    flex: none;
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border-radius: 999px;
+    transition: background-color var(--duration-short) ease;
+  }
+
+  html.ek .nav-link:hover {
+    background: color-mix(in srgb, var(--ek-card) 60%, transparent);
+  }
+
+  html.ek .nav-link.active {
+    background: var(--ek-card);
+  }
 }
 
 @media (--2x) {

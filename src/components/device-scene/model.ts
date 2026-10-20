@@ -130,6 +130,49 @@ function screenMatrix(w: ArrayLike<number>, o: number, a: number, s: number, fw:
   return `matrix3d(${m.join(',')})`
 }
 
+/** Back to front: the order the screens stack in. By their centers' depth, then corrected wherever
+    two overlap on screen, by which display a ray from the camera meets first there: one device
+    turned in front of part of another must cover that part of its screen too. Displays never pass
+    through each other, so one of two is in front across all of their overlap. m holds each
+    display's world matrix, half its width and height in its own units, the camera on the z axis */
+function stacking(m: Float32Array, half: number[][], distance: number): number[] {
+  const n = half.length
+  const col = (i: number, c: number) => [m[i * 16 + c * 4], m[i * 16 + c * 4 + 1], m[i * 16 + c * 4 + 2]]
+  const dot = (a: number[], b: number[]) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+  const sub = (a: number[], b: number[]) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
+  const eye = [0, 0, distance]
+  // Is display j in front of display i, behind it, or not over it at all, seen at points across i
+  const ahead = (i: number, j: number) => {
+    const [xi, yi, oi] = [col(i, 0), col(i, 1), col(i, 3)]
+    const [xj, yj, zj, oj] = [col(j, 0), col(j, 1), col(j, 2), col(j, 3)]
+    let votes = 0
+    for (const u of [-0.45, 0, 0.45]) for (const v of [-0.45, 0, 0.45]) {
+      const lu = u * 2 * half[i][0], lv = v * 2 * half[i][1]
+      const p = [0, 1, 2].map(k => oi[k] + xi[k] * lu + yi[k] * lv)
+      const ray = sub(p, eye)
+      const denom = dot(ray, zj)
+      if (Math.abs(denom) < 1e-9) continue
+      // Where the ray meets j's plane: t = 1 at p
+      const t = dot(sub(oj, eye), zj) / denom
+      if (t <= 0) continue
+      const hit = sub([0, 1, 2].map(k => eye[k] + ray[k] * t), oj)
+      if (Math.abs(dot(hit, xj) / dot(xj, xj)) > half[j][0] || Math.abs(dot(hit, yj) / dot(yj, yj)) > half[j][1]) continue
+      votes += t < 1 ? 1 : -1
+    }
+    return Math.sign(votes)
+  }
+  const order = Array.from({ length: n }, (_, i) => i).sort((p, q) => m[p * 16 + 14] - m[q * 16 + 14])
+  // A few passes of swaps settle three or four screens
+  for (let pass = 0; pass < n; pass++) {
+    for (let k = 0; k < n - 1; k++) {
+      const [back, front] = [order[k], order[k + 1]]
+      // The one placed in front is actually behind where they overlap
+      if (ahead(front, back) > 0 || ahead(back, front) < 0) [order[k], order[k + 1]] = [front, back]
+    }
+  }
+  return order
+}
+
 let tracking = false
 // When the page last scrolled or a device was last dragged: while neither happens, only the idle
 // motion is moving the devices, and they redraw at half rate
@@ -207,14 +250,18 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   // The screens' scale and shift follow the renderer's framing (render.ts)
   const [cx, cy] = backend.geometry.center
   let scale = 1
+  // The camera's distance from the arrangement (meters), on the z axis, as render.ts places it
+  let distance = 1
   const fit = (nw: number, nh: number) => {
-    scale = nh / viewHeightAt(backend.geometry, nw, nh)
+    const vh = viewHeightAt(backend.geometry, nw, nh)
+    scale = nh / vh
+    distance = (vh / 2) / Math.tan((fov / 2) * Math.PI / 180)
     view.style.translate = `${-cx * scale}px ${cy * scale}px`
   }
   fit(w, h)
   // Lays every screen on its display; nearer displays stack over farther ones
   const place = (m: Float32Array) => {
-    const order = faces.map((_, i) => i).sort((p, q) => m[p * 16 + 14] - m[q * 16 + 14])
+    const order = stacking(m, sizes.map(z => [z.a * z.fw / 2, z.a * z.fh / 2]), distance)
     faces.forEach((face, i) => {
       const { fw, fh, a } = sizes[i]
       face.style.transform = screenMatrix(m, i * 16, a, scale, fw, fh)

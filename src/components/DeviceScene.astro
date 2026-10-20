@@ -99,15 +99,24 @@ const arrangement = arrangementOf(scene)
   .device-scene [data-browser~="phone"] .lock { width: 2.8cqw; }
   .device-scene [data-browser~="phone"] .tabs { width: 6.5cqw; border-width: 0.6cqw; border-radius: 1.4cqw; font-size: 3.4cqw; }
   .device-scene [data-browser~="phone"] .dots { width: 1.2cqw; }
-  /* Whataburger (homescreen.ts): the app icon alone on a light home screen. Sizes in cqw of the
-     360px screen */
-  .device-scene .home .screen { display: grid; place-items: center; background: linear-gradient(160deg, #F2F3F5 0%, #DADDE3 100%); }
-  .device-scene .home-time { position: absolute; top: 4.4cqw; left: 11cqw; margin: 0; font: 600 4.6cqw/1 var(--font-sans); color: #0B0D1B; }
-  .device-scene .home-app { display: grid; justify-items: center; gap: 3cqw; }
-  .device-scene .home-icon { width: 30cqw; aspect-ratio: 1; border-radius: 22.5%; background: #FD7801; box-shadow: 0 1.5cqw 5cqw rgba(11, 13, 27, 0.16); display: grid; }
-  .device-scene .home-icon::before { content: ''; background: #FFFFFF; -webkit-mask: url(/logos/whataburger.svg) center / 66% no-repeat; mask: url(/logos/whataburger.svg) center / 66% no-repeat; }
+  /* Whataburger (homescreen.ts): an iPhone home screen, the Whataburger icon among generic apps.
+     Sizes in cqw of the 360px screen */
+  .device-scene .home .screen { position: relative; display: flex; flex-direction: column; background: radial-gradient(120% 80% at 20% 10%, #f6b58f 0%, transparent 60%), radial-gradient(120% 90% at 90% 90%, #6f7fd8 0%, transparent 60%), linear-gradient(170deg, #e88c74 0%, #8f6fb8 55%, #3d4c9a 100%); font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+  .device-scene .home-status { display: flex; justify-content: space-between; align-items: center; height: 14cqw; padding: 2cqw 9cqw 0 11cqw; color: #fff; font-size: 4.4cqw; font-weight: 600; }
+  .device-scene .home-status-icons { width: 18cqw; height: auto; }
+  .device-scene .home-grid { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 6cqw; padding: 5cqw 6cqw 0; }
+  .device-scene .home-app { display: grid; justify-items: center; gap: 1.6cqw; }
+  .device-scene .home-icon { display: grid; place-items: center; width: 16.4cqw; aspect-ratio: 1; border-radius: 23%; box-shadow: inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.12); }
+  /* The other apps in iOS's tinted look, frosted and monochrome, so the Whataburger icon is the one
+     color on the screen */
+  .device-scene .home-icon:not(.home-wab) { background: rgba(255, 255, 255, 0.22) !important; backdrop-filter: blur(4px); }
+  .device-scene .home-icon svg { width: 58%; height: auto; }
+  .device-scene .home-wab { background: #FD7801; box-shadow: 0 1cqw 3cqw rgba(11, 13, 27, 0.25); }
+  .device-scene .home-wab::before { content: ''; width: 100%; height: 100%; background: #FFFFFF; -webkit-mask: url(/logos/whataburger.svg) center / 66% no-repeat; mask: url(/logos/whataburger.svg) center / 66% no-repeat; }
+  .device-scene .home-label { font-size: 3.1cqw; font-weight: 500; color: #fff; text-shadow: 0 0.3cqw 1cqw rgba(0, 0, 0, 0.25); white-space: nowrap; }
+  .device-scene .home-search { align-self: center; margin-top: auto; margin-bottom: 4cqw; padding: 1.6cqw 4.5cqw; border-radius: 999px; background: rgba(255, 255, 255, 0.25); color: #fff; font-size: 3.4cqw; font-weight: 500; backdrop-filter: blur(4px); }
+  .device-scene .home-dock { display: flex; justify-content: space-between; margin: 0 4cqw 4.5cqw; padding: 4cqw 4.5cqw; border-radius: 11cqw; background: rgba(255, 255, 255, 0.28); backdrop-filter: blur(6px); }
   .device-scene:not(.is-3d) .home { width: auto; height: 80%; border-radius: 13cqw; box-shadow: 0 0 0 2.4cqw #111; overflow: hidden; }
-  .device-scene .home-label { font: 500 4.4cqw/1 var(--font-sans); color: #0B0D1B; }
   /* The case study's image rule (max-height 100vh, a page background) would cut the tours' long pages
      short and fill the status bars' transparent overlays: not for the screens */
   html .device-scene img { max-height: none; background: none; }
