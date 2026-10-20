@@ -4,6 +4,7 @@
 // scroll past in the other 8. A section starts at a <ProseGroup> that opens with an h2 or h3, or at a
 // <ZigzagSection>. In a section with visuals, the first paragraph joins the heading in the head.
 // Full-width blocks (carousels) sit between body parts, across all 12 columns.
+//   <div class="cs-section"><div class="cs-section-pin">head, body</div>carousel, body…</div>
 
 const FULL_WIDTH = new Set(['Carousel'])
 
@@ -48,10 +49,16 @@ function liftLead(section) {
 
 function build(section) {
   liftLead(section)
-  const children = [div('cs-section-head prose-group', section.head)]
+  // The head pins only beside its own visuals: head and first body share a wrapper, so a full-width
+  // block after them (a carousel) starts below where the pin lets go
+  const children = []
+  let head = div('cs-section-head prose-group', section.head)
   let body = []
   const flush = () => {
-    if (body.length) children.push(div('cs-section-body', body))
+    if (head) {
+      children.push(div('cs-section-pin', body.length ? [head, div('cs-section-body', body)] : [head]))
+      head = null
+    } else if (body.length) children.push(div('cs-section-body', body))
     body = []
   }
   for (const node of section.items) {
