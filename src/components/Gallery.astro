@@ -1,0 +1,21 @@
+---
+/**
+ * A run of visuals named for what was made ("Pay my bill", "Type and color"): a quiet label, an
+ * optional sentence, then Panels on the 12 columns, full or half width, with tight gutters.
+ */
+interface Props {
+  title: string
+  note?: string
+}
+
+const { title, note } = Astro.props
+const id = `gallery-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
+---
+
+<section class="gallery" aria-labelledby={id}>
+  <div class="gallery-head">
+    <h2 id={id} class="gallery-title">{title}</h2>
+    {note && <p class="gallery-note">{note}</p>}
+  </div>
+  <div class="gallery-grid"><slot /></div>
+</section>

@@ -21,79 +21,68 @@ heroImage: "../../assets/work/cvs-redesign/cvs-header-2.jpg"
 featured: true
 sortOrder: 3
 tags: ["Design System", "E-commerce", "Accessibility", "Typography"]
+tint: "#F4EFEA"
 ---
-import Meta from '../../components/Meta.astro'
-import ProseGroup from '../../components/ProseGroup.astro'
-import ImagePair from '../../components/ImagePair.astro'
-import Trio from '../../components/Trio.astro'
-import Mock from '../../components/Mock.astro'
+import Story from '../../components/Story.astro'
+import Gallery from '../../components/Gallery.astro'
+import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
-import iconSetSrc from '../../assets/work/cvs-redesign/frame-10558.png'
-import iconGridSrc from '../../assets/work/cvs-redesign/mock/icon-grid.webp'
-import componentASrc from '../../assets/work/cvs-redesign/mock/component-a.webp'
-import visualSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
-import shopPhone from '../../assets/work/cvs-redesign/mock/shop-phone.webp'
-import brandPhone from '../../assets/work/cvs-redesign/mock/brand-phone.webp'
-import summerCard from '../../assets/work/cvs-redesign/mock/summer-card.webp'
-import componentBSrc from '../../assets/work/cvs-redesign/mock/component-b.webp'
+import homeDesktop from '../../assets/work/cvs-redesign/figma/home-desktop.webp'
+import homeMobile from '../../assets/work/cvs-redesign/figma/home-mobile.webp'
+import beautyMobile from '../../assets/work/cvs-redesign/figma/beauty-mobile.webp'
+import nailPolishMobile from '../../assets/work/cvs-redesign/figma/nail-polish-mobile.webp'
+import sitemap from '../../assets/work/cvs-redesign/figma/sitemap.webp'
+import sparks from '../../assets/work/cvs-redesign/figma/sparks.webp'
+import sparkGrid from '../../assets/work/cvs-redesign/figma/spark-grid.webp'
+import sparkBlack from '../../assets/work/cvs-redesign/figma/spark-black.webp'
+import pdpDesktop from '../../assets/work/cvs-redesign/figma/pdp-desktop.webp'
+import cardEssie from '../../assets/work/cvs-redesign/figma/card-essie.webp'
+import fulfillment from '../../assets/work/cvs-redesign/figma/fulfillment.webp'
+import minicartMobile from '../../assets/work/cvs-redesign/figma/minicart-mobile.webp'
+import filtersMobile from '../../assets/work/cvs-redesign/figma/filters-mobile.webp'
 
-<Meta client="CVS" role="Associate Design Director" agency="Razorfish" year={2022} />
+<Story
+  client="CVS"
+  role="Associate Design Director"
+  agency="Razorfish"
+  year={2022}
+  made={['Design system', 'Icon family', 'Page templates']}
+  outcome="The CVS Shop Playbook: nine page templates, from the shop homepage to the product page, built from one component library and a new family of icons."
+  problem="CVS sells prescriptions and lipstick in one shop: 14 departments and about 90 categories. Shoppers found the old site crowded and hard to browse."
+  did="I led the design system: one type scale set in CVS Health Sans Light, four spacing values, icons drawn on one circular grid, and the components every template is built from."
+/>
 
-<ProseGroup>
+<Gallery title="The shop">
+  <Panel kind="page" src={homeDesktop} alt="CVS Shop homepage: a back-to-school hero and the ExtraBucks welcome" />
+  <Panel kind="screens" screens={[
+    { src: homeMobile, alt: 'The shop homepage on a phone' },
+    { src: beautyMobile, alt: 'The Beauty department with the ExtraCare BeautyClub card' },
+    { src: nailPolishMobile, alt: 'Nail polish: quick filters and product cards' },
+  ]} />
+</Gallery>
 
-<p class="cs-intro">I led the design system behind CVS.com's shop: one type scale, one icon grid and a component library, built by five designers in three months.</p>
+<Gallery title="Where it started" note="The shop as it stood in April 2022: 14 departments, each with its own list of categories.">
+  <Panel kind="bleed" ratio="2400 / 848" src={sitemap} alt="Site map of the old shop: 14 department headers over about 90 category tiles" />
+</Gallery>
 
-</ProseGroup>
+<Gallery title="Sparks" note="A new family of icons for CVS, each drawn on a circular grid, in CVS red.">
+  <Panel kind="piece" ratio="16 / 8" multiply src={sparks} alt="28 red Sparks in a grid of seven by four" />
+  <Panel kind="piece" span="half" ratio="1 / 1" multiply src={sparkGrid} alt="One Spark, a four-point star, on its circular construction grid" />
+  <Panel kind="bleed" span="half" ratio="1 / 1" tint="#000000" src={sparkBlack} alt="One white Spark on black" />
+</Gallery>
 
-<ImagePair leftCaption="The homepage" rightCaption="The homepage on a phone">
-  <Fragment slot="left"><Mock kind="browser" src="/motion/cvs/home.webp" alt="CVS.com homepage with a back-to-school promotion" url="cvs.com" /></Fragment>
-  <Fragment slot="right"><Mock kind="phone" src="/motion/cvs-mobile/home.webp" alt="CVS.com homepage on a phone" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-## The challenge.
-
-CVS is a pharmacy and a retailer, and its shop grew through acquisitions: fractured type, mixed icons, one-off components. The site was live, so nothing could start over.
-
-</ProseGroup>
-
-<Trio captions={["One brand, pharmacy to beauty", "Pharmacy and retail, one menu", "Partner brands inside CVS"]}>
-  <Fragment slot="one"><Mock kind="plain" src={visualSrc} alt="CVS brand visual language: type, color, products and promotions" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={shopPhone} alt="CVS shop menu on a phone: Beauty, Baby and Child, Vitamins and every department" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={brandPhone} alt="Neutrogena's skin care page on CVS.com, on a phone" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The approach.
-
-I started with what every page shares: one type scale, and every icon drawn on one grid in CVS red. Pages are assembled from one library of parts.
-
-</ProseGroup>
-
-<Trio captions={["One icon family, in CVS red", "Every icon on one grid", "A product card"]}>
-  <Fragment slot="one"><Mock kind="plain" src={iconSetSrc} alt="CVS icon and illustration set, drawn in red" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={iconGridSrc} alt="A CVS sparkle icon on its construction grid" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={componentASrc} alt="A CVS product card component on a phone" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The outcome.
-
-New pages are assembled from shared parts instead of built one component at a time.
-
-</ProseGroup>
-
-<Trio captions={["The shop, built from the library", "A promotion module", "A beauty promotion"]}>
-  <Fragment slot="one"><Mock kind="browser" src="/motion/cvs/shop.webp" alt="CVS.com shop menu: categories, featured and trending" url="cvs.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={componentBSrc} alt="A CVS promotion module on a phone" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={summerCard} alt="A beauty promotion card: Get a glowing summer look" /></Fragment>
-</Trio>
+<Gallery title="Product pages" note="Red stays rare: Add to cart is a thin red outline, and pickup, delivery and shipping sit side by side.">
+  <Panel kind="page" src={pdpDesktop} alt="Product page: a CeraVe jar beside its price, coupons and fulfillment choices" />
+  <Panel kind="piece" span="half" ratio="4 / 5" src={cardEssie} alt="A product card: essie nail polish, its colors, price and an outlined Add to cart" />
+  <Panel kind="piece" span="half" ratio="4 / 5" multiply src={fulfillment} alt="How do you want to receive this: Pickup, Local delivery or Shipping" />
+  <Panel kind="screens" screens={[
+    { src: filtersMobile, alt: 'Filters and sort on a phone' },
+    { src: minicartMobile, alt: 'Added to your basket, with savings and ExtraBucks earned' },
+  ]} />
+</Gallery>
 
 <Metrics items={[
-  { value: '4', label: 'Page types, one library' },
-  { value: '5', label: 'Designers' },
-  { value: '3', label: 'Months, on a live site' },
+  { value: '9', label: 'Page templates' },
+  { value: '33', label: 'Sparks in the icon family' },
+  { value: '4', label: 'Spacing values' },
 ]} />

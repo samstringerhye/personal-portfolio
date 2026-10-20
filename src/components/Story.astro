@@ -1,0 +1,49 @@
+---
+/**
+ * The whole story in one block under the hero: the facts in the left columns, then the outcome as
+ * the lead and the problem and what I did, a sentence or two each. The visuals after it carry the
+ * rest (Gallery, Panel).
+ */
+interface Props {
+  client: string
+  role: string
+  agency: string
+  year: number | string
+  /** What I made, one line each */
+  made: string[]
+  outcome: string
+  problem: string
+  did: string
+}
+
+const { client, role, agency, year, made, outcome, problem, did } = Astro.props
+const facts: [string, string | string[]][] = [
+  ['Client', client],
+  ['Role', role],
+  ['Agency', agency],
+  ['Year', String(year)],
+  ['Made', made],
+]
+---
+
+<section class="story" aria-label="Summary">
+  <dl class="story-facts">
+    {facts.map(([label, value]) => (
+      <div class="story-fact">
+        <dt class="typo-ui-caps">{label}</dt>
+        {(Array.isArray(value) ? value : [value]).map((v) => <dd>{v}</dd>)}
+      </div>
+    ))}
+  </dl>
+  <div class="story-text">
+    <p class="story-lead">{outcome}</p>
+    <div class="story-part">
+      <h2 class="typo-ui-caps">The problem</h2>
+      <p>{problem}</p>
+    </div>
+    <div class="story-part">
+      <h2 class="typo-ui-caps">What I did</h2>
+      <p>{did}</p>
+    </div>
+  </div>
+</section>

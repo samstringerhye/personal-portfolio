@@ -23,79 +23,63 @@ heroImage: "../../assets/work/bespoke-design-studio/scene-2-1.png"
 featured: true
 sortOrder: 2
 tags: ["Design System", "E-commerce", "Interactive", "Motion Design"]
+tint: "#F2EEE8"
 ---
-import Meta from '../../components/Meta.astro'
-import ProseGroup from '../../components/ProseGroup.astro'
-import ImagePair from '../../components/ImagePair.astro'
-import Trio from '../../components/Trio.astro'
-import Mock from '../../components/Mock.astro'
+import Story from '../../components/Story.astro'
+import Gallery from '../../components/Gallery.astro'
+import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
-import desktop06 from '../../assets/work/bespoke-design-studio/desktop-06.png'
-import mobile06 from '../../assets/work/bespoke-design-studio/mobile-06.png'
-import desktop03b from '../../assets/work/bespoke-design-studio/desktop-03b.png'
-import mobile04b from '../../assets/work/bespoke-design-studio/mobile-04b.png'
-import mobile03b from '../../assets/work/bespoke-design-studio/mobile-03b.png'
-import overview from '../../assets/work/bespoke-design-studio/ha-bespoke-kitchen-desktop-006.jpg'
-import stepDepth from '../../assets/work/bespoke-design-studio/mock/step-depth.webp'
-import stepColors from '../../assets/work/bespoke-design-studio/mock/step-colors.webp'
-import yourDesign from '../../assets/work/bespoke-design-studio/mock/your-design.webp'
-import finalSrc from '../../assets/work/bespoke-design-studio/desktop-13.png'
-import simulator from '../../assets/work/bespoke-design-studio/mock/simulator.webp'
+import yellowDesktop from '../../assets/work/bespoke-design-studio/figma/yellow-desktop.webp'
+import yellowMobile from '../../assets/work/bespoke-design-studio/figma/yellow-mobile.webp'
+import configMobile from '../../assets/work/bespoke-design-studio/figma/config-mobile.webp'
+import selections from '../../assets/work/bespoke-design-studio/figma/selections.webp'
+import fridgeCloseup from '../../assets/work/bespoke-design-studio/figma/fridge-closeup.webp'
+import kitchenRender from '../../assets/work/bespoke-design-studio/figma/kitchen-render.webp'
+import panelDesktop from '../../assets/work/bespoke-design-studio/figma/panel-desktop.webp'
+import panelMobile from '../../assets/work/bespoke-design-studio/figma/panel-mobile.webp'
+import builtDesktop from '../../assets/work/bespoke-design-studio/figma/built-desktop.webp'
+import builtSummaryMobile from '../../assets/work/bespoke-design-studio/figma/built-summary-mobile.webp'
+import kvMobile from '../../assets/work/bespoke-design-studio/figma/kv-mobile.webp'
 
-<Meta client="Samsung" role="Associate Design Director" agency="Razorfish" year="2022–2025" />
+<Story
+  client="Samsung"
+  role="Associate Design Director"
+  agency="Razorfish"
+  year="2022–2025"
+  made={['Configurator UX and UI', 'Kitchen simulator', 'Motion']}
+  outcome="Shoppers who used the configurator added fridges to cart at more than 6 times the rate of product pages. Over 12 months it drove nine figures in revenue."
+  problem="A Bespoke fridge means a model, a size and a color for each of four door panels. Online, every choice arrived at once, and people left."
+  did="I ordered the decisions the way a salesperson would: products, model, depth, then colors, one panel at a time. Each step appears once the last is settled, and the steps stay in view."
+/>
 
-<ProseGroup>
+<Gallery title="Bespoke Design Studio">
+  <Panel kind="page" ratio="5 / 3" src={yellowDesktop} alt="A sunrise-yellow Bespoke fridge in a white kitchen, the finish swatches beside it" />
+  <Panel kind="screens" screens={[
+    { src: configMobile, alt: 'Choose your kitchen configuration: seven appliance tiles' },
+    { src: yellowMobile, alt: 'The same yellow fridge on a phone, with Save' },
+  ]} />
+</Gallery>
 
-<p class="cs-intro">Shoppers who used the configurator added fridges to cart at more than 6 times the rate of product pages. Over 12 months it drove nine figures in revenue.</p>
+<Gallery title="The choices" note="Seven appliances, each with its own steps, and a dozen finishes for every door panel.">
+  <Panel kind="piece" ratio="16 / 9" tint="#F7F7F7" src={selections} alt="Selections: refrigerator, range, cooktop, wall oven, dishwasher, microwave and range hood, each with its steps" />
+  <Panel kind="bleed" ratio="16 / 9" src={kitchenRender} alt="A charcoal kitchen render with a white Bespoke fridge" />
+</Gallery>
 
-</ProseGroup>
+<Gallery title="One decision at a time" note="Model, then depth, then color, one panel at a time, with every step in view.">
+  <Panel kind="page" ratio="5 / 3" src={panelDesktop} alt="Model, Depth and Color tabs, one door turned yellow, and a hint to click a panel" />
+  <Panel kind="screens" span="half" screens={[
+    { src: panelMobile, alt: 'On a phone: one panel outlined, four swatches for it' },
+  ]} />
+  <Panel kind="bleed" span="half" src={fridgeCloseup} alt="The yellow fridge with one door panel outlined" />
+</Gallery>
 
-<ImagePair leftCaption="Desktop: step 3 of 4" rightCaption="Mobile: the same step">
-  <Fragment slot="left"><Mock kind="browser" src={desktop06} alt="Configurator: rendered kitchen beside the Choose Depth step" url="samsung.com" /></Fragment>
-  <Fragment slot="right"><Mock kind="phone" src={mobile06} alt="Configurator on mobile: the kitchen above the Choose Depth step" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-## The challenge.
-
-A Bespoke fridge means a model, a size and colors for four door panels. Online, every choice arrived at once, and people left.
-
-</ProseGroup>
-
-<Trio captions={["Every option at once", "Specs to compare on mobile", "More choices, one screen"]}>
-  <Fragment slot="one"><Mock kind="browser" src={desktop03b} alt="Refrigerator comparison table over the kitchen" url="samsung.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="phone" src={mobile03b} alt="Mobile refrigerator comparison" /></Fragment>
-  <Fragment slot="three"><Mock kind="phone" src={mobile04b} alt="Mobile refrigerator detail with depth options" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The approach.
-
-I ordered the decisions the way a salesperson would: products, type, depth, then colors. Each appears only once the last is settled, with the steps always in view.
-
-</ProseGroup>
-
-<Trio captions={["Four steps, always in view", "One decision at a time", "Colors come last"]}>
-  <Fragment slot="one"><Mock kind="browser" src={overview} alt="Kitchen configurator with the four steps above the scene" url="samsung.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={stepDepth} alt="Choose Depth, step 3 of 4" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={stepColors} alt="Choose Colors, step 4 of 4: a finish for each door panel" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The outcome.
-
-The tool grew from refrigerators to laundry in 2022, then to a full kitchen simulator in 2024 with 36 models.
-
-</ProseGroup>
-
-<Trio captions={["The finished kitchen, priced", "Your design, before checkout", "The kitchen simulator's render"]}>
-  <Fragment slot="one"><Mock kind="browser" src={finalSrc} alt="The finished kitchen with every appliance priced" url="samsung.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={yourDesign} alt="Your Design: each appliance with its price and a total" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={simulator} alt="The kitchen simulator's render of a fridge with tinted door panels" /></Fragment>
-</Trio>
+<Gallery title="As built" note="The fridge simulator running in 2021, and the summary that turns a design into a cart line.">
+  <Panel kind="page" ratio="5 / 3" src={builtDesktop} alt="The built simulator: a navy and rose fridge in a styled kitchen" />
+  <Panel kind="screens" span="half" screens={[
+    { src: builtSummaryMobile, alt: 'Your Bespoke design, $1,798.99, with Add to cart' },
+  ]} />
+  <Panel kind="bleed" span="half" src={kvMobile} alt="The launch key visual: a sky blue and grey Bespoke fridge in a pale kitchen" />
+</Gallery>
 
 <Metrics items={[
   { value: '6x+', label: 'Fridge add-to-cart vs product pages' },

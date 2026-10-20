@@ -1,0 +1,80 @@
+---
+/**
+ * One visual on a field of the client's tint, frameless, with the room inside the panel:
+ * - screens: one to four phone screens side by side, each a rounded card (top of the screen)
+ * - page: a tall page, centered and cut off by the panel's bottom edge
+ * - piece: a component, a crop or a diagram, centered and contained
+ * - bleed: a photo filling the panel
+ * - video: a muted loop filling the panel; plays in view, holds its poster for reduced motion
+ * - slot: anything else (a Lottie grid), filling the panel
+ */
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+type Src = ImageMetadata | string
+interface Props {
+  kind: 'screens' | 'page' | 'piece' | 'bleed' | 'video' | 'slot'
+  src?: Src
+  alt?: string
+  screens?: { src: Src; alt: string }[]
+  span?: 'full' | 'half'
+  /** Panel color, when it differs from the case study's tint */
+  tint?: string
+  /** Panel aspect ratio for page, piece, bleed and video */
+  ratio?: string
+  poster?: string
+  caption?: string
+  /** Multiply the image onto the tint, so a crop's white background drops out */
+  multiply?: boolean
+  /** Video only: fill the panel instead of showing the whole frame */
+  cover?: boolean
+}
+
+const { kind, src, alt = '', screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
+const half = span === 'half'
+const aspect = ratio ?? (kind === 'screens' || kind === 'slot' ? undefined : half ? '4 / 5' : '16 / 10')
+const style = [tint && `--panel-tint: ${tint}`, aspect && `--panel-ratio: ${aspect}`, kind === 'screens' && `--n: ${screens.length}`]
+  .filter(Boolean)
+  .join('; ')
+const sizes = half ? '(max-width: 768px) 92vw, 46vw' : '(max-width: 768px) 92vw, 90vw'
+const screenSizes = '(max-width: 768px) 45vw, 18rem'
+const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
+---
+
+<figure class:list={['panel', `panel--${kind}`, half && 'panel--half', multiply && 'panel--multiply', cover && 'panel--cover']} style={style || undefined}>
+  <div class="panel-field">
+    {kind === 'screens' ? (
+      <div class="panel-screens">
+        {screens.map((s) => (
+          isLocal(s.src)
+            ? <Image src={s.src} alt={s.alt} widths={[320, 560, 750]} sizes={screenSizes} class="panel-screen" />
+            : <img src={s.src} alt={s.alt} class="panel-screen" loading="lazy" decoding="async" />
+        ))}
+      </div>
+    ) : kind === 'video' ? (
+      <video class="panel-media" src={src as string} poster={poster} muted loop playsinline preload="none" aria-label={alt}></video>
+    ) : kind === 'slot' ? (
+      <slot />
+    ) : src && (
+      isLocal(src)
+        ? <Image src={src} alt={alt} widths={[640, 1080, 1600, 2200]} sizes={sizes} class="panel-media" />
+        : <img src={src} alt={alt} class="panel-media" loading="lazy" decoding="async" />
+    )}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  // Loops play while in view; reduced motion keeps the poster
+  const still = matchMedia('(prefers-reduced-motion: reduce)')
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      const v = e.target as HTMLVideoElement
+      if (e.isIntersecting && !still.matches) v.play().catch(() => {})
+      else v.pause()
+    }
+  }, { threshold: 0.25 })
+  const watch = () => document.querySelectorAll<HTMLVideoElement>('.panel--video video').forEach((v) => io.observe(v))
+  watch()
+  document.addEventListener('astro:page-load', watch)
+</script>
