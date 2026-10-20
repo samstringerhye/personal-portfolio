@@ -175,7 +175,7 @@ html.ek .home-contact h2 {
 /* Phones: the hero line scales with the screen, so "on purpose." spans the column */
 @media (--2x) {
   html.ek .hero-block {
-    font-size: clamp(3rem, 19vw, 5.5rem);
+    font-size: clamp(2.75rem, 15vw, 4.5rem);
     line-height: 1.05;
   }
 }
