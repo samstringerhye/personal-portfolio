@@ -21,14 +21,14 @@ heroImage: "../../assets/work/samsung-redesign/revamp-kv.jpg"
 featured: true
 sortOrder: 5
 tags: ["Design System", "E-commerce", "Global", "Navigation"]
-tint: "#EEF1F5"
 ---
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
 import homeDesktop from '../../assets/work/samsung-redesign/figma/home-desktop.webp'
-import productMobile from '../../assets/work/samsung-redesign/figma/product-mobile.webp'
+import highlightsMobile from '../../assets/work/samsung-redesign/figma/highlights-mobile.webp'
+import warrantyMobile from '../../assets/work/samsung-redesign/figma/warranty-mobile.webp'
 import navDesktop from '../../assets/work/samsung-redesign/figma/nav-desktop.webp'
 import navAppliances from '../../assets/work/samsung-redesign/figma/nav-appliances.webp'
 import navFridges from '../../assets/work/samsung-redesign/figma/nav-fridges.webp'
@@ -54,11 +54,10 @@ import icons from '../../assets/work/samsung-redesign/mock/icons.webp'
 <Gallery title="Samsung.com">
   <Panel kind="page" src={homeDesktop} alt="Samsung.com homepage with the Galaxy S20 hero" />
   <Panel kind="screens" screens={[
-    { src: '/motion/samsung-mobile/home.webp', alt: 'The homepage on a phone' },
     { src: categoryMobile, alt: 'Refrigerators category page on a phone' },
-    { src: productMobile, alt: 'A Family Hub fridge product page on a phone, with color choices' },
-  ]} />
-</Gallery>
+    { src: highlightsMobile, alt: 'Category highlights: Open up a little, over a fridge interior' },
+    { src: warrantyMobile, alt: 'Category offers: a five-year appliance warranty' },
+  ]} /></Gallery>
 
 <Gallery title="Navigation" note="Pictures beside the categories on phones, and one featured product in every desktop menu.">
   <Panel kind="screens" span="half" screens={[{ src: navAppliances, alt: 'Phone menu: Appliances, each category with a product photo' }]} />

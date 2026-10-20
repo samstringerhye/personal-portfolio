@@ -22,6 +22,8 @@ html.ek {
   --ek-panel: #F7F8FA;
   /* Work cards and case study heroes: one gray for every project, a step darker than the panel */
   --ek-card: #F2F3F5;
+  /* Case study panels: a faint white gray, lighter than the cards */
+  --ek-panel: #F7F8F9;
   --ek-ink-body: #34475C;
   --ek-window-radius: 24px;
   --ek-image-radius: 16px;
@@ -1025,13 +1027,13 @@ html.ek .case-study-body .image-pair .device-phone {
 }
 
 /* Coded diagrams: the same rounded panel, their own color kept, with room inside */
-html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero, .mosaic), .hero-phone-scroll, .stat-callout) {
+html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero, .mosaic, .story, .gallery), .hero-phone-scroll, .stat-callout) {
   border: 0;
   border-radius: var(--ek-window-radius);
   overflow: hidden;
 }
 
-html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .cs-hero, .mosaic) {
+html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .cs-hero, .mosaic, .story, .gallery) {
   padding: var(--space-5);
 }
 
@@ -1585,7 +1587,7 @@ html.ek .panel-field {
   overflow: hidden;
   aspect-ratio: var(--panel-ratio, auto);
   border-radius: 6px;
-  background: var(--panel-tint, var(--cs-tint, var(--ek-card)));
+  background: var(--panel-tint, var(--ek-panel));
   container-type: inline-size;
 }
 
@@ -1629,20 +1631,12 @@ html.ek .case-study-body .panel-screen {
   }
 }
 
-/* Page: centered, starting below the top edge, cut off by the bottom */
+/* Page: the screenshot fills the panel's width from the top, cut off by its bottom edge */
 html.ek .case-study-body .panel--page .panel-media {
   position: absolute;
-  top: 8%;
-  left: 50%;
-  width: 78%;
+  inset: 0 0 auto;
+  width: 100%;
   height: auto;
-  transform: translateX(-50%);
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 1px 2px rgb(11 33 64 / 0.06), 0 30px 60px -30px rgb(11 33 64 / 0.3);
-}
-
-html.ek .case-study-body .panel--half.panel--page .panel-media {
-  width: 84%;
 }
 
 /* Piece: contained, with the field's room around it (percent padding follows the width, so the
@@ -1710,4 +1704,41 @@ html.ek .case-study-body .panel--slot .lottie-grid {
   html.ek .panel--half.panel--piece .panel-field {
     aspect-ratio: 4 / 3;
   }
+}
+
+/* The outcome bar under the last gallery spans all 12 columns, with room above and below */
+html.ek .case-study-body > .cs-metrics {
+  grid-column: 1 / -1;
+  margin-top: clamp(6rem, 12vw, 11rem);
+  padding-block: var(--space-7);
+}
+
+/* The closing prompt in a callout frame */
+html.ek .case-study-cta-content {
+  align-items: center;
+  margin-top: var(--ek-section);
+  padding: clamp(3rem, 6vw, 5rem) var(--space-5);
+  border-radius: var(--ek-window-radius);
+  background: var(--ek-panel);
+  text-align: center;
+}
+
+/* Previous and next: quiet links, not headlines; a hairline above them */
+html.ek .cs-nav {
+  margin-top: var(--space-7);
+}
+
+html.ek .cs-nav-inner {
+  padding: var(--space-5) 0 var(--ek-section);
+  border-top: 1px solid var(--ek-hairline);
+}
+
+html.ek .cs-nav-title {
+  font-size: var(--text-200);
+  line-height: 1.3;
+}
+
+/* The footer's own hairline, across the window */
+html.ek .footer {
+  border-top: 1px solid var(--ek-hairline);
 }

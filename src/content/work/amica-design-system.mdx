@@ -19,7 +19,6 @@ thumbnailText: "dark"
 featured: true
 sortOrder: 0
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
-tint: "#E6F4F1"
 ---
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
@@ -27,14 +26,12 @@ import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
 import pageHome from '../../assets/work/amica-design-system/figma/page-home.webp'
 import screenHome from '../../assets/work/amica-design-system/figma/screen-home.webp'
-import legacyHome from '../../assets/work/amica-design-system/proof/amica-legacy-homepage.png'
 import legacyCard from '../../assets/work/amica-design-system/mock/legacy-hero-card.webp'
 import quoteCard from '../../assets/work/amica-design-system/mock/quote-card.webp'
 import lightDark from '../../assets/work/amica-design-system/mock/light-dark.webp'
 import pageQuote from '../../assets/work/amica-design-system/figma/page-quote.webp'
 import quoteBundle from '../../assets/work/amica-design-system/mock/quote-bundle.webp'
 import screenQuoteSummary from '../../assets/work/amica-design-system/figma/screen-quote-summary.webp'
-import pageAuto from '../../assets/work/amica-design-system/figma/page-auto.webp'
 
 <Story
   client="Amica"
@@ -49,16 +46,10 @@ import pageAuto from '../../assets/work/amica-design-system/figma/page-auto.webp
 
 <Gallery title="Amica.com">
   <Panel kind="page" src={pageHome} alt="Amica.com homepage: a parent and son in the kitchen, the quote card over the photo" />
-  <Panel kind="screens" span="half" screens={[
-    { src: screenHome, alt: 'The homepage on a phone' },
-    { src: screenQuoteSummary, alt: 'The bundle quote on a phone' },
-  ]} />
-  <Panel kind="video" span="half" cover src="/motion/amica/anthem.mp4" poster="/motion/amica/home.webp" alt="The homepage brand film" />
 </Gallery>
 
 <Gallery title="Before and after" note="The old quote card beside the new one: two questions, one action.">
-  <Panel kind="page" ratio="16 / 9.2" tint="#EEF0F2" src={legacyHome} alt="Amica.com before the relaunch, with a purple call to action" />
-  <Panel kind="piece" span="half" ratio="1 / 1" tint="#EEF0F2" src={legacyCard} alt="Before: the old quote card with a purple Get a Quote button" caption="Before" />
+  <Panel kind="piece" span="half" ratio="1 / 1" src={legacyCard} alt="Before: the old quote card with a purple Get a Quote button" caption="Before" />
   <Panel kind="piece" span="half" ratio="1 / 1" src={quoteCard} alt="After: the new quote card, product and ZIP code, then Start my quote" caption="After" />
 </Gallery>
 
@@ -71,8 +62,11 @@ import pageAuto from '../../assets/work/amica-design-system/figma/page-auto.webp
   <Panel kind="piece" ratio="16 / 6" multiply src={quoteBundle} alt="Quote summary: auto and home prices and the bundle price" />
 </Gallery>
 
-<Gallery title="Product pages">
-  <Panel kind="page" src={pageAuto} alt="Amica auto insurance page: a driver at the wheel, the quote card beside him" />
+<Gallery title="On a phone">
+  <Panel kind="screens" screens={[
+    { src: screenHome, alt: 'The homepage on a phone' },
+    { src: screenQuoteSummary, alt: 'The bundle quote on a phone' },
+  ]} />
 </Gallery>
 
 <Metrics items={[
