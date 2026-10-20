@@ -28,7 +28,9 @@ import pageHome from '../../assets/work/amica-design-system/figma/page-home.webp
 import screenHome from '../../assets/work/amica-design-system/figma/screen-home.webp'
 import legacyCard from '../../assets/work/amica-design-system/mock/legacy-hero-card.webp'
 import quoteCard from '../../assets/work/amica-design-system/mock/quote-card.webp'
-import lightDark from '../../assets/work/amica-design-system/mock/light-dark.webp'
+import tokenLayers from '../../assets/work/amica-design-system/figma/token-layers.webp'
+import tokenChain from '../../assets/work/amica-design-system/figma/token-chain.webp'
+import tokenStates from '../../assets/work/amica-design-system/figma/token-states.webp'
 import pageQuote from '../../assets/work/amica-design-system/figma/page-quote.webp'
 import quoteBundle from '../../assets/work/amica-design-system/mock/quote-bundle.webp'
 import screenQuoteSummary from '../../assets/work/amica-design-system/figma/screen-quote-summary.webp'
@@ -38,27 +40,29 @@ import screenQuoteSummary from '../../assets/work/amica-design-system/figma/scre
   role="Associate Design Director"
   agency="Razorfish"
   year={2026}
-  made={['Design system', 'Homepage and product pages', 'Quote flow']}
+  made={['Visual direction', 'Design token system', 'Homepage and quote screens']}
   outcome="Amica.com relaunched on October 2, 2026: 615 pages on one design system, in light and dark, built to WCAG 2.1 AA."
-  problem="The old library had no tokens. Color was hard-coded, dark mode meant a second copy of every component, and the rebuild couldn't pause a sprint."
-  did="I led six designers through the rebuild. Tokens name what you paint, not where, so one button works on light and dark, and the quote flow runs on the same parts from start to finish."
+  problem="Amica's old site had no design tokens. Every color was typed in by hand, dark sections needed a second copy of each component, and the rebuild couldn't pause the sites already in use."
+  did="I was creative lead for a team of six designers. I set the visual direction, designed the token system with the team, and led the homepage, product pages and quote screens built on it."
 />
 
-<Gallery title="Amica.com">
+<Gallery title="Amica.com" note="I set three goals: unlock Amica's teal, read as a premium carrier, and lead with empathy. Teal carries the top banner and every primary button. The footer goes deep forest green so the teal logo and the quote buttons stand out.">
   <Panel kind="page" src={pageHome} alt="Amica.com homepage: a parent and son in the kitchen, the quote card over the photo" />
 </Gallery>
 
-<Gallery title="Before and after" note="The old quote card beside the new one: two questions, one action.">
+<Gallery title="Before and after" note="A quote is the price Amica offers before you buy. I cut the card that starts one down to two questions and one button, so the first step takes seconds.">
   <Panel kind="piece" span="half" ratio="1 / 1" src={legacyCard} alt="Before: the old quote card with a purple Get a Quote button" caption="Before" />
   <Panel kind="piece" span="half" ratio="1 / 1" src={quoteCard} alt="After: the new quote card, product and ZIP code, then Start my quote" caption="After" />
 </Gallery>
 
-<Gallery title="Light and dark" note="Tokens name what you paint, not where, so the same headline, link and button work on either.">
-  <Panel kind="piece" ratio="16 / 6" multiply src={lightDark} alt="The same headline, link and button on a light and a dark panel" />
+<Gallery title="Design tokens" note="Before naming anything, I studied how established design systems organize their tokens and audited Amica's own site, quote tools and app. Tokens are grouped by job, so a designer picks a color by what it does, not by how it looks.">
+  <Panel kind="bleed" ratio="3111 / 1618" src={tokenLayers} alt="Color layers: canvas, surface, content, border and elevation, then all five together on one card" />
+  <Panel kind="bleed" span="half" ratio="1514 / 973" src={tokenChain} alt="A primitive teal points to a semantic token, which fills the Continue button" />
+  <Panel kind="bleed" span="half" ratio="1515 / 973" src={tokenStates} alt="Hover adds a translucent overlay over the button's fill" />
 </Gallery>
 
-<Gallery title="Quoting" note="The quote flow runs on the same parts as the rest of the site, start to finish.">
-  <Panel kind="page" src={pageQuote} alt="Quote flow, Vehicle Info: Thanks Tim, let's add some details about what you drive" />
+<Gallery title="Getting a quote" note="The quote screens ask about you, your car and your home, then show the price. I built them from the same tokens and parts as the rest of the site, so the flow feels like Amica from first question to final price.">
+  <Panel kind="page" src={pageQuote} alt="Quote screen, Vehicle Info: Thanks Tim, let's add some details about what you drive" />
   <Panel kind="piece" ratio="16 / 6" multiply src={quoteBundle} alt="Quote summary: auto and home prices and the bundle price" />
 </Gallery>
 

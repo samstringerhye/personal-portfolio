@@ -57,7 +57,7 @@ const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
       <slot />
     ) : src && (
       isLocal(src)
-        ? <Image src={src} alt={alt} widths={[640, 1080, 1600, 2200]} sizes={sizes} class="panel-media" />
+        ? <Image src={src} alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class="panel-media" />
         : <img src={src} alt={alt} class="panel-media" loading="lazy" decoding="async" />
     )}
   </div>
