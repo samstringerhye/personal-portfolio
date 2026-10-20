@@ -41,8 +41,7 @@ export interface Arrangement {
 // Finishes from the real lineups (Silver and the tablet's Graphite are the devices' own, shared.ts).
 // iPhone 17 Pro: the aluminum unibody, its antenna bands and the glass window on the back, which
 // runs a shade lighter
-const COSMIC_ORANGE = { Anodized_aluminum: '#e2652a', Plastic_antena: '#c95a26', Frosted_glass: '#ec7a3e' }
-const DEEP_BLUE = { Anodized_aluminum: '#2f3a50', Plastic_antena: '#2a3446', Frosted_glass: '#38445b' }
+const COSMIC_ORANGE = { Anodized_aluminum: '#b4521f', Plastic_antena: '#9c4719', Frosted_glass: '#c2612e' }
 // Galaxy S22 Ultra: the polished frame and the frosted back
 const BURGUNDY = { Bezel: '#5c2a31', Back_Cover_Glass: '#4a1d25', Rearcase: '#4a1d25' }
 const GREEN = { Bezel: '#4f5b52', Back_Cover_Glass: '#3a463d', Rearcase: '#3a463d' }
@@ -50,24 +49,24 @@ const GREEN = { Bezel: '#4f5b52', Back_Cover_Glass: '#3a463d', Rearcase: '#3a463
 // Turns: [pitch, yaw, roll]. Every screen faces the camera: the arrangement's rest yaw plus a
 // device's own stays within about ±0.3, so no screen is seen edge on
 export const ARRANGEMENTS = {
-  // Three phones fanned out from the one in the middle, each in a different finish: the tour in
+  // Three phones fanned out from the one in the middle, two Silver and one Cosmic Orange: the tour in
   // front, the dashboard and a bill floating either side
   myfrontier: {
     label: 'The MyFrontier app on three iPhones fanned out: the middle one plays a tour of signing in, paying a bill and checking a support order, with the dashboard and a bill floating either side',
     fill: 0.76,
     placements: [
       { device: 'iphone-17-pro', screen: { kind: 'myfrontier' }, at: [0, 0, 0.035], turn: [0, 0, 0] },
-      { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'dashboard-1' }, at: [-0.074, -0.008, -0.01], turn: [0.02, 0.36, 0.13], float: true, finish: DEEP_BLUE },
+      { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'dashboard-1' }, at: [-0.074, -0.008, -0.01], turn: [0.02, 0.36, 0.13], float: true },
       { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'bill-pay-1' }, at: [0.074, -0.008, -0.01], turn: [0.02, -0.16, -0.13], float: true, finish: COSMIC_ORANGE },
     ],
   },
-  // An orange phone with the icon floating in front, a blue one standing behind it
+  // An orange phone with the icon floating in front, a silver one standing behind it
   whataburger: {
-    label: 'The Whataburger app icon on the home screens of two iPhones, an orange one floating in front of a blue one',
+    label: 'The Whataburger app icon on the home screens of two iPhones, an orange one floating in front of a silver one',
     fill: 0.74,
     placements: [
       { device: 'iphone-17-pro', screen: { kind: 'home' }, at: [0.022, 0.012, 0.03], turn: [0.06, 0.04, -0.07], float: true, finish: COSMIC_ORANGE },
-      { device: 'iphone-17-pro', screen: { kind: 'home' }, at: [-0.05, -0.006, -0.05], turn: [0.02, 0.3, 0.08], finish: DEEP_BLUE },
+      { device: 'iphone-17-pro', screen: { kind: 'home' }, at: [-0.05, -0.006, -0.05], turn: [0.02, 0.3, 0.08] },
     ],
   },
   // The laptop open, the phone standing in the foreground, taller in frame
@@ -76,7 +75,7 @@ export const ARRANGEMENTS = {
     fill: 0.74,
     placements: [
       { device: 'macbook-air-15', screen: { kind: 'tour', name: 'amica' }, at: [0.04, 0, -0.06], turn: [0, 0.12, 0] },
-      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'amica-mobile' }, at: [-0.15, -0.035, 0.12], turn: [-0.04, 0.42, -0.05], finish: DEEP_BLUE },
+      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'amica-mobile' }, at: [-0.15, -0.035, 0.12], turn: [-0.04, 0.42, -0.05] },
     ],
   },
   // The laptop open, the phone floating in front of it on the right

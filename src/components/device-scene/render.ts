@@ -46,6 +46,49 @@ class WebPTextures {
   }
 }
 
+// A display that wraps round the device's edges (the S22 Ultra's) is a hole only where it's flat:
+// the flat DOM screen doesn't reach the curves, which would show whatever screen lies behind. The
+// curves render as the dark glass they are. Flat within this cosine of the display's own normal
+const FLAT = 0.97
+function holeFor(display: Mesh, hole: MeshBasicMaterial): MeshBasicMaterial {
+  const geometry = display.geometry
+  const position = geometry.attributes.position, normal = geometry.attributes.normal
+  if (!normal) return hole
+  // The display's facing: its triangles' normals, weighted by area, so a densely cut curve can't
+  // outweigh the flat face
+  const facing = new Vector3()
+  const a = new Vector3(), b = new Vector3(), c = new Vector3()
+  const index = geometry.index
+  const count = index ? index.count : position.count
+  for (let i = 0; i < count; i += 3) {
+    const [i0, i1, i2] = index ? [index.getX(i), index.getX(i + 1), index.getX(i + 2)] : [i, i + 1, i + 2]
+    a.fromBufferAttribute(position, i0)
+    b.fromBufferAttribute(position, i1).sub(a)
+    c.fromBufferAttribute(position, i2).sub(a)
+    facing.add(b.cross(c))
+  }
+  if (!facing.lengthSq()) return hole
+  facing.normalize()
+  // Point it the way the vertex normals do (triangle winding can run either way)
+  let sum = 0
+  for (let i = 0; i < normal.count; i++) sum += a.fromBufferAttribute(normal, i).dot(facing)
+  if (sum < 0) facing.negate()
+  let curved = false
+  for (let i = 0; i < normal.count && !curved; i++) curved = a.fromBufferAttribute(normal, i).normalize().dot(facing) < FLAT
+  if (!curved) return hole
+  const material = hole.clone()
+  material.onBeforeCompile = shader => {
+    shader.uniforms.facing = { value: facing }
+    shader.vertexShader = `varying vec3 vFacing;\n${shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n\tvFacing = normal;')}`
+    shader.fragmentShader = `uniform vec3 facing;\nvarying vec3 vFacing;\n${shader.fragmentShader.replace(
+      '#include <dithering_fragment>',
+      `#include <dithering_fragment>\n\tif ( dot( normalize( vFacing ), facing ) < ${FLAT.toFixed(3)} ) gl_FragColor = vec4( vec3( 0.012 ), 1.0 );`,
+    )}`
+  }
+  material.customProgramCacheKey = () => 'curved-hole'
+  return material
+}
+
 /** Readies a model's materials for the site and returns its display meshes, now holes. color is the
     placement's own finish, over the device's */
 function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures: Set<Texture>, hole: MeshBasicMaterial, color: Record<string, string> = {}): Mesh[] {
@@ -77,7 +120,7 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
     Object.values(mat).forEach(v => { if ((v as Texture)?.isTexture) textures.add(v as Texture) })
   })
   if (!displays.length) throw new Error(`${device} has no ${spec.display} mesh`)
-  displays.forEach(d => { d.material = hole; d.renderOrder = 1 })
+  displays.forEach(d => { d.material = holeFor(d, hole); d.renderOrder = 1 })
   return displays
 }
 
