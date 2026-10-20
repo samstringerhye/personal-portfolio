@@ -3,6 +3,7 @@
 // the app. Timings live in animations.workCards.myfrontier
 import lottie, { type AnimationItem } from 'lottie-web/build/player/lottie_light'
 import { animations } from '../../data/tokens'
+import { statusIcons } from './status-icons'
 
 const BASE = '/motion/myfrontier/'
 const { moves, holds } = animations.workCards.myfrontier
@@ -33,11 +34,11 @@ const T = {
 type Screen = keyof typeof SCREENS
 type Sheet = keyof typeof SHEETS
 const isSheet = (n: string): n is Sheet => n in SHEETS
-const icons = (c: string) => `<svg class="sb r" viewBox="0 0 68 14" aria-hidden="true" fill="${c}"><rect x="0" y="9" width="3" height="4.5" rx=".8"/><rect x="4.6" y="6.5" width="3" height="7" rx=".8"/><rect x="9.2" y="4" width="3" height="9.5" rx=".8"/><rect x="13.8" y="1.5" width="3" height="12" rx=".8"/><path d="M29.5 3.2a12 12 0 0 1 8.3 3.3l1.3-1.3a13.9 13.9 0 0 0-19.2 0l1.3 1.3a12 12 0 0 1 8.3-3.3Zm0 3.8a8 8 0 0 1 5.6 2.3l1.3-1.3a9.9 9.9 0 0 0-13.8 0l1.3 1.3A8 8 0 0 1 29.5 7Zm0 3.8a4 4 0 0 1 2.9 1.2l-2.9 2.9-2.9-2.9a4 4 0 0 1 2.9-1.2Z"/><rect x="43.5" y="1.5" width="21" height="11" rx="3.2" fill="none" stroke="${c}" stroke-opacity=".4" stroke-width="1"/><rect x="45.3" y="3.3" width="17.4" height="7.4" rx="1.8"/><path d="M65.7 5.2v3.6a1.9 1.9 0 0 0 0-3.6Z" fill-opacity=".45"/></svg>`;
+const icons = (c: string) => statusIcons(c, 'sb r')
 
 const TEMPLATE = `  <div class="floor" aria-hidden="true"></div>
   <div class="stage"></div>
-  <div class="phone">
+  <div class="device phone">
     
     <div class="band"><div class="bezel"><div class="screen">
       <div class="stack"></div>
@@ -53,6 +54,19 @@ const TEMPLATE = `  <div class="floor" aria-hidden="true"></div>
       <div class="island"><div class="fid" data-l="FaceID"></div></div>
     </div></div></div>
   </div>`
+
+/** One published screen held still, built like the tour's layers: the second phone in the
+    MyFrontier arrangement */
+export function mountMyFrontierStill(art: HTMLElement, name: Screen): () => void {
+  const [bg, fg] = SCREENS[name]
+  art.insertAdjacentHTML('beforeend', `<div class="floor" aria-hidden="true"></div>
+  <div class="stage"></div>
+  <div class="device phone"><div class="band"><div class="bezel"><div class="screen">
+    <div class="stack"><div class="layer"><img class="view" src="${BASE}screens/${name}.webp" alt=""><div class="notch" style="background:${bg}"></div><img class="sb l" src="${BASE}screens/${name}-t.png" alt="">${icons(fg)}</div></div>
+    <div class="island"></div>
+  </div></div></div></div>`)
+  return () => {}
+}
 
 // Builds the phone screen inside art and loops the tour while it is on screen. Returns a stop function
 export function mountMyFrontier(art: HTMLElement): () => void {

@@ -260,14 +260,18 @@ const heroWordEase = revealCfg.cssEase
 <script>
   let cleanupCanvas: (() => void) | null = null
   let mountPending = false
+  // The root the dot field runs in: a second page-load's idle callback for the same page must not
+  // mount it again (its canvas can be handed to a worker only once)
+  let mountedRoot: HTMLElement | null = null
 
   async function mountHeroCanvas() {
     if (mountPending) return
     mountPending = true
     try {
       const root = document.getElementById('hero-canvas-root')
-      if (!root) return
+      if (!root || root === mountedRoot) return
       cleanupCanvas?.()
+      mountedRoot = root
       const { initHeroCanvas } = await import('./hero-canvas')
       cleanupCanvas = await initHeroCanvas(root)
     } finally {

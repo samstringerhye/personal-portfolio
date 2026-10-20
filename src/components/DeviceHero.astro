@@ -1,0 +1,125 @@
+---
+// Case study hero for a project with a coded device: the title on the left and the same live device
+// as its homepage card on the right, the composition the card's row has. Coming from the card, the
+// device carries straight across the page change (device-scene/mount.ts).
+import BackToWork from './BackToWork.astro'
+import DeviceScene, { type SceneName } from './DeviceScene.astro'
+
+interface Props {
+  scene: SceneName
+  label: string
+  title: string
+  tagline?: string
+  year?: number | string
+}
+
+const { scene, label, title, tagline, year } = Astro.props
+// Non-breaking hyphens: the narrow column would otherwise split "E-commerce" across lines
+const heading = title.replaceAll('-', '\u2011')
+---
+
+<section class="cs-device-hero">
+  <div class="cs-device-hero-text">
+    <BackToWork class="cs-device-hero-back" />
+    {year && <p class="cs-device-hero-year typo-ui-caps">{year}</p>}
+    <h1 class="cs-device-hero-title typo-headline-lg">{heading}</h1>
+    {tagline && <p class="cs-device-hero-tagline typo-body-lg">{tagline}</p>}
+  </div>
+  <div class="cs-device-hero-stage">
+    <DeviceScene scene={scene} label={label} />
+  </div>
+</section>
+
+<style>
+  /* Phones: the back link, then the device, then the title, like the homepage row */
+  .cs-device-hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-block: var(--space-4) var(--ek-section, var(--space-8));
+  }
+
+  .cs-device-hero-stage {
+    order: 1;
+    position: relative;
+    height: calc(100svh - var(--nav-height) - 2 * var(--page-margin) - 12rem);
+    min-height: 20rem;
+    margin-block: var(--space-2) var(--space-4);
+  }
+
+  .cs-device-hero-text > :not(:global(.cs-device-hero-back)) {
+    order: 2;
+  }
+
+
+  .cs-device-hero-text {
+    display: contents;
+  }
+
+  /* Flush with the text below it rather than centered in its tap target */
+  .cs-device-hero-text :global(.cs-device-hero-back) {
+    justify-content: flex-start;
+  }
+
+  .cs-device-hero-year {
+    margin: var(--space-4) 0 0;
+    color: var(--ek-ink-body);
+  }
+
+  .cs-device-hero-title,
+  .cs-device-hero-tagline {
+    margin: 0;
+  }
+
+  /* The card's title and tagline sizes, so the text reads as the same block when the device
+     carries across */
+  .cs-device-hero .cs-device-hero-title {
+    font-size: var(--text-400);
+    line-height: 1.12;
+  }
+
+  .cs-device-hero .cs-device-hero-tagline {
+    font-size: var(--text-200);
+    line-height: 1.4;
+  }
+
+  .cs-device-hero-tagline {
+    max-width: 32rem;
+    color: var(--ek-ink-body);
+  }
+
+  /* Desktop: the homepage row's grid, the title at the bottom of the left 4 of 12 columns beside the
+     device in the other 8 */
+  @media (min-width: 64.0625rem) {
+    /* The back link at the top of the column, the rest at the bottom */
+    .cs-device-hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      align-self: stretch;
+      gap: var(--space-2);
+    }
+
+    .cs-device-hero {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--grid-gutter);
+      align-items: end;
+      padding-block: var(--page-margin);
+    }
+
+    .cs-device-hero-text {
+      grid-column: 1 / 5;
+    }
+
+    .cs-device-hero-stage {
+      grid-column: 5 / -1;
+      height: calc(100svh - var(--nav-height) - 2 * var(--page-margin));
+      margin-block: 0;
+    }
+
+    .cs-device-hero-text :global(.cs-device-hero-back) {
+      margin-bottom: auto;
+    }
+  }
+</style>

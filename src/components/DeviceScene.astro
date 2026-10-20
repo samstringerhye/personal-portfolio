@@ -1,0 +1,158 @@
+---
+// A coded device arrangement, on a homepage work card or a case study hero: two or so devices in one
+// 3D scene (device-scene/arrangements.ts), each screen playing a scripted tour or holding a
+// published screen (device-scene/model.ts). Without WebGL the lead device's flat screen stands in.
+// It fades in once ready. The card and the hero share a persist id, so the same live arrangement
+// carries across the page change (device-scene/mount.ts). Reduced motion holds on the first screen.
+import { arrangementOf, type SceneName } from './device-scene/arrangements'
+
+export type { SceneName }
+interface Props {
+  scene: SceneName
+  label: string
+}
+const { scene, label } = Astro.props
+const arrangement = arrangementOf(scene)
+---
+
+<div class="device-scene" data-device-scene={scene} role="img" aria-label={arrangement.label ?? label} transition:persist={`device-${scene}`}>
+  {arrangement.placements.map((p, i) => <div class="device-scene-host" data-index={i} data-device={p.device}></div>)}
+</div>
+
+<script>
+  import './device-scene/mount'
+</script>
+
+<style is:global>
+  /* The scene builds its own DOM, so these rules are global, scoped by .device-scene */
+  /* Bleeds past its box so a device tilting toward the edge isn't cut off by the canvas */
+  .device-scene { position: absolute; inset: -10%; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+  /* Each device's screen is built in its own host. Without WebGL the lead host shows its flat screen;
+     in 3D the screens move into the arrangement's view and the hosts stay laid out but unseen (their
+     tours watch them to know when to play) */
+  .device-scene-host { position: absolute; inset: 0; display: grid; place-items: center; container-type: size; }
+  .device-scene-host:not([data-index="0"]), .device-scene.is-3d .device-scene-host { visibility: hidden; }
+  .device-scene[data-ready] { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .device-scene { transition: none; } }
+  .device-scene .floor { position: absolute; left: 50%; top: 88%; width: 34cqh; height: 6cqh; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 13, 27, 0.3), rgba(11, 13, 27, 0)); translate: -50% -50%; filter: blur(1.4cqh); }
+  .device-scene-host:not([data-device="iphone-17-pro"]) .floor { width: 58cqw; }
+  /* The 3D device casts its own contact shadow (contact-shadow.ts); the ellipse is for the flat screen */
+  .device-scene.is-3d .floor { display: none; }
+  .device-scene .stage, .device-scene .stage > * { position: absolute; inset: 0; }
+  /* Scroll parallax (model.ts): the device (with its shadow) drifts against the page */
+  .device-scene .stage, .device-scene .floor { transform: translateY(var(--parallax, 0px)); }
+  /* The device's own box (the scene runs 10% past it on every side), where it can be dragged round */
+  .device-scene-grab { position: absolute; inset: 0; pointer-events: auto; cursor: grab; touch-action: pan-y; }
+  .device-scene-grab.is-dragging { cursor: grabbing; }
+  .device-scene .stage canvas { width: 100%; height: 100%; }
+  .device-scene-view { overflow: hidden; }
+
+  /* Screen tours (tours.ts): screens laid out at the device's width, a flat bezel until the model loads */
+  .device-scene .device { position: relative; width: var(--layout-w); aspect-ratio: var(--aspect); container-type: inline-size; }
+  .device-scene:not(.is-3d) .device-scene-host:not([data-device="iphone-17-pro"]) .device { width: min(76%, calc(80cqh * var(--aspect))); border-radius: 1.2cqw; box-shadow: 0 0 0 1.6cqw #111; }
+  /* clip-path as well as overflow: a page mid-slide is its own layer, which overflow alone lets past
+     the screen's edge */
+  .device-scene .device:not(.phone) .screen { position: relative; width: 100%; height: 100%; overflow: hidden; clip-path: inset(0 round 0 0 var(--screen-radius, 0px) var(--screen-radius, 0px)); }
+  .device-scene .device:not(.phone):not(.home) .screen { background: #fff; }
+  .device-scene .shot { position: absolute; inset: 0 0 auto 0; }
+  /* Website tours in their browser (browser.ts): the toolbar and status bar in flow above the page,
+     the iPhone's address bar floating over it. Sizes in cqw of the device */
+  .device-scene .device.web { display: flex; flex-direction: column; background: #fff; font-family: -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, sans-serif; }
+  .device-scene .device.web .screen { flex: 1; height: auto; min-height: 0; }
+  .device-scene .web-bar, .device-scene .web-status { flex: none; display: flex; align-items: center; color: #1d1d1f; }
+  .device-scene .web-bar .url { display: flex; align-items: center; justify-content: center; border-radius: 999px; background: #e9e9ed; color: #1d1d1f; white-space: nowrap; }
+  .device-scene .web-bar svg { flex: none; height: auto; color: #3c3c43; }
+  .device-scene .web-status { justify-content: space-between; font-weight: 600; }
+  .device-scene .web-status .icons { height: auto; }
+  /* Safari on the Macs */
+  .device-scene .web-menu { flex: none; display: flex; align-items: center; height: 2.3cqw; padding: 0 1.4cqw; gap: 1.5cqw; background: #ececee; color: #111; font-size: 0.95cqw; }
+  .device-scene .web-menu .clock { display: flex; align-items: center; gap: 1.2cqw; margin-left: auto; }
+  .device-scene .web-menu .icons { width: 4.4cqw; height: auto; }
+  .device-scene [data-browser="mac"] .web-bar { height: 3.5cqw; padding: 0 1.2cqw; gap: 1.4cqw; background: #f3f3f5; border-bottom: 0.07cqw solid #d9d9de; }
+  .device-scene [data-browser="mac"] .lights { display: flex; gap: 0.55cqw; }
+  .device-scene [data-browser="mac"] .lights b { width: 0.85cqw; aspect-ratio: 1; border-radius: 50%; background: #ff5f57; }
+  .device-scene [data-browser="mac"] .lights b:nth-child(2) { background: #febc2e; }
+  .device-scene [data-browser="mac"] .lights b:nth-child(3) { background: #28c840; }
+  .device-scene [data-browser="mac"] .nav { width: 2.4cqw; }
+  .device-scene [data-browser="mac"] .url { flex: 0 1 36cqw; height: 2.3cqw; margin: 0 auto; gap: 0.5cqw; font-size: 0.95cqw; border-radius: 0.7cqw; }
+  .device-scene [data-browser="mac"] .lock { width: 0.65cqw; }
+  .device-scene [data-browser="mac"] .share { width: 1cqw; }
+  /* Safari on the iPhone: the status bar, and the address bar floating at the bottom */
+  .device-scene [data-browser="ios"] .web-status { height: 13cqw; padding: 1.5cqw 8cqw 0 10cqw; font-size: 4.3cqw; }
+  .device-scene [data-browser="ios"] .web-status .icons { width: 19cqw; }
+  .device-scene [data-browser="ios"] .web-bar { position: absolute; left: 4.5cqw; right: 4.5cqw; bottom: 4cqw; height: 12.5cqw; padding: 0 4.5cqw; gap: 3cqw; border-radius: 999px; background: rgba(250, 250, 252, 0.92); box-shadow: 0 1cqw 4cqw rgba(0, 0, 0, 0.16), inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.7); }
+  .device-scene [data-browser="ios"] .url { flex: 1; gap: 1.6cqw; background: none; font-size: 4.3cqw; font-weight: 500; }
+  .device-scene [data-browser="ios"] .lock { width: 2.6cqw; }
+  .device-scene [data-browser="ios"] .dots { width: 1.1cqw; transform: rotate(90deg); }
+  /* Chrome on the Galaxy devices; the phone (360px) runs larger in cqw than the tablet and the Fold */
+  .device-scene [data-browser~="android"] .web-status { height: 2cqw; padding: 0 1.6cqw; font-size: 1.05cqw; }
+  .device-scene [data-browser~="android"] .web-status .icons { width: 5cqw; }
+  .device-scene [data-browser~="android"] .web-bar { height: 4cqw; padding: 0 1.4cqw; gap: 1.4cqw; background: #fff; border-bottom: 0.07cqw solid #e3e3e8; }
+  .device-scene [data-browser~="android"] .url { flex: 1; height: 2.8cqw; justify-content: flex-start; padding: 0 1.4cqw; gap: 0.8cqw; background: #eff1f4; font-size: 1.2cqw; }
+  .device-scene [data-browser~="android"] .lock { width: 0.75cqw; }
+  .device-scene [data-browser~="android"] .tabs { display: grid; place-items: center; width: 1.8cqw; aspect-ratio: 1; border: 0.18cqw solid currentColor; border-radius: 0.4cqw; font-size: 0.95cqw; font-weight: 700; }
+  .device-scene [data-browser~="android"] .dots { width: 0.35cqw; }
+  .device-scene [data-browser~="phone"] .web-status { height: 8cqw; padding: 0 6cqw; font-size: 3.9cqw; }
+  .device-scene [data-browser~="phone"] .web-status .icons { width: 17cqw; }
+  .device-scene [data-browser~="phone"] .web-bar { height: 15cqw; padding: 0 4cqw; gap: 4cqw; }
+  .device-scene [data-browser~="phone"] .url { height: 10.5cqw; padding: 0 4.5cqw; gap: 2.5cqw; font-size: 4.3cqw; }
+  .device-scene [data-browser~="phone"] .lock { width: 2.8cqw; }
+  .device-scene [data-browser~="phone"] .tabs { width: 6.5cqw; border-width: 0.6cqw; border-radius: 1.4cqw; font-size: 3.4cqw; }
+  .device-scene [data-browser~="phone"] .dots { width: 1.2cqw; }
+  /* Whataburger (homescreen.ts): screens flattened from Apple's iOS kit */
+  .device-scene .home .screen { background: #000; }
+  .device-scene .home .screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .device-scene:not(.is-3d) .home { width: auto; height: 80%; border-radius: 13cqw; box-shadow: 0 0 0 2.4cqw #111; overflow: hidden; }
+  /* The case study's image rule (max-height 100vh, a page background) would cut the tours' long pages
+     short and fill the status bars' transparent overlays: not for the screens */
+  html .device-scene img { max-height: none; background: none; }
+  .device-scene .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .device-scene .shot .tap { position: absolute; width: 3.6cqw; aspect-ratio: 1; border-radius: 50%; background: rgba(11, 15, 26, .28); box-shadow: 0 0 0 .3cqw rgba(255, 255, 255, .7); translate: -50% -50%; opacity: 0; }
+  /* Black behind the screen, a little past its edges: where the display's cut runs wider than the
+     screen, it reads as bezel instead of letting the card color through */
+  .device-scene.is-3d .device { background: #000; box-shadow: 0 0 0 5px #000; overflow: hidden; }
+  /* Rounded like each display (in its layout pixels) so the black stays inside the body's corners */
+  .device-scene.is-3d .device[data-device="macbook-neo"] { border-radius: 14px; }
+  .device-scene.is-3d .device[data-device="ipad-mini-6"] { border-radius: 40px; }
+  /* The Galaxy tablet's and the Fold's display corners are tighter than their bodies': the black
+     stays tight to fill them, and the page inside is rounded to follow the body, the black reading
+     as bezel. The Fold's panel also runs under its frame, so its page is inset to the opening */
+  .device-scene.is-3d .device[data-device="galaxy-z-fold8"] { border-radius: 16px; --screen-radius: 34px; padding: 22px; }
+  .device-scene.is-3d .device[data-device="galaxy-s22-ultra"] { border-radius: 14px; }
+  .device-scene.is-3d .device[data-device="galaxy-tab-s8-ultra"] { border-radius: 16px; --screen-radius: 46px; }
+  .device-scene.is-3d .device.web > :first-child { border-radius: var(--screen-radius, 0px) var(--screen-radius, 0px) 0 0; }
+
+  /* The MyFrontier phone (myfrontier.ts). Flat fallback: fit the stage. In 3D the model supplies
+     the band and bezel */
+  .device-scene:not(.is-3d) .phone { width: auto; height: 84%; }
+  /* Rounded (in the 360px layout) to stay inside the iPhone body's corners */
+  .device-scene.is-3d .device[data-device="iphone-17-pro"] { border-radius: 54px; overflow: hidden; }
+  .device-scene.is-3d .band, .device-scene.is-3d .bezel { padding: 0; background: none; border-radius: 0; width: 100%; height: 100%; }
+
+  .device-scene .phone { width: 360px; aspect-ratio: 0.4785; }
+  .device-scene .sheen { position: absolute; inset: 0; z-index: 6; pointer-events: none; background: linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.13) 45%, rgba(255,255,255,0) 60%); background-size: 260% 260%; background-position: var(--sx, 50%) var(--sy, 50%); mix-blend-mode: screen; }
+  .device-scene .band { position: absolute; inset: 0; border-radius: 17cqw; padding: .9cqw;
+    background: linear-gradient(135deg, #b9bbbf 0%, #6c6f75 22%, #3f4248 50%, #5d6067 78%, #a7a9ad 100%);
+    transform: translateZ(0); }
+  .device-scene .bezel { width: 100%; height: 100%; border-radius: 16.1cqw; padding: 1.6cqw; background: #050506; }
+  .device-scene .phone .screen { position: relative; width: 100%; height: 100%; border-radius: 14.4cqw; overflow: hidden; background: #151A2A; }
+  .device-scene .layer { position: absolute; inset: 0; overflow: hidden; }
+  .device-scene .layer img.view { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* The published art was drawn on an older notched phone: cover its status bar, then set the
+     time and icons back down level with the Dynamic Island */
+  .device-scene .notch { position: absolute; inset: 0 0 auto 0; height: 4.4%; }
+  .device-scene .sb { position: absolute; top: 1.55%; height: 2.35%; width: auto; }
+  .device-scene .sb.l { left: 8.5%; }
+  .device-scene .sb.r { right: 7%; height: 1.45%; top: 2.05%; }
+  .device-scene .sheet .notch, .device-scene .sheet .sb { display: none; }
+  .device-scene .dim { position: absolute; inset: 0; background: rgba(10, 14, 30, .55); opacity: 0; }
+  .device-scene .wash { position: absolute; inset: 0; background: #ff033a; clip-path: circle(0 at 50% 85%); }
+  .device-scene .lottie { position: absolute; left: 50%; top: 50%; width: 52cqw; aspect-ratio: 1; translate: -50% -50%; }
+  .device-scene .lottie.intro { top: var(--intro-y, 47.5%); width: var(--intro-w, 70cqw); opacity: 0; }
+  .device-scene .logo-cover { position: absolute; left: 15%; top: 32%; width: 72%; height: 32%; background: #ff033a; }
+  .device-scene .spin { position: absolute; left: 50%; top: 13.5%; width: 7cqw; aspect-ratio: 1; translate: -50% 0; opacity: 0; z-index: 3; }
+  .device-scene .spin svg { width: 100%; height: 100%; display: block; }
+  .device-scene .phone .tap { position: absolute; width: 22cqw; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.55); box-shadow: 0 0 0 .4cqw rgba(11,15,26,.12); translate: -50% -50%; opacity: 0; pointer-events: none; z-index: 4; }
+  .device-scene .island { position: absolute; inset: 2.7cqw auto auto 50%; translate: -50% 0; width: 32cqw; height: 9.4cqw; border-radius: 5cqw; background: #000; z-index: 5; overflow: hidden; }
+  .device-scene .fid { position: absolute; left: 50%; top: 50%; width: 68cqw; aspect-ratio: 440 / 370; translate: -50% -50%; opacity: 0; }
+</style>

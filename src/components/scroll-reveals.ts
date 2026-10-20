@@ -210,7 +210,7 @@ function initImageReveals() {
 
     // ── Text reveals: CMY SplitText on prose-group children ──
     body.querySelectorAll<HTMLElement>('.prose-group').forEach(group => {
-      const children = Array.from(group.querySelectorAll<HTMLElement>(':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > p, :scope > blockquote'))
+      const children = Array.from(group.querySelectorAll<HTMLElement>(':is(:scope, :scope > .prose-body) > :is(h1, h2, h3, h4, p, blockquote)'))
       if (!children.length) return
 
       const parentTl = gsap.timeline(stVars(group))

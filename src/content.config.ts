@@ -40,8 +40,8 @@ const work = defineCollection({
       // Hover flipbook: art the same size and place as the subject, played in this order
       frames: z.array(image()).optional(),
     }).optional(),
-    // A coded phone scene (PhoneScene) that plays on the card in place of the subject
-    thumbnailScene: z.enum(['myfrontier']).optional(),
+    // A coded device scene (DeviceScene) that plays on the card in place of the subject
+    thumbnailScene: z.enum(['myfrontier', 'whataburger', 'amica', 'cvs', 'samsung', 'bespoke']).optional(),
   }),
 })
 

@@ -6,7 +6,10 @@ import {
   generateSpiral,
   sizeTaper,
   updateDots,
+  newPointerSpring,
+  stepPointerSpring,
   type ArrangementGenerator,
+  type Push,
 } from './hero-canvas-shared'
 
 const cfg = animations.hero.canvas
@@ -138,6 +141,7 @@ function initWithWorker(
       accentOpacity: cfg.accentOpacity,
       cmyStagger: cfg.cmyStagger,
       wavePaused: cfg.wavePaused,
+      pointer: cfg.pointer,
     },
     colors: {
       accent1: accentColors['1'],
@@ -158,6 +162,19 @@ function initWithWorker(
   })
   ro.observe(container)
 
+  // The pointer over the hero → the worker, which pushes the dots near it. The hero's text sits
+  // over the canvas, so this listens on the window and keeps to the canvas's box
+  let inside = false
+  const onPointer = (e: PointerEvent) => {
+    const r = container.getBoundingClientRect()
+    const x = e.clientX - r.left, y = e.clientY - r.top
+    const over = x >= 0 && y >= 0 && x <= r.width && y <= r.height && e.pointerType !== 'touch'
+    if (!over && !inside) return
+    inside = over
+    worker.postMessage({ type: 'pointer', x, y, active: over })
+  }
+  if (!prefersReduced) window.addEventListener('pointermove', onPointer, { passive: true })
+
   // IntersectionObserver → post visibility changes to worker
   const io = new IntersectionObserver(
     ([entry]) => {
@@ -169,6 +186,7 @@ function initWithWorker(
 
   return () => {
     clearTimeout(readyTimeout)
+    window.removeEventListener('pointermove', onPointer)
     ro.disconnect()
     io.disconnect()
     worker.terminate()
@@ -288,19 +306,40 @@ async function initFallback(
   const startTime = performance.now()
   const cmyDelay = cfg.cmyStagger
 
+  // The pointer's push, as in the worker
+  const p = cfg.pointer
+  const target = { x: 0, y: 0, active: false }
+  const pointer = newPointerSpring()
+  const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: p.push, grow: p.grow, amount: 1 }
+  const amounts = [1 + p.split, 1, 1 - p.split, 1]
+  const onPointer = (e: PointerEvent) => {
+    const r = container.getBoundingClientRect()
+    const x = e.clientX - r.left, y = e.clientY - r.top
+    const over = x >= 0 && y >= 0 && x <= r.width && y <= r.height && e.pointerType !== 'touch'
+    Object.assign(target, { x, y, active: over })
+  }
+  if (!prefersReduced) window.addEventListener('pointermove', onPointer, { passive: true })
+
   function tick() {
     if (!prefersReduced) {
       frameId = requestAnimationFrame(tick)
     }
     const elapsed = (performance.now() - startTime - pauseAccum) / 1000
     const time = (cfg.wavePaused || prefersReduced) ? 0 : elapsed
+    stepPointerSpring(pointer, target.x, target.y, target.active, p.stiffness, p.damping)
+    const w = container.clientWidth, h = container.clientHeight
+    push.x = (pointer.x - w / 2) / effectiveZoom
+    push.y = (h / 2 - pointer.y) / effectiveZoom
+    push.r = p.radius / effectiveZoom
+    push.strength = pointer.strength
     meshes.forEach((mesh, i) => {
+      push.amount = amounts[i]
       updateDots(
         mesh.instanceMatrix.array as Float32Array, total,
         posX, posY, dist, dotScales, time - delays[i] * cmyDelay,
         cfg.waveSpeed, cfg.propagation, cfg.waveSharpness,
         cfg.waveAmplitude, cfg.waveFrequency, cfg.baseScale, cfg.twistAmount,
-        null,
+        null, push,
       )
       mesh.instanceMatrix.needsUpdate = true
     })
@@ -312,6 +351,7 @@ async function initFallback(
 
   return () => {
     cancelAnimationFrame(frameId)
+    window.removeEventListener('pointermove', onPointer)
     observer.disconnect()
     ro.disconnect()
     meshes.forEach(mesh => (mesh.material as InstanceType<typeof MeshBasicMaterial>).dispose())

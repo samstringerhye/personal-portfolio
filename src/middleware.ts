@@ -34,7 +34,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const allWork = await getCollection('work')
   const caseStudy = allWork.find(e => e.id === slug && e.data.passwordProtected)
-  if (!caseStudy) return next()
+  if (!caseStudy) {
+    // Amica's prototype and ambient hero tool are public along with their case study. Their files
+    // still live under _protected-embeds (see serveEmbeddedAsset), so they're always served from here
+    if (isPrototypePath || isAmbientHeroPath) return serveEmbeddedAsset(context, isPrototypePath)
+    return next()
+  }
 
   // The case study page shows the password form inside its own hero (the page reads locals.gate);
   // the embedded apps have no page to render, so they keep the standalone form. The hero form

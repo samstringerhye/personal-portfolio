@@ -14,15 +14,16 @@ thumbnailLayers:
 heroImage: "../../assets/work/amica-design-system/hero.png"
 heroImageAlt: "Amica.com homepage in the redesigned teal brand palette, showing the ambient hero, Trustpilot rating, and quote-start widget"
 thumbnailAlt: "Amica logo"
+thumbnailScene: "amica"
 thumbnailText: "dark"
 featured: true
 sortOrder: 0
-passwordProtected: true
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
 ---
 import Meta from '../../components/Meta.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
+import Device from '../../components/Device.astro'
 import Carousel from '../../components/Carousel.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
 import TokenTiers from '../../components/amica/TokenTiers.astro'
@@ -58,7 +59,9 @@ I joined four sprints into a rescue: leadership had been split between two peopl
 <ImageGrid columns={1}>
 
 <Figure caption="Amica.com before the October 2026 relaunch, running on the library I inherited">
+<Device kind="laptop">
 ![Amica.com homepage before the relaunch, with a purple call-to-action and legacy color palette](../../assets/work/amica-design-system/proof/amica-legacy-homepage.png)
+</Device>
 </Figure>
 
 </ImageGrid>

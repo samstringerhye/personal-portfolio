@@ -81,18 +81,33 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
 | `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
+| `hero.canvas.accentOpacity` | 0–1 | `1` | Opacity of the red, green and blue dot layers (fully saturated) |
+| `hero.canvas.pointer.radius` | CSS px | `150` | How far around the pointer the dots react (off under reduced motion) |
+| `hero.canvas.pointer.push` / `grow` | ratio | `0.22` / `0.4` | Dots at the pointer are pushed out by this share of the radius and grow by this much |
+| `hero.canvas.pointer.split` | ratio | `0.2` | Red is pushed this much further than green, blue this much less, so dots near the pointer split into their subpixels |
+| `hero.canvas.pointer.stiffness` / `damping` | 0–1 | `0.06` / `0.8` | A spring, not an ease: the push trails the pointer, overshoots a touch and settles, and swells in and out the same way as the pointer enters and leaves |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
-| `workCards.phone.restYaw` | radians | `-0.46` | 3D phone's turn at rest (negative shows its left side) |
-| `workCards.phone.restPitch` | radians | `0.06` | 3D phone's tilt at rest |
-| `workCards.phone.pointerYaw` | radians | `0.8` | Turn as the pointer crosses the window |
-| `workCards.phone.pointerPitch` | radians | `0.28` | Tilt as the pointer moves down the window |
+| `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices and arrangements can override it in `workCards.devices` and `workCards.scenes` |
+| `workCards.phone.restPitch` | radians | `0.06` | 3D device's tilt at rest; devices and arrangements can override it in `workCards.devices` and `workCards.scenes` |
+| `workCards.phone.dragYaw` / `dragPitch` | radians | `3` / `1.2` | Turn and tilt for a drag across the full width and height of the device's box (devices don't follow the pointer; they turn when dragged) |
+| `workCards.phone.dragPitchLimit` | radians | `0.6` | Furthest a drag tilts the device from its rest, either way |
+| `workCards.phone.dragReturn` | 0–1 | `0.05` | Share of the way back to rest covered each frame after a drag (reduced motion snaps back) |
+| `workCards.phone.parallax` | ratio | `0.12` | Scroll parallax: the device sits this share of its row's distance from the viewport's center back toward it, so it drifts against the page (off under reduced motion) |
 | `workCards.phone.scrollPitch` | radians | `0.22` | Tilt as the card scrolls through the viewport (the only motion on touch screens) |
 | `workCards.phone.sway` | radians | `0.04` | Idle turn amplitude |
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
-| `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame (reduced motion holds the rest angle) |
+| `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame while scrolling (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
-| `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-phone-scenemyfrontierts) |
+| `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.scenes.<scene>.restYaw` / `restPitch` | radians | see below | Rest angle per arrangement, over its lead device's: MyFrontier `0` / `0.06` (the fan faces the camera, even on both sides), Whataburger `-0.2` / `0.06`, Samsung.com `-0.28` / `0.08` |
+| `workCards.float.bob` / `period` / `wobble` | m / s / rad | `0.004` / `4.6` / `0.025` | Floating devices in the arrangements bob this high, this slowly, leaning a touch as they go |
+| `workCards.float.drift` | m | `0` | A floating device starts this far below its place and drifts up as its card scrolls in; 0 keeps every device in its place, so nothing rises into frame |
+| `workCards.float.enterFrom` / `enterTo` | share of viewport | `0.95` / `0.45` | The drift runs while the card's center moves from near the bottom of the viewport to just above its middle (reduced motion: in place, no bob) |
+| `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
+| `workCards.deviceNav.fadeOut` / `fadeIn` / `fadeInDelay` | seconds | `0.3` / `0.4` / `0.15` | The rest of the page crossfading around it (the color shutter sits these out) |
+| `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |
+| `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-device-scenemyfrontierts) |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
 | `smoothScroll.lerp` | 0–1 | `0.5` | Lenis smooth scroll interpolation (lower = smoother, higher = snappier) |
 | `smoothScroll.wheelMultiplier` | number | `1` | Mouse wheel scroll speed multiplier |
@@ -189,7 +204,28 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ---
 
-## workCards.myfrontier (phone-scene/myfrontier.ts)
+## workCards.tours (device-scene/tours.ts)
+
+The CVS.com (MacBook Neo), Amica.com (MacBook Air 15), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6) card tours, in seconds. Each tour's steps are listed in `tours.ts`; the keys below are the names those steps use. Reduced motion skips the tours and holds on the first screen.
+
+| Key | Default | What it controls |
+|-----|---------|-----------------|
+| `moves.tap` | `0.65` | Tap ripple |
+| `moves.push` | `0.7` | Push to the next screen |
+| `moves.fade` | `0.6` | Crossfade to the next screen, and back to the first at the loop seam |
+| `moves.drop` | `0.45` | Menu dropping open (CVS Shop menu) |
+| `cvs.home` / `shop` / `brand` | `1.8` / `2.2` / `2.8` | Homepage, Shop menu open, Neutrogena brand page |
+| `samsung.home` | `1.6` | Homepage at the top, before it scrolls |
+| `samsung.homeScroll` | `5` | Homepage scrolling down to Appliances |
+| `samsung.appliances` | `1.2` | Appliances section before the tap |
+| `samsung.category` / `categoryScroll` / `bestSellers` | `1.4` / `3.5` / `2.2` | Washers & Dryers page: at the top, scrolling, then holding on Best Sellers |
+| `amica.home` | `2.2` | Amica.com homepage before the Get a quote tap |
+| `amica.quote` / `quoteScroll` / `empathy` | `1.4` / `3.5` / `2.2` | Get a quote page: at the top, scrolling, then holding on Empathy is our best policy |
+| `bespoke.depth` / `colors` / `summary` | `2` / `2.2` / `2.8` | Choose Depth, Choose Colors, then Your Design |
+
+---
+
+## workCards.myfrontier (device-scene/myfrontier.ts)
 
 The MyFrontier card's app tour, in seconds. Reduced motion skips the tour and holds on the home screen.
 

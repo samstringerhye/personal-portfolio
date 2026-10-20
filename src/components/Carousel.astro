@@ -64,6 +64,11 @@ const { label, fullBleed = false } = Astro.props
     -webkit-user-drag: none;
   }
 
+  /* A device fills more of the track than a bare image */
+  .carousel-track > :global(.cs-figure:has(.device-mock)) {
+    flex-basis: 75%;
+  }
+
   .carousel-track > :global(.device-phone) {
     flex: 0 0 auto;
     padding: 0;
@@ -74,12 +79,12 @@ const { label, fullBleed = false } = Astro.props
   }
 
   .carousel-track > :global(img):not(.browser-screen),
-  .carousel-track > :global(.cs-figure) :global(img):not(.browser-screen) {
+  .carousel-track > :global(.cs-figure) :global(img):not(.browser-screen):not(:global(.device-mock img)) {
     display: block;
     width: auto;
     max-width: 100%;
     height: auto;
-    max-height: 75vh;
+    max-height: min(70vh, 40rem);
     margin-inline: auto;
     border-radius: var(--radius-lg);
   }

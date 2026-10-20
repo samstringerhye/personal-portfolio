@@ -34,6 +34,8 @@ export function createCmyAutoSplitReveal(
     type: 'words,lines',
     linesClass: 'reveal-line',
     wordsClass: 'reveal-word',
+    // The split lines stay readable as they are: an aria-label isn't allowed on a paragraph
+    aria: 'none',
     autoSplit: true,
     onSplit(self) {
       const lines = self.lines as HTMLElement[]
@@ -88,6 +90,8 @@ export function createCmyAutoSplitRevealGrouped(
     type: 'words,lines',
     linesClass: 'reveal-line',
     wordsClass: 'reveal-word',
+    // The split lines stay readable as they are: an aria-label isn't allowed on a paragraph
+    aria: 'none',
     autoSplit: true,
     onSplit(self) {
       const lines = self.lines as HTMLElement[]
