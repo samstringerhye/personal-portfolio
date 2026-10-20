@@ -7,9 +7,9 @@ import { BackSide, BoxGeometry, Color, Float32BufferAttribute, Mesh, MeshBasicMa
 
 // Brightness above 1 makes a panel read as a light source once the environment is tone mapped
 interface Softbox { w: number; h: number; at: [number, number, number]; power: number; tint: [number, number, number] }
-const WARM: [number, number, number] = [1, 0.9, 0.78]
-const NEUTRAL: [number, number, number] = [1, 0.97, 0.93]
-const COOL: [number, number, number] = [0.9, 0.95, 1]
+const WARM: [number, number, number] = [1, 0.96, 0.91]
+const NEUTRAL: [number, number, number] = [1, 1, 1]
+const COOL: [number, number, number] = [0.93, 0.96, 1]
 const SOFTBOXES: Softbox[] = [
   // Key: a wide box above and in front, to the left, the main highlight on lids and bezels
   { w: 9, h: 5, at: [-5, 7, 7], power: 7, tint: WARM },
@@ -23,9 +23,9 @@ const SOFTBOXES: Softbox[] = [
   // A low bounce in front, the kind a white sweep gives
   { w: 14, h: 3, at: [0, -3, 9], power: 1.4, tint: WARM },
 ]
-// The room the boxes hang in: cream walls, a little darker and warmer below
-const WALL: [number, number, number] = [0.58, 0.54, 0.49]
-const FLOOR: [number, number, number] = [0.42, 0.37, 0.31]
+// The room the boxes hang in: neutral gray walls, darker below, so the finishes keep their own colors
+const WALL: [number, number, number] = [0.55, 0.55, 0.56]
+const FLOOR: [number, number, number] = [0.38, 0.38, 0.39]
 
 export function studioScene(): Scene {
   const scene = new Scene()

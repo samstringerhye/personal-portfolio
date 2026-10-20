@@ -6,10 +6,11 @@
 // the screens onto it in the same step.
 import { createArrangementRenderer, type FloatMotion } from './render'
 import type { SceneName } from './arrangements'
+import type { Bleed } from './shared'
 
 type Message =
-  | { type: 'init'; id: number; width: number; height: number; dpr: number; visible: [number, number]; scene: SceneName; fov: number; rx: number; ry: number; float: FloatMotion }
-  | { type: 'resize'; id: number; width: number; height: number; dpr: number; visible: [number, number] }
+  | { type: 'init'; id: number; width: number; height: number; dpr: number; bleed: Bleed; scene: SceneName; fov: number; rx: number; ry: number; float: FloatMotion }
+  | { type: 'resize'; id: number; width: number; height: number; dpr: number; bleed: Bleed }
   | { type: 'frame'; id: number; rx: number; ry: number; lift: number; t: number; enter: number }
   | { type: 'dispose'; id: number }
 
@@ -22,7 +23,7 @@ self.onmessage = async (e: MessageEvent<Message>) => {
   if (msg.type === 'init') {
     try {
       const canvas = new OffscreenCanvas(1, 1)
-      const r = await createArrangementRenderer(canvas, msg.width, msg.height, msg.dpr, msg.scene, msg.fov, { rx: msg.rx, ry: msg.ry }, msg.float, msg.visible)
+      const r = await createArrangementRenderer(canvas, msg.width, msg.height, msg.dpr, msg.scene, msg.fov, { rx: msg.rx, ry: msg.ry }, msg.float, msg.bleed)
       if (disposed.delete(msg.id)) { r.dispose(); return }
       scenes.set(msg.id, { r, canvas })
       // The first frame is the slow one; it lands before the page swaps the model in
@@ -33,7 +34,7 @@ self.onmessage = async (e: MessageEvent<Message>) => {
       self.postMessage({ type: 'error', id: msg.id, message: String(err) })
     }
   } else if (msg.type === 'resize') {
-    scenes.get(msg.id)?.r.resize(msg.width, msg.height, msg.dpr, msg.visible)
+    scenes.get(msg.id)?.r.resize(msg.width, msg.height, msg.dpr, msg.bleed)
   } else if (msg.type === 'frame') {
     const s = scenes.get(msg.id)
     if (!s) { self.postMessage({ type: 'drawn', id: msg.id }); return }

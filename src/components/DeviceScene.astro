@@ -53,6 +53,50 @@ const arrangement = arrangementOf(scene)
   .device-scene .device:not(.phone) .screen { position: relative; width: 100%; height: 100%; overflow: hidden; }
   .device-scene .device:not(.phone):not(.home) .screen { background: #fff; }
   .device-scene .shot { position: absolute; inset: 0 0 auto 0; }
+  /* Website tours in their browser (browser.ts): the toolbar and status bar in flow above the page,
+     the iPhone's address bar floating over it. Sizes in cqw of the device */
+  .device-scene .device.web { display: flex; flex-direction: column; background: #fff; font-family: -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, sans-serif; }
+  .device-scene .device.web .screen { flex: 1; height: auto; min-height: 0; }
+  .device-scene .web-bar, .device-scene .web-status { flex: none; display: flex; align-items: center; color: #1d1d1f; }
+  .device-scene .web-bar .url { display: flex; align-items: center; justify-content: center; border-radius: 999px; background: #e9e9ed; color: #1d1d1f; white-space: nowrap; }
+  .device-scene .web-bar svg { flex: none; height: auto; color: #3c3c43; }
+  .device-scene .web-status { justify-content: space-between; font-weight: 600; }
+  .device-scene .web-status .icons { height: auto; }
+  /* Safari on the Macs */
+  .device-scene .web-menu { flex: none; display: flex; align-items: center; height: 2.3cqw; padding: 0 1.4cqw; gap: 1.5cqw; background: #ececee; color: #111; font-size: 0.95cqw; }
+  .device-scene .web-menu .clock { display: flex; align-items: center; gap: 1.2cqw; margin-left: auto; }
+  .device-scene .web-menu .icons { width: 4.4cqw; height: auto; }
+  .device-scene [data-browser="mac"] .web-bar { height: 3.5cqw; padding: 0 1.2cqw; gap: 1.4cqw; background: #f3f3f5; border-bottom: 0.07cqw solid #d9d9de; }
+  .device-scene [data-browser="mac"] .lights { display: flex; gap: 0.55cqw; }
+  .device-scene [data-browser="mac"] .lights b { width: 0.85cqw; aspect-ratio: 1; border-radius: 50%; background: #ff5f57; }
+  .device-scene [data-browser="mac"] .lights b:nth-child(2) { background: #febc2e; }
+  .device-scene [data-browser="mac"] .lights b:nth-child(3) { background: #28c840; }
+  .device-scene [data-browser="mac"] .nav { width: 2.4cqw; }
+  .device-scene [data-browser="mac"] .url { flex: 0 1 36cqw; height: 2.3cqw; margin: 0 auto; gap: 0.5cqw; font-size: 0.95cqw; border-radius: 0.7cqw; }
+  .device-scene [data-browser="mac"] .lock { width: 0.65cqw; }
+  .device-scene [data-browser="mac"] .share { width: 1cqw; }
+  /* Safari on the iPhone: the status bar, and the address bar floating at the bottom */
+  .device-scene [data-browser="ios"] .web-status { height: 13cqw; padding: 1.5cqw 8cqw 0 10cqw; font-size: 4.3cqw; }
+  .device-scene [data-browser="ios"] .web-status .icons { width: 19cqw; }
+  .device-scene [data-browser="ios"] .web-bar { position: absolute; left: 4.5cqw; right: 4.5cqw; bottom: 4cqw; height: 12.5cqw; padding: 0 4.5cqw; gap: 3cqw; border-radius: 999px; background: rgba(250, 250, 252, 0.92); box-shadow: 0 1cqw 4cqw rgba(0, 0, 0, 0.16), inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.7); }
+  .device-scene [data-browser="ios"] .url { flex: 1; gap: 1.6cqw; background: none; font-size: 4.3cqw; font-weight: 500; }
+  .device-scene [data-browser="ios"] .lock { width: 2.6cqw; }
+  .device-scene [data-browser="ios"] .dots { width: 1.1cqw; transform: rotate(90deg); }
+  /* Chrome on the Galaxy devices; the phone (360px) runs larger in cqw than the tablet and the Fold */
+  .device-scene [data-browser~="android"] .web-status { height: 2cqw; padding: 0 1.6cqw; font-size: 1.05cqw; }
+  .device-scene [data-browser~="android"] .web-status .icons { width: 5cqw; }
+  .device-scene [data-browser~="android"] .web-bar { height: 4cqw; padding: 0 1.4cqw; gap: 1.4cqw; background: #fff; border-bottom: 0.07cqw solid #e3e3e8; }
+  .device-scene [data-browser~="android"] .url { flex: 1; height: 2.8cqw; justify-content: flex-start; padding: 0 1.4cqw; gap: 0.8cqw; background: #eff1f4; font-size: 1.2cqw; }
+  .device-scene [data-browser~="android"] .lock { width: 0.75cqw; }
+  .device-scene [data-browser~="android"] .tabs { display: grid; place-items: center; width: 1.8cqw; aspect-ratio: 1; border: 0.18cqw solid currentColor; border-radius: 0.4cqw; font-size: 0.95cqw; font-weight: 700; }
+  .device-scene [data-browser~="android"] .dots { width: 0.35cqw; }
+  .device-scene [data-browser~="phone"] .web-status { height: 8cqw; padding: 0 6cqw; font-size: 3.9cqw; }
+  .device-scene [data-browser~="phone"] .web-status .icons { width: 17cqw; }
+  .device-scene [data-browser~="phone"] .web-bar { height: 15cqw; padding: 0 4cqw; gap: 4cqw; }
+  .device-scene [data-browser~="phone"] .url { height: 10.5cqw; padding: 0 4.5cqw; gap: 2.5cqw; font-size: 4.3cqw; }
+  .device-scene [data-browser~="phone"] .lock { width: 2.8cqw; }
+  .device-scene [data-browser~="phone"] .tabs { width: 6.5cqw; border-width: 0.6cqw; border-radius: 1.4cqw; font-size: 3.4cqw; }
+  .device-scene [data-browser~="phone"] .dots { width: 1.2cqw; }
   /* Whataburger (homescreen.ts): the app icon alone on a light home screen. Sizes in cqw of the
      360px screen */
   .device-scene .home .screen { display: grid; place-items: center; background: linear-gradient(160deg, #F2F3F5 0%, #DADDE3 100%); }

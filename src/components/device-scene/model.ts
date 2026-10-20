@@ -2,7 +2,7 @@
 // worker where the browser supports it (model.worker.ts), on the main thread otherwise (render.ts). This module turns the arrangement and lays each screen on its
 // display from the matrices the renderer reports, so the page never loads three.js here.
 import { animations } from '../../data/tokens'
-import { DEVICES, viewHeightAt, type ArrangementGeometry, type DeviceName } from './shared'
+import { DEVICES, viewHeightAt, type ArrangementGeometry, type Bleed, type DeviceName } from './shared'
 import { arrangementOf, type SceneName } from './arrangements'
 import type { FloatMotion } from './render'
 
@@ -10,8 +10,8 @@ interface Backend {
   geometry: ArrangementGeometry
   /** Where each display sits in the first frame */
   first: Float32Array
-  /** visible: the share of the canvas's width, from its left, inside the window */
-  resize: (w: number, h: number, dpr: number, visible: [number, number]) => void
+  /** w × h is the stage; the canvas runs past it by bleed */
+  resize: (w: number, h: number, dpr: number, bleed: Bleed) => void
   /** Draws a frame, then hands back where each display sits once it's on the canvas (null when
       no frame could be drawn) */
   frame: (rx: number, ry: number, lift: number, t: number, enter: number, drawn: (matrices: Float32Array | null) => void) => void
@@ -23,10 +23,13 @@ const float: FloatMotion & { enterFrom: number; enterTo: number } = animations.w
 // Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
 const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
 const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
-// Up to 2x on retina screens, within a pixel budget: a full-row canvas at 2x is ~4M pixels a frame,
-// so large canvases settle near 1.5x while smaller ones get the full 2x
-const MAX_PIXELS = 2.4e6
-const dprFor = (w: number, h: number) => Math.min(2, window.devicePixelRatio || 1, Math.sqrt(MAX_PIXELS / Math.max(1, w * h)))
+// Up to 2x on retina screens, within a pixel budget: a full-row canvas at 2x is ~6M pixels a frame,
+// so large canvases settle near 1.3x while smaller ones get the full 2x
+const MAX_PIXELS = 3.2e6
+const dprFor = (w: number, h: number, [l, t, r, b]: Bleed) => Math.min(2, window.devicePixelRatio || 1, Math.sqrt(MAX_PIXELS / Math.max(1, (w + l + r) * (h + t + b))))
+// How far the canvas runs past the stage, as shares of its size, so the shadow is never cut off:
+// sideways up to the window's edges, and further down than up, where the shadow falls
+const BLEED = { side: 0.35, top: 0.05, bottom: 0.25 }
 
 // No probe context here: creating one costs a main-thread stall. A worker without WebGL reports
 // an error and the main thread takes over
@@ -68,12 +71,12 @@ function sharedWorker(): Worker {
 // The worker draws each frame off screen and sends it back as a bitmap with the displays' places:
 // the frame goes up on the canvas and the screens move onto it in the same task, so the browser
 // paints them together however fast the page scrolls
-async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, visible: [number, number], scene: SceneName, rest: Rest): Promise<Backend> {
+async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, bleed: Bleed, scene: SceneName, rest: Rest): Promise<Backend> {
   const target = sharedWorker()
   const id = nextId++
   const { geometry, matrices, frame } = await new Promise<Ready>((resolve, reject) => {
     pending.set(id, { resolve, reject })
-    target.postMessage({ type: 'init', id, width: w, height: h, dpr: dprFor(w, h), visible, scene, fov, rx: rest.pitch, ry: rest.yaw, float })
+    target.postMessage({ type: 'init', id, width: w, height: h, dpr: dprFor(w, h, bleed), bleed, scene, fov, rx: rest.pitch, ry: rest.yaw, float })
   })
   const context = canvas.getContext('bitmaprenderer')!
   const show = (bitmap: ImageBitmap) => {
@@ -85,7 +88,7 @@ async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, vi
   return {
     geometry,
     first: matrices,
-    resize: (width, height, dpr, visible) => target.postMessage({ type: 'resize', id, width, height, dpr, visible }),
+    resize: (width, height, dpr, bleed) => target.postMessage({ type: 'resize', id, width, height, dpr, bleed }),
     frame: (rx, ry, lift, t, enter, drawn) => {
       drawnCallbacks.set(id, (m, bitmap) => { if (bitmap) show(bitmap); drawn(m) })
       target.postMessage({ type: 'frame', id, rx, ry, lift, t, enter })
@@ -97,9 +100,9 @@ async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, vi
   }
 }
 
-async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, visible: [number, number], scene: SceneName, rest: Rest): Promise<Backend> {
+async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, bleed: Bleed, scene: SceneName, rest: Rest): Promise<Backend> {
   const { createArrangementRenderer } = await import('./render')
-  const r = await createArrangementRenderer(canvas, w, h, dprFor(w, h), scene, fov, { rx: rest.pitch, ry: rest.yaw }, float, visible)
+  const r = await createArrangementRenderer(canvas, w, h, dprFor(w, h, bleed), scene, fov, { rx: rest.pitch, ry: rest.yaw }, float, bleed)
   return {
     geometry: r.geometry,
     first: r.render(rest.pitch, rest.yaw),
@@ -156,28 +159,37 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   stage.className = 'stage device-scene-stage'
   art.append(stage)
   const w = stage.clientWidth, h = stage.clientHeight
-  // The share of the stage's width inside the window: the shadow fades out before either edge
-  const visibleOf = (): [number, number] => {
+  const bleedOf = (w: number, h: number): Bleed => {
     const r = stage.getBoundingClientRect()
-    if (!r.width) return [0, 1]
-    return [Math.max(0, -r.left) / r.width, Math.min(r.width, document.documentElement.clientWidth - r.left) / r.width]
+    const right = document.documentElement.clientWidth - r.right
+    return [Math.max(0, Math.min(r.left, w * BLEED.side)), h * BLEED.top, Math.max(0, Math.min(right, w * BLEED.side)), h * BLEED.bottom].map(Math.round) as Bleed
   }
+  let bleed = bleedOf(w, h)
   const canvas = document.createElement('canvas')
   let backend: Backend
   if (offscreen()) {
     try {
-      backend = await workerBackend(canvas, w, h, visibleOf(), scene, rest)
+      backend = await workerBackend(canvas, w, h, bleed, scene, rest)
     } catch {
-      backend = await mainBackend(canvas, w, h, visibleOf(), scene, rest)
+      backend = await mainBackend(canvas, w, h, bleed, scene, rest)
     }
   } else {
-    backend = await mainBackend(canvas, w, h, visibleOf(), scene, rest)
+    backend = await mainBackend(canvas, w, h, bleed, scene, rest)
   }
 
-  // One perspective container behind the canvas holding every screen, each with one transform
+  // One perspective container behind the canvas holding every screen, each with one transform.
+  // Both run past the stage by the bleed; the perspective and the screens stay centered on the stage
   const view = document.createElement('div')
   view.className = 'device-scene-view'
-  view.style.perspective = perspective(h)
+  const spread = (nw: number, nh: number) => {
+    const [l, t, r, b] = bleed
+    for (const el of [view, canvas]) Object.assign(el.style, { inset: 'auto', maxWidth: 'none', left: `${-l}px`, top: `${-t}px`, width: `${nw + l + r}px`, height: `${nh + t + b}px` })
+    view.style.perspective = perspective(nh)
+    view.style.perspectiveOrigin = `${l + nw / 2}px ${t + nh / 2}px`
+    view.style.setProperty('--cx', `${l + nw / 2}px`)
+    view.style.setProperty('--cy', `${t + nh / 2}px`)
+  }
+  spread(w, h)
   stage.append(view, canvas)
   // Each screen's own styles and place, restored when the arrangement is torn down
   const homes = faces.map(face => ({ parent: face.parentElement!, css: face.style.cssText }))
@@ -187,7 +199,7 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     const face = faces[i]
     view.append(face)
     face.dataset.device = p.device
-    face.style.cssText += `;position:absolute;left:50%;top:50%;width:${fw}px;transform-origin:0 0;aspect-ratio:${backend.geometry.aspects[i]}`
+    face.style.cssText += `;position:absolute;left:var(--cx);top:var(--cy);width:${fw}px;transform-origin:0 0;aspect-ratio:${backend.geometry.aspects[i]}`
     return { fw, fh, a: spec.realWidth / fw }
   })
   art.classList.add('is-3d')
@@ -219,9 +231,10 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   const ro = new ResizeObserver(() => {
     const nw = stage.clientWidth, nh = stage.clientHeight
     if (!nw || !nh) return
+    bleed = bleedOf(nw, nh)
     fit(nw, nh)
-    view.style.perspective = perspective(nh)
-    backend.resize(nw, nh, dprFor(nw, nh), visibleOf())
+    spread(nw, nh)
+    backend.resize(nw, nh, dprFor(nw, nh, bleed), bleed)
     drawn = null
   })
   ro.observe(stage)
@@ -284,7 +297,10 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     const box = (art.parentElement ?? art).getBoundingClientRect()
     const fromCenter = box.top + box.height / 2 - window.innerHeight / 2
     if (!reduced) {
-      const offset = Math.round(-fromCenter * tilt.parallax)
+      // Held within a viewport's height of the center: a frame that runs mid-jump, before the card
+      // stops, mustn't leave it far out of place
+      const near = Math.max(-window.innerHeight, Math.min(window.innerHeight, fromCenter))
+      const offset = Math.round(-near * tilt.parallax)
       if (offset !== parallax) art.style.setProperty('--parallax', `${(parallax = offset)}px`)
     }
     // Floating devices drift up into place as the card's center rises through the viewport
@@ -314,11 +330,12 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     busy = true
     backend.frame(rx, ry, lift, t, enter, m => { busy = false; if (m) place(m) })
   }
+  // Running a little past the card's box, which the parallax and the canvas's bleed reach beyond
   const io = new IntersectionObserver(([e]) => {
     on = e.isIntersecting
     cancelAnimationFrame(raf)
     if (on) raf = requestAnimationFrame(frame)
-  })
+  }, { rootMargin: '25% 0px' })
   io.observe(art)
 
   // Tears the 3D down and puts the screens back in their hosts, still playing, ready for the next

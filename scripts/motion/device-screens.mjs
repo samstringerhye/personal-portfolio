@@ -36,7 +36,7 @@ const screens = {
   // Phones beside the desktops in the arrangements, each one published mobile screen
   'cvs-mobile': {
     width: 720,
-    shots: { home: ['cvs-redesign/frame-10669.png', { left: 145, top: 430, width: 390, height: 870 }] },
+    shots: { home: ['cvs-redesign/frame-10669.png', { left: 145, top: 474, width: 390, height: 826 }] },
   },
   'amica-mobile': {
     width: 720,

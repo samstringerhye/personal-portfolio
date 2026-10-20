@@ -1,7 +1,7 @@
 // A color grade for the device renders, applied in the tone mapping step so it costs no extra pass:
-// Khronos PBR Neutral first (true colors), then a split tone that follows the three-point lighting
-// (render.ts): the warm key's highlights a little warmer, the cool fill's shadows a little cooler,
-// then a contrast curve that deepens the falloff between them and a little saturation.
+// Khronos PBR Neutral first (true colors), then a light split tone that follows the three-point
+// lighting (render.ts), highlights a touch warm and shadows a touch cool, kept small so the finishes
+// stay true; then a contrast curve that deepens the falloff between them and a little saturation.
 import { CustomToneMapping, ShaderChunk, type WebGLRenderer } from 'three'
 
 const GRADE = /* glsl */ `
@@ -10,15 +10,15 @@ vec3 CustomToneMapping( vec3 color ) {
   const vec3 luma = vec3( 0.2126, 0.7152, 0.0722 );
   float l = dot( color, luma );
   // Split tone: cool shadows, warm highlights
-  vec3 shadows = vec3( 0.9, 0.96, 1.09 );
-  vec3 highlights = vec3( 1.045, 1.0, 0.94 );
+  vec3 shadows = vec3( 0.97, 0.985, 1.03 );
+  vec3 highlights = vec3( 1.015, 1.0, 0.985 );
   color *= mix( shadows, highlights, smoothstep( 0.1, 0.8, l ) );
   // Contrast: part of the way to a smoothstep S-curve
   color = clamp( color, 0.0, 1.0 );
   color = mix( color, color * color * ( 3.0 - 2.0 * color ), 0.34 );
   // Saturation
   l = dot( color, luma );
-  return mix( vec3( l ), color, 1.16 );
+  return mix( vec3( l ), color, 1.06 );
 }`
 
 let installed = false

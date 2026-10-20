@@ -38,12 +38,14 @@ export interface Arrangement {
   fill: number
 }
 
-// Finishes from the real lineups. iPhone 17 Pro: the aluminum unibody and the back's glass window
-const COSMIC_ORANGE = { Anodized_aluminum: '#d8692e', Frosted_glass: '#d8692e' }
-const DEEP_BLUE = { Anodized_aluminum: '#3b4a66', Frosted_glass: '#3b4a66' }
-// Galaxy S22 Ultra: the frame and the back
-const BURGUNDY = { Bezel: '#6e3b43', Back_Cover_Glass: '#4b1f28', Rearcase: '#4b1f28' }
-const GREEN = { Bezel: '#5f6d62', Back_Cover_Glass: '#2f3e35', Rearcase: '#2f3e35' }
+// Finishes from the real lineups (Silver and the tablet's Graphite are the devices' own, shared.ts).
+// iPhone 17 Pro: the aluminum unibody, its antenna bands and the glass window on the back, which
+// runs a shade lighter
+const COSMIC_ORANGE = { Anodized_aluminum: '#e2652a', Plastic_antena: '#c95a26', Frosted_glass: '#ec7a3e' }
+const DEEP_BLUE = { Anodized_aluminum: '#2f3a50', Plastic_antena: '#2a3446', Frosted_glass: '#38445b' }
+// Galaxy S22 Ultra: the polished frame and the frosted back
+const BURGUNDY = { Bezel: '#5c2a31', Back_Cover_Glass: '#4a1d25', Rearcase: '#4a1d25' }
+const GREEN = { Bezel: '#4f5b52', Back_Cover_Glass: '#3a463d', Rearcase: '#3a463d' }
 
 // Turns: [pitch, yaw, roll]. Every screen faces the camera: the arrangement's rest yaw plus a
 // device's own stays within about ±0.3, so no screen is seen edge on

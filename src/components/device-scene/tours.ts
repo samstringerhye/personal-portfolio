@@ -4,6 +4,7 @@
 // screen.
 import { animations } from '../../data/tokens'
 import { DEVICES, type DeviceName } from './shared'
+import { addBrowser } from './browser'
 
 type Point = readonly [number, number]
 type Step =
@@ -20,11 +21,15 @@ interface Tour {
   /** Screens under /motion/<tour>/, with their width over height */
   shots: Record<string, number>
   steps: Step[]
+  /** A website: the domain in its browser's address bar, and the color at the top of its pages,
+      under the status bar (browser.ts) */
+  site?: { url: string; page: string }
 }
 
 // Every screen is one the case study publishes (scripts/motion/device-screens.mjs)
 export const TOURS = {
   cvs: {
+    site: { url: 'cvs.com', page: '#f8f8f8' },
     shots: { home: 1280 / 798, shop: 1280 / 798, brand: 1280 / 821 },
     steps: [
       { hold: 'home' }, { tap: [0.169, 0.082] }, { drop: 'shop' },
@@ -33,6 +38,7 @@ export const TOURS = {
     ],
   },
   samsung: {
+    site: { url: 'samsung.com', page: '#ffffff' },
     shots: { home: 1100 / 2464, category: 1100 / 1584 },
     steps: [
       { hold: 'home' }, { scroll: 1, over: 'homeScroll' }, { hold: 'appliances' },
@@ -42,6 +48,7 @@ export const TOURS = {
     ],
   },
   amica: {
+    site: { url: 'amica.com', page: '#00a890' },
     shots: { home: 1440 / 900, quote: 1440 / 2159 },
     steps: [
       { hold: 'home' }, { tap: [0.352, 0.54] }, { push: 'quote' },
@@ -50,6 +57,7 @@ export const TOURS = {
     ],
   },
   bespoke: {
+    site: { url: 'samsung.com', page: '#f9f9f9' },
     shots: { depth: 1200 / 853, colors: 1200 / 853, summary: 1200 / 853 },
     steps: [
       { hold: 'depth' }, { tap: [0.85, 0.2] }, { fade: 'colors' },
@@ -58,10 +66,10 @@ export const TOURS = {
     ],
   },
   // The phones beside them, each on one published mobile screen
-  'cvs-mobile': { shots: { home: 720 / 1606 }, steps: [] },
-  'amica-mobile': { shots: { home: 720 / 1561 }, steps: [] },
-  'samsung-mobile': { shots: { home: 540 / 1156 }, steps: [] },
-  'bespoke-mobile': { shots: { depth: 720 / 1543 }, steps: [] },
+  'cvs-mobile': { site: { url: 'cvs.com', page: '#f9f9f9' }, shots: { home: 720 / 1525 }, steps: [] },
+  'amica-mobile': { site: { url: 'amica.com', page: '#00a890' }, shots: { home: 720 / 1561 }, steps: [] },
+  'samsung-mobile': { site: { url: 'samsung.com', page: '#ffffff' }, shots: { home: 540 / 1156 }, steps: [] },
+  'bespoke-mobile': { site: { url: 'samsung.com', page: '#f9f9f9' }, shots: { depth: 720 / 1543 }, steps: [] },
 } satisfies Record<string, Tour>
 export type TourName = keyof typeof TOURS
 
@@ -85,6 +93,7 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
   const screen = art.querySelector<HTMLElement>('.screen')!
   device.style.setProperty('--aspect', String(spec.aspect))
   device.style.setProperty('--layout-w', `${spec.screenWidth}px`)
+  if (tour.site) addBrowser(device, kind, tour.site.url, tour.site.page)
 
   const shots: Record<string, HTMLDivElement> = {}
   for (const [shot, ar] of Object.entries(tour.shots)) {

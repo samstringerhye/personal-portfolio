@@ -11,7 +11,7 @@ import {
 import { GLTFLoader, type GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 
-import { DEVICES, modelUrl, viewHeightAt, type ArrangementGeometry, type DeviceName, type DeviceSpec } from './shared'
+import { DEVICES, modelUrl, viewHeightAt, type ArrangementGeometry, type Bleed, type DeviceName, type DeviceSpec } from './shared'
 import { arrangementOf, type SceneName } from './arrangements'
 import { studioScene } from './studio'
 import { contactShadow } from './contact-shadow'
@@ -20,17 +20,15 @@ import { grade } from './grade'
 // How far a held arrangement rises off the floor, as a share of its height
 const LIFT = 0.05
 
-// Three-point lighting: a warm key high on the left, a cool fill low on the right at a quarter of
-// its strength, and a rim behind on the right that traces the frames' edges. The environment is
-// turned down to let them read
+// Three-point lighting: a key high on the left, barely warm, a fill low on the right, barely cool,
+// at a quarter of its strength, and a rim behind on the right that traces the frames' edges. Near
+// white, so the finishes keep their true colors; the environment is turned down to let them read
 const LIGHTS: { color: number; power: number; at: [number, number, number] }[] = [
-  { color: 0xffe2c6, power: 1.7, at: [-7, 8, 10] },
-  { color: 0xcfdcff, power: 0.45, at: [9, 1, 7] },
-  { color: 0xf4f7ff, power: 2.4, at: [5, 6, -10] },
+  { color: 0xfff4ea, power: 1.7, at: [-7, 8, 10] },
+  { color: 0xe6edff, power: 0.45, at: [9, 1, 7] },
+  { color: 0xffffff, power: 2.4, at: [5, 6, -10] },
 ]
 const ENVIRONMENT = 0.75
-// The shadow fades out over this share of the canvas's width before any edge of it that shows
-const SHADOW_EDGE = 0.14
 
 /** Floating devices: bob height (m) and period (s), the lean that goes with it (rad), and how far
     below its place a device starts before it drifts up as the card scrolls in (m) */
@@ -66,6 +64,8 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
     if (spec.glass.includes(mat.name)) { mat.transparent = true; mat.opacity = 0.06; mesh.renderOrder = 2 }
     const paint = color[mat.name] ?? spec.finish?.[mat.name]
     if (paint) { mat.map = null; mat.color.set(paint); mat.needsUpdate = true }
+    const satin = spec.matte?.[mat.name]
+    if (satin !== undefined) { mat.normalMap = null; mat.roughness = satin; mat.needsUpdate = true }
     // Invert the texture's brightness in the shader, color dropped: light keys with dark legends
     // become dark keys with light legends, like a silver MacBook's
     if (spec.neutral?.includes(mat.name)) {
@@ -83,7 +83,7 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
 
 export async function createArrangementRenderer(
   canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number,
-  name: SceneName, fov: number, rest: { rx: number; ry: number }, float: FloatMotion, visible: [number, number] = [0, 1],
+  name: SceneName, fov: number, rest: { rx: number; ry: number }, float: FloatMotion, bleed: Bleed = [0, 0, 0, 0],
 ) {
   const arrangement = arrangementOf(name)
   const placements = arrangement.placements
@@ -213,25 +213,25 @@ export async function createArrangementRenderer(
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
-  // visible: the share of the canvas's width, from its left, the window shows ([0, 1] for all of it)
-  const resize = (w: number, h: number, ratio = dpr, visible: [number, number] = [0, 1]) => {
+  // w × h is the stage the arrangement is framed in; the canvas runs past it by bleed on each side,
+  // so the shadow and a device dragged toward the edge are drawn whole
+  const resize = (w: number, h: number, ratio = dpr, [l, t, r, b]: Bleed = [0, 0, 0, 0]) => {
     if (!w || !h) return
     gl.setPixelRatio(ratio)
-    gl.setSize(w, h, false)
-    const pw = w * ratio, ph = h * ratio
-    shadow.clip(visible[0] * pw, 0, visible[1] * pw, ph, SHADOW_EDGE * pw)
+    gl.setSize(w + l + r, h + t + b, false)
     const vh = viewHeightAt(geometry, w, h)
     const distance = (vh / 2) / tan
     camera.position.z = distance
     camera.near = distance / 20
     camera.far = distance * 10
     camera.aspect = w / h
-    // The camera stays on the axis; the picture shifts so the arrangement centers in the stage
+    // The camera stays on the axis; the picture shifts so the arrangement centers in the stage, and
+    // the canvas takes in the bleed around it
     const s = h / vh
-    camera.setViewOffset(w, h, geometry.center[0] * s, -geometry.center[1] * s, w, h)
+    camera.setViewOffset(w, h, geometry.center[0] * s - l, -geometry.center[1] * s - t, w + l + r, h + t + b)
     camera.updateProjectionMatrix()
   }
-  resize(width, height, dpr, visible)
+  resize(width, height, dpr, bleed)
 
   // Compile and upload before the first visible frame
   await gl.compileAsync(scene, camera)
