@@ -1,11 +1,11 @@
-// The Whataburger card: the app's icon on two iPhones, the home screen and the icon's quick actions
-// menu. The app itself is under NDA, so the card shows no more than the icon, built from the logo the
-// site already publishes. The screens are flattened from Apple's iOS 27 Design Resources kit.
+// The Whataburger card: the app's icon on two iPhones, on a light home screen and a dark one laid out
+// differently. The app itself is under NDA, so the card shows no more than the icon, built from the
+// logo the site already publishes. The screens are flattened from Apple's iOS 27 Design Resources kit.
 import { DEVICES } from './shared'
 
 const SHOTS = {
   home: '/motion/whataburger/home.webp',
-  actions: '/motion/whataburger/actions.webp',
+  dark: '/motion/whataburger/home-dark.webp',
 } as const
 
 const TEMPLATE = (view: keyof typeof SHOTS) => `<div class="floor" aria-hidden="true"></div>
