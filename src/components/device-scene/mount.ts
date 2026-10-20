@@ -146,10 +146,48 @@ function markNav(root: HTMLElement) {
   for (const [k, v] of Object.entries(animations.workCards.deviceNav)) root.style.setProperty(`--device-nav-${k}`, `${v}s`)
 }
 
+// Where the case study hero's stage starts below the top of the viewport (DeviceHero.astro): the nav,
+// then the page margin beside the title on desktop, or the back button's clearance above the device
+// on phones. Resolved through a probe so the CSS values stay in one place
+function heroStageTop(): number {
+  const desktop = window.matchMedia('(min-width: 64.0625rem)').matches
+  const probe = document.createElement('div')
+  probe.style.cssText = `position:absolute;visibility:hidden;height:calc(var(--nav-height) + ${desktop ? 'var(--page-margin)' : 'var(--touch-target) + var(--space-4) + var(--space-2)'})`
+  document.body.append(probe)
+  const top = probe.getBoundingClientRect().height
+  probe.remove()
+  return top
+}
+
+// A card's stage and its hero's are the same size, so scrolling the card to the hero's place first
+// lets the device stay put and its title line up as the page changes around it
+function alignThenGo(e: MouseEvent) {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  const link = (e.target as Element | null)?.closest<HTMLAnchorElement>('.work-list-card a[href^="/work/"]')
+  const stage = link?.closest('.work-list-card')?.querySelector<HTMLElement>('.device-scene[data-ready]')?.parentElement
+  if (!link || !stage) return
+  const max = document.documentElement.scrollHeight - window.innerHeight
+  const target = Math.min(max, Math.max(0, window.scrollY + stage.getBoundingClientRect().top - heroStageTop()))
+  if (Math.abs(target - window.scrollY) < 4) return
+  e.preventDefault()
+  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link }))
+  const lenis = (window as Window & { __siteLenis?: { scrollTo: (t: number, o: object) => void } | null }).__siteLenis
+  const duration = animations.workCards.deviceNav.align
+  if (lenis) {
+    lenis.scrollTo(target, { duration, easing: (t: number) => 1 - Math.pow(1 - t, 4), lock: true, force: true, onComplete: go })
+  } else {
+    window.scrollTo({ top: target, behavior: 'smooth' })
+    setTimeout(go, duration * 1000)
+  }
+}
+
 type MountWindow = Window & { __deviceScenesBound?: boolean }
 const mw = window as MountWindow
 if (!mw.__deviceScenesBound) {
   mw.__deviceScenesBound = true
+  // Capture phase, ahead of the router's click handler, which skips clicks already default-prevented
+  window.addEventListener('click', alignThenGo, { capture: true })
   document.addEventListener('astro:page-load', init)
   document.addEventListener('astro:before-preparation', e => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return

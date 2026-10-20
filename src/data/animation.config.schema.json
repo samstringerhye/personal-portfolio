@@ -381,6 +381,7 @@
           "type": "object",
           "description": "A device carried between its homepage card and case study hero (device-scene/mount.ts, global.css)",
           "properties": {
+            "align": { "$ref": "#/definitions/duration", "description": "Homepage scrolling the clicked card to where its hero's device sits, before the page changes" },
             "move": { "$ref": "#/definitions/duration", "description": "Device gliding to its new place" },
             "fadeOut": { "$ref": "#/definitions/duration", "description": "Outgoing page fading out" },
             "fadeIn": { "$ref": "#/definitions/duration", "description": "Incoming page fading in" },
