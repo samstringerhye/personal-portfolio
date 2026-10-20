@@ -6,33 +6,28 @@
 </div>
 
 <style>
+  /* A veil in the page's own color under the nav: it fades in over the old page and out over the
+     new one */
   .page-shutter {
     position: fixed;
     top: var(--nav-height);
     bottom: 0;
     left: 0;
     right: 0;
-    max-width: var(--max-content-width);
-    margin-inline: auto;
-    padding-inline: var(--page-margin);
     z-index: var(--z-shutter);
     pointer-events: none;
-    overflow: hidden;
   }
 
   .page-shutter-panel {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--page-margin);
-    right: var(--page-margin);
-    transform: translateY(101%);
-    will-change: transform;
-    background-color: var(--color-accent-1);
+    inset: 0;
+    opacity: 0;
+    will-change: opacity;
+    background-color: #fff;
   }
 
-  /* Suppress default root view transition crossfade —
-     our shutter handles the global page transition. */
+  /* Suppress default root view transition crossfade:
+     the veil handles the global page transition. */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none !important;
@@ -46,22 +41,14 @@
 
   const cfg = animations.pageTransition
 
-  const accentColors = [
-    'var(--color-accent-1)',
-    'var(--color-accent-2)',
-    'var(--color-accent-3)',
-  ]
-
   type ShutterWindow = Window & {
     __shutterPrepHandler?: (e: Event) => void
     __shutterSwapHandler?: () => void
     __shutterActive?: boolean
-    __shutterColorIndex?: number
   }
 
   function initShutter() {
     const w = window as ShutterWindow
-    if (w.__shutterColorIndex == null) w.__shutterColorIndex = 0
     const panel = () => document.querySelector<HTMLElement>('.page-shutter-panel')
     const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -79,20 +66,16 @@
       const el = panel()
       if (!el) return Promise.resolve()
 
-      // Cycle to next accent color
-      const colorIdx = w.__shutterColorIndex! % accentColors.length
-      el.style.backgroundColor = accentColors[colorIdx]
-      w.__shutterColorIndex = colorIdx + 1
-
-      // Start below, wipe up to cover
-      gsap.set(el, { y: '101%' })
+      // The page's own background, so the fade reads as the page going quiet, not a color
+      el.style.backgroundColor = getComputedStyle(document.body).backgroundColor
+      gsap.set(el, { opacity: 0 })
 
       const container = document.getElementById('page-shutter')
       if (container) container.style.pointerEvents = 'all'
 
       return new Promise((resolve) => {
         gsap.to(el, {
-          y: '0%',
+          opacity: 1,
           duration: cfg.duration,
           ease: cfg.ease,
           onComplete: resolve,
@@ -105,7 +88,7 @@
       const container = document.getElementById('page-shutter')
 
       if (prefersReduced()) {
-        if (el) gsap.set(el, { y: '101%' })
+        if (el) gsap.set(el, { opacity: 0 })
         if (container) container.style.pointerEvents = 'none'
         return Promise.resolve()
       }
@@ -114,12 +97,11 @@
 
       return new Promise((resolve) => {
         gsap.to(el, {
-          y: '-101%',
+          opacity: 0,
           duration: cfg.duration,
           ease: cfg.ease,
           delay: cfg.exitDelay,
           onComplete: () => {
-            gsap.set(el, { y: '101%' })
             if (container) container.style.pointerEvents = 'none'
             resolve()
           },

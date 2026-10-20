@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
-import BackToWork from './BackToWork.astro'
 import PasswordGate from './PasswordGate.astro'
 import { boundsAttr, narrowArtStyle, type SubjectBox } from './narrow-art'
 
@@ -45,7 +44,6 @@ const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, tit
     {gate && <PasswordGate title={title} error={gate.error} rateLimited={gate.rateLimited} />}
   </div>
   {year && <p class="cs-hero-year typo-ui-caps" hidden>{year}</p>}
-  <BackToWork class="cs-hero-back" />
   <div class="cs-hero-text">
     <h1 class="cs-hero-title typo-display-md">{title}</h1>
     {tagline && <p class="cs-hero-tagline typo-title-lg">{tagline}</p>}

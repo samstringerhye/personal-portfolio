@@ -256,11 +256,11 @@ The MyFrontier card's app tour, in seconds. Reduced motion skips the tour and ho
 
 ---
 
-## pageTransition (RGBShutter)
+## pageTransition (RGBShutter, a fade)
 
 | Key | Type | Default | What it controls |
 |-----|------|---------|-----------------|
-| `duration` | seconds | `0.25` | How long the shutter panel takes to cover and to reveal |
+| `duration` | seconds | `0.25` | How long the page takes to fade out, and the new one to fade in |
 | `ease` | GSAP ease | `power2.inOut` | Easing for both phases |
-| `exitDelay` | seconds | `0.05` | Pause before the panel reveals the new page |
+| `exitDelay` | seconds | `0.05` | Pause before the new page fades in |
 | `stagger` | seconds | `0.04` | Not read by RGBShutter at the moment |

@@ -2,7 +2,6 @@
 // Case study hero for a project with a coded device: the title on the left and the same live device
 // as its homepage card on the right, the composition the card's row has. Coming from the card, the
 // device carries straight across the page change (device-scene/mount.ts).
-import BackToWork from './BackToWork.astro'
 import DeviceScene, { type SceneName } from './DeviceScene.astro'
 
 interface Props {
@@ -20,7 +19,6 @@ const heading = title.replaceAll('-', '\u2011')
 
 <section class="cs-device-hero">
   <div class="cs-device-hero-text">
-    <BackToWork class="cs-device-hero-back" />
     {year && <p class="cs-device-hero-year typo-ui-caps">{year}</p>}
     <h1 class="cs-device-hero-title typo-headline-lg">{heading}</h1>
     {tagline && <p class="cs-device-hero-tagline typo-body-lg">{tagline}</p>}
@@ -47,18 +45,10 @@ const heading = title.replaceAll('-', '\u2011')
     margin-block: var(--space-2) var(--space-4);
   }
 
-  .cs-device-hero-text > :not(:global(.cs-device-hero-back)) {
-    order: 2;
-  }
 
 
   .cs-device-hero-text {
     display: contents;
-  }
-
-  /* Flush with the text below it rather than centered in its tap target */
-  .cs-device-hero-text :global(.cs-device-hero-back) {
-    justify-content: flex-start;
   }
 
   .cs-device-hero-year {
@@ -91,11 +81,12 @@ const heading = title.replaceAll('-', '\u2011')
   /* Desktop: the homepage row's grid, the title at the bottom of the left 4 of 12 columns beside the
      device in the other 8 */
   @media (min-width: 64.0625rem) {
-    /* The back link at the top of the column, the rest at the bottom */
+    /* The text at the bottom of the column */
     .cs-device-hero-text {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      justify-content: flex-end;
       align-self: stretch;
       gap: var(--space-2);
     }
@@ -118,8 +109,5 @@ const heading = title.replaceAll('-', '\u2011')
       margin-block: 0;
     }
 
-    .cs-device-hero-text :global(.cs-device-hero-back) {
-      margin-bottom: auto;
-    }
   }
 </style>
