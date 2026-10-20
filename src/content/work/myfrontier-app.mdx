@@ -51,7 +51,7 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
   made={['App visual design', 'Design library', 'Motion']}
   outcome="MyFrontier 4.0 launched on November 21, 2022. Paying a bill, tracking a technician and restarting a router each end in one clear answer."
   problem="People open a telecom app with a question: a bill, a technician, an outage. The old app put its menu behind one floating button and gave every row the same weight."
-  did="I led the visual design and the motion. The main action on every screen gets one red button, and every wait or finish gets an animation that says what is happening."
+  did="I led the visual design and designed the motion from scratch. I set the type and color system, shaped the billing and appointment screens, and gave every wait and finish its own animation."
 />
 
 <Gallery title="MyFrontier 4.0">
@@ -62,7 +62,7 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
   ]} />
 </Gallery>
 
-<Gallery title="Where it started" note="Version 3.5: a network gauge led the home screen, the bill sat below it, and every other screen hid behind a floating plus.">
+<Gallery title="Where it started" note="Version 3.5 led with a network gauge and hid every other screen behind a floating plus. The UX team ranked billing first, so I moved the bill to the top of home and put the rest in a tab bar.">
   <Panel kind="piece" span="half" tint="#F3F4F4" src={oldDashboard} alt="The old home screen: a green Online ring above the bill" />
   <Panel kind="screens" span="half" tint="#F3F4F4" screens={[
     { src: oldMenu, alt: 'The old navigation, a radial menu opened from a floating plus' },
@@ -70,7 +70,7 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
   ]} />
 </Gallery>
 
-<Gallery title="Pay my bill" note="One ring for the balance and one red button for the action, on every billing screen.">
+<Gallery title="Pay my bill" note="I gave every billing screen the same shape: the balance in one ring, one red button for the action. Paying from home, the bill or a reminder looks the same, so nobody learns it twice.">
   <Panel kind="screens" screens={[
     { src: billingZero, alt: 'My billing with a zero balance and Make a payment' },
     { src: payMyBill, alt: 'Pay my bill: the past-due amount in a mint ring and a red Pay button' },
@@ -78,7 +78,7 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
   ]} />
 </Gallery>
 
-<Gallery title="Appointments" note="New in 4.0: follow the technician live and move the appointment without a phone call.">
+<Gallery title="Appointments" note="New in 4.0. I designed the tracker so customers see where the technician is and when they arrive, and can move the appointment in two taps instead of calling.">
   <Panel kind="screens" span="half" screens={[
     { src: techOnTheWay, alt: 'Tech is on the way: a four-step tracker with the arrival window' },
     { src: installComplete, alt: 'All done: the installation is complete' },
@@ -88,12 +88,12 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
   ]} />
 </Gallery>
 
-<Gallery title="Type and color" note="A wide accent face for headlines, red for the one action, mint for every answer.">
+<Gallery title="Type and color" note="I paired a plain face for reading with a wide accent face for headlines, kept red for the one action on each screen, and darkened that red so white text on it passes contrast.">
   <Panel kind="piece" ratio="16 / 7" tint="#FFFFFF" src={typeScale} alt="Type scale: the standard face beside the wide accent face, H1 to H4" />
   <Panel kind="piece" ratio="16 / 6" tint="#FFFFFF" src={color} alt="Primary colors: pale red, red, pale mint, mint and navy" />
 </Gallery>
 
-<Gallery title="Motion" note="Waits and finishes get an animation that says what is happening.">
+<Gallery title="Motion" note="A customer restarting a router can't tell a working app from a frozen one. I gave every wait and every finish its own animation, so the app always says what it is doing.">
   <Panel kind="slot" tint="#FF0037">
     <div class="lottie-grid" style="--lottie-bg: #FF0037">
       <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
