@@ -30,11 +30,8 @@ import Carousel from '../../components/Carousel.astro'
 import Figure from '../../components/Figure.astro'
 import Device from '../../components/Device.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
-import ZigzagSection from '../../components/ZigzagSection.astro'
+import Metrics from '../../components/Metrics.astro'
 import uiMosaicOverviewSrc from '../../assets/work/samsung-redesign/revamp-ui-mosaic.jpg'
-import productCategoryPageSrc from '../../assets/work/samsung-redesign/samsung-section-2-pcd-desktop.jpg'
-import productDetailZoomSrc from '../../assets/work/samsung-redesign/samsung-section-2-pd-zoom-desktop.jpg'
-import homepageFullPageSrc from '../../assets/work/samsung-redesign/revamp-hp.jpg'
 import globalNavigationMobileSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop.jpg'
 import globalNavigationCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
 import globalNavigationDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
@@ -43,82 +40,60 @@ import globalNavigationDesktopSrc from '../../assets/work/samsung-redesign/samsu
 
 <ProseGroup>
 
-<p class="cs-intro">I was a Senior Designer on the Samsung.com redesign: twelve designers, six months, 12+ markets. I designed layouts for the homepage and the product detail, category and family pages, contributed components to the design system, and set the visual direction for the global navigation, the menu every shopper uses to find a product. The GNB was the hardest problem and took most of my time.</p>
+<p class="cs-intro">I was one of twelve designers who redesigned Samsung.com across 12+ markets in six months. I set the global navigation's visual direction, designed four core page types and contributed design system components.</p>
 
 </ProseGroup>
 
 <ProseGroup>
 
-## The Problem
+## The challenge.
 
-Samsung.com's navigation had accumulated complexity from years of market-by-market additions. Different product catalogs meant different category hierarchies. Different languages meant different string lengths and overflow behaviors. Right-to-left scripts flipped the entire spatial logic. Every market had its own workarounds. The challenge was designing a navigation strict enough to read as one brand globally, but flexible enough that no market needed to break it.
+Years of market-by-market additions left the navigation with a different hierarchy, string length and workaround in every market, and right-to-left scripts flipped its layout. It had to read as one brand everywhere and flex enough that no market needed to break it.
 
 </ProseGroup>
 
-<ZigzagSection>
-  <Fragment slot="media">
-    <Image src={globalNavigationMobileSrc} alt="Mobile global navigation: the Mobile menu drilled into Smartphones, each model shown with a product image" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
-  </Fragment>
-  <ProseGroup>
+<ProseGroup>
 
-  ## Global Navigation
+## The approach.
 
-  The navigation had too many levels, and cutting depth couldn't mean hiding products. My visual direction put a product image beside every category, from the desktop menu down to a mobile drill-in, so a shopper spots the Galaxy Z Flip or the 75-inch TV before reading its label. I prototyped variations and stress-tested each against right-to-left scripts, deep catalogs, and long item lists, aiming for one navigation no market needed to fork.
+</ProseGroup>
 
-  </ProseGroup>
-</ZigzagSection>
+<ProseGroup>
+
+### A picture beside every category.
+
+Cutting depth couldn't mean hiding products, so every category got a product image, from the desktop panel to the mobile drill-in. I stress-tested each variation against right-to-left scripts and deep catalogs.
+
+</ProseGroup>
+
+<Figure caption="Mobile: the Mobile menu drilled into Smartphones, each model shown with a picture">
+<Image src={globalNavigationMobileSrc} alt="Mobile global navigation: the Mobile menu drilled into Smartphones, each model shown with a product image" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Figure>
 
 <ImagePair leftCaption="Mobile: an accordion groups TVs by size, each with a picture" rightCaption="Desktop: categories, products, and a promotion in one panel">
   <Fragment slot="left"><Image src={globalNavigationCloseupSrc} alt="Mobile navigation accordion: TV by Size, each size range shown with a TV image" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
   <Fragment slot="right"><Image src={globalNavigationDesktopSrc} alt="Desktop navigation menu: categories, product thumbnails, and a featured promotion in one panel" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
 </ImagePair>
 
-<ZigzagSection reversed>
-  <Fragment slot="media">
-    <Image src={uiMosaicOverviewSrc} alt="Mosaic of Samsung.com UI components and page modules" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
-  </Fragment>
-  <ProseGroup>
+<ProseGroup>
 
-  ## Design System
+### Components regional teams can compose.
 
-  I contributed atoms and components to Samsung's design system: pieces that regional teams could compose into market-specific pages without breaking brand consistency. The system had to hold across 12+ markets with different content lengths, imagery, and promotions.
+I contributed atoms and components to Samsung's design system, so regional teams could build market-specific pages without breaking the brand.
 
-  </ProseGroup>
-</ZigzagSection>
+</ProseGroup>
 
-<ImagePair leftCaption="Product category: hero, subcategories, then best sellers" rightCaption="Product detail: color and carrier picked beside the product">
-  <Fragment slot="left"><Device kind="laptop" page><Image src={productCategoryPageSrc} alt="Washers and dryers category page with hero, subcategories, and best sellers" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-  <Fragment slot="right"><Device kind="laptop"><Image src={productDetailZoomSrc} alt="Galaxy A50 product detail with color and carrier options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-</ImagePair>
-
-<Carousel label="Samsung product pages">
-
-<Figure caption="Product showcase">
-![Product showcase](../../assets/work/samsung-redesign/samsung-section-4-showcase-desktop.jpg)
+<Figure caption="Buttons, controls and icons from the shared system">
+<Image src={uiMosaicOverviewSrc} alt="Mosaic of Samsung.com UI components and page modules" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
 </Figure>
 
-<Figure caption="Product detail">
-![Product detail page](../../assets/work/samsung-redesign/samsung-section-5-pd-desktop.jpg)
-</Figure>
+<ProseGroup>
 
-<Figure caption="Product finder">
-![Product finder](../../assets/work/samsung-redesign/samsung-section-6-pf-desktop.jpg)
-</Figure>
+### One layout per page's job.
 
-</Carousel>
+The homepage drove discovery, product pages drove purchase confidence, and category pages held catalogs of very different sizes per market.
 
-<ZigzagSection reversed>
-  <Fragment slot="media">
-    <Device kind="laptop" page><Image src={homepageFullPageSrc} alt="Samsung.com homepage full page" format="webp" sizes="(max-width: 768px) 100vw, 50vw" /></Device>
-  </Fragment>
-  <ProseGroup>
-
-  ## Page Layouts
-
-  I designed page layouts across Samsung.com's core page types: homepage, product detail, product category, and product family. Each had to work within Samsung's rigid brand guidelines while serving its specific user intent. The homepage drove discovery, product pages drove purchase confidence, and category pages needed to handle wildly different catalog sizes per market.
-
-  </ProseGroup>
-</ZigzagSection>
+</ProseGroup>
 
 <ImageGrid columns={2}>
 
@@ -148,18 +123,32 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 
 </ImageGrid>
 
+<Carousel label="Samsung product pages">
+
+<Figure caption="Product showcase">
+![Product showcase](../../assets/work/samsung-redesign/samsung-section-4-showcase-desktop.jpg)
+</Figure>
+
+<Figure caption="Product detail">
+![Product detail page](../../assets/work/samsung-redesign/samsung-section-5-pd-desktop.jpg)
+</Figure>
+
+<Figure caption="Product finder">
+![Product finder](../../assets/work/samsung-redesign/samsung-section-6-pf-desktop.jpg)
+</Figure>
+
+</Carousel>
+
 <ProseGroup>
 
-## What Shipped
+## The outcome.
 
-Over six months, I delivered the global navigation's visual direction, prototypes stress-tested against right-to-left scripts and deep catalogs, layouts for four core page types (homepage, product detail, category, and family), and components for the shared design system.
+Over six months I delivered the navigation's visual direction, layouts for four core page types and components for the shared design system.
 
 </ProseGroup>
 
-<ProseGroup>
-
-## What I Learned
-
-The GNB problem was information architecture before it was visual design. Designing for the hardest case first forced decisions about hierarchy, truncation, and overflow that a single-locale design would never surface. Starting with the most complex market's catalog depth and script direction as the baseline meant every edge case was handled by default. At global scale, the job is writing constraints regional teams can work within.
-
-</ProseGroup>
+<Metrics items={[
+  { value: '12+', label: 'Markets on one navigation' },
+  { value: '4', label: 'Core page types designed' },
+  { value: '6', label: 'Months, with a team of twelve designers' },
+]} />

@@ -27,6 +27,7 @@ import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
+import Metrics from '../../components/Metrics.astro'
 import DeviceFrame from '../../components/wab/DeviceFrame.astro'
 import HeroPhoneScroll from '../../components/wab/HeroPhoneScroll.astro'
 import DirectionExploration from '../../components/wab/DirectionExploration.astro'
@@ -66,7 +67,7 @@ import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.pn
 
 <ProseGroup>
 
-<p class="cs-intro">I cut Whataburger's path from home to checkout from 14 taps to 6, and handed off a rebuilt design system (258 tokens, 90+ components) and every production screen in May 2026. As Associate Design Director, embedded with the client's UX team, I ran both tracks in parallel from late January.</p>
+<p class="cs-intro">I cut Whataburger's path from home to checkout from 14 taps to 6 and handed off a rebuilt design system, 258 tokens and 90+ components, with every production screen in May 2026.</p>
 
 </ProseGroup>
 
@@ -89,31 +90,23 @@ import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.pn
 
 <ProseGroup>
 
-## The Problem
+## The challenge.
 
-The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, the interface leaned on generic QSR patterns, and ordering, rewards, and location finding felt like separate products.
-
-</ProseGroup>
-
-<ProseGroup>
-
-## Three Experience Pillars
-
-I defined three pillars that guided every design decision.
-
-**Fun.** Confetti on completed orders. The mascot appearing in empty states. Color shifts between menu categories.
-
-**Smart.** Surfacing orders by purchase history. Nearest-location ordering. Recent order shortcuts on the home screen.
-
-**Intuitive.** The old ordering flow took 14 taps to get from home to checkout. The redesign cut it to 6 taps. Clear labels at every step, and progressive disclosure so customization never stacks up all at once.
+The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, the interface leaned on generic QSR patterns, and ordering, rewards and location finding felt like separate products.
 
 </ProseGroup>
 
 <ProseGroup>
 
-## Research and Testing
+## The approach.
 
-I tested three visual directions against the same wireframes to find the balance between brand expression and daily usability.
+</ProseGroup>
+
+<ProseGroup>
+
+### Three directions, one merge.
+
+I tested three visual directions against the same wireframes and merged two: Vibrant Bold's iconography, type and color on Modern's components and lighter palette.
 
 </ProseGroup>
 
@@ -121,25 +114,13 @@ I tested three visual directions against the same wireframes to find the balance
   <Image src={directionTestingSrc} alt="Three visual directions tested against the same home screen wireframe: vibrant orange, clean modern, and dark premium" widths={[800, 1200, 2000]} sizes="100vw" format="webp" quality={90} loading="lazy" />
 </Figure>
 
-<ProseGroup>
-
-The direction I carried forward merged two of them: Vibrant Bold's iconography, typography, and color energy on Modern's component structure and lighter palette. It felt like Whataburger without overwhelming a daily order. Feature testing on the landing and menu flows followed, and I refined what didn't hold up.
-
-</ProseGroup>
-
 <DirectionExploration />
 
 <ProseGroup>
 
-## The Product
+### Fewer taps to an order.
 
-</ProseGroup>
-
-<ProseGroup>
-
-### Home
-
-The home screen surfaces products, limited-time offers, rewards, reorder history, and location context, so guests can start an order faster. The hero carousel spotlights campaigns. Below the fold it shifts to reorders, rewards, and promotions, with "Start Order" always on screen.
+Home leads with reorders and the nearest location, and customization shows only what's relevant at each step: browse, customize, choose sides, review.
 
 </ProseGroup>
 
@@ -147,14 +128,6 @@ The home screen surfaces products, limited-time offers, rewards, reorder history
   <Fragment slot="left"><DeviceFrame src={heroSrc} alt="Home screen: personalized greeting with featured menu items and daypart-aware content" /></Fragment>
   <Fragment slot="right"><DeviceFrame src={menuLandingSrc} alt="Menu landing: category browsing with recent orders and featured items" /></Fragment>
 </ImagePair>
-
-<ProseGroup>
-
-### Menu and Customization
-
-This was the hardest flow to solve. Every ingredient on a Whataburger order can be customized, and the paths branch: meal or a la carte, categories that change by daypart. No single pattern in the competitive audit covered the whole tree. Each step (browse, customize, choose sides, review) shows only what's relevant at that moment.
-
-</ProseGroup>
 
 <Figure flush>
   <Image src={lifestyleMenuSrc} alt="Menu customization in context: hand holding phone showing burger customization with ingredient options" widths={[800, 1400, 2200, 4400]} sizes="100vw" format="webp" quality={90} loading="lazy" />
@@ -167,9 +140,9 @@ This was the hardest flow to solve. Every ingredient on a Whataburger order can 
 
 <ProseGroup>
 
-### Rewards, Scan, and Account
+### Rewards, scan and account.
 
-The old rewards screen showed points and tier, and nothing else. The redesign adds visual tier progression and offer cards that surface reward-eligible items.
+Rewards shows tier progression, Scan puts earning, redeeming and the Whatawallet balance on one screen, and condiment badges carry into the ordering flow.
 
 </ProseGroup>
 
@@ -177,21 +150,9 @@ The old rewards screen showed points and tier, and nothing else. The redesign ad
   <Image src={lifestyleRewardsSrc} alt="Rewards experience in context: phone on couch showing earn-as-you-eat screen with points balance" widths={[800, 1400, 2200, 4400]} sizes="100vw" format="webp" quality={90} loading="lazy" />
 </Figure>
 
-<ProseGroup>
-
-Scan puts earning, redeeming, and the Whatawallet balance on one screen for the moment at the register.
-
-</ProseGroup>
-
 <Figure flush>
   <Image src={lifestyleScanSrc} alt="Scan in-store: hand holding phone showing QR code for earning points at the register" widths={[800, 1400, 2200, 4400]} sizes="100vw" format="webp" quality={90} loading="lazy" />
 </Figure>
-
-<ProseGroup>
-
-Account groups settings into one self-service hub. Condiment preference badges (Spicy Ketchup, No Pickle, Mustard) add personality and do a job: they surface in the ordering flow, so returning guests don't re-specify them.
-
-</ProseGroup>
 
 <Figure flush>
   <Image src={lifestyleAccountSrc} alt="Account hub in context: phone showing personalized profile with condiment preference badges and Whatawallet balance" widths={[800, 1400, 2200, 3000]} sizes="100vw" format="webp" quality={90} loading="lazy" />
@@ -207,17 +168,15 @@ Account groups settings into one self-service hub. Condiment preference badges (
   <Fragment slot="right"><DeviceFrame src={giftCardsSrc} alt="Gift cards screen: card designs and balance" /></Fragment>
 </ImagePair>
 
-<ChaosToOrder />
-
 <ProseGroup>
 
-## The Design System
+### A system before screens.
 
-Before designing a single screen, I audited the existing token structure and found a system that could only describe what already existed, not what needed to be built. Primitive tokens named after the brand ("Whataburger Orange") rather than by function. No tokens for interaction states, motion, or elevation. No semantic layer. Every new screen meant inventing values from scratch.
-
-The rebuild, codenamed Pele, delivered 258 variables across three collections. Every token reads like a path: `color/fg/primary`, `spacing/400`, `shadow/elevation/raised`. Designers get names that describe function. Engineers get names that map directly to component props.
+The rebuild, Pele, replaced brand-named primitives with 258 variables across three collections, adding interaction states, spacing, motion and elevation, named to map to React props.
 
 </ProseGroup>
+
+<ChaosToOrder />
 
 <TypeHierarchy />
 
@@ -256,47 +215,15 @@ The rebuild, codenamed Pele, delivered 258 variables across three collections. E
 
 <TokenArchitecture />
 
-<ProseGroup>
-
-### Color States
-
-The most critical gap in the old system was interactive states. A button had one color: no hover, no pressed, no disabled. Pele introduced 11 color states across foreground, background, and border. Every interactive element now has a complete, predictable state set.
-
-</ProseGroup>
-
 <ColorStates />
 
-<ProseGroup>
-
-### Typography
-
-Typography follows an M3-inspired naming convention: Display, Headline, Body, Label, Caption. Display styles use Alkaline (the brand's display typeface), while all other roles use Unbounded. Each style is bound to semantic tokens for size, line-height, letter-spacing, and weight.
-
-</ProseGroup>
-
 <TypographyScale />
-
-<ProseGroup>
-
-### Spacing, Motion, and Elevation
-
-All spatial values follow a x100 naming convention built on a 4px base. The motion system defines three duration tiers: Fast (100ms) for micro-interactions, Normal (150ms) for sheets and modals, Slow (300ms) for page transitions. Five elevation levels are composed from shadow tokens rather than arbitrary box-shadow values.
-
-</ProseGroup>
 
 <SpacingSystem />
 
 <MotionSystem />
 
 <ElevationSystem />
-
-<ProseGroup>
-
-### Components
-
-I split the 90+ components into universal ones, ready for reuse across projects, and screen-specific ones with a plan to promote them after publishing. Names map directly to React props, so the dev team pulls values straight from the system.
-
-</ProseGroup>
 
 <ComponentLibrary />
 
@@ -306,21 +233,18 @@ I split the 90+ components into universal ones, ready for reuse across projects,
 
 <ProseGroup>
 
-## Outcomes
+## The outcome.
 
 {/* Add launch results here once the app ships. */}
-I handed off the full system and every production screen in May 2026: 258 tokens across three collections, 90+ components, and an ordering flow cut from 14 taps to 6. The app launches in 2027.
+I handed off the full system and every production screen in May 2026. The app launches in 2027.
 
 </ProseGroup>
 
-<ProseGroup>
-
-## What I Learned
-
-Building the system first eliminated the micro-decisions that slow every flow down. When a new screen needed a hover state or an elevation level, the answer already existed. The upfront time felt slow. The downstream speed made up for it.
-
-Working embedded with a client UX team taught me different collaboration patterns. You earn trust through the quality of your work and the clarity of your rationale, not through org-chart authority. The closest collaboration happened during menu customization, where my visual exploration surfaced UX issues that changed the flow. That only happens when visual design is involved early, not applied as a skin at the end.
-
-</ProseGroup>
+<Metrics items={[
+  { value: '14 → 6', label: 'Taps from home to checkout' },
+  { value: '258', label: 'Tokens across three collections' },
+  { value: '90+', label: 'Components' },
+  { value: '11', label: 'Interactive color states' },
+]} />
 
 <DiagramAnimations />

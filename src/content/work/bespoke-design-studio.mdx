@@ -31,7 +31,7 @@ import Carousel from '../../components/Carousel.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
 import Device from '../../components/Device.astro'
-import ZigzagSection from '../../components/ZigzagSection.astro'
+import Metrics from '../../components/Metrics.astro'
 import desktop06Src from '../../assets/work/bespoke-design-studio/desktop-06.png'
 import mobile06Src from '../../assets/work/bespoke-design-studio/mobile-06.png'
 import desktop03bSrc from '../../assets/work/bespoke-design-studio/desktop-03b.png'
@@ -51,7 +51,7 @@ import chooseColorsSrc from '../../assets/work/bespoke-design-studio/frame-37442
 
 <ProseGroup>
 
-<p class="cs-intro">Fridge shoppers who used the configurator added to cart at more than 6 times the rate of standard product pages, and kitchen shoppers at more than 10 times. Over 12 months it drove nine figures in incremental revenue. Bespoke appliances are configured down to the panel finish, but online every choice arrived at once. I led design across the Bespoke line and made the call that shaped the tool: sequence the decisions the way a salesperson would.</p>
+<p class="cs-intro">Fridge shoppers who used the configurator added to cart at more than 6 times the rate of standard product pages, and over 12 months it drove nine figures in incremental revenue. I led design across the Bespoke line.</p>
 
 </ProseGroup>
 
@@ -62,9 +62,9 @@ import chooseColorsSrc from '../../assets/work/bespoke-design-studio/frame-37442
 
 <ProseGroup>
 
-## The Problem
+## The challenge.
 
-A Bespoke fridge means picking a model, then a size, then colors for four door panels. Show it all at once and people bail, as the early prototypes confirmed. Show too little and they don't understand their options. In a store, a salesperson sets the order. Online, the interface has to.
+A Bespoke fridge means a model, then a size, then colors for four door panels. Online, every choice arrived at once and people bailed, as the early prototypes confirmed. In a store, a salesperson sets the order. Online, the interface had to.
 
 </ProseGroup>
 
@@ -75,11 +75,31 @@ A Bespoke fridge means picking a model, then a size, then colors for four door p
 
 <ProseGroup>
 
-## Wireframes
-
-Multiple rounds of wireframing explored how to sequence the configuration steps. The core tension: each decision depended on the previous one (you can't pick panel colors until you've chosen a model), but users needed to understand the full scope before committing to step one.
+## The approach.
 
 </ProseGroup>
+
+<ProseGroup>
+
+### A salesperson's order.
+
+Each choice appears only once the last is settled: products, type, depth, then colors. Rounds of wireframes tested the order, and the user flow mapped every branch.
+
+</ProseGroup>
+
+<DecisionStepper
+  label="The configurator's decision sequence"
+  steps={[
+    { label: 'Products', caption: 'Pick which appliances to configure. Models, depths and finishes wait.', image: productSelectionSrc, alt: 'Product selection grid: refrigerator, range, wall oven, dishwasher and microwave' },
+    { label: 'Type', caption: 'Choose the fridge type, each with its starting price. Step 1 of 4.', image: chooseTypeSrc, alt: 'Choose Type, step 1 of 4: Bespoke 4-Door French Door, 3-Door French Door and Side-by-Side with starting prices' },
+    { label: 'Depth', caption: 'Choose depth, only after the model is set. Step 3 of 4.', image: desktop06Src, alt: 'Desktop configurator: rendered kitchen beside the Choose Depth step' },
+    { label: 'Colors', caption: 'Pick a finish for each door panel, grouped by material. Step 4 of 4.', image: chooseColorsSrc, alt: 'Desktop color picker showing finishes for the top left and top right door panels' },
+  ]}
+/>
+
+<Figure caption="The user flow: every decision point and branch">
+<Image src={userFlowBespokeKitchenSrc} alt="User flow for Bespoke Kitchen" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Figure>
 
 <Carousel label="Bespoke configurator wireframes">
 
@@ -127,24 +147,23 @@ Multiple rounds of wireframing explored how to sequence the configuration steps.
 
 </Carousel>
 
-<ZigzagSection>
-  <Fragment slot="media">
-    <Image src={userFlowBespokeKitchenSrc} alt="User flow for Bespoke Kitchen" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
-  </Fragment>
-  <ProseGroup>
+<ProseGroup>
 
-  ## User Flow
+### A visible spine.
 
-  The user flow mapped every decision point and branch. The stepped progress indicator was visible at every stage, giving users a finite scope before they committed to step one.
+A stepped progress indicator shows the remaining decisions from the first screen, so shoppers can see they're three steps from done.
 
-  </ProseGroup>
-</ZigzagSection>
+</ProseGroup>
+
+<Figure caption="The four steps above the kitchen: appliances, model, colors, your design">
+<Device kind="laptop"><Image src={kitchenConfiguratorOverviewSrc} alt="Kitchen configurator overview" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device>
+</Figure>
 
 <ProseGroup>
 
-## The Progress Indicator
+### Only what matters now.
 
-The sequencing call needed a visible spine. I designed a stepped progress indicator that showed the scope of remaining decisions upfront, so users could see they were three steps from done rather than wondering if the choices would ever end.
+Color swatches appear only when they're relevant, and comparisons show only the specs that differ, on mobile and desktop.
 
 </ProseGroup>
 
@@ -153,54 +172,28 @@ The sequencing call needed a visible spine. I designed a stepped progress indica
   <Fragment slot="right"><Device kind="phone" camera="punch"><Image src={mobile03bSrc} alt="Mobile refrigerator comparison listing capacity and features" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
 </ImagePair>
 
-<ZigzagSection reversed>
-  <Fragment slot="media">
-    <Device kind="laptop"><Image src={kitchenConfiguratorOverviewSrc} alt="Kitchen configurator overview" format="webp" sizes="(max-width: 768px) 100vw, 50vw" /></Device>
-  </Fragment>
-  <ProseGroup>
-
-  ## Design Execution
-
-  I led UI and interaction design across mobile and desktop. Color swatches appeared only when relevant. Model comparisons showed only the specs that differed. I scoped the system to the configurator's current needs, not a hypothetical future.
-
-  </ProseGroup>
-</ZigzagSection>
-
-<DecisionStepper
-  label="The configurator's decision sequence"
-  steps={[
-    { label: 'Products', caption: 'Pick which appliances to configure. Models, depths and finishes wait.', image: productSelectionSrc, alt: 'Product selection grid: refrigerator, range, wall oven, dishwasher and microwave' },
-    { label: 'Type', caption: 'Choose the fridge type, each with its starting price. Step 1 of 4.', image: chooseTypeSrc, alt: 'Choose Type, step 1 of 4: Bespoke 4-Door French Door, 3-Door French Door and Side-by-Side with starting prices' },
-    { label: 'Depth', caption: 'Choose depth, only after the model is set. Step 3 of 4.', image: desktop06Src, alt: 'Desktop configurator: rendered kitchen beside the Choose Depth step' },
-    { label: 'Colors', caption: 'Pick a finish for each door panel, grouped by material. Step 4 of 4.', image: chooseColorsSrc, alt: 'Desktop color picker showing finishes for the top left and top right door panels' },
-  ]}
-/>
-
-<Figure flush>
-<Device kind="laptop">
-![Final checkout step showing selected configuration with pricing](../../assets/work/bespoke-design-studio/desktop-13.png)
-</Device>
-</Figure>
-
 <ImagePair leftCaption="Kitchen simulator: each panel zone picked separately" rightCaption="Choose Colors: all four door zones on one panel, step 4 of 4">
   <Fragment slot="left"><Device kind="laptop"><Image src={configuratorColorSelectionSrc} alt="Configurator color selection, choosing panel finishes by zone" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
   <Fragment slot="right"><Device kind="laptop"><Image src={configuratorFullColorPanelSrc} alt="Configurator with full color panel, all four door zones visible" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
 </ImagePair>
 
-<ProseGroup>
-
-## Outcomes
-
-The refrigerator configurator's add-to-cart rate was more than 6 times that of standard product pages, and the kitchen configurator's more than 10 times, with order rates up more than 50% on both. By mid-2023 the tool was running a 73% customization rate and a 66% continuation rate. In the 12 months to May 2024, the kitchen simulator beat its add-to-cart target by 36 points, and nearly half of its buyers bought more than one appliance.
-
-The configurator kept growing after launch. It expanded from refrigerators to laundry in August 2022, then to a full kitchen simulator in April 2024 that carried 36 models, 18 of them new. An April 2025 update added 25 SKUs, and a separate build ran on Conn's and P.C. Richard's sites.
-
-</ProseGroup>
+<Figure caption="Your design: the finished kitchen, priced, before checkout">
+<Device kind="laptop">
+![Final checkout step showing selected configuration with pricing](../../assets/work/bespoke-design-studio/desktop-13.png)
+</Device>
+</Figure>
 
 <ProseGroup>
 
-## What I Learned
+## The outcome.
 
-The hardest part of this project was sequencing. Progressive disclosure is a series of trade-offs: every decision you defer to a later step is a decision the user might not reach. What worked was turning an open-ended process into a finite one. Once users could see exactly how many decisions remained, they stopped wondering if the choices would ever end and started moving through them.
+The tool grew from refrigerators to laundry in August 2022, then to a full kitchen simulator in April 2024 with 36 models.
 
 </ProseGroup>
+
+<Metrics items={[
+  { value: '6x+', label: 'Fridge add-to-cart rate against standard product pages' },
+  { value: '10x+', label: 'Kitchen add-to-cart rate against standard product pages' },
+  { value: '9 figures', label: 'Incremental revenue over 12 months' },
+  { value: '73%', label: 'Customization rate by mid-2023' },
+]} />

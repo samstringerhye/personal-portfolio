@@ -30,6 +30,7 @@ import ProseGroup from '../../components/ProseGroup.astro'
 import Carousel from '../../components/Carousel.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import Figure from '../../components/Figure.astro'
+import Metrics from '../../components/Metrics.astro'
 import dashboard1Src from '../../assets/work/myfrontier-app/screens/dashboard-1.png'
 import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.png'
 
@@ -37,7 +38,7 @@ import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.
 
 <ProseGroup>
 
-<p class="cs-intro">I rebuilt the MyFrontier app's visual design and layout system, and built its motion language from scratch, as Associate Design Director on a four-designer team working close to dev for four months. The app covers bill pay, account management, technician scheduling, and support, but the experience didn't hold together. Every animation I made answers a question the user is already asking: did my payment go through, is my appointment set, am I done?</p>
+<p class="cs-intro">I rebuilt the MyFrontier app's visual design and layout system and built its motion language from scratch, on a four-designer team working close to dev for four months.</p>
 
 </ProseGroup>
 
@@ -48,11 +49,60 @@ import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.
 
 <ProseGroup>
 
-## The Problem
+## The challenge.
 
-Nobody opens a telecom app to browse. They open it with a question about a bill, a technician on the way, or internet that's down. The MyFrontier app had drifted for years: layouts that changed from flow to flow, controls with no feedback, no motion at all. People in a bad moment shouldn't have to think about the interface.
+Nobody opens a telecom app to browse. People open MyFrontier with a question about a bill, a technician on the way or internet that's down, and the app had drifted for years: layouts that changed from flow to flow, controls with no feedback, no motion.
 
 </ProseGroup>
+
+<ProseGroup>
+
+## The approach.
+
+</ProseGroup>
+
+<ProseGroup>
+
+### One layout system.
+
+The most important action on each screen gets the most visual weight, and secondary actions sit in the same groups from flow to flow, so people build muscle memory.
+
+</ProseGroup>
+
+<Carousel label="Bill pay flow">
+
+<Figure caption="Pay my bill: amount and due date first, one primary action">
+![Pay my bill screen showing the current balance and due date](../../assets/work/myfrontier-app/screens/bill-pay-1.png)
+</Figure>
+
+<Figure caption="Payment method in a bottom sheet, default card marked">
+![Payment method sheet listing saved cards](../../assets/work/myfrontier-app/screens/bill-pay-2.png)
+</Figure>
+
+<Figure caption="Payment date: today and the due date marked on the calendar">
+![Payment date calendar sheet](../../assets/work/myfrontier-app/screens/bill-pay-3.png)
+</Figure>
+
+<Figure caption="Payment sent, with a confirmation number and an Auto Pay prompt">
+![Payment sent confirmation screen](../../assets/work/myfrontier-app/screens/bill-pay-4.png)
+</Figure>
+
+</Carousel>
+
+<ProseGroup>
+
+### Motion that answers a question.
+
+Every animation answers something the user is already asking: did my payment go through, is my appointment set, am I done. I built each Lottie in After Effects and handed dev the easing and timing.
+
+</ProseGroup>
+
+<div class="lottie-grid" style="--lottie-bg: #ff033a">
+  <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
+  <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
+  <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
+  <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
+</div>
 
 <Carousel label="Frontier app intro screens">
 
@@ -76,31 +126,11 @@ Nobody opens a telecom app to browse. They open it with a question about a bill,
 
 <ProseGroup>
 
-## One Layout System
+### A visit you can track.
 
-I owned layout across every core screen (onboarding, dashboard, bill pay, and support) and defined the hierarchy for the components they share: navigation, the appointment calendar, and selectors. The most important action on each screen gets the most visual weight, sized beyond what the tap target requires. Secondary actions sit in the same groups from flow to flow, so users build muscle memory across the app.
+Support and scheduling follow each technician visit on one timeline, from the arrival window to every step checked off.
 
 </ProseGroup>
-
-<Carousel label="Bill pay flow">
-
-<Figure caption="Pay my bill: amount and due date first, one primary action">
-![Pay my bill screen showing the current balance and due date](../../assets/work/myfrontier-app/screens/bill-pay-1.png)
-</Figure>
-
-<Figure caption="Payment method in a bottom sheet, default card marked">
-![Payment method sheet listing saved cards](../../assets/work/myfrontier-app/screens/bill-pay-2.png)
-</Figure>
-
-<Figure caption="Payment date: today and the due date marked on the calendar">
-![Payment date calendar sheet](../../assets/work/myfrontier-app/screens/bill-pay-3.png)
-</Figure>
-
-<Figure caption="Payment sent, with a confirmation number and an Auto Pay prompt">
-![Payment sent confirmation screen](../../assets/work/myfrontier-app/screens/bill-pay-4.png)
-</Figure>
-
-</Carousel>
 
 <Carousel label="Support and scheduling flow">
 
@@ -128,31 +158,14 @@ I owned layout across every core screen (onboarding, dashboard, bill pay, and su
 
 <ProseGroup>
 
-## Motion Design
+## The outcome.
 
-I built every Lottie file myself in After Effects. The coin confirmed a payment was processing, the leaf signaled setup completion, and the intro sequence covered the initial data load so the app felt responsive from the first tap. I delivered motion specs alongside the files: easing values, timing, and documentation so dev could implement without guesswork.
-
-</ProseGroup>
-
-<div class="lottie-grid" style="--lottie-bg: #ff033a">
-  <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
-  <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
-  <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
-  <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
-</div>
-
-<ProseGroup>
-
-## What Shipped
-
-In four months, the team delivered every core screen (onboarding, dashboard, bill pay, and support) on one layout system. Four animations covered launch, payment, setup, and confirmation, each handed to dev with easing values, timing, and implementation notes.
+In four months the team delivered every core screen on one layout system, with four animations for launch, payment, setup and confirmation, each handed off with easing and timing specs.
 
 </ProseGroup>
 
-<ProseGroup>
-
-## What I Learned
-
-In a utility app, the user's trust is already conditional. A telecom app can't afford animation that says "look at us." Each animation had to solve a specific problem or it got cut. That constraint produced better work than having free rein would have. The motion specs and dev handoff documentation mattered as much as the animations themselves. Without clear easing values and timing, the implementation would have drifted from the intent.
-
-</ProseGroup>
+<Metrics items={[
+  { value: '4', label: 'Core flows on one layout system: onboarding, dashboard, bill pay, support' },
+  { value: '4', label: 'Lottie animations, built in After Effects' },
+  { value: '4', label: 'Months, with four designers' },
+]} />

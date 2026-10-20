@@ -26,7 +26,7 @@ import Figure from '../../components/Figure.astro'
 import ButtonStates from '../../components/amica/ButtonStates.astro'
 import Device from '../../components/Device.astro'
 import Carousel from '../../components/Carousel.astro'
-import ImageGrid from '../../components/ImageGrid.astro'
+import Metrics from '../../components/Metrics.astro'
 import TokenTiers from '../../components/amica/TokenTiers.astro'
 import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
 import StatCallout from '../../components/amica/StatCallout.astro'
@@ -43,7 +43,7 @@ import quoteFlyoutNotAvailableSrc from '../../assets/work/amica-design-system/pr
 
 <ProseGroup>
 
-<p class="cs-intro">Amica relaunched amica.com on October 2, 2026, on a 615-page design system I led six designers to rebuild, with 3,044 broken references restored and no sprint paused. The library I inherited was quietly broken: no token system, and dead components wired into live pages. I treated it as a data problem: I indexed the library into a database, benchmarked it against 14 production systems, and fixed it with a verified pipeline.</p>
+<p class="cs-intro">Amica relaunched amica.com on October 2, 2026, on a 615-page design system I led six designers to rebuild, with 3,044 broken references restored and no sprint paused.</p>
 
 </ProseGroup>
 
@@ -51,13 +51,11 @@ import quoteFlyoutNotAvailableSrc from '../../assets/work/amica-design-system/pr
 
 <ProseGroup>
 
-## The Problem
+## The challenge.
 
-I joined four sprints into a rescue. Two people had been leading and executing at once, so decisions sat unmade. The library was broken in ways no screenshot showed: components filed by page type, hardcoded color, instances pointing at deleted masters. I indexed all 314,000 nodes into a database and found 3,044 flat references and 61 dead masters. The components were sound, so I re-architected the foundation instead of redesigning them.
+I joined four sprints into a rescue. The library was broken in ways no screenshot showed: no token system, components filed by page type, instances pointing at deleted masters. Indexing all 314,000 nodes found 3,044 flat references and 61 dead masters.
 
 </ProseGroup>
-
-<ImageGrid columns={1}>
 
 <Figure caption="Amica.com before the October 2026 relaunch, running on the library I inherited">
 <Device kind="laptop">
@@ -65,35 +63,31 @@ I joined four sprints into a rescue. Two people had been leading and executing a
 </Device>
 </Figure>
 
-</ImageGrid>
-
 <StatCallout number="314,000" label="Nodes indexed into one queryable database: every component, variable binding, color style, and off-library reference" />
 
 <ProseGroup>
 
-## Decoupling Background From Ink
+## The approach.
 
-The biggest-impact move was splitting color into two tiers. Tier 1 is primitives, the raw material, hidden from pickers so designers never touch them directly.
+</ProseGroup>
+
+<ProseGroup>
+
+### Two tiers of color.
+
+Primitives sit hidden from pickers, and 54 semantic tokens name what you're painting, set for Light and Dark. Modes as variables let one component carry both, so Icon Button dropped from 80 variants to 60.
 
 </ProseGroup>
 
 <TokenTiers />
 
-<ProseGroup>
-
-Tier 2 is 54 semantic tokens named by what you're painting, not where you use it, each set for Light and Dark mode. The library had been handling dark mode by duplicating every component into Light and Dark copies, which is how one button ends up with 80 variants. I modeled the modes as variables instead, so a single component carried both, and Icon Button dropped from 80 variants to 60.
-
-I wrote governance into the components themselves. Icon Button carries its own rules: its Extra Small and Small sizes fall under the 44px mobile touch target, so the component marks them desktop-only, and every fill maps to a semantic token.
-
-</ProseGroup>
-
 <ButtonStates />
 
 <ProseGroup>
 
-## Benchmarking Against 14 Production Systems
+### Benchmarked against 14 systems.
 
-To test my instincts, I indexed 14 production design systems into the same database, 1.4 million nodes. Of the seven where I could record nesting depth, Amica nested deepest, which turned shallow nesting from a preference into a hard constraint. A study of seven systems' form patterns became my blueprint, and one Amica idea came back validated instead of flagged: modeling breakpoint as a token mode, which none of the others did.
+I indexed 14 production design systems, 1.4 million nodes, into the same database. Amica nested deepest of the seven I could measure, which made shallow nesting a hard constraint.
 
 </ProseGroup>
 
@@ -101,17 +95,9 @@ To test my instincts, I indexed 14 production design systems into the same datab
 
 <ProseGroup>
 
-## Leading Six Designers Through It
+### A verified migration.
 
-I led by evidence, not seniority. When the brand guide's 100% line height broke on real content, I backed the designer who flagged it, and we won the change on accessibility grounds. When a zip-code editor joined the scope after kickoff, I escalated it into a named scope decision. When a full-component review collapsed, I swapped broad reviews for small alignments. Every push from the client's accessibility reviewer forced a system-level fix.
-
-</ProseGroup>
-
-<ProseGroup>
-
-## The Migration
-
-Fixing 3,044 references and 61 masters by hand would have cost the team weeks of sprint work. I built a remediation pipeline with Claude Code that ran alongside the sprints: atoms before composites, masters before instances, every write gated by a visual diff and verified through a separate read channel. Across two rounds, 97% of 941 instance fixes cascaded cleanly, and all 7,362 padding bindings resolved to tokens. The full story is in [Indexing a Design System](/blog/indexing-a-design-system).
+A pipeline I built with Claude Code fixed references alongside the sprints, every write gated by a visual diff. 97% of 941 instance fixes cascaded cleanly. The full story is in [Indexing a Design System](/blog/indexing-a-design-system).
 
 </ProseGroup>
 
@@ -146,13 +132,11 @@ Fixing 3,044 references and 61 masters by hand would have cost the team weeks of
   ]}
 />
 
-{/* PROTOTYPE-IMAGES-START */}
-
 <ProseGroup>
 
-## Proof: The System In Code
+### Proof in code.
 
-The library only matters if it survives a browser. I built a React prototype where the Figma tokens drive the Tailwind config, the brand fonts self-hosted, components carrying their Figma node IDs in code comments. The centerpiece is the quote flyout: eight step components driven by a state machine and routed by real ZIP-based availability rules.
+A React prototype runs on the Figma tokens, and its quote flyout routes eight steps by real ZIP-based availability. A second prototype cuts broadcast footage into loop-ready hero clips.
 
 </ProseGroup>
 
@@ -177,13 +161,17 @@ The library only matters if it survives a browser. I built a React prototype whe
 
 </Carousel>
 
-{/* PROTOTYPE-IMAGES-END */}
+<Carousel label="Amica quote flow prototype">
 
-<ProseGroup>
+<Figure caption="Quote flyout, ZIP detected">
+  <BrowserFrame src={quoteFlyoutAddressSrc} alt="Quote flyout coverage picker with a ZIP code entered and location auto-detected as Forest Hills, NY" />
+</Figure>
 
-One more prototype backs this case study: an ambient hero video pipeline that cuts broadcast footage into loop-ready clips with subject-aware cropping. It's a working review tool, not a polished screen, so the toggles at the bottom are part of the demo.
+<Figure caption="Quote flyout, auto unavailable for a Hawaii ZIP">
+  <BrowserFrame src={quoteFlyoutNotAvailableSrc} alt="Quote flyout picker with the auto option disabled for a ZIP code where auto insurance isn't sold online" />
+</Figure>
 
-</ProseGroup>
+</Carousel>
 
 <EmbeddedPrototype
   src="/work/amica-design-system/ambient-hero"
@@ -196,22 +184,23 @@ One more prototype backs this case study: an ambient hero video pipeline that cu
 
 <ProseGroup>
 
-## Outcomes
+### Evidence over seniority.
 
-Amica relaunched amica.com on the new system on October 2, 2026. Before launch, a concept study (n=500) tested the direction: 62% rated it more trustworthy than the incumbent site, 70% associated it with a premium carrier, and 59% said it increased their intent to request a quote.
-
-The system ships as five Figma files, a shared core kit plus libraries and guides for the marketing site and for the quoting and logged-in screens, built to WCAG 2.1 AA. Amica's email team, its in-house quoting designers and developers, and its media production team all used it.
-
-By the end of the engagement, the team was composing new templates from existing components without creating new variants, and running their own alignment sessions without me in the room. The color model eliminated a whole category of variant maintenance, and the token grammar let developers read the Figma file without a translation layer.
-
-The system now governs 76 icons, 130 illustrations, and a 999-asset library with a provenance manifest tracing every asset back to its source.
+When the brand guide's 100% line height broke on real content, I backed the designer who flagged it, and we won the change on accessibility grounds.
 
 </ProseGroup>
 
 <ProseGroup>
 
-## What I Learned
+## The outcome.
 
-My first audit flagged nearly the whole library as broken, and it was wrong. The count only meant something once I separated real off-library references from normal nested parts. Measuring before fixing is what made the fixes safe, and it's what let me argue from evidence instead of seniority. The same held for the team: when a full-component review collapsed, the answer was a smaller format, not a firmer hand.
+Amica relaunched on the system on October 2, 2026. It ships as five Figma files built to WCAG 2.1 AA, used by Amica's email, quoting and media production teams.
 
 </ProseGroup>
+
+<Metrics items={[
+  { value: '615', label: 'Pages on the rebuilt system' },
+  { value: '3,044', label: 'Broken references restored' },
+  { value: '62%', label: 'Rated it more trustworthy than the old site, in a concept study (n=500)' },
+  { value: '59%', label: 'Said it increased their intent to request a quote' },
+]} />
