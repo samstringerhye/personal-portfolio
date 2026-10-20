@@ -27,11 +27,10 @@ tags: ["Design System", "E-commerce", "Interactive", "Motion Design"]
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
-import Carousel from '../../components/Carousel.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import Figure from '../../components/Figure.astro'
 import Device from '../../components/Device.astro'
 import Metrics from '../../components/Metrics.astro'
+import finalSrc from '../../assets/work/bespoke-design-studio/desktop-13.png'
 import desktop06Src from '../../assets/work/bespoke-design-studio/desktop-06.png'
 import mobile06Src from '../../assets/work/bespoke-design-studio/mobile-06.png'
 import desktop03bSrc from '../../assets/work/bespoke-design-studio/desktop-03b.png'
@@ -46,6 +45,7 @@ import DecisionStepper from '../../components/DecisionStepper.astro'
 import productSelectionSrc from '../../assets/work/bespoke-design-studio/frame-37444.webp'
 import chooseTypeSrc from '../../assets/work/bespoke-design-studio/frame-37443.webp'
 import chooseColorsSrc from '../../assets/work/bespoke-design-studio/frame-37442.webp'
+import Trio from '../../components/Trio.astro'
 
 <Meta client="Samsung" role="Associate Design Director" agency="Razorfish" year="2022–2025" />
 
@@ -68,26 +68,22 @@ A Bespoke fridge means a model, then a size, then colors for four door panels. O
 
 </ProseGroup>
 
-<ImagePair leftCaption="Compare refrigerators: specs side by side, before choosing a model" rightCaption="Model detail on mobile: depth options without leaving the flow">
-  <Fragment slot="left"><Device kind="laptop"><Image src={desktop03bSrc} alt="Desktop refrigerator comparison table over the kitchen scene" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-  <Fragment slot="right"><Device kind="phone" camera="punch"><Image src={mobile04bSrc} alt="Mobile refrigerator detail with full and counter depth options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-</ImagePair>
+<Trio captions={["The user flow: every decision point and branch", "Comparing refrigerators: specs side by side, before choosing a model", "On mobile: depth options without leaving the flow"]}>
+  <Fragment slot="one"><Image src={userFlowBespokeKitchenSrc} alt="User flow for Bespoke Kitchen" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="two"><Device kind="laptop"><Image src={desktop03bSrc} alt="Desktop refrigerator comparison table over the kitchen scene" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+  <Fragment slot="three"><Device kind="phone" camera="punch"><Image src={mobile04bSrc} alt="Mobile refrigerator detail with full and counter depth options" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+</Trio>
 
 <ProseGroup>
 
 ## The approach.
 
-</ProseGroup>
-
-<ProseGroup>
-
-### A salesperson's order.
-
-Each choice appears only once the last is settled: products, type, depth, then colors. Rounds of wireframes tested the order, and the user flow mapped every branch.
+Each choice appears only once the last is settled: products, type, depth, then colors. A stepped progress indicator shows the remaining decisions from the first screen, and swatches and specs appear only when they matter.
 
 </ProseGroup>
 
-<DecisionStepper
+<Trio captions={["A salesperson's order: products, type, depth, then colors", "A visible spine: the four steps above the kitchen from the first screen", "Only what matters now: specs and depth in one panel"]}>
+  <Fragment slot="one"><DecisionStepper
   label="The configurator's decision sequence"
   steps={[
     { label: 'Products', caption: 'Pick which appliances to configure. Models, depths and finishes wait.', image: productSelectionSrc, alt: 'Product selection grid: refrigerator, range, wall oven, dishwasher and microwave' },
@@ -95,93 +91,10 @@ Each choice appears only once the last is settled: products, type, depth, then c
     { label: 'Depth', caption: 'Choose depth, only after the model is set. Step 3 of 4.', image: desktop06Src, alt: 'Desktop configurator: rendered kitchen beside the Choose Depth step' },
     { label: 'Colors', caption: 'Pick a finish for each door panel, grouped by material. Step 4 of 4.', image: chooseColorsSrc, alt: 'Desktop color picker showing finishes for the top left and top right door panels' },
   ]}
-/>
-
-<Figure caption="The user flow: every decision point and branch">
-<Image src={userFlowBespokeKitchenSrc} alt="User flow for Bespoke Kitchen" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
-</Figure>
-
-<Carousel label="Bespoke configurator wireframes">
-
-<Figure caption="Start: the four-step bar sits above the kitchen from the first screen">
-<Device kind="laptop">
-![Wireframe: welcome screen over a kitchen scene, with the four configuration steps listed above](../../assets/work/bespoke-design-studio/slide1.webp)
-</Device>
-</Figure>
-
-<Figure caption="Choose appliance: tap any appliance in the scene">
-<Device kind="laptop">
-![Wireframe: kitchen scene with each appliance marked as selectable](../../assets/work/bespoke-design-studio/slide2.webp)
-</Device>
-</Figure>
-
-<Figure caption="Choose model: three fridge configurations, side by side">
-<Device kind="laptop">
-![Wireframe: model picker with three refrigerator configurations](../../assets/work/bespoke-design-studio/model.webp)
-</Device>
-</Figure>
-
-<Figure caption="Choose depth: only after the model is set">
-<Device kind="laptop">
-![Wireframe: depth picker with full depth and counter depth options](../../assets/work/bespoke-design-studio/depth.webp)
-</Device>
-</Figure>
-
-<Figure caption="Choose colors: finishes grouped by material, per panel">
-<Device kind="laptop">
-![Wireframe: color picker with finishes grouped by material](../../assets/work/bespoke-design-studio/slide4.webp)
-</Device>
-</Figure>
-
-<Figure caption="Apply one color to the whole suite, or keep going panel by panel">
-<Device kind="laptop">
-![Wireframe: color picker asking whether to apply the color to the whole appliance suite](../../assets/work/bespoke-design-studio/slide5.webp)
-</Device>
-</Figure>
-
-<Figure caption="Your design: keep designing or add to cart">
-<Device kind="laptop">
-![Wireframe: final prompt to continue designing or add to cart](../../assets/work/bespoke-design-studio/slide6.webp)
-</Device>
-</Figure>
-
-</Carousel>
-
-<ProseGroup>
-
-### A visible spine.
-
-A stepped progress indicator shows the remaining decisions from the first screen, so shoppers can see they're three steps from done.
-
-</ProseGroup>
-
-<Figure caption="The four steps above the kitchen: appliances, model, colors, your design">
-<Device kind="laptop"><Image src={kitchenConfiguratorOverviewSrc} alt="Kitchen configurator overview" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device>
-</Figure>
-
-<ProseGroup>
-
-### Only what matters now.
-
-Color swatches appear only when they're relevant, and comparisons show only the specs that differ, on mobile and desktop.
-
-</ProseGroup>
-
-<ImagePair leftCaption="Model detail on desktop: specs and depth in one panel" rightCaption="Mobile comparison: only the specs that differ, row by row">
-  <Fragment slot="left"><Device kind="laptop"><Image src={desktop04bSrc} alt="Desktop refrigerator detail panel with specs and depth options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-  <Fragment slot="right"><Device kind="phone" camera="punch"><Image src={mobile03bSrc} alt="Mobile refrigerator comparison listing capacity and features" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-</ImagePair>
-
-<ImagePair leftCaption="Kitchen simulator: each panel zone picked separately" rightCaption="Choose Colors: all four door zones on one panel, step 4 of 4">
-  <Fragment slot="left"><Device kind="laptop"><Image src={configuratorColorSelectionSrc} alt="Configurator color selection, choosing panel finishes by zone" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-  <Fragment slot="right"><Device kind="laptop"><Image src={configuratorFullColorPanelSrc} alt="Configurator with full color panel, all four door zones visible" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
-</ImagePair>
-
-<Figure caption="Your design: the finished kitchen, priced, before checkout">
-<Device kind="laptop">
-![Final checkout step showing selected configuration with pricing](../../assets/work/bespoke-design-studio/desktop-13.png)
-</Device>
-</Figure>
+/></Fragment>
+  <Fragment slot="two"><Device kind="laptop"><Image src={kitchenConfiguratorOverviewSrc} alt="Kitchen configurator overview with the four steps above the scene" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+  <Fragment slot="three"><Device kind="laptop"><Image src={desktop04bSrc} alt="Desktop refrigerator detail panel with specs and depth options" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+</Trio>
 
 <ProseGroup>
 
@@ -190,6 +103,12 @@ Color swatches appear only when they're relevant, and comparisons show only the 
 The tool grew from refrigerators to laundry in August 2022, then to a full kitchen simulator in April 2024 with 36 models.
 
 </ProseGroup>
+
+<Trio captions={["Your design: the finished kitchen, priced, before checkout", "The kitchen simulator: each panel zone picked separately", "Choose Colors: all four door zones on one panel"]}>
+  <Fragment slot="one"><Device kind="laptop"><Image src={finalSrc} alt="Final checkout step showing selected configuration with pricing" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device></Fragment>
+  <Fragment slot="two"><Device kind="laptop"><Image src={configuratorColorSelectionSrc} alt="Configurator color selection, choosing panel finishes by zone" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+  <Fragment slot="three"><Device kind="laptop"><Image src={configuratorFullColorPanelSrc} alt="Configurator with full color panel, all four door zones visible" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+</Trio>
 
 <Metrics items={[
   { value: '6x+', label: 'Fridge add-to-cart rate against standard product pages' },

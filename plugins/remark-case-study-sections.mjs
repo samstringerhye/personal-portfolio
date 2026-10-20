@@ -3,10 +3,10 @@
 // so on desktop the head can stay pinned in the left 4 columns while the section's text and images
 // scroll past in the other 8. A section starts at a <ProseGroup> that opens with an h2 or h3, or at a
 // <ZigzagSection>. In a section with visuals, the first paragraph joins the heading in the head.
-// Full-width blocks (carousels) sit between body parts, across all 12 columns.
+// Full-width blocks (carousels, the outcome bar) sit after body parts, across all 12 columns.
 //   <div class="cs-section"><div class="cs-section-pin">head, body</div>carousel, body…</div>
 
-const FULL_WIDTH = new Set(['Carousel'])
+const FULL_WIDTH = new Set(['Carousel', 'Metrics'])
 
 const div = (className, children) => ({
   type: 'mdxJsxFlowElement',

@@ -20,19 +20,25 @@ const { items } = Astro.props
 </dl>
 
 <style>
+  /* The outcome bar: across the viewport like the details bar under the hero, hairlines above and
+     below that reach the window's edges, the figures centered in equal columns */
   .cs-metrics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
     gap: var(--space-5) var(--grid-gutter);
     margin: 0;
+    padding: var(--space-5) 0;
+    border-style: solid;
+    border-width: 1px 0;
+    border-image: linear-gradient(var(--ek-hairline, #e6eaee) 0 0) 1 / 1px 0 / 0 100vw;
   }
 
   .cs-metric {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--space-2);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--ek-hairline, #e6eaee);
+    text-align: center;
   }
 
   .cs-metric-value {
@@ -44,6 +50,7 @@ const { items } = Astro.props
   }
 
   .cs-metric-label {
+    max-width: 16rem;
     margin: 0;
     font-size: var(--text-100);
     line-height: var(--line-height-normal);

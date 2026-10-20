@@ -62,6 +62,7 @@ import lifestyleScanSrc from '../../assets/work/wab-2026/lifestyle-scan.png'
 import lifestyleAccountSrc from '../../assets/work/wab-2026/lifestyle-account.png'
 import screensGridSrc from '../../assets/work/wab-2026/screens-grid.jpeg'
 import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.png'
+import Trio from '../../components/Trio.astro'
 
 <Meta client="Whataburger" role="Associate Design Director" agency="Razorfish" year={2026} />
 
@@ -96,140 +97,25 @@ The old app worked, but it didn't feel like Whataburger. Ordering took too many 
 
 </ProseGroup>
 
+<Trio captions={["Three visual directions explored for a brand that felt generic", "The same home screen tested in each direction", "Values invented screen by screen, before the system"]}>
+  <Fragment slot="one"><DirectionExploration /></Fragment>
+  <Fragment slot="two"><Image src={directionTestingSrc} alt="Three visual directions tested against the same home screen wireframe: vibrant orange, clean modern, and dark premium" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="three"><ChaosToOrder /></Fragment>
+</Trio>
+
 <ProseGroup>
 
 ## The approach.
 
-</ProseGroup>
-
-<ProseGroup>
-
-### Three directions, one merge.
-
-I tested three visual directions against the same wireframes and merged two: Vibrant Bold's iconography, type and color on Modern's components and lighter palette.
+I merged the two strongest directions, then cut the order path: home leads with reorders and the nearest location, and customization shows only what's relevant at each step. Underneath, the rebuilt system, Pele, gives every screen 258 tokens named to map to React props.
 
 </ProseGroup>
 
-<Figure flush>
-  <Image src={directionTestingSrc} alt="Three visual directions tested against the same home screen wireframe: vibrant orange, clean modern, and dark premium" widths={[800, 1200, 2000]} sizes="100vw" format="webp" quality={90} loading="lazy" />
-</Figure>
-
-<DirectionExploration />
-
-<ProseGroup>
-
-### Fewer taps to an order.
-
-Home leads with reorders and the nearest location, and customization shows only what's relevant at each step: browse, customize, choose sides, review.
-
-</ProseGroup>
-
-<ImagePair leftCaption="Home: daypart greeting, a featured item, and Order Now" rightCaption="Menu: recent orders to reorder, then categories">
-  <Fragment slot="left"><DeviceFrame src={heroSrc} alt="Home screen: personalized greeting with featured menu items and daypart-aware content" /></Fragment>
-  <Fragment slot="right"><DeviceFrame src={menuLandingSrc} alt="Menu landing: category browsing with recent orders and featured items" /></Fragment>
-</ImagePair>
-
-<Figure flush>
-  <Image src={lifestyleMenuSrc} alt="Menu customization in context: hand holding phone showing burger customization with ingredient options" widths={[800, 1400, 2200, 4400]} sizes="100vw" format="webp" quality={90} loading="lazy" />
-</Figure>
-
-<ImagePair leftCaption="Customize: each ingredient one tap from the burger" rightCaption="Confirm your meal: every change summarized before adding">
-  <Fragment slot="left"><DeviceFrame src={menuCustomizationSrc} alt="Customize your burger: progressive disclosure of toppings and ingredients" /></Fragment>
-  <Fragment slot="right"><DeviceFrame src={orderSummarySrc} alt="Order summary: full customization detail with consistent component patterns" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-### Rewards, scan and account.
-
-Rewards shows tier progression, Scan puts earning, redeeming and the Whatawallet balance on one screen, and condiment badges carry into the ordering flow.
-
-</ProseGroup>
-
-<Figure flush>
-  <Image src={lifestyleRewardsSrc} alt="Rewards experience in context: phone on couch showing earn-as-you-eat screen with points balance" widths={[800, 1400, 2200, 4400]} sizes="100vw" format="webp" quality={90} loading="lazy" />
-</Figure>
-
-<Figure flush>
-  <Image src={lifestyleScanSrc} alt="Scan in-store: hand holding phone showing QR code for earning points at the register" widths={[800, 1400, 2200, 4400]} sizes="100vw" format="webp" quality={90} loading="lazy" />
-</Figure>
-
-<Figure flush>
-  <Image src={lifestyleAccountSrc} alt="Account hub in context: phone showing personalized profile with condiment preference badges and Whatawallet balance" widths={[800, 1400, 2200, 3000]} sizes="100vw" format="webp" quality={90} loading="lazy" />
-</Figure>
-
-<ImagePair leftCaption="Sign in by phone first, then email or social" rightCaption="Account: condiment badges up top, settings below">
-  <Fragment slot="left"><DeviceFrame src={signInSrc} alt="Sign in: clean authentication flow with social login options" /></Fragment>
-  <Fragment slot="right"><DeviceFrame src={accountSrc} alt="Account hub: personalized profile with condiment preferences" /></Fragment>
-</ImagePair>
-
-<ImagePair leftCaption="Locations: nearby restaurants with hours and distance" rightCaption="Gift cards: pick a design, then send">
-  <Fragment slot="left"><DeviceFrame src={locationsSrc} alt="Location finder: map view with nearby restaurants and delivery radius" /></Fragment>
-  <Fragment slot="right"><DeviceFrame src={giftCardsSrc} alt="Gift cards screen: card designs and balance" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-### A system before screens.
-
-The rebuild, Pele, replaced brand-named primitives with 258 variables across three collections, adding interaction states, spacing, motion and elevation, named to map to React props.
-
-</ProseGroup>
-
-<ChaosToOrder />
-
-<TypeHierarchy />
-
-<BeforeAfterStats
-  label='Design system before and after comparison'
-  theme="wab"
-  before={{
-    label: 'Before',
-    title: 'Legacy System',
-    items: [
-      { title: 'Brand-named tokens', detail: '"Whataburger Orange": named by appearance, not function' },
-      { title: 'No interactive states', detail: 'One color per element: no hover, pressed, or disabled' },
-      { title: 'No semantic layer', detail: 'Primitives only: every new screen meant inventing values' },
-      { title: 'No spacing or elevation system', detail: 'Arbitrary values with no scale or convention' },
-      { title: 'One display typeface everywhere', detail: 'All-caps branded type with no hierarchy or roles' },
-    ],
-  }}
-  after={{
-    label: 'After: Pele system',
-    title: 'Rebuilt System',
-    items: [
-      { title: '3-tier token architecture', detail: 'Primitive → Semantic → Component: 258 variables' },
-      { title: '11 interactive color states', detail: 'Foreground, background, and border for every state' },
-      { title: 'Semantic naming = React props', detail: '<code>fg/primary</code> maps directly to component theme tokens' },
-      { title: 'Complete spatial system', detail: '×100 scale for spacing, radius, elevation, and motion' },
-      { title: 'M3-inspired type scale', detail: 'Display, Headline, Body, Label, Caption: each with semantic tokens' },
-    ],
-  }}
-  stats={[
-    { value: 258, label: 'Tokens' },
-    { value: 3, label: 'Collections' },
-    { value: 90, suffix: '+', label: 'Components' },
-    { value: 11, label: 'Color States' },
-  ]}
-/>
-
-<TokenArchitecture />
-
-<ColorStates />
-
-<TypographyScale />
-
-<SpacingSystem />
-
-<MotionSystem />
-
-<ElevationSystem />
-
-<ComponentLibrary />
-
-<Figure flush>
-  <Image src={screensGridSrc} alt="Complete screen inventory: all major flows shown together including home, onboarding, menu, rewards, scan, account, locations" widths={[800, 1400, 2200, 3840]} sizes="100vw" format="webp" quality={90} loading="lazy" />
-</Figure>
+<Trio captions={["Pele: primitives, semantic tokens and components in three tiers", "Customize: each ingredient one tap from the burger", "Confirm your meal: every change summarized before adding"]}>
+  <Fragment slot="one"><TokenArchitecture /></Fragment>
+  <Fragment slot="two"><DeviceFrame src={menuCustomizationSrc} alt="Customize your burger: progressive disclosure of toppings and ingredients" /></Fragment>
+  <Fragment slot="three"><DeviceFrame src={orderSummarySrc} alt="Order summary: full customization detail with consistent component patterns" /></Fragment>
+</Trio>
 
 <ProseGroup>
 
@@ -239,6 +125,12 @@ The rebuild, Pele, replaced brand-named primitives with 258 variables across thr
 I handed off the full system and every production screen in May 2026. The app launches in 2027.
 
 </ProseGroup>
+
+<Trio captions={["Every production screen, handed off together", "Rewards: tier progress and offers in one place", "Scan: earn, redeem and pay at the register"]}>
+  <Fragment slot="one"><Image src={screensGridSrc} alt="Complete screen inventory: all major flows shown together including home, onboarding, menu, rewards, scan, account, locations" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="two"><Image src={lifestyleRewardsSrc} alt="Rewards experience in context: phone on couch showing earn-as-you-eat screen with points balance" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="three"><Image src={lifestyleScanSrc} alt="Scan in-store: hand holding phone showing QR code for earning points at the register" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+</Trio>
 
 <Metrics items={[
   { value: '14 → 6', label: 'Taps from home to checkout' },

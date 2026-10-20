@@ -1,0 +1,37 @@
+---
+/**
+ * The case study template's three visuals for a section: the first across the column, the other
+ * two side by side under it, each with its caption below its card. Slots one, two and three take
+ * an image, a device or a coded diagram.
+ */
+interface Props {
+  captions: [string, string, string]
+}
+
+const { captions } = Astro.props
+---
+
+<div class="trio">
+  <figure class="cs-figure trio-one"><slot name="one" /><figcaption>{captions[0]}</figcaption></figure>
+  <figure class="cs-figure trio-two"><slot name="two" /><figcaption>{captions[1]}</figcaption></figure>
+  <figure class="cs-figure trio-three"><slot name="three" /><figcaption>{captions[2]}</figcaption></figure>
+</div>
+
+<style>
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5) var(--grid-gutter);
+    align-items: start;
+  }
+
+  .trio-one {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 48rem) {
+    .trio {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

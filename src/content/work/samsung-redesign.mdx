@@ -24,17 +24,22 @@ tags: ["Design System", "E-commerce", "Global", "Navigation"]
 ---
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
-import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import Carousel from '../../components/Carousel.astro'
-import Figure from '../../components/Figure.astro'
+import ImagePair from '../../components/ImagePair.astro'
 import Device from '../../components/Device.astro'
-import ImageGrid from '../../components/ImageGrid.astro'
+import Trio from '../../components/Trio.astro'
 import Metrics from '../../components/Metrics.astro'
 import uiMosaicOverviewSrc from '../../assets/work/samsung-redesign/revamp-ui-mosaic.jpg'
-import globalNavigationMobileSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop.jpg'
-import globalNavigationCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
-import globalNavigationDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
+import gnbMobileSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop.jpg'
+import gnbCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
+import gnbDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
+import homeSrc from '../../assets/work/samsung-redesign/revamp-hp.jpg'
+import detailSrc from '../../assets/work/samsung-redesign/revamp-pd.jpg'
+import categorySrc from '../../assets/work/samsung-redesign/revamp-pcd.jpg'
+import familySrc from '../../assets/work/samsung-redesign/revamp-pfs.jpg'
+import showcaseSrc from '../../assets/work/samsung-redesign/samsung-section-4-showcase-desktop.jpg'
+import detailTabSrc from '../../assets/work/samsung-redesign/samsung-section-5-pd-desktop.jpg'
+import finderSrc from '../../assets/work/samsung-redesign/samsung-section-6-pf-desktop.jpg'
 
 <Meta client="Samsung" role="Senior Designer" agency="Razorfish" year={2020} />
 
@@ -44,6 +49,11 @@ import globalNavigationDesktopSrc from '../../assets/work/samsung-redesign/samsu
 
 </ProseGroup>
 
+<ImagePair leftCaption="The redesigned homepage" rightCaption="The new navigation on mobile, every model shown with a picture">
+  <Fragment slot="left"><Device kind="laptop" page><Image src={homeSrc} alt="Samsung.com homepage, full page" format="webp" sizes="(max-width: 768px) 100vw, 55vw" /></Device></Fragment>
+  <Fragment slot="right"><Image src={gnbMobileSrc} alt="Mobile global navigation: the Mobile menu drilled into Smartphones, each model shown with a product image" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+</ImagePair>
+
 <ProseGroup>
 
 ## The challenge.
@@ -52,92 +62,25 @@ Years of market-by-market additions left the navigation with a different hierarc
 
 </ProseGroup>
 
+<Trio captions={["Category pages hold catalogs of very different sizes from market to market", "Product detail: every page type carries the same navigation", "Product family: one line, every model"]}>
+  <Fragment slot="one"><Device kind="laptop" page><Image src={categorySrc} alt="Samsung.com product category page, full page" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Device></Fragment>
+  <Fragment slot="two"><Device kind="laptop" page><Image src={detailSrc} alt="Samsung.com product detail page, full page" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+  <Fragment slot="three"><Device kind="laptop" page><Image src={familySrc} alt="Samsung.com product family page, full page" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Device></Fragment>
+</Trio>
+
 <ProseGroup>
 
 ## The approach.
 
-</ProseGroup>
-
-<ProseGroup>
-
-### A picture beside every category.
-
-Cutting depth couldn't mean hiding products, so every category got a product image, from the desktop panel to the mobile drill-in. I stress-tested each variation against right-to-left scripts and deep catalogs.
+Cutting depth couldn't mean hiding products, so every category got a product image, from the desktop panel to the mobile drill-in, stress-tested against right-to-left scripts and deep catalogs. Regional teams got components they could compose without breaking the brand.
 
 </ProseGroup>
 
-<Figure caption="Mobile: the Mobile menu drilled into Smartphones, each model shown with a picture">
-<Image src={globalNavigationMobileSrc} alt="Mobile global navigation: the Mobile menu drilled into Smartphones, each model shown with a product image" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
-</Figure>
-
-<ImagePair leftCaption="Mobile: an accordion groups TVs by size, each with a picture" rightCaption="Desktop: categories, products, and a promotion in one panel">
-  <Fragment slot="left"><Image src={globalNavigationCloseupSrc} alt="Mobile navigation accordion: TV by Size, each size range shown with a TV image" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-  <Fragment slot="right"><Image src={globalNavigationDesktopSrc} alt="Desktop navigation menu: categories, product thumbnails, and a featured promotion in one panel" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-### Components regional teams can compose.
-
-I contributed atoms and components to Samsung's design system, so regional teams could build market-specific pages without breaking the brand.
-
-</ProseGroup>
-
-<Figure caption="Buttons, controls and icons from the shared system">
-<Image src={uiMosaicOverviewSrc} alt="Mosaic of Samsung.com UI components and page modules" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
-</Figure>
-
-<ProseGroup>
-
-### One layout per page's job.
-
-The homepage drove discovery, product pages drove purchase confidence, and category pages held catalogs of very different sizes per market.
-
-</ProseGroup>
-
-<ImageGrid columns={2}>
-
-<Figure caption="Product detail: built for purchase confidence">
-<Device kind="laptop" page>
-![Samsung.com product detail full page](../../assets/work/samsung-redesign/revamp-pd.jpg)
-</Device>
-</Figure>
-
-<Figure caption="Product category: holds catalogs of very different sizes per market">
-<Device kind="laptop" page>
-![Samsung.com product category full page](../../assets/work/samsung-redesign/revamp-pcd.jpg)
-</Device>
-</Figure>
-
-<Figure caption="Product family: one line, every model">
-<Device kind="laptop" page>
-![Samsung.com product family full page](../../assets/work/samsung-redesign/revamp-pfs.jpg)
-</Device>
-</Figure>
-
-<Figure caption="Homepage: built for discovery">
-<Device kind="laptop" page>
-![Samsung.com homepage full page](../../assets/work/samsung-redesign/revamp-hp.jpg)
-</Device>
-</Figure>
-
-</ImageGrid>
-
-<Carousel label="Samsung product pages">
-
-<Figure caption="Product showcase">
-![Product showcase](../../assets/work/samsung-redesign/samsung-section-4-showcase-desktop.jpg)
-</Figure>
-
-<Figure caption="Product detail">
-![Product detail page](../../assets/work/samsung-redesign/samsung-section-5-pd-desktop.jpg)
-</Figure>
-
-<Figure caption="Product finder">
-![Product finder](../../assets/work/samsung-redesign/samsung-section-6-pf-desktop.jpg)
-</Figure>
-
-</Carousel>
+<Trio captions={["Desktop: categories, products and a promotion in one panel", "Mobile: TVs grouped by size, each with a picture", "Shared components regional teams compose into their own pages"]}>
+  <Fragment slot="one"><Image src={gnbDesktopSrc} alt="Desktop navigation menu: categories, product thumbnails, and a featured promotion in one panel" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="two"><Image src={gnbCloseupSrc} alt="Mobile navigation accordion: TV by Size, each size range shown with a TV image" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={uiMosaicOverviewSrc} alt="Mosaic of Samsung.com UI components and page modules" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
 
 <ProseGroup>
 
@@ -146,6 +89,12 @@ The homepage drove discovery, product pages drove purchase confidence, and categ
 Over six months I delivered the navigation's visual direction, layouts for four core page types and components for the shared design system.
 
 </ProseGroup>
+
+<Trio captions={["Product showcase", "Product detail", "Product finder"]}>
+  <Fragment slot="one"><Image src={showcaseSrc} alt="Samsung.com product showcase on a Galaxy Book" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="two"><Image src={detailTabSrc} alt="Samsung.com product detail page on a Galaxy Tab" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={finderSrc} alt="Samsung.com product finder on a Galaxy Tab" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
 
 <Metrics items={[
   { value: '12+', label: 'Markets on one navigation' },

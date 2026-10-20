@@ -6,12 +6,12 @@
 import {
   CatmullRomCurve3, Color, CylinderGeometry, ExtrudeGeometry, Group, InstancedMesh, LatheGeometry, Matrix4,
   Mesh, MeshPhysicalMaterial, Shape, SphereGeometry, TorusGeometry, TubeGeometry, Vector2, Vector3,
-  type BufferGeometry, type Material,
+  type BufferGeometry, type Material, type MeshPhysicalMaterialParameters,
 } from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 
 // Finishes
-const plastic = (color: string, o: Partial<MeshPhysicalMaterial> = {}) => new MeshPhysicalMaterial({
+const plastic = (color: string, o: MeshPhysicalMaterialParameters = {}) => new MeshPhysicalMaterial({
   color, metalness: 0, roughness: 0.4, clearcoat: 0.6, clearcoatRoughness: 0.15, specularIntensity: 0.5, ...o,
 })
 const gloss = (color: string) => plastic(color, { roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.04 })
