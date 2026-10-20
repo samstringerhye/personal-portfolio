@@ -49,7 +49,7 @@ class WebPTextures {
 // A display that wraps round the device's edges (the S22 Ultra's) is a hole only where it's flat:
 // the flat DOM screen doesn't reach the curves, which would show whatever screen lies behind. The
 // curves render as the dark glass they are. Flat within this cosine of the way the display faces
-const FLAT = 0.97
+const FLAT = 0.995
 /** display's world matrix is its place in the oriented device, where every display faces +z */
 function holeFor(display: Mesh, hole: MeshBasicMaterial): MeshBasicMaterial {
   const normal = display.geometry.attributes.normal

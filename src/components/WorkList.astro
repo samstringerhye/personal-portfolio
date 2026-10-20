@@ -48,7 +48,8 @@ const featured = (await getCollection('work'))
             data-frames={entry.data.thumbnailLayers?.frames?.length && !entry.data.thumbnailScene ? '' : undefined}
             data-scene={entry.data.thumbnailScene ? '' : undefined}
           >
-            {entry.data.thumbnailLayers ? (
+            {/* A card with a device scene shows only the scene: no thumbnail art to download */}
+            {entry.data.thumbnailScene ? null : entry.data.thumbnailLayers ? (
               <div class="work-list-plane">
                 <div class="work-list-bg" style={`background: ${entry.data.thumbnailLayers.background}`} aria-hidden="true"></div>
                 <Image
@@ -227,10 +228,6 @@ const featured = (await getCollection('work'))
   .work-list-scene {
     position: absolute;
     inset: 0;
-  }
-
-  .work-list-media[data-scene] .work-list-plane {
-    visibility: hidden;
   }
 
   /* Groups the year and text for the narrow layout; no box of its own on wider cards */
