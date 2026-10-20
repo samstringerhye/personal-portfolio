@@ -85,7 +85,7 @@ function textEl(tag: string, l: Line, color: string): HTMLElement {
   const el = document.createElement(tag)
   el.className = l.cls
   el.textContent = l.text
-  Object.assign(el.style, { margin: '0', color, fontSize: `${l.size}px`, lineHeight: `${l.leading}px`, textWrap: 'balance' })
+  Object.assign(el.style, { margin: '0', color, fontSize: `${l.size}px`, lineHeight: `${l.leading}px`, textWrap: 'pretty' })
   return el
 }
 

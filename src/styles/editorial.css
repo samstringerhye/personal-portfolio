@@ -161,7 +161,7 @@ html.ek .home-contact {
 }
 
 html.ek .home-contact h2 {
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 /* Section heading size, 4 of the column's 12 tracks wide like the other sections' headings. On
@@ -220,7 +220,7 @@ html.ek .about-intro-right::before {
 
 html.ek .about-intro-right .about-name {
   margin: 0 0 var(--space-2);
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 html.ek .about-orbit {
