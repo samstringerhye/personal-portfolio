@@ -25,13 +25,13 @@ const aboutJsonLd = {
 }
 
 // A few things from the interests list, placed loosely around the photo: x and y are the center in %
-// of the photo's box, size the width in %. Clay sculpts in 3D (about-icons.ts) replace the flat
+// of the photo's box, size the width in %. visionOS-style 3D badges (about-icons.ts) replace the flat
 // Fluent emoji (MIT, Microsoft) once the canvas is up; the emoji stay as the fallback.
 const ICONS = [
-  { src: headphone, alt: 'Audiophile', x: 10, y: 14, size: 30, sculpt: 'headphones', yaw: 0.35, pitch: 0.15 },
-  { src: videoGame, alt: 'Gamer', x: 94, y: 36, size: 24, sculpt: 'gamepad', yaw: -0.3, pitch: 0.3 },
-  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 26, sculpt: 'ghost', yaw: -0.3, pitch: 0.05 },
-  { src: clapperBoard, alt: 'Cinephile', x: 3, y: 72, size: 22, sculpt: 'clapperboard', yaw: 0.4, pitch: 0.1 },
+  { src: headphone, alt: 'Audiophile', x: 8, y: 12, size: 28, sculpt: 'headphones', yaw: 0.3, pitch: 0.1 },
+  { src: videoGame, alt: 'Gamer', x: 96, y: 34, size: 24, sculpt: 'gamepad', yaw: -0.3, pitch: 0.1 },
+  { src: ghost, alt: 'Horror fiend', x: 86, y: 90, size: 26, sculpt: 'ghost', yaw: -0.25, pitch: -0.05 },
+  { src: clapperBoard, alt: 'Cinephile', x: 2, y: 70, size: 21, sculpt: 'clapperboard', yaw: 0.35, pitch: 0.05 },
 ]
 const models = ICONS.map(({ sculpt, x, y, size, yaw, pitch }) => ({ sculpt, x, y, size, yaw, pitch }))
 const float = animations.about.icons
