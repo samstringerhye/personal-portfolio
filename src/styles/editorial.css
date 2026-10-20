@@ -160,10 +160,24 @@ html.ek .home-contact {
   gap: var(--space-6);
 }
 
-/* Section heading size, 4 of the column's 12 tracks wide like the other sections' headings */
 html.ek .home-contact h2 {
-  max-width: calc((100% - 11 * var(--grid-gutter)) / 3 + 3 * var(--grid-gutter));
   text-wrap: balance;
+}
+
+/* Section heading size, 4 of the column's 12 tracks wide like the other sections' headings. On
+   phones that would be a word a line, so it takes the column */
+@media (min-width: 64.0625rem) {
+  html.ek .home-contact h2 {
+    max-width: calc((100% - 11 * var(--grid-gutter)) / 3 + 3 * var(--grid-gutter));
+  }
+}
+
+/* Phones: the hero line scales with the screen, so "on purpose." spans the column */
+@media (--2x) {
+  html.ek .hero-block {
+    font-size: clamp(3rem, 19vw, 5.5rem);
+    line-height: 1.05;
+  }
 }
 
 /* The other pages (about, colophon, blog) sit on the same column. They used the page-wide
@@ -362,8 +376,22 @@ html.ek .skill-grid {
 }
 
 @media (--2x) {
-  /* Phone footer links stack on the page margin like everything else */
+  /* Phone footer: the logo and wordmark side by side, the links on their own line at the page
+     margin like everything else */
+  html.ek .footer-bar {
+    flex-wrap: wrap;
+  }
+
+  html.ek .footer-bar-text {
+    display: contents;
+  }
+
+  html.ek .footer-wordmark-text {
+    padding-left: var(--space-2);
+  }
+
   html.ek .footer-links {
+    flex-basis: 100%;
     margin-left: 0;
     padding-left: 0;
   }

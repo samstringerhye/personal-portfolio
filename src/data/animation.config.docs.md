@@ -93,7 +93,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.dragYaw` / `dragPitch` | radians | `3` / `1.2` | Turn and tilt for a drag across the full width and height of the device's box (devices don't follow the pointer; they turn when dragged) |
 | `workCards.phone.dragPitchLimit` | radians | `0.6` | Furthest a drag tilts the device from its rest, either way |
 | `workCards.phone.dragReturn` | 0–1 | `0.05` | Share of the way back to rest covered each frame after a drag (reduced motion snaps back) |
-| `workCards.phone.parallax` | ratio | `0.12` | Scroll parallax: the device sits this share of its row's distance from the viewport's center back toward it, so it drifts against the page (off under reduced motion) |
+| `workCards.phone.parallax` | ratio | `0.12` | Scroll parallax: the device sits this share of its row's distance from the viewport's center back toward it, so it drifts against the page (off under reduced motion, and at 64rem and below where the layout stacks) |
 | `workCards.phone.scrollPitch` | radians | `0.22` | Tilt as the card scrolls through the viewport (the only motion on touch screens) |
 | `workCards.phone.sway` | radians | `0.04` | Idle turn amplitude |
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
