@@ -679,9 +679,36 @@ html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, script, style) {
 }
 
 /* A heading starts a section, as does the intro under the meta bar */
-html.ek .case-study-body > :is(.prose-group--headed, .zigzag-section),
+html.ek .case-study-body > .cs-section,
 html.ek .case-study-body > .cs-hero-meta + .prose-group {
   margin-top: var(--cs-section-gap);
+}
+
+/* A section (remark-case-study-sections.mjs): its head (the heading, or a side-by-side block's
+   heading and text), then its body of text and visuals; a carousel runs between body parts */
+html.ek .cs-section-head {
+  margin: 0;
+}
+
+html.ek .cs-section-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-top: var(--space-4);
+}
+
+html.ek .cs-section-body > * {
+  min-width: 0;
+  margin: var(--cs-block-gap) 0 0;
+  padding: 0;
+}
+
+html.ek .cs-section-body > :first-child {
+  margin-top: 0;
+}
+
+html.ek .cs-section > .carousel {
+  margin-top: var(--cs-block-gap);
 }
 
 /* Type: one size per role */
@@ -872,13 +899,13 @@ html.ek .case-study-body .image-pair .device-phone {
 }
 
 /* Coded diagrams: the same rounded panel, their own color kept, with room inside */
-html.ek .case-study-body > :is(section:not(.cs-device-hero, .cs-hero), .hero-phone-scroll, .stat-callout) {
+html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero), .hero-phone-scroll, .stat-callout) {
   border: 0;
   border-radius: var(--ek-window-radius);
   overflow: hidden;
 }
 
-html.ek .case-study-body > section:not(.cs-device-hero, .cs-hero) {
+html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .cs-hero) {
   padding: var(--space-5);
 }
 
@@ -977,53 +1004,45 @@ html.ek .case-study-body .cs-meta-value {
   }
 }
 
-/* Desktop: headings in the left 4 of 12 columns, everything else in the other 8; the meta bar spans all 12 */
+/* Desktop: each section's head pinned in the left 4 of 12 columns while its text and visuals scroll
+   past in the other 8. The meta bar, the opening visual and carousels span all 12; the intro takes
+   the middle 8 */
 @media (min-width: 64.0625rem) {
   html.ek .case-study-body > * {
     grid-column: 5 / -1;
   }
 
-  html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, .zigzag-section, .prose-group--headed) {
+  html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, .cs-section, .cs-hero-meta, .mosaic, .hero-phone-scroll, .carousel),
+  html.ek .case-study-body > .cs-hero-meta + .prose-group + :not(.cs-section) {
     grid-column: 1 / -1;
   }
 
-  html.ek .case-study-body > .cs-hero-meta {
-    grid-column: 1 / -1;
+  html.ek .case-study-body > .cs-hero-meta + .prose-group {
+    grid-column: 3 / 11;
   }
 
-  html.ek .case-study-body .zigzag-section {
-    display: grid;
-    grid-template-columns: subgrid;
-    column-gap: var(--grid-gutter);
-    align-items: center;
-  }
-
-  html.ek .case-study-body .zigzag-section .zigzag-media {
-    grid-column: 5 / -1;
-    grid-row: 1;
-  }
-
-  html.ek .case-study-body .zigzag-section .zigzag-prose {
-    grid-column: 1 / 5;
-    grid-row: 1;
-  }
-
-  html.ek .case-study-body > .prose-group--headed {
+  html.ek .cs-section {
     display: grid;
     grid-template-columns: subgrid;
     column-gap: var(--grid-gutter);
     align-items: start;
   }
 
-  html.ek .case-study-body > .prose-group--headed > :is(h2, h3) {
+  /* Sticky within its grid row, which is as tall as the body beside it */
+  html.ek .cs-section-head {
     grid-column: 1 / 5;
+    grid-row: 1;
     position: sticky;
     top: calc(var(--nav-height) + var(--space-3) + var(--touch-target) + var(--space-4));
   }
 
-  html.ek .case-study-body > .prose-group--headed > .prose-body {
+  html.ek .cs-section-body {
     grid-column: 5 / -1;
     margin-top: 0;
+  }
+
+  html.ek .cs-section > .carousel {
+    grid-column: 1 / -1;
   }
 }
 

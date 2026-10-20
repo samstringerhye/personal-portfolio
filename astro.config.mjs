@@ -3,6 +3,7 @@ import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import remarkUnwrapImages from 'remark-unwrap-images'
 import rehypeLazyImages from './plugins/rehype-lazy-images.mjs'
+import remarkCaseStudySections from './plugins/remark-case-study-sections.mjs'
 import icon from 'astro-icon'
 import cloudflare from '@astrojs/cloudflare';
 
@@ -42,7 +43,7 @@ export default defineConfig({
   },
 
   markdown: {
-    remarkPlugins: [remarkUnwrapImages],
+    remarkPlugins: [remarkUnwrapImages, remarkCaseStudySections],
     rehypePlugins: [rehypeLazyImages],
   },
 
