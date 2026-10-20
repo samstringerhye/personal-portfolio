@@ -2,7 +2,7 @@
 // around the headshot, bobbing, turning and leaning toward the cursor. The flat images underneath stay until the
 // canvas is up, and stay for good without WebGL. Under reduced motion the badges hold one pose.
 import {
-  Box3, Clock, DirectionalLight, Group, HemisphereLight, OrthographicCamera, PMREMGenerator, Scene, Vector3,
+  Box3, Clock, DirectionalLight, Group, HemisphereLight, NeutralToneMapping, OrthographicCamera, PMREMGenerator, Scene, Vector3,
   WebGLRenderer, type Material, type Mesh, type Object3D,
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
@@ -41,15 +41,19 @@ export function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElement, i
   const camera = new OrthographicCamera(-BLEED, 100 + BLEED, BLEED, -100 - BLEED, -500, 500)
   camera.position.z = 100
   const scene = new Scene()
-  // Soft studio light for the glossy badges: a room environment for the reflections, a sky and
-  // ground fill, one key from the upper left
+  // Studio light for the glossy badges: a room environment for the reflections, a soft key from the
+  // upper left, and a rim from behind that lights the discs' edges like glass
+  renderer.toneMapping = NeutralToneMapping
   const pmrem = new PMREMGenerator(renderer)
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.02).texture
   pmrem.dispose()
-  scene.add(new HemisphereLight(0xffffff, 0xdcd6cc, 0.9))
-  const key = new DirectionalLight(0xffffff, 1.6)
+  scene.add(new HemisphereLight(0xffffff, 0xd8dce6, 0.6))
+  const key = new DirectionalLight(0xffffff, 2.2)
   key.position.set(-2, 3, 4)
   scene.add(key)
+  const rim = new DirectionalLight(0xffffff, 1.4)
+  rim.position.set(1.5, 2, -3)
+  scene.add(rim)
 
   const holders: { holder: Group; icon: AboutIcon; phase: number }[] = []
   icons.forEach((icon, i) => {
