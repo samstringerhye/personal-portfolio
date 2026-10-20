@@ -5,7 +5,7 @@
 // thread where OffscreenCanvas WebGL is missing.
 import {
   Box3, DirectionalLight, DoubleSide, Euler, Group, MeshBasicMaterial, NoBlending, Object3D,
-  PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
+  PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, Vector2, Vector3, WebGLRenderer,
   type Mesh, type MeshPhysicalMaterial, type Texture,
 } from 'three'
 import { GLTFLoader, type GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -128,6 +128,41 @@ const modelOf = (device: DeviceName) => {
   return file
 }
 
+// One renderer per canvas, with the studio's reflections, used by every scene drawn on it. The
+// worker draws every arrangement on one canvas, so the page has one WebGL context however many
+// cards are live (a browser caps them and drops the oldest past that), and each shader compiles
+// once. On the main thread each card has its own canvas, and so its own renderer
+interface Context { gl: WebGLRenderer; environment: Texture; users: number }
+const contexts = new Map<HTMLCanvasElement | OffscreenCanvas, Context>()
+function contextFor(canvas: HTMLCanvasElement | OffscreenCanvas): Context {
+  let context = contexts.get(canvas)
+  if (!context) {
+    const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
+    // Khronos PBR Neutral, then the site's color grade (grade.ts)
+    grade(gl)
+    gl.outputColorSpace = SRGBColorSpace
+    gl.setClearColor(0, 0)
+    // The studio's softboxes (studio.ts) give the reflections
+    const pmrem = new PMREMGenerator(gl)
+    const environment = pmrem.fromScene(studioScene(), 0.02).texture
+    pmrem.dispose()
+    context = { gl, environment, users: 0 }
+    contexts.set(canvas, context)
+  }
+  context.users++
+  return context
+}
+// The last scene on a canvas lets go of it: its context goes back now, not at garbage collection
+function release(canvas: HTMLCanvasElement | OffscreenCanvas) {
+  const context = contexts.get(canvas)
+  if (!context || --context.users > 0) return
+  contexts.delete(canvas)
+  context.environment.dispose()
+  const raw = context.gl.getContext()
+  context.gl.dispose()
+  raw.getExtension('WEBGL_lose_context')?.loseContext()
+}
+
 export async function createArrangementRenderer(
   canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number,
   name: SceneName, fov: number, rest: { rx: number; ry: number }, float: FloatMotion, bleed: Bleed = [0, 0, 0, 0],
@@ -140,18 +175,13 @@ export async function createArrangementRenderer(
   // each finds its display by name and a scene can come and go without loading its models again
   const models = placements.map(p => loaded.get(p.device)!.clone(true))
 
-  const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
-  gl.setPixelRatio(dpr)
-  // Khronos PBR Neutral, then the site's color grade (grade.ts)
-  grade(gl)
-  gl.outputColorSpace = SRGBColorSpace
-  gl.setClearColor(0, 0)
+  const context = contextFor(canvas)
+  const { gl } = context
 
   const scene = new Scene()
-  const pmrem = new PMREMGenerator(gl)
-  // The studio's softboxes (studio.ts) give the reflections; three lights, fixed to the camera,
-  // shape the devices as they turn
-  scene.environment = pmrem.fromScene(studioScene(), 0.02).texture
+  // The studio's reflections, and three lights, fixed to the camera, that shape the devices as they
+  // turn
+  scene.environment = context.environment
   scene.environmentIntensity = ENVIRONMENT
   for (const l of LIGHTS) {
     const light = new DirectionalLight(l.color, l.power)
@@ -258,10 +288,11 @@ export async function createArrangementRenderer(
   const camera = new PerspectiveCamera(fov, width / height)
   // w × h is the stage the arrangement is framed in; the canvas runs past it by bleed on each side,
   // so the shadow and a device dragged toward the edge are drawn whole
+  // The canvas is sized for this scene when it draws, since others may share it
+  let drawn = { w: 0, h: 0, ratio: dpr }
   const resize = (w: number, h: number, ratio = dpr, [l, t, r, b]: Bleed = [0, 0, 0, 0]) => {
     if (!w || !h) return
-    gl.setPixelRatio(ratio)
-    gl.setSize(w + l + r, h + t + b, false)
+    drawn = { w: w + l + r, h: h + t + b, ratio }
     const vh = viewHeightAt(geometry, w, h)
     const distance = (vh / 2) / tan
     camera.position.z = distance
@@ -275,6 +306,12 @@ export async function createArrangementRenderer(
     camera.updateProjectionMatrix()
   }
   resize(width, height, dpr, bleed)
+
+  const fitCanvas = () => {
+    if (gl.getPixelRatio() !== drawn.ratio) gl.setPixelRatio(drawn.ratio)
+    const now = gl.getSize(new Vector2())
+    if (now.x !== drawn.w || now.y !== drawn.h) gl.setSize(drawn.w, drawn.h, false)
+  }
 
   // Compile and upload before the first visible frame
   await gl.compileAsync(scene, camera)
@@ -294,23 +331,18 @@ export async function createArrangementRenderer(
     }
     const at = floating.length ? `${ry},${lift},${t},${enter}` : `${ry},${lift}`
     if (at !== shadowAt) { shadow.update(gl, scene, lift); shadowAt = at }
+    fitCanvas()
     gl.render(scene, camera)
     const out = new Float32Array(16 * markers.length)
     markers.forEach((m, i) => out.set(m.matrixWorld.elements, i * 16))
     return out
   }
   // The models' geometry, materials and textures are shared with the other scenes (modelOf), so they
-  // aren't disposed one by one, which would make those scenes upload and compile them again; losing
-  // this scene's context below frees everything it put on the GPU
+  // aren't disposed one by one, which would make those scenes upload and compile them again; the
+  // context, once no scene uses it, frees everything at once
   const dispose = () => {
-    scene.environment?.dispose()
     shadow.dispose()
-    pmrem.dispose()
-    // Give the context back now, not at garbage collection: the browser caps live contexts and
-    // drops the oldest, which may be a scene still on screen
-    const context = gl.getContext()
-    gl.dispose()
-    context.getExtension('WEBGL_lose_context')?.loseContext()
+    release(canvas)
   }
   return { geometry, resize, render, dispose }
 }
