@@ -27,10 +27,10 @@ const aboutJsonLd = {
 // A few things from the interests list, as Fluent 3D emoji (MIT, Microsoft), placed loosely around the
 // photo: x and y are the icon's center in % of the photo's box, size its width in %
 const ICONS = [
-  { src: headphone, alt: 'Audiophile', x: 10, y: 16, size: 21 },
-  { src: videoGame, alt: 'Gamer', x: 93, y: 34, size: 15 },
-  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 19 },
-  { src: clapperBoard, alt: 'Cinephile', x: 4, y: 70, size: 13 },
+  { src: headphone, alt: 'Audiophile', x: 10, y: 14, size: 30 },
+  { src: videoGame, alt: 'Gamer', x: 94, y: 36, size: 22 },
+  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 27 },
+  { src: clapperBoard, alt: 'Cinephile', x: 2, y: 72, size: 19 },
 ]
 const float = animations.about.icons
 
@@ -70,7 +70,7 @@ const skills = [
           <ul class="about-icons" aria-label="Things I'm into">
             {ICONS.map((icon, i) => (
               <li class="about-icon" style={`left: ${icon.x.toFixed(1)}%; top: ${icon.y.toFixed(1)}%; width: ${icon.size}%; animation-delay: -${(i * float.stagger).toFixed(2)}s`}>
-                <Image src={icon.src} alt={icon.alt} width={160} format="webp" loading="eager" />
+                <Image src={icon.src} alt={icon.alt} width={256} format="webp" loading="eager" />
               </li>
             ))}
           </ul>
