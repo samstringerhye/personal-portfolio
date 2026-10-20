@@ -307,8 +307,6 @@ function isActive(href: string) {
   import { accentRgba, animations } from '../data/tokens'
   import './contact-email'
 
-  const CMY_COLORS = accentRgba(1)
-  let colorIndex = 0
 
   // Petal directions: top-left, bottom-left, top-right, bottom-right (DOM order)
   const petalOffsets = [
@@ -322,34 +320,17 @@ function isActive(href: string) {
 
   function initNavHover() {
     if (!canHover) return
-    const items = document.querySelectorAll<HTMLElement>('.nav-link, .nav-logo')
-    items.forEach((el) => {
-      if (el.dataset.navHoverBound === 'true') return
-      el.dataset.navHoverBound = 'true'
-      // Nav links: set background on parent li to avoid subpixel gaps
-      const bgTarget = el.classList.contains('nav-link') ? (el.parentElement as HTMLElement) : el
-      el.addEventListener('mouseenter', () => {
-        bgTarget.style.backgroundColor = CMY_COLORS[colorIndex++ % CMY_COLORS.length]
-      })
-      el.addEventListener('mouseleave', () => {
-        // Back to the CSS fill, which is the accent for the active tab and nothing for the rest
-        bgTarget.style.backgroundColor = ''
-      })
-    })
-
-    // Logo petal animation (skip if user prefers reduced motion)
+    // Logo hover: the petals burst out and settle in their own colors (skip if user prefers reduced motion)
     const logo = document.querySelector<HTMLElement>('.nav-logo')
     if (logo && !logo.dataset.petalBound && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       logo.dataset.petalBound = 'true'
       const paths = logo.querySelectorAll<SVGPathElement>('.nav-logo-icon path')
-      const originalFills = Array.from(paths).map(p => p.getAttribute('fill') ?? '')
       const petal = animations.nav.petal
 
       logo.addEventListener('mouseenter', () => {
         paths.forEach((path, i) => {
           gsap.killTweensOf(path)
           const { x, y } = petalOffsets[i]
-          gsap.to(path, { attr: { fill: '#ffffff' }, duration: petal.fillIn, ease: 'power2.out' })
 
           const tl = gsap.timeline()
           // 1. Anticipation: pull toward center
@@ -377,7 +358,6 @@ function isActive(href: string) {
       logo.addEventListener('mouseleave', () => {
         paths.forEach((path, i) => {
           gsap.killTweensOf(path)
-          gsap.to(path, { attr: { fill: originalFills[i] }, duration: petal.reset, ease: 'power2.out' })
           gsap.to(path, { x: 0, y: 0, duration: petal.reset, ease: 'back.out(2)' })
         })
       })
