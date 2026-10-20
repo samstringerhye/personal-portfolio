@@ -17,6 +17,13 @@ npx @gltf-transform/cli optimize "3d models/<source>.glb" public/motion/models/<
   --compress meshopt --texture-compress webp --texture-size 512 --palette false --join false --simplify false
 ```
 
+The MacBook Neo's keycap legends need their full 1024x256 texture to stay sharp at the keyboard's
+steep angle, so it uses its own script instead of the 512px optimize:
+
+```bash
+node scripts/models/neo-keycaps.mjs "3d models/macbook_neo.glb" public/motion/models/macbook-neo.glb
+```
+
 The Galaxy Z Fold8 file shows an unfolded phone in front of a folded one. Keep the unfolded
 (front) one first; `back` keeps the folded one instead:
 
