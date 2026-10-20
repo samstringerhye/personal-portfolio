@@ -144,7 +144,11 @@
       "float": 10,
       "tilt": 6,
       "duration": 3.6,
-      "stagger": 0.45
+      "stagger": 0.45,
+      "turn": 0.6,
+      "turnDuration": 9,
+      "follow": 0.35,
+      "followEase": 0.08
     }
   },
   "caseStudy": {

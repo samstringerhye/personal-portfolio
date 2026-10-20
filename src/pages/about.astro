@@ -24,14 +24,16 @@ const aboutJsonLd = {
   },
 }
 
-// A few things from the interests list, as Fluent 3D emoji (MIT, Microsoft), placed loosely around the
-// photo: x and y are the icon's center in % of the photo's box, size its width in %
+// A few things from the interests list, placed loosely around the photo: x and y are the center in %
+// of the photo's box, size the width in %. Real 3D models (about-icons.ts) replace the flat Fluent
+// emoji (MIT, Microsoft) once they load; the emoji stay as the fallback.
 const ICONS = [
-  { src: headphone, alt: 'Audiophile', x: 10, y: 14, size: 30 },
-  { src: videoGame, alt: 'Gamer', x: 94, y: 36, size: 22 },
-  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 27 },
-  { src: clapperBoard, alt: 'Cinephile', x: 2, y: 72, size: 19 },
+  { src: headphone, alt: 'Audiophile', x: 10, y: 14, size: 30, model: '/motion/models/about/headphones.glb', yaw: 0.5, pitch: 0.25 },
+  { src: videoGame, alt: 'Gamer', x: 94, y: 36, size: 24, model: '/motion/models/about/gamepad.glb', yaw: -1.25, pitch: 0.75 },
+  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 26, model: '/motion/models/about/ghost.glb', yaw: -0.35, pitch: 0.1, clip: 'idle' },
+  { src: clapperBoard, alt: 'Cinephile', x: 3, y: 72, size: 22, model: '/motion/models/about/clapperboard.glb', yaw: 0.35, pitch: 1.3 },
 ]
+const models = ICONS.map(({ model, x, y, size, yaw, pitch, clip }) => ({ url: model, x, y, size, yaw, pitch, clip }))
 const float = animations.about.icons
 
 const skills = [
@@ -67,6 +69,7 @@ const skills = [
             fetchpriority="high"
             class="about-portrait"
           />
+          <canvas class="about-icons-3d" aria-hidden="true" data-models={JSON.stringify(models)}></canvas>
           <ul class="about-icons" aria-label="Things I'm into">
             {ICONS.map((icon, i) => (
               <li class="about-icon" style={`left: ${icon.x.toFixed(1)}%; top: ${icon.y.toFixed(1)}%; width: ${icon.size}%; animation-delay: -${(i * float.stagger).toFixed(2)}s`}>
@@ -298,3 +301,23 @@ const skills = [
     }
   }
 </style>
+
+<script>
+  import type { AboutIcon } from '../components/about-icons'
+
+  let teardown: (() => void) | undefined
+
+  async function init() {
+    teardown?.()
+    teardown = undefined
+    const orbit = document.querySelector<HTMLElement>('.about-orbit')
+    const canvas = orbit?.querySelector<HTMLCanvasElement>('.about-icons-3d')
+    if (!orbit || !canvas) return
+    const icons = JSON.parse(canvas.dataset.models ?? '[]') as AboutIcon[]
+    const { mountAboutIcons } = await import('../components/about-icons')
+    teardown = await mountAboutIcons(orbit, canvas, icons)
+  }
+
+  document.addEventListener('astro:page-load', init)
+  document.addEventListener('astro:before-swap', () => { teardown?.(); teardown = undefined })
+</script>
