@@ -1,13 +1,13 @@
-// The About page's 3D icons: four clay sculpts (about-clay.ts) in one transparent canvas around the
-// headshot, bobbing, turning and leaning toward the cursor. The flat images underneath stay until the
-// canvas is up, and stay for good without WebGL. Under reduced motion the sculpts hold one pose.
+// The About page's 3D icons: four visionOS-style badges (about-badges.ts) in one transparent canvas
+// around the headshot, bobbing, turning and leaning toward the cursor. The flat images underneath stay until the
+// canvas is up, and stay for good without WebGL. Under reduced motion the badges hold one pose.
 import {
   Box3, Clock, DirectionalLight, Group, HemisphereLight, OrthographicCamera, PMREMGenerator, Scene, Vector3,
   WebGLRenderer, type Material, type Mesh, type Object3D,
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { animations } from '../data/tokens'
-import { SCULPTS, type SculptName } from './about-clay'
+import { SCULPTS, type SculptName } from './about-badges'
 
 export interface AboutIcon {
   sculpt: SculptName
@@ -41,8 +41,8 @@ export function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElement, i
   const camera = new OrthographicCamera(-BLEED, 100 + BLEED, BLEED, -100 - BLEED, -500, 500)
   camera.position.z = 100
   const scene = new Scene()
-  // Soft studio light for the clay: a room environment for gentle reflections, a sky and ground fill,
-  // one key from the upper left
+  // Soft studio light for the glossy badges: a room environment for the reflections, a sky and
+  // ground fill, one key from the upper left
   const pmrem = new PMREMGenerator(renderer)
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
   pmrem.dispose()
