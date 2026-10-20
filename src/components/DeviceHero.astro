@@ -3,6 +3,7 @@
 // as its homepage card on the right, the composition the card's row has. Coming from the card, the
 // device carries straight across the page change (device-scene/mount.ts).
 import DeviceScene, { type SceneName } from './DeviceScene.astro'
+import { animations } from '../data/tokens'
 
 interface Props {
   scene: SceneName
@@ -15,20 +16,53 @@ interface Props {
 const { scene, label, title, tagline, year } = Astro.props
 // Non-breaking hyphens: the narrow column would otherwise split "E-commerce" across lines
 const heading = title.replaceAll('-', '\u2011')
+// The text slides in like the homepage headline: the year, the title word by word, then the
+// tagline, timed from textReveal and starting as the page fades in behind a carried device
+const words = heading.split(/\s+/).filter(Boolean)
+const reveal = animations.textReveal
+const csWordDuration = `${reveal.duration}s`
+const csWordStagger = `${reveal.wordStagger}s`
+const csWordStart = `${animations.workCards.deviceNav.fadeInDelay}s`
+const csWordSlide = `${reveal.slideUp}px`
+const csWordBlur = `${reveal.initialBlur}px`
+const csWordEase = reveal.cssEase
 ---
 
 <section class="cs-device-hero">
   <div class="cs-device-hero-text">
-    {year && <p class="cs-device-hero-year typo-ui-caps">{year}</p>}
-    <h1 class="cs-device-hero-title typo-headline-lg">{heading}</h1>
-    {tagline && <p class="cs-device-hero-tagline typo-body-lg">{tagline}</p>}
+    {year && <p class="cs-device-hero-year cs-hero-in typo-ui-caps" style="--i: 0">{year}</p>}
+    <h1 class="cs-device-hero-title typo-headline-lg">{words.map((w, i) => <><span class="cs-hero-in" style={`--i: ${i + 1}`}>{w}</span>{i < words.length - 1 && ' '}</>)}</h1>
+    {tagline && <p class="cs-device-hero-tagline cs-hero-in typo-body-lg" style={`--i: ${words.length + 1}`}>{tagline}</p>}
   </div>
   <div class="cs-device-hero-stage">
     <DeviceScene scene={scene} label={label} />
   </div>
 </section>
 
-<style>
+<style define:vars={{ csWordDuration, csWordStagger, csWordStart, csWordSlide, csWordBlur, csWordEase }}>
+  .cs-hero-in {
+    animation: cs-hero-in var(--csWordDuration) var(--csWordEase) both;
+    animation-delay: calc(var(--csWordStart) + var(--i) * var(--csWordStagger));
+  }
+
+  .cs-device-hero-title .cs-hero-in {
+    display: inline-block;
+  }
+
+  @keyframes cs-hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--csWordSlide));
+      filter: blur(var(--csWordBlur));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs-hero-in {
+      animation: none;
+    }
+  }
+
   /* Phones: the device, then the title, like the homepage card. The top padding clears the sticky
      back button (CaseStudyLayout) */
   .cs-device-hero {
