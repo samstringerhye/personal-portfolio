@@ -1,6 +1,5 @@
 // Puts a card's DOM screens into its 3D device arrangement. The arrangements render in one shared
-// worker, each on its own OffscreenCanvas, where the browser supports it (model.worker.ts), on the
-// main thread otherwise (render.ts). This module turns the arrangement and lays each screen on its
+// worker where the browser supports it (model.worker.ts), on the main thread otherwise (render.ts). This module turns the arrangement and lays each screen on its
 // display from the matrices the renderer reports, so the page never loads three.js here.
 import { animations } from '../../data/tokens'
 import { DEVICES, viewHeightAt, type ArrangementGeometry, type DeviceName } from './shared'
@@ -11,9 +10,11 @@ interface Backend {
   geometry: ArrangementGeometry
   /** Where each display sits in the first frame */
   first: Float32Array
-  resize: (w: number, h: number, dpr: number) => void
-  /** Draws a frame, then hands back where each display sits once it's on the canvas */
-  frame: (rx: number, ry: number, lift: number, t: number, enter: number, drawn: (matrices: Float32Array) => void) => void
+  /** visible: the share of the canvas's width, from its left, inside the window */
+  resize: (w: number, h: number, dpr: number, visible: [number, number]) => void
+  /** Draws a frame, then hands back where each display sits once it's on the canvas (null when
+      no frame could be drawn) */
+  frame: (rx: number, ry: number, lift: number, t: number, enter: number, drawn: (matrices: Float32Array | null) => void) => void
   dispose: () => void
 }
 
@@ -29,13 +30,14 @@ const dprFor = (w: number, h: number) => Math.min(2, window.devicePixelRatio || 
 
 // No probe context here: creating one costs a main-thread stall. A worker without WebGL reports
 // an error and the main thread takes over
-const offscreen = () => typeof HTMLCanvasElement.prototype.transferControlToOffscreen === 'function'
+const offscreen = () => typeof OffscreenCanvas === 'function' && typeof ImageBitmapRenderingContext === 'function'
 
 // One worker for every scene, so three.js loads and parses once. Replies are routed by scene id
 let worker: Worker | null = null
 let nextId = 0
-const pending = new Map<number, { resolve: (r: { geometry: ArrangementGeometry; matrices: Float32Array }) => void; reject: (e: Error) => void }>()
-const drawnCallbacks = new Map<number, (matrices: Float32Array) => void>()
+interface Ready { geometry: ArrangementGeometry; matrices: Float32Array; frame: ImageBitmap }
+const pending = new Map<number, { resolve: (r: Ready) => void; reject: (e: Error) => void }>()
+const drawnCallbacks = new Map<number, (matrices: Float32Array | null, frame?: ImageBitmap) => void>()
 function sharedWorker(): Worker {
   if (worker) return worker
   const w = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
@@ -43,11 +45,12 @@ function sharedWorker(): Worker {
     if (e.data.type === 'drawn') {
       const done = drawnCallbacks.get(e.data.id)
       drawnCallbacks.delete(e.data.id)
-      if (e.data.matrices) done?.(e.data.matrices)
+      if (done) done(e.data.matrices ?? null, e.data.frame)
+      else e.data.frame?.close()
       return
     }
     const waiting = pending.get(e.data.id)
-    if (!waiting) return
+    if (!waiting) { e.data.frame?.close(); return }
     pending.delete(e.data.id)
     if (e.data.type === 'ready') waiting.resolve(e.data)
     else waiting.reject(new Error(e.data.message))
@@ -62,20 +65,29 @@ function sharedWorker(): Worker {
   return (worker = w)
 }
 
-async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, scene: SceneName, rest: Rest): Promise<Backend> {
-  const offscreenCanvas = canvas.transferControlToOffscreen()
+// The worker draws each frame off screen and sends it back as a bitmap with the displays' places:
+// the frame goes up on the canvas and the screens move onto it in the same task, so the browser
+// paints them together however fast the page scrolls
+async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, visible: [number, number], scene: SceneName, rest: Rest): Promise<Backend> {
   const target = sharedWorker()
   const id = nextId++
-  const { geometry, matrices } = await new Promise<{ geometry: ArrangementGeometry; matrices: Float32Array }>((resolve, reject) => {
+  const { geometry, matrices, frame } = await new Promise<Ready>((resolve, reject) => {
     pending.set(id, { resolve, reject })
-    target.postMessage({ type: 'init', id, canvas: offscreenCanvas, width: w, height: h, dpr: dprFor(w, h), scene, fov, rx: rest.pitch, ry: rest.yaw, float }, [offscreenCanvas])
+    target.postMessage({ type: 'init', id, width: w, height: h, dpr: dprFor(w, h), visible, scene, fov, rx: rest.pitch, ry: rest.yaw, float })
   })
+  const context = canvas.getContext('bitmaprenderer')!
+  const show = (bitmap: ImageBitmap) => {
+    if (canvas.width !== bitmap.width) canvas.width = bitmap.width
+    if (canvas.height !== bitmap.height) canvas.height = bitmap.height
+    context.transferFromImageBitmap(bitmap)
+  }
+  show(frame)
   return {
     geometry,
     first: matrices,
-    resize: (width, height, dpr) => target.postMessage({ type: 'resize', id, width, height, dpr }),
+    resize: (width, height, dpr, visible) => target.postMessage({ type: 'resize', id, width, height, dpr, visible }),
     frame: (rx, ry, lift, t, enter, drawn) => {
-      drawnCallbacks.set(id, drawn)
+      drawnCallbacks.set(id, (m, bitmap) => { if (bitmap) show(bitmap); drawn(m) })
       target.postMessage({ type: 'frame', id, rx, ry, lift, t, enter })
     },
     dispose: () => {
@@ -85,9 +97,9 @@ async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, sc
   }
 }
 
-async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, scene: SceneName, rest: Rest): Promise<Backend> {
+async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, visible: [number, number], scene: SceneName, rest: Rest): Promise<Backend> {
   const { createArrangementRenderer } = await import('./render')
-  const r = await createArrangementRenderer(canvas, w, h, dprFor(w, h), scene, fov, { rx: rest.pitch, ry: rest.yaw }, float)
+  const r = await createArrangementRenderer(canvas, w, h, dprFor(w, h), scene, fov, { rx: rest.pitch, ry: rest.yaw }, float, visible)
   return {
     geometry: r.geometry,
     first: r.render(rest.pitch, rest.yaw),
@@ -121,9 +133,10 @@ let tracking = false
 let lastInput = 0
 
 interface Rest { yaw: number; pitch: number }
-// The lead device sets the arrangement's rest angle; the rest of the motion is shared
-const restOf = (device: DeviceName): Rest => {
-  const own = (animations.workCards.devices as Record<string, { restYaw: number; restPitch: number }>)[device]
+type Angles = Record<string, { restYaw: number; restPitch: number }>
+// The arrangement's own rest angle, else its lead device's; the rest of the motion is shared
+const restOf = (scene: SceneName, device: DeviceName): Rest => {
+  const own = (animations.workCards.scenes as Angles)[scene] ?? (animations.workCards.devices as Angles)[device]
   return { yaw: own?.restYaw ?? tilt.restYaw, pitch: own?.restPitch ?? tilt.restPitch }
 }
 
@@ -136,25 +149,29 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     window.addEventListener('scroll', () => { lastInput = performance.now() }, { passive: true })
   }
   const arrangement = arrangementOf(scene)
-  const rest = restOf(arrangement.placements[0].device)
+  const rest = restOf(scene, arrangement.placements[0].device)
   const floats = !reduced && arrangement.placements.some(p => p.float)
 
   const stage = document.createElement('div')
   stage.className = 'stage device-scene-stage'
   art.append(stage)
   const w = stage.clientWidth, h = stage.clientHeight
-  let canvas = document.createElement('canvas')
+  // The share of the stage's width inside the window: the shadow fades out before either edge
+  const visibleOf = (): [number, number] => {
+    const r = stage.getBoundingClientRect()
+    if (!r.width) return [0, 1]
+    return [Math.max(0, -r.left) / r.width, Math.min(r.width, document.documentElement.clientWidth - r.left) / r.width]
+  }
+  const canvas = document.createElement('canvas')
   let backend: Backend
   if (offscreen()) {
     try {
-      backend = await workerBackend(canvas, w, h, scene, rest)
+      backend = await workerBackend(canvas, w, h, visibleOf(), scene, rest)
     } catch {
-      // The transfer used up that canvas
-      canvas = document.createElement('canvas')
-      backend = await mainBackend(canvas, w, h, scene, rest)
+      backend = await mainBackend(canvas, w, h, visibleOf(), scene, rest)
     }
   } else {
-    backend = await mainBackend(canvas, w, h, scene, rest)
+    backend = await mainBackend(canvas, w, h, visibleOf(), scene, rest)
   }
 
   // One perspective container behind the canvas holding every screen, each with one transform
@@ -204,7 +221,7 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     if (!nw || !nh) return
     fit(nw, nh)
     view.style.perspective = perspective(nh)
-    backend.resize(nw, nh, dprFor(nw, nh))
+    backend.resize(nw, nh, dprFor(nw, nh), visibleOf())
     drawn = null
   })
   ro.observe(stage)
@@ -295,7 +312,7 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     if (now - lastInput > 1000 && tick++ % 2) return
     drawn = state
     busy = true
-    backend.frame(rx, ry, lift, t, enter, m => { busy = false; place(m) })
+    backend.frame(rx, ry, lift, t, enter, m => { busy = false; if (m) place(m) })
   }
   const io = new IntersectionObserver(([e]) => {
     on = e.isIntersecting

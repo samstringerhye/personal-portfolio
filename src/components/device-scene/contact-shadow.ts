@@ -4,7 +4,7 @@
 // footprint (a phone's thin edge, a laptop's whole base) and follows it as the device turns.
 import {
   Group, Mesh, MeshBasicMaterial, MeshDepthMaterial, OrthographicCamera, PlaneGeometry, ShaderMaterial,
-  WebGLRenderTarget, type Scene, type WebGLRenderer,
+  Vector4, WebGLRenderTarget, type Scene, type WebGLRenderer,
 } from 'three'
 import { HorizontalBlurShader } from 'three/examples/jsm/shaders/HorizontalBlurShader.js'
 import { VerticalBlurShader } from 'three/examples/jsm/shaders/VerticalBlurShader.js'
@@ -27,7 +27,21 @@ export function contactShadow(span: number, height: number, reach = REACH) {
 
   // Facing up; the texture's y is flipped
   const geometry = new PlaneGeometry(span, span).rotateX(Math.PI / 2)
-  const plane = new Mesh(geometry, new MeshBasicMaterial({ map: target.texture, transparent: true, opacity: OPACITY, depthWrite: false }))
+  const material = new MeshBasicMaterial({ map: target.texture, transparent: true, opacity: OPACITY, depthWrite: false })
+  // Fades out toward the canvas's edges (drawing buffer px), so the canvas never cuts it off
+  const clipRect = { value: new Vector4(0, 0, 1e5, 1e5) }
+  const clipFade = { value: 1 }
+  material.onBeforeCompile = shader => {
+    shader.uniforms.clipRect = clipRect
+    shader.uniforms.clipFade = clipFade
+    shader.fragmentShader = `uniform vec4 clipRect;\nuniform float clipFade;\n${shader.fragmentShader.replace(
+      '#include <alphamap_fragment>',
+      `#include <alphamap_fragment>
+\tvec2 edge = min( gl_FragCoord.xy - clipRect.xy, clipRect.zw - gl_FragCoord.xy );
+\tdiffuseColor.a *= smoothstep( 0.0, clipFade, edge.x ) * smoothstep( 0.0, clipFade, edge.y );`,
+    )}`
+  }
+  const plane = new Mesh(geometry, material)
   plane.scale.y = -1
   plane.renderOrder = -1
   group.add(plane)
@@ -91,15 +105,21 @@ export function contactShadow(span: number, height: number, reach = REACH) {
     plane.visible = true
   }
 
+  /** The canvas's edges the shadow fades out before, and over how far (drawing buffer px, y up) */
+  const clip = (x0: number, y0: number, x1: number, y1: number, fade: number) => {
+    clipRect.value.set(x0, y0, x1, y1)
+    clipFade.value = Math.max(1, fade)
+  }
+
   const dispose = () => {
     target.dispose()
     blurTarget.dispose()
     geometry.dispose()
-    ;(plane.material as MeshBasicMaterial).dispose()
+    material.dispose()
     depth.dispose()
     hBlur.dispose()
     vBlur.dispose()
   }
 
-  return { group, update, dispose }
+  return { group, update, clip, dispose }
 }

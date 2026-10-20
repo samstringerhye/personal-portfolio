@@ -62,6 +62,9 @@ const arrangement = arrangementOf(scene)
   .device-scene .home-icon::before { content: ''; background: #FFFFFF; -webkit-mask: url(/logos/whataburger.svg) center / 66% no-repeat; mask: url(/logos/whataburger.svg) center / 66% no-repeat; }
   .device-scene:not(.is-3d) .home { width: auto; height: 80%; border-radius: 13cqw; box-shadow: 0 0 0 2.4cqw #111; overflow: hidden; }
   .device-scene .home-label { font: 500 4.4cqw/1 var(--font-sans); color: #0B0D1B; }
+  /* The case study's image rule (max-height 100vh, a page background) would cut the tours' long pages
+     short and fill the status bars' transparent overlays: not for the screens */
+  html .device-scene img { max-height: none; background: none; }
   .device-scene .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .device-scene .shot .tap { position: absolute; width: 3.6cqw; aspect-ratio: 1; border-radius: 50%; background: rgba(11, 15, 26, .28); box-shadow: 0 0 0 .3cqw rgba(255, 255, 255, .7); translate: -50% -50%; opacity: 0; }
   /* Black behind the screen, a little past its edges: where the display's cut runs wider than the

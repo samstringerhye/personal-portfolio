@@ -260,6 +260,20 @@
         "restPitch": 0.08
       }
     },
+    "scenes": {
+      "myfrontier": {
+        "restYaw": -0.1,
+        "restPitch": 0.06
+      },
+      "whataburger": {
+        "restYaw": -0.2,
+        "restPitch": 0.06
+      },
+      "samsung": {
+        "restYaw": -0.28,
+        "restPitch": 0.08
+      }
+    },
     "float": {
       "bob": 0.004,
       "period": 4.6,

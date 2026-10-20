@@ -20,6 +20,18 @@ import { grade } from './grade'
 // How far a held arrangement rises off the floor, as a share of its height
 const LIFT = 0.05
 
+// Three-point lighting: a warm key high on the left, a cool fill low on the right at a quarter of
+// its strength, and a rim behind on the right that traces the frames' edges. The environment is
+// turned down to let them read
+const LIGHTS: { color: number; power: number; at: [number, number, number] }[] = [
+  { color: 0xffe2c6, power: 1.7, at: [-7, 8, 10] },
+  { color: 0xcfdcff, power: 0.45, at: [9, 1, 7] },
+  { color: 0xf4f7ff, power: 2.4, at: [5, 6, -10] },
+]
+const ENVIRONMENT = 0.75
+// The shadow fades out over this share of the canvas's width before any edge of it that shows
+const SHADOW_EDGE = 0.14
+
 /** Floating devices: bob height (m) and period (s), the lean that goes with it (rad), and how far
     below its place a device starts before it drifts up as the card scrolls in (m) */
 export interface FloatMotion { bob: number; period: number; wobble: number; drift: number }
@@ -36,20 +48,23 @@ class WebPTextures {
   }
 }
 
-/** Readies a model's materials for the site and returns its display meshes, now holes */
-function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures: Set<Texture>, hole: MeshBasicMaterial): Mesh[] {
+/** Readies a model's materials for the site and returns its display meshes, now holes. color is the
+    placement's own finish, over the device's */
+function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures: Set<Texture>, hole: MeshBasicMaterial, color: Record<string, string> = {}): Mesh[] {
   const displays: Mesh[] = []
   model.traverse(o => {
     const mesh = o as Mesh
     if (!mesh.isMesh) return
-    const mat = mesh.material as MeshPhysicalMaterial
+    let mat = mesh.material as MeshPhysicalMaterial
+    // A repeated model shares its materials with the first copy: a copy in its own color gets its own
+    if (color[mat.name]) mesh.material = mat = mat.clone()
     if (mat.name === spec.display) displays.push(mesh)
     if (spec.hide?.includes(mat.name) || spec.hide?.includes(mesh.name)) mesh.visible = false
     // Transmission renders the whole scene a second time each frame, and through the cover glass
     // it shows the device's insides; reflections are enough at this size
     if ('transmission' in mat) mat.transmission = 0
     if (spec.glass.includes(mat.name)) { mat.transparent = true; mat.opacity = 0.06; mesh.renderOrder = 2 }
-    const paint = spec.finish?.[mat.name]
+    const paint = color[mat.name] ?? spec.finish?.[mat.name]
     if (paint) { mat.map = null; mat.color.set(paint); mat.needsUpdate = true }
     // Invert the texture's brightness in the shader, color dropped: light keys with dark legends
     // become dark keys with light legends, like a silver MacBook's
@@ -68,7 +83,7 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
 
 export async function createArrangementRenderer(
   canvas: HTMLCanvasElement | OffscreenCanvas, width: number, height: number, dpr: number,
-  name: SceneName, fov: number, rest: { rx: number; ry: number }, float: FloatMotion,
+  name: SceneName, fov: number, rest: { rx: number; ry: number }, float: FloatMotion, visible: [number, number] = [0, 1],
 ) {
   const arrangement = arrangementOf(name)
   const placements = arrangement.placements
@@ -93,12 +108,15 @@ export async function createArrangementRenderer(
 
   const scene = new Scene()
   const pmrem = new PMREMGenerator(gl)
-  // Lit mostly by the studio's softboxes (studio.ts); a soft key adds direction to the shading
+  // The studio's softboxes (studio.ts) give the reflections; three lights, fixed to the camera,
+  // shape the devices as they turn
   scene.environment = pmrem.fromScene(studioScene(), 0.02).texture
-  scene.environmentIntensity = 1
-  const key = new DirectionalLight(0xffffff, 0.8)
-  key.position.set(-6, 9, 12)
-  scene.add(key)
+  scene.environmentIntensity = ENVIRONMENT
+  for (const l of LIGHTS) {
+    const light = new DirectionalLight(l.color, l.power)
+    light.position.set(...l.at)
+    scene.add(light)
+  }
 
   // The arrangement turns in two steps, the same rotation as Euler (rx, ry): it spins (ry) on a
   // floor that tilts toward the camera (rx), so the shadow stays on the floor while it spins
@@ -117,7 +135,7 @@ export async function createArrangementRenderer(
   const places: Group[] = []
   placements.forEach((p, i) => {
     const spec = DEVICES[p.device]
-    const displays = prepare(models[i], spec, p.device, textures, hole)
+    const displays = prepare(models[i], spec, p.device, textures, hole, p.finish)
     // Face the display to the camera (+z): flip it if the file has it facing away, stand it
     // upright if it leans, then roll
     const flip = new Group()
@@ -195,10 +213,13 @@ export async function createArrangementRenderer(
   }
   const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
-  const resize = (w: number, h: number, ratio = dpr) => {
+  // visible: the share of the canvas's width, from its left, the window shows ([0, 1] for all of it)
+  const resize = (w: number, h: number, ratio = dpr, visible: [number, number] = [0, 1]) => {
     if (!w || !h) return
     gl.setPixelRatio(ratio)
     gl.setSize(w, h, false)
+    const pw = w * ratio, ph = h * ratio
+    shadow.clip(visible[0] * pw, 0, visible[1] * pw, ph, SHADOW_EDGE * pw)
     const vh = viewHeightAt(geometry, w, h)
     const distance = (vh / 2) / tan
     camera.position.z = distance
@@ -210,7 +231,7 @@ export async function createArrangementRenderer(
     camera.setViewOffset(w, h, geometry.center[0] * s, -geometry.center[1] * s, w, h)
     camera.updateProjectionMatrix()
   }
-  resize(width, height)
+  resize(width, height, dpr, visible)
 
   // Compile and upload before the first visible frame
   await gl.compileAsync(scene, camera)
@@ -248,7 +269,11 @@ export async function createArrangementRenderer(
     scene.environment?.dispose()
     shadow.dispose()
     pmrem.dispose()
+    // Give the context back now, not at garbage collection: the browser caps live contexts and
+    // drops the oldest, which may be a scene still on screen
+    const context = gl.getContext()
     gl.dispose()
+    context.getExtension('WEBGL_lose_context')?.loseContext()
   }
   return { geometry, resize, render, dispose }
 }

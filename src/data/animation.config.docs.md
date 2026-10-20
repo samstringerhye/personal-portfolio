@@ -88,8 +88,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `hero.canvas.pointer.stiffness` / `damping` | 0–1 | `0.06` / `0.8` | A spring, not an ease: the push trails the pointer, overshoots a touch and settles, and swells in and out the same way as the pointer enters and leaves |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
-| `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices can override it in `workCards.devices` |
-| `workCards.phone.restPitch` | radians | `0.06` | 3D device's tilt at rest; devices can override it in `workCards.devices` |
+| `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices and arrangements can override it in `workCards.devices` and `workCards.scenes` |
+| `workCards.phone.restPitch` | radians | `0.06` | 3D device's tilt at rest; devices and arrangements can override it in `workCards.devices` and `workCards.scenes` |
 | `workCards.phone.dragYaw` / `dragPitch` | radians | `3` / `1.2` | Turn and tilt for a drag across the full width and height of the device's box (devices don't follow the pointer; they turn when dragged) |
 | `workCards.phone.dragPitchLimit` | radians | `0.6` | Furthest a drag tilts the device from its rest, either way |
 | `workCards.phone.dragReturn` | 0–1 | `0.05` | Share of the way back to rest covered each frame after a drag (reduced motion snaps back) |
@@ -100,6 +100,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame while scrolling (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
 | `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.scenes.<scene>.restYaw` / `restPitch` | radians | see below | Rest angle per arrangement, over its lead device's: MyFrontier `-0.1` / `0.06` (the fan faces the camera), Whataburger `-0.2` / `0.06`, Samsung.com `-0.28` / `0.08` |
 | `workCards.float.bob` / `period` / `wobble` | m / s / rad | `0.004` / `4.6` / `0.025` | Floating devices in the arrangements bob this high, this slowly, leaning a touch as they go |
 | `workCards.float.drift` | m | `0.06` | A floating device starts this far below its place and drifts up as its card scrolls in |
 | `workCards.float.enterFrom` / `enterTo` | share of viewport | `0.95` / `0.45` | The drift runs while the card's center moves from near the bottom of the viewport to just above its middle (reduced motion: in place, no bob) |

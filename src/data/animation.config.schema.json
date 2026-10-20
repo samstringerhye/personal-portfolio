@@ -329,6 +329,18 @@
             "additionalProperties": false
           }
         },
+        "scenes": {
+          "type": "object",
+          "description": "Rest angle per arrangement (device-scene/arrangements.ts), in radians; overrides its lead device's",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "restYaw": { "type": "number" },
+              "restPitch": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
         "float": {
           "type": "object",
           "description": "Floating devices in the arrangements (device-scene/arrangements.ts): their bob, and how they drift up into place as the card scrolls in",

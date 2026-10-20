@@ -18,6 +18,8 @@ const SOFTBOXES: Softbox[] = [
   // Strips to either side: the thin edge highlights that show a device's outline
   { w: 1.6, h: 10, at: [9, 1, 2], power: 3.5, tint: COOL },
   { w: 1.6, h: 10, at: [-9, 1, -3], power: 2.5, tint: WARM },
+  // Behind on the right, the rim light's box: a bright line along the far edges
+  { w: 3, h: 10, at: [6, 3, -9], power: 5, tint: NEUTRAL },
   // A low bounce in front, the kind a white sweep gives
   { w: 14, h: 3, at: [0, -3, 9], power: 1.4, tint: WARM },
 ]

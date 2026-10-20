@@ -42,9 +42,15 @@ const screens = {
     width: 720,
     shots: { home: ['amica-design-system/prototype/home-mobile.png'] },
   },
+  // The phone in the case study's lead image, on the homepage's Galaxy S20 hero. A small source,
+  // so it's sized for the phone's screen at 1.5x rather than 2x
   'samsung-mobile': {
+    width: 540,
+    shots: { home: ['samsung-redesign/samsung-redesign-carousel.jpeg', { left: 592, top: 446, width: 256, height: 548 }] },
+  },
+  'bespoke-mobile': {
     width: 720,
-    shots: { menu: ['samsung-redesign/samsung-section-3-gnb-desktop.jpg', { left: 700, top: 420, width: 800, height: 1714 }] },
+    shots: { depth: ['bespoke-design-studio/mobile-06.png', { left: 18, top: 0, width: 2463, height: 5278 }] },
   },
   bespoke: {
     width: 1200,

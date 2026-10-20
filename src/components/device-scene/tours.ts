@@ -60,7 +60,8 @@ export const TOURS = {
   // The phones beside them, each on one published mobile screen
   'cvs-mobile': { shots: { home: 720 / 1606 }, steps: [] },
   'amica-mobile': { shots: { home: 720 / 1561 }, steps: [] },
-  'samsung-mobile': { shots: { menu: 720 / 1543 }, steps: [] },
+  'samsung-mobile': { shots: { home: 540 / 1156 }, steps: [] },
+  'bespoke-mobile': { shots: { depth: 720 / 1543 }, steps: [] },
 } satisfies Record<string, Tour>
 export type TourName = keyof typeof TOURS
 
