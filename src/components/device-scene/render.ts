@@ -207,6 +207,9 @@ export async function createArrangementRenderer(
   placements.forEach((p, i) => {
     const spec = DEVICES[p.device]
     const displays = prepare(models[i], spec, p.device, textures, hole, p.finish)
+    // Full anisotropic filtering: a laptop's keyboard sits at a steep angle to the camera, where
+    // plain mipmapping blurs the key legends
+    textures.forEach(t => { t.anisotropy = gl.capabilities.getMaxAnisotropy() })
     // Face the display to the camera (+z): flip it if the file has it facing away, stand it
     // upright if it leans, then roll
     const flip = new Group()

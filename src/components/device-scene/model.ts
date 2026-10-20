@@ -23,9 +23,10 @@ const float: FloatMotion & { enterFrom: number; enterTo: number } = animations.w
 // Vertical field of view of a lens of this focal length on a full-frame (24mm tall) sensor
 const fov = 2 * Math.atan(12 / tilt.lensMm) * 180 / Math.PI
 const perspective = (h: number) => `${(h / 2) / Math.tan((fov / 2) * Math.PI / 180)}px`
-// Up to 2x on retina screens, within a pixel budget: a full-row canvas at 2x is ~6M pixels a frame,
-// so large canvases settle near 1.3x while smaller ones get the full 2x
-const MAX_PIXELS = 3.2e6
+// Up to 2x on retina screens, within a pixel budget. A full-row canvas at 2x is ~6M pixels a frame;
+// at a lower budget it settled near 1.4x and the browser scaled it up, which read as soft edges and
+// stair-stepping. Only the cards on screen render, one or two at a time
+const MAX_PIXELS = 6.4e6
 const dprFor = (w: number, h: number, [l, t, r, b]: Bleed) => Math.min(2, window.devicePixelRatio || 1, Math.sqrt(MAX_PIXELS / Math.max(1, (w + l + r) * (h + t + b))))
 // How far the canvas runs past the stage, as shares of its size, so the shadow is never cut off:
 // sideways up to the window's edges, and further down than up, where the shadow falls
