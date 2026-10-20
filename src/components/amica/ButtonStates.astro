@@ -1,0 +1,248 @@
+---
+/**
+ * Amica's buttons and icon buttons, rebuilt from the design system's Figma documentation: four types
+ * (Primary, Primary Alternative, Secondary, Tertiary) at three sizes, on light and dark surfaces,
+ * stepping through the five supported states. The demo buttons are drawn, not controls; only the
+ * state tabs are interactive.
+ */
+import { animations } from '../../data/tokens'
+
+const { hold, transition } = animations.caseStudy.buttonStates
+const STATES = ['Default', 'Hover', 'Pressed', 'Focused', 'Disabled'] as const
+const TYPES = [
+  { key: 'primary', label: 'Get a quote' },
+  { key: 'alt', label: 'Log in' },
+  { key: 'secondary', label: 'Explore coverage' },
+  { key: 'tertiary', label: 'Saved quote' },
+] as const
+const SIZES = ['l', 'm', 's'] as const
+const plus = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
+---
+
+<figure class="amica-buttons" data-amica-buttons data-hold={hold} style={`--ab-t: ${transition}s`}>
+  <div class="ab-card">
+    <div class="ab-tabs" role="group" aria-label="Button state">
+      {STATES.map((s, i) => <button type="button" class="ab-tab" data-state={s.toLowerCase()} aria-pressed={i === 0 ? 'true' : 'false'}>{s}</button>)}
+    </div>
+    <div class="ab-stage" data-state="default" aria-hidden="true">
+      {(['light', 'dark'] as const).map(surface => (
+        <div class={`ab-surface ab-surface--${surface}`}>
+          {SIZES.map(size => (
+            <div class="ab-row">
+              {TYPES.map(t => <span class={`ab-btn ab-btn--${t.key} ab-btn--${size}`}>{t.label}</span>)}
+            </div>
+          ))}
+          <div class="ab-row ab-row--icons">
+            {TYPES.map(t => <span class={`ab-btn ab-icon ab-btn--${t.key} ab-icon--l`} set:html={plus} />)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  <figcaption>Buttons and icon buttons from the Amica system: four types, three sizes, light and dark surfaces, cycling through the five states the documentation specifies</figcaption>
+</figure>
+
+<style>
+  .amica-buttons {
+    --teal: #00a88f;
+    --forest: #003d33;
+    --mint: #d6fcf5;
+    --ink: #001512;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+  }
+
+  .ab-card {
+    overflow: hidden;
+    border-radius: var(--ek-window-radius, 24px);
+    background: var(--ek-card, #f2f3f5);
+  }
+
+  .ab-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .ab-tab {
+    padding: 0.4em 0.9em;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: none;
+    color: var(--ek-ink-body, #34475c);
+    font: inherit;
+    font-size: var(--text-75);
+    cursor: pointer;
+  }
+
+  .ab-tab[aria-pressed='true'] {
+    border-color: var(--color-text-primary);
+    background: #fff;
+    color: var(--color-text-primary);
+  }
+
+  .ab-tab:focus-visible {
+    outline: 2px solid var(--color-text-primary);
+    outline-offset: 2px;
+  }
+
+  .ab-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: 'Apercu Pro', var(--font-sans, system-ui), sans-serif;
+  }
+
+  .ab-surface {
+    --on: var(--forest);
+    --ring: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(10px, 1.2vw, 18px);
+    padding: clamp(16px, 2.4vw, 36px);
+    background: #fff;
+  }
+
+  .ab-surface--dark {
+    --on: #fff;
+    --ring: #fff;
+    background: var(--forest);
+  }
+
+  .ab-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: clamp(6px, 0.8vw, 12px);
+  }
+
+  .ab-row--icons {
+    gap: clamp(6px, 0.8vw, 12px);
+    margin-top: clamp(4px, 0.6vw, 8px);
+  }
+
+  /* The documented sizes, scaled to the card: Large 56, Medium 48, Small 40 */
+  .ab-btn {
+    --h: 40px;
+    display: inline-flex;
+    align-items: center;
+    height: calc(var(--h) * var(--k, 0.62));
+    padding: 0 calc(var(--h) * var(--k, 0.62) * 0.32);
+    border: 1px solid transparent;
+    border-radius: calc(var(--r, 8px) * var(--k, 0.62));
+    font-size: calc(var(--fs, 15px) * var(--k, 0.62));
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color var(--ab-t) ease, color var(--ab-t) ease, border-color var(--ab-t) ease,
+      box-shadow var(--ab-t) ease, opacity var(--ab-t) ease, text-decoration-thickness var(--ab-t) ease;
+  }
+
+  .ab-btn--l { --h: 56px; --r: 12px; --fs: 18px; }
+  .ab-btn--m { --h: 48px; --r: 8px; --fs: 16px; }
+  .ab-btn--s { --h: 40px; --r: 8px; --fs: 14px; }
+
+  .ab-btn.ab-icon {
+    display: inline-grid;
+    place-items: center;
+    width: calc(var(--d) * var(--k, 0.62));
+    height: calc(var(--d) * var(--k, 0.62));
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .ab-icon--l { --d: 56px; }
+
+  .ab-icon :global(svg) {
+    width: 50%;
+    height: 50%;
+  }
+
+  @media (min-width: 64.0625rem) {
+    .amica-buttons { --k: 0.66; }
+  }
+
+  /* Types */
+  .ab-btn--primary { background: var(--teal); color: var(--ink); }
+  .ab-btn--alt { background: var(--forest); color: #fff; }
+  .ab-surface--dark .ab-btn--alt { background: #fff; color: var(--ink); }
+  .ab-btn--secondary { background: transparent; border-color: var(--on); color: var(--on); }
+  .ab-btn--tertiary {
+    padding-inline: 0;
+    background: transparent;
+    color: var(--on);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+
+  .ab-icon.ab-btn--tertiary { text-decoration: none; }
+
+  /* Hover: a darker overlay on fills, a light fill on Secondary, a thicker underline on Tertiary */
+  [data-state='hover'] .ab-btn--primary { background: color-mix(in srgb, var(--teal), var(--ink) 18%); }
+  [data-state='hover'] .ab-btn--alt { background: color-mix(in srgb, var(--forest), #fff 14%); }
+  [data-state='hover'] .ab-surface--dark .ab-btn--alt { background: color-mix(in srgb, #fff, var(--teal) 18%); }
+  [data-state='hover'] .ab-btn--secondary { background: color-mix(in srgb, var(--teal) 18%, transparent); }
+  [data-state='hover'] .ab-btn--tertiary { text-decoration-thickness: 2px; }
+  [data-state='hover'] .ab-icon.ab-btn--tertiary { background: color-mix(in srgb, var(--teal) 18%, transparent); }
+
+  /* Pressed: a stronger overlay */
+  [data-state='pressed'] .ab-btn--primary { background: color-mix(in srgb, var(--teal), var(--ink) 32%); }
+  [data-state='pressed'] .ab-btn--alt { background: color-mix(in srgb, var(--forest), #fff 24%); }
+  [data-state='pressed'] .ab-surface--dark .ab-btn--alt { background: color-mix(in srgb, #fff, var(--teal) 32%); }
+  [data-state='pressed'] .ab-btn--secondary { background: color-mix(in srgb, var(--teal) 34%, transparent); }
+  [data-state='pressed'] .ab-btn--tertiary { color: var(--teal); text-decoration-thickness: 2px; }
+  [data-state='pressed'] .ab-icon.ab-btn--tertiary { background: color-mix(in srgb, var(--teal) 34%, transparent); }
+
+  /* Focused: the default look with a ring outside it */
+  [data-state='focused'] .ab-btn { box-shadow: 0 0 0 2px var(--surface-bg, #fff), 0 0 0 4px var(--ring); }
+  [data-state='focused'] .ab-surface--dark .ab-btn { box-shadow: 0 0 0 2px var(--forest), 0 0 0 4px var(--ring); }
+
+  /* Disabled: 40% opacity */
+  [data-state='disabled'] .ab-btn { opacity: 0.4; }
+
+  @media (max-width: 48rem) {
+    .ab-stage { grid-template-columns: 1fr; }
+    .ab-row { flex-wrap: wrap; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ab-btn { transition: none; }
+  }
+</style>
+
+<script>
+  // Steps through the states while the card is on screen; a tab click takes over and stops the steps
+  function initButtonStates() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    document.querySelectorAll<HTMLElement>('[data-amica-buttons]').forEach(root => {
+      if (root.dataset.bound) return
+      root.dataset.bound = 'true'
+      const stage = root.querySelector<HTMLElement>('.ab-stage')!
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('.ab-tab')]
+      const hold = Number(root.dataset.hold) * 1000
+      let index = 0
+      let timer: number | undefined
+      let manual = false
+
+      const show = (i: number) => {
+        index = i
+        stage.dataset.state = tabs[i].dataset.state!
+        tabs.forEach((t, j) => t.setAttribute('aria-pressed', String(j === i)))
+      }
+      const stop = () => { window.clearInterval(timer); timer = undefined }
+      const play = () => {
+        if (reduced || manual || timer) return
+        timer = window.setInterval(() => show((index + 1) % tabs.length), hold)
+      }
+
+      tabs.forEach((tab, i) => tab.addEventListener('click', () => { manual = true; stop(); show(i) }))
+      new IntersectionObserver(([entry]) => (entry.isIntersecting ? play() : stop()), { threshold: 0.4 }).observe(root)
+    })
+  }
+
+  initButtonStates()
+  document.addEventListener('astro:page-load', initButtonStates)
+</script>

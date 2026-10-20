@@ -199,6 +199,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `heroPhoneScroll.phonesAt` | `0.25` | When the side phones start |
 | `heroPhoneScroll.phoneFade` / `phoneSlide` / `phoneStagger` | `0.08` / `0.7` / `0.18` | Side phones fading and sliding in, one after another |
 | `heroPhoneScroll.scrollAt` | `0.4` | When the endless scroll starts |
+| `buttonStates.hold` | `1.6` | How long the Amica button card shows each state (Default, Hover, Pressed, Focused, Disabled) before the next, while it plays on its own |
+| `buttonStates.transition` | `0.25` | Buttons easing between states |
 | `decisionStepper.hold` | `3.5` | How long each step of the Bespoke decision stepper shows before the next, while it plays on its own |
 | `decisionStepper.fade` | `0.3` | Step image fading in |
 
