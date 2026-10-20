@@ -440,10 +440,10 @@ html.ek .work-list {
   padding-top: 0;
 }
 
-/* Each project fills the viewport under the nav: a page margin above and below, the caption under
-   the art, and the art taking whatever height the caption leaves */
+/* Each project fills the viewport under the nav: the caption under the art, and the art taking
+   whatever height the caption leaves. No padding: the list's gap spaces the projects */
 html.ek .work-list-item {
-  padding-block: var(--page-margin);
+  padding-block: 0;
 }
 
 html.ek .work-list-item + .work-list-item {

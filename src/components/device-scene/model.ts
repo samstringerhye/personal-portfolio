@@ -248,8 +248,7 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   let tick = 0
 
   // The devices don't follow the pointer; the arrangement turns as one when dragged. The grab area
-  // is the card's own box (the scene bleeds past it, over the caption), and a vertical swipe still
-  // scrolls the page
+  // is the whole scene, and a vertical swipe still scrolls the page
   const grab = document.createElement('div')
   grab.className = 'device-scene-grab'
   art.append(grab)

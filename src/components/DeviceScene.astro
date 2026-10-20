@@ -42,7 +42,7 @@ const arrangement = arrangementOf(scene)
   /* Scroll parallax (model.ts): the device (with its shadow) drifts against the page */
   .device-scene .stage, .device-scene .floor { transform: translateY(var(--parallax, 0px)); }
   /* The device's own box (the scene runs 10% past it on every side), where it can be dragged round */
-  .device-scene-grab { position: absolute; inset: calc(100% / 12); pointer-events: auto; cursor: grab; touch-action: pan-y; }
+  .device-scene-grab { position: absolute; inset: 0; pointer-events: auto; cursor: grab; touch-action: pan-y; }
   .device-scene-grab.is-dragging { cursor: grabbing; }
   .device-scene .stage canvas { width: 100%; height: 100%; }
   .device-scene-view { overflow: hidden; }
