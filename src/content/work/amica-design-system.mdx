@@ -30,7 +30,6 @@ import Metrics from '../../components/Metrics.astro'
 import TokenTiers from '../../components/amica/TokenTiers.astro'
 import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
 import StatCallout from '../../components/amica/StatCallout.astro'
-import BenchmarkChart from '../../components/amica/BenchmarkChart.astro'
 import HeroMosaic from '../../components/amica/HeroMosaic.astro'
 import EmbeddedPrototype from '../../components/amica/EmbeddedPrototype.astro'
 import BrowserFrame from '../../components/amica/BrowserFrame.astro'
@@ -82,24 +81,6 @@ Primitives sit hidden from pickers, and 54 semantic tokens name what you're pain
 <TokenTiers />
 
 <ButtonStates />
-
-<ProseGroup>
-
-### Benchmarked against 14 systems.
-
-I indexed 14 production design systems, 1.4 million nodes, into the same database. Amica nested deepest of the seven I could measure, which made shallow nesting a hard constraint.
-
-</ProseGroup>
-
-<BenchmarkChart />
-
-<ProseGroup>
-
-### A verified migration.
-
-A pipeline I built with Claude Code fixed references alongside the sprints, every write gated by a visual diff. 97% of 941 instance fixes cascaded cleanly. The full story is in [Indexing a Design System](/blog/indexing-a-design-system).
-
-</ProseGroup>
 
 <BeforeAfterStats
   label='Amica design system before and after comparison'
