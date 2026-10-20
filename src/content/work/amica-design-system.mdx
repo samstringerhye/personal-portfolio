@@ -52,7 +52,7 @@ import quoteFlyoutNotAvailableSrc from '../../assets/work/amica-design-system/pr
 
 ## The Problem
 
-I joined four sprints into a rescue: leadership had been split between two people both leading and executing at once, so decisions sat unmade while the work kept piling up. The library was broken in ways no screenshot showed: components filed by page type, color hardcoded instead of bound, instances pointing at masters that no longer existed. So I indexed all 314,000 nodes into a queryable database. The first pass flagged nearly everything as broken, until I separated genuine off-library references from normal nested parts, which dropped the real number to 3,044 flat references and 61 dead masters. The components themselves were sound, so I re-architected the foundation instead of redesigning them.
+I joined four sprints into a rescue. Two people had been leading and executing at once, so decisions sat unmade. The library was broken in ways no screenshot showed: components filed by page type, hardcoded color, instances pointing at deleted masters. I indexed all 314,000 nodes into a database and found 3,044 flat references and 61 dead masters. The components were sound, so I re-architected the foundation instead of redesigning them.
 
 </ProseGroup>
 
@@ -112,7 +112,7 @@ To test my instincts, I indexed 14 production design systems into the same datab
 
 ## Leading Six Designers Through It
 
-I led by evidence, not seniority. When the brand guide's 100% line height broke on real content, I backed the designer who flagged it and we won the change on accessibility grounds. When a zip-code editor got added to scope after kickoff with no notice to design, I escalated it into a named scope-authority decision instead of letting it slide. When a full-component review collapsed in one room, I read it as a format failure and swapped broad reviews for small alignments. A credentialed accessibility reviewer on the client side pushed back hard more than once, and every push forced a system-level fix.
+I led by evidence, not seniority. When the brand guide's 100% line height broke on real content, I backed the designer who flagged it, and we won the change on accessibility grounds. When a zip-code editor joined the scope after kickoff, I escalated it into a named scope decision. When a full-component review collapsed, I swapped broad reviews for small alignments. Every push from the client's accessibility reviewer forced a system-level fix.
 
 </ProseGroup>
 
@@ -120,7 +120,7 @@ I led by evidence, not seniority. When the brand guide's 100% line height broke 
 
 ## The Migration
 
-Fixing 3,044 references and 61 masters by hand would have pulled the team off sprint work for weeks. I built an indexing and remediation pipeline with Claude Code: atoms before composites, masters before instances, every write gated by a before-and-after visual diff and verified through a separate read channel, never the one that made the write. It ran alongside the team's sprints. Across two verified rounds, 97% of 941 instance fixes cascaded cleanly, and after I extended the token scale, all 7,362 padding bindings resolved to tokens. The full tooling story is a companion post, [Indexing a Design System](/blog/indexing-a-design-system).
+Fixing 3,044 references and 61 masters by hand would have cost the team weeks of sprint work. I built a remediation pipeline with Claude Code that ran alongside the sprints: atoms before composites, masters before instances, every write gated by a visual diff and verified through a separate read channel. Across two rounds, 97% of 941 instance fixes cascaded cleanly, and all 7,362 padding bindings resolved to tokens. The full story is in [Indexing a Design System](/blog/indexing-a-design-system).
 
 </ProseGroup>
 
