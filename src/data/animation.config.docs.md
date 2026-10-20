@@ -170,10 +170,14 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|
-| `icons.float` | `10` | How far, in px, each 3D icon around the headshot bobs up and down |
+| `icons.float` | `10` | How far, in px, each 3D model around the headshot bobs up and down (about-icons.ts) |
 | `icons.tilt` | `6` | How far, in degrees, each icon rocks as it floats |
 | `icons.duration` | `3.6` | One float cycle |
 | `icons.stagger` | `0.45` | Offset between icons, so they don't move in step |
+| `icons.turn` | `0.6` | How far, in radians, each 3D model turns either way, so it reads as an object |
+| `icons.turnDuration` | `9` | One full turn back and forth |
+| `icons.follow` | `0.35` | How far, in radians, the models lean toward the cursor |
+| `icons.followEase` | `0.08` | Share of the way to the cursor lean the models cover each frame |
 
 ## caseStudy (Amica and Whataburger diagrams, Bespoke stepper)
 

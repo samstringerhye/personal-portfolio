@@ -245,6 +245,21 @@ html.ek .about-icons {
   pointer-events: none;
 }
 
+/* The 3D models' canvas runs 20% past the photo's box on every side (about-icons.ts); once they're
+   in, the flat icons step aside */
+html.ek .about-icons-3d {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  max-width: none;
+  pointer-events: none;
+}
+
+html.ek .about-orbit.is-3d .about-icons {
+  visibility: hidden;
+}
+
 html.ek .about-icon {
   position: absolute;
   aspect-ratio: 1;

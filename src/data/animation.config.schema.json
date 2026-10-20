@@ -278,9 +278,13 @@
             "float": { "type": "number", "minimum": 0, "description": "Bob distance, px" },
             "tilt": { "type": "number", "minimum": 0, "description": "Rock angle, degrees" },
             "duration": { "$ref": "#/definitions/duration" },
-            "stagger": { "$ref": "#/definitions/duration" }
+            "stagger": { "$ref": "#/definitions/duration" },
+            "turn": { "type": "number", "minimum": 0, "description": "How far each model turns either way, radians" },
+            "turnDuration": { "$ref": "#/definitions/duration" },
+            "follow": { "type": "number", "minimum": 0, "description": "How far the models lean toward the cursor, radians" },
+            "followEase": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the way to the cursor lean covered each frame" }
           },
-          "required": ["float", "tilt", "duration", "stagger"],
+          "required": ["float", "tilt", "duration", "stagger", "turn", "turnDuration", "follow", "followEase"],
           "additionalProperties": false
         }
       },
