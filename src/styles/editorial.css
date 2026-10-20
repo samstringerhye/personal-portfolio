@@ -269,8 +269,9 @@ html.ek .about-page .skill-desc {
     padding-left: var(--grid-gutter);
   }
 
+  /* Every row on the homepage's 4 and 8 of 12: the heading pinned in 4, the content in 8 */
   html.ek :is(.about-skills-heading, .about-row-body) {
-    grid-column: 1 / 7;
+    grid-column: 1 / 5;
     align-self: start;
     position: sticky;
     top: calc(var(--nav-height) + var(--space-4));
@@ -278,7 +279,7 @@ html.ek .about-page .skill-desc {
   }
 
   html.ek :is(.about-page .skill-grid, .about-logos-wrap) {
-    grid-column: 7 / -1;
+    grid-column: 5 / -1;
   }
 
   html.ek .about-logos-wrap {

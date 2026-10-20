@@ -1,6 +1,6 @@
-// The Whataburger card: the app's icon on an iPhone home screen. The app itself is under NDA, so the
-// card shows no more than the icon, built from the logo the site already publishes. The apps around
-// it are generic (a color and a simple glyph each, no real brands), there to make it a home screen.
+// The Whataburger card: the app's icon on two iPhones, a home screen and Spotlight search. The app
+// itself is under NDA, so the card shows no more than the icon, built from the logo the site already
+// publishes. The apps around it are generic (a color and a simple glyph each, no real brands).
 import { DEVICES } from './shared'
 import { statusIcons } from './status-icons'
 
@@ -22,8 +22,6 @@ const G = {
 } as const
 type Glyph = keyof typeof G
 
-// Each app's own color, toned down to frosted glass on the screen (DeviceScene.astro) so the orange
-// icon is the one the eye lands on
 const APPS: ([string, Glyph, string] | 'whataburger')[] = [
   ['Weather', 'sun', 'linear-gradient(#5aa7e6, #2f6fbf)'], ['Calendar', 'cal', 'linear-gradient(#ef6b5e, #d9443b)'], ['Photos', 'photo', 'linear-gradient(#b9a3e3, #8b74c9)'], ['Camera', 'cam', 'linear-gradient(#8c939d, #5f6670)'],
   ['Maps', 'pin', 'linear-gradient(#6cc58a, #3f9e62)'], 'whataburger', ['Notes', 'note', 'linear-gradient(#f2c94c, #dba826)'], ['Clock', 'clock', 'linear-gradient(#3b3f47, #1d2026)'],
@@ -38,17 +36,35 @@ const app = (a: (typeof APPS)[number]) => a === 'whataburger'
   ? '<span class="home-app"><span class="home-icon home-wab"></span><span class="home-label">Whataburger</span></span>'
   : `<span class="home-app">${icon(a[1], a[2])}<span class="home-label">${a[0]}</span></span>`
 
-const TEMPLATE = `<div class="floor" aria-hidden="true"></div>
-  <div class="stage"></div>
-  <div class="device home"><div class="screen">
-    <div class="home-status"><span>9:41</span>${statusIcons('#fff', 'home-status-icons')}</div>
+// The front phone's home screen: widgets, the apps, the page dots and the dock
+const HOME = `<div class="home-status"><span>9:41</span>${statusIcons('#fff', 'home-status-icons')}</div>
+    <div class="home-widgets">
+      <div class="home-widget home-weather"><span class="w-place">Houston</span><span class="w-temp">78°</span><svg viewBox="0 0 24 24" aria-hidden="true">${G.sun}</svg><span class="w-sky">Sunny</span><span class="w-range">H:84° L:71°</span></div>
+      <div class="home-widget home-cal"><span class="c-day">MONDAY</span><span class="c-date">20</span><span class="c-event">No events today</span></div>
+    </div>
     <div class="home-grid">${APPS.map(app).join('')}</div>
-    <div class="home-search">Search</div>
-    <div class="home-dock">${DOCK.map(([g, bg]) => icon(g, bg)).join('')}</div>
-  </div></div>`
+    <div class="home-dots"><b></b><i></i><i></i></div>
+    <div class="home-dock">${DOCK.map(([g, bg]) => icon(g, bg)).join('')}</div>`
 
-export function mountHomeScreen(art: HTMLElement): () => void {
-  art.insertAdjacentHTML('beforeend', TEMPLATE)
+// The back phone: Spotlight, "Whataburger" typed in, the app the Top Hit, the keyboard up
+const ROWS = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+const SEARCH = `<div class="home-status"><span>9:41</span>${statusIcons('#fff', 'home-status-icons')}</div>
+    <div class="spot">
+      <p class="spot-head">Top Hit</p>
+      <div class="spot-hit"><span class="home-icon home-wab"></span><span class="spot-name">Whataburger</span><span class="spot-open">Open</span></div>
+      <p class="spot-head">Siri Suggestions</p>
+      <div class="spot-row"><span class="spot-glass"></span>whataburger near me</div>
+      <div class="spot-row"><span class="spot-glass"></span>whataburger hours</div>
+    </div>
+    <div class="spot-field"><span class="spot-glass"></span>Whataburger<i class="spot-caret"></i></div>
+    <div class="spot-keys">${ROWS.map((r, i) => `<div class="k-row">${i === 2 ? '<b class="k-wide">⇧</b>' : ''}${[...r].map(c => `<b>${c}</b>`).join('')}${i === 2 ? '<b class="k-wide">⌫</b>' : ''}</div>`).join('')}<div class="k-row"><b class="k-wide">123</b><b class="k-space">space</b><b class="k-go">go</b></div></div>`
+
+const TEMPLATE = (view: 'home' | 'search') => `<div class="floor" aria-hidden="true"></div>
+  <div class="stage"></div>
+  <div class="device home${view === 'search' ? ' home-search-view' : ''}"><div class="screen">${view === 'search' ? SEARCH : HOME}</div></div>`
+
+export function mountHomeScreen(art: HTMLElement, view: 'home' | 'search' = 'home'): () => void {
+  art.insertAdjacentHTML('beforeend', TEMPLATE(view))
   const device = art.querySelector<HTMLElement>('.device')!
   const spec = DEVICES['iphone-17-pro']
   device.style.setProperty('--aspect', String(spec.aspect))

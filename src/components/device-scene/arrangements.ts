@@ -9,7 +9,8 @@ export type ScreenSource =
   | { kind: 'tour'; name: TourName }
   | { kind: 'myfrontier' }
   | { kind: 'myfrontier-still'; shot: string }
-  | { kind: 'home' }
+  /** The Whataburger icon on an iPhone: on the home screen, or the Top Hit in Spotlight search */
+  | { kind: 'home'; view: 'home' | 'search' }
   /** Turned away from the camera: no screen, only a dark display if it's spun round */
   | { kind: 'none' }
 
@@ -64,11 +65,11 @@ export const ARRANGEMENTS = {
   },
   // An orange phone with the icon floating in front, a silver one standing behind it
   whataburger: {
-    label: 'The Whataburger app icon on the home screens of two iPhones, an orange one floating in front of a silver one',
+    label: 'The Whataburger app on two iPhones: its icon on the home screen of an orange one floating in front, and found in Spotlight search on a silver one behind',
     fill: 0.74,
     placements: [
-      { device: 'iphone-17-pro', screen: { kind: 'home' }, at: [0.022, 0.012, 0.03], turn: [0.06, 0.04, -0.07], float: true, finish: COSMIC_ORANGE },
-      { device: 'iphone-17-pro', screen: { kind: 'home' }, at: [-0.05, -0.006, -0.05], turn: [0.02, 0.3, 0.08] },
+      { device: 'iphone-17-pro', screen: { kind: 'home', view: 'home' }, at: [0.022, 0.012, 0.03], turn: [0.06, 0.04, -0.07], float: true, finish: COSMIC_ORANGE },
+      { device: 'iphone-17-pro', screen: { kind: 'home', view: 'search' }, at: [-0.05, -0.006, -0.05], turn: [0.02, 0.3, 0.08] },
     ],
   },
   // The laptop open, the phone standing in the foreground, taller in frame

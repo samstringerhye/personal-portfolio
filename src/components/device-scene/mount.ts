@@ -36,7 +36,7 @@ async function mountScreen(host: HTMLElement, screen: ScreenSource, device: Devi
   }
   if (screen.kind === 'home') {
     const { mountHomeScreen } = await import('./homescreen')
-    return mountHomeScreen(host)
+    return mountHomeScreen(host, screen.view)
   }
   const { mountTour } = await import('./tours')
   return mountTour(host, screen.name, device)
