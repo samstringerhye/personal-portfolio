@@ -1,31 +1,30 @@
-// The About page's 3D icons: four models in one transparent canvas around the headshot, bobbing,
-// turning and leaning toward the cursor. The flat images underneath stay until the models are in,
-// and stay for good if WebGL or a model fails. Under reduced motion the models hold one pose.
+// The About page's 3D icons: four clay sculpts (about-clay.ts) in one transparent canvas around the
+// headshot, bobbing, turning and leaning toward the cursor. The flat images underneath stay until the
+// canvas is up, and stay for good without WebGL. Under reduced motion the sculpts hold one pose.
 import {
-  AmbientLight, AnimationMixer, Box3, Clock, DirectionalLight, Group, Object3D, OrthographicCamera, Scene,
-  Vector3, WebGLRenderer, type Material, type Mesh,
+  Box3, Clock, DirectionalLight, Group, HemisphereLight, OrthographicCamera, PMREMGenerator, Scene, Vector3,
+  WebGLRenderer, type Material, type Mesh, type Object3D,
 } from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { animations } from '../data/tokens'
+import { SCULPTS, type SculptName } from './about-clay'
 
 export interface AboutIcon {
-  url: string
-  /** Center, in % of the photo's box; size is the model's largest side in % of the box's width */
+  sculpt: SculptName
+  /** Center, in % of the photo's box; size is the sculpt's largest side in % of the box's width */
   x: number
   y: number
   size: number
   /** Resting turn and tilt, radians */
   yaw: number
   pitch: number
-  /** An animation clip in the file to loop, if any */
-  clip?: string
 }
 
-// The canvas runs this far past the photo's box on every side, in % of the box, so models can sit
+// The canvas runs this far past the photo's box on every side, in % of the box, so sculpts can sit
 // over its edge without clipping
 const BLEED = 20
 
-export async function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElement, icons: AboutIcon[]): Promise<() => void> {
+export function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElement, icons: AboutIcon[]): () => void {
   const cfg = animations.about.icons
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -42,49 +41,33 @@ export async function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElem
   const camera = new OrthographicCamera(-BLEED, 100 + BLEED, BLEED, -100 - BLEED, -500, 500)
   camera.position.z = 100
   const scene = new Scene()
-  scene.add(new AmbientLight(0xffffff, 1.4))
-  const key = new DirectionalLight(0xffffff, 2.2)
-  key.position.set(-1, 2, 3)
+  // Soft studio light for the clay: a room environment for gentle reflections, a sky and ground fill,
+  // one key from the upper left
+  const pmrem = new PMREMGenerator(renderer)
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+  pmrem.dispose()
+  scene.add(new HemisphereLight(0xffffff, 0xdcd6cc, 0.9))
+  const key = new DirectionalLight(0xffffff, 1.6)
+  key.position.set(-2, 3, 4)
   scene.add(key)
-  const rim = new DirectionalLight(0xdfe8ff, 0.8)
-  rim.position.set(2, -1, -2)
-  scene.add(rim)
 
-  const loader = new GLTFLoader()
-  const mixers: AnimationMixer[] = []
   const holders: { holder: Group; icon: AboutIcon; phase: number }[] = []
-
-  try {
-    const loaded = await Promise.all(icons.map(icon => loader.loadAsync(icon.url)))
-    loaded.forEach((gltf, i) => {
-      const icon = icons[i]
-      const model = gltf.scene
-      // Centered on its own box and scaled so its largest side is icon.size
-      const box = new Box3().setFromObject(model)
-      const size = box.getSize(new Vector3())
-      const center = box.getCenter(new Vector3())
-      model.position.sub(center)
-      const holder = new Group()
-      const fit = new Group()
-      fit.scale.setScalar(icon.size / Math.max(size.x, size.y, size.z))
-      fit.add(model)
-      holder.add(fit)
-      holder.position.set(icon.x, -icon.y, 0)
-      holder.rotation.set(icon.pitch, icon.yaw, 0)
-      scene.add(holder)
-      holders.push({ holder, icon, phase: i * cfg.stagger })
-
-      const clip = icon.clip && gltf.animations.find(a => a.name === icon.clip)
-      if (clip && !reduced) {
-        const mixer = new AnimationMixer(model)
-        mixer.clipAction(clip).play()
-        mixers.push(mixer)
-      }
-    })
-  } catch {
-    renderer.dispose()
-    return () => {}
-  }
+  icons.forEach((icon, i) => {
+    const model = SCULPTS[icon.sculpt]()
+    // Centered on its own box and scaled so its largest side is icon.size
+    const box = new Box3().setFromObject(model)
+    const size = box.getSize(new Vector3())
+    model.position.sub(box.getCenter(new Vector3()))
+    const fit = new Group()
+    fit.scale.setScalar(icon.size / Math.max(size.x, size.y, size.z))
+    fit.add(model)
+    const holder = new Group()
+    holder.add(fit)
+    holder.position.set(icon.x, -icon.y, 0)
+    holder.rotation.set(icon.pitch, icon.yaw, 0)
+    scene.add(holder)
+    holders.push({ holder, icon, phase: i * cfg.stagger })
+  })
 
   const resize = () => {
     const w = orbit.clientWidth * (1 + (2 * BLEED) / 100)
@@ -105,9 +88,8 @@ export async function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElem
   const clock = new Clock()
   const floatUnits = () => (cfg.float / orbit.clientHeight) * 100
   const draw = () => {
-    const dt = clock.getDelta()
+    clock.getDelta()
     const t = clock.elapsedTime
-    mixers.forEach(m => m.update(dt))
     leanX += (toX - leanX) * cfg.followEase
     leanY += (toY - leanY) * cfg.followEase
     for (const { holder, icon, phase } of holders) {
@@ -122,12 +104,10 @@ export async function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElem
   }
 
   let raf = 0
-  let visible = false
   const loop = () => { draw(); raf = requestAnimationFrame(loop) }
   const io = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting
     cancelAnimationFrame(raf)
-    if (visible && !reduced) { clock.getDelta(); loop() }
+    if (entry.isIntersecting && !reduced) { clock.getDelta(); loop() }
   })
   io.observe(orbit)
   draw()
@@ -142,12 +122,9 @@ export async function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElem
       const mesh = o as Mesh
       if (!mesh.isMesh) return
       mesh.geometry.dispose()
-      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
-      mats.forEach((m: Material) => {
-        Object.values(m).forEach(v => { if (v && typeof v === 'object' && 'isTexture' in v) (v as { dispose(): void }).dispose() })
-        m.dispose()
-      })
+      ;(mesh.material as Material).dispose()
     })
+    scene.environment?.dispose()
     renderer.dispose()
     orbit.classList.remove('is-3d')
   }
