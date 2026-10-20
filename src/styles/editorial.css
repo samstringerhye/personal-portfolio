@@ -770,7 +770,8 @@ html.ek .footer-link {
    steps, set larger for the short agency-style copy: 45px serif headings, 32px serif subheads and
    32px lead, 22.5px body, 16px captions, 12px labels ── */
 html.ek .case-study-body {
-  --cs-section-gap: var(--ek-section);
+  /* Between sections: more than the homepage's rhythm, so each reads as its own chapter */
+  --cs-section-gap: clamp(8rem, 20vw, 18rem);
   --cs-block-gap: var(--space-6);
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--grid-gutter);
@@ -861,6 +862,11 @@ html.ek .case-study-body .prose-group > .cs-intro {
 html.ek .case-study-body .prose-group :is(p, ul, ol, blockquote) {
   max-width: var(--ek-prose);
   margin: 0;
+}
+
+/* The intro, on the left margin, gets a wider measure than body copy */
+html.ek .case-study-body .prose-group > .cs-intro {
+  max-width: 54rem;
 }
 
 html.ek .case-study-body .prose-group {
@@ -1118,8 +1124,8 @@ html.ek .case-study-body .cs-meta-value {
 }
 
 /* Desktop: each section's head pinned in the left 4 of 12 columns while its text and visuals scroll
-   past in the other 8. The meta bar, the opening visual and carousels span all 12; the intro takes
-   the middle 8 */
+   past in the other 8. The meta bar, the opening visual and carousels span all 12; the intro runs
+   from the left margin across 10 */
 @media (min-width: 64.0625rem) {
   html.ek .case-study-body > * {
     grid-column: 5 / -1;
@@ -1131,7 +1137,7 @@ html.ek .case-study-body .cs-meta-value {
   }
 
   html.ek .case-study-body > .cs-hero-meta + .prose-group {
-    grid-column: 3 / 11;
+    grid-column: 1 / 11;
   }
 
   html.ek .cs-section {
