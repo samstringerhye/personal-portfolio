@@ -42,8 +42,6 @@ const work = defineCollection({
     }).optional(),
     // A coded device scene (DeviceScene) that plays on the card in place of the subject
     thumbnailScene: z.enum(['myfrontier', 'whataburger', 'amica', 'cvs', 'samsung', 'bespoke']).optional(),
-    // The case study's panel color, a light tint of the client's brand (Panel.astro)
-    tint: z.string().optional(),
   }),
 })
 

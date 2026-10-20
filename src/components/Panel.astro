@@ -1,8 +1,8 @@
 ---
 /**
- * One visual on a field of the client's tint, frameless, with the room inside the panel:
+ * One visual on a faint gray field, frameless, with the room inside the panel:
  * - screens: one to four phone screens side by side, each a rounded card (top of the screen)
- * - page: a tall page, centered and cut off by the panel's bottom edge
+ * - page: a tall page filling the panel's width, cut off by its bottom edge
  * - piece: a component, a crop or a diagram, centered and contained
  * - bleed: a photo filling the panel
  * - video: a muted loop filling the panel; plays in view, holds its poster for reduced motion
@@ -18,7 +18,7 @@ interface Props {
   alt?: string
   screens?: { src: Src; alt: string }[]
   span?: 'full' | 'half'
-  /** Panel color, when it differs from the case study's tint */
+  /** Panel color, when the visual needs its own (a video's background)*/
   tint?: string
   /** Panel aspect ratio for page, piece, bleed and video */
   ratio?: string
@@ -47,7 +47,7 @@ const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
       <div class="panel-screens">
         {screens.map((s) => (
           isLocal(s.src)
-            ? <Image src={s.src} alt={s.alt} widths={[320, 560, 750]} sizes={screenSizes} class="panel-screen" />
+            ? <Image src={s.src} alt={s.alt} widths={[400, 750, 1080]} sizes={screenSizes} class="panel-screen" />
             : <img src={s.src} alt={s.alt} class="panel-screen" loading="lazy" decoding="async" />
         ))}
       </div>
