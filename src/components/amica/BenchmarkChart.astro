@@ -58,8 +58,8 @@ const scaleMax = 13
     gap: 0.5rem;
     margin-bottom: 1.25rem;
   }
-  .bench-title { font-size: 0.9rem; font-weight: 700; color: var(--color-text-primary); }
-  .bench-note { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary, #667); }
+  .bench-title { font-size: var(--text-100); font-weight: 700; color: var(--color-text-primary); }
+  .bench-note { font-size: var(--text-75); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary, #667); }
 
   .bench-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
   .bench-row {
@@ -68,7 +68,7 @@ const scaleMax = 13
     align-items: center;
     gap: 0.75rem;
   }
-  .bench-name { font-size: 0.82rem; color: var(--color-text-secondary, #667); text-align: right; }
+  .bench-name { font-size: var(--text-100); color: var(--color-text-secondary, #667); text-align: right; }
   .bench-row--self .bench-name { color: var(--color-text-primary); font-weight: 700; }
 
   .bench-track {
@@ -86,16 +86,16 @@ const scaleMax = 13
   .bench-row--self .bench-bar { background: #00a88f; }
 
   .bench-val {
-    font-size: 0.85rem;
+    font-size: var(--text-100);
     font-weight: 700;
     color: var(--color-text-primary);
     display: flex;
     flex-direction: column;
     line-height: 1.1;
   }
-  .bench-max { font-size: 0.6rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-secondary, #667); }
+  .bench-max { font-size: var(--text-75); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-secondary, #667); }
 
-  .bench-foot { margin: 1.25rem 0 0; font-size: 0.82rem; color: var(--color-text-secondary, #667); max-width: 44rem; }
+  .bench-foot { margin: 1.25rem 0 0; font-size: var(--text-100); color: var(--color-text-secondary, #667); max-width: 44rem; }
 
   @media (max-width: 560px) {
     .bench-row { grid-template-columns: 4.5rem 1fr 3.5rem; gap: 0.5rem; }

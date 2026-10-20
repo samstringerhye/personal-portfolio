@@ -1,0 +1,123 @@
+---
+/**
+ * A flat device around a case study screenshot: a laptop for desktop screens, a phone for mobile
+ * ones. Wraps whatever image the slot holds (an <Image> or a markdown image), so the image keeps its
+ * own optimization. The screen takes the image's aspect; `page` crops a full-page capture to the
+ * screen's first view, which the zoom still opens in full.
+ */
+interface Props {
+  kind: 'laptop' | 'phone'
+  /** Phones: Apple's Dynamic Island or a Galaxy punch-hole camera */
+  camera?: 'island' | 'punch'
+  page?: boolean
+}
+
+const { kind, camera = 'island', page = false } = Astro.props
+---
+
+<div class:list={['device-mock', `device-mock--${kind}`, kind === 'phone' && `device-mock--${camera}`, { 'device-mock--page': page }]}>
+  <div class="device-mock-screen"><slot /></div>
+  {kind === 'laptop' && <div class="device-mock-base" aria-hidden="true"></div>}
+</div>
+
+<style is:global>
+  .device-mock {
+    container-type: inline-size;
+    width: 100%;
+    margin-inline: auto;
+    line-height: 0;
+  }
+
+  .device-mock-screen {
+    position: relative;
+    background: #0e0f11;
+  }
+
+  .device-mock-screen > p {
+    margin: 0;
+  }
+
+  .case-study-body .device-mock-screen img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    padding: 0;
+    background: #fff;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Laptop: a dark bezel and a brushed base a little wider than the lid */
+  .device-mock--laptop .device-mock-screen {
+    width: 88%;
+    margin-inline: auto;
+    padding: 1.4cqw 1.4cqw 2cqw;
+    border-radius: 2.2cqw 2.2cqw 0 0;
+    box-shadow: inset 0 0 0 0.2cqw #2c2d31;
+  }
+
+  .case-study-body .device-mock--laptop img {
+    border-radius: 0.5cqw;
+  }
+
+  .device-mock--page .device-mock-screen img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .device-mock-base {
+    position: relative;
+    height: 2cqw;
+    background: linear-gradient(#e2e4e7, #b8bbc1 70%, #9ea1a8);
+    border-radius: 0 0 2.4cqw 2.4cqw / 0 0 2cqw 2cqw;
+  }
+
+  .device-mock-base::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 14%;
+    height: 40%;
+    translate: -50% 0;
+    background: #a4a7ad;
+    border-radius: 0 0 1cqw 1cqw;
+  }
+
+  /* Phone: rounded glass in a thin metal band */
+  .device-mock--phone {
+    max-width: 18rem;
+  }
+
+  .device-mock--phone .device-mock-screen {
+    padding: 3cqw;
+    border-radius: 15cqw;
+    box-shadow: 0 0 0 0.9cqw #c9ccd1, inset 0 0 0 0.3cqw #2c2d31;
+  }
+
+  .case-study-body .device-mock--phone img {
+    border-radius: 12cqw;
+  }
+
+  .device-mock--phone .device-mock-screen::after {
+    content: '';
+    position: absolute;
+    top: 5.5cqw;
+    left: 50%;
+    translate: -50% 0;
+    background: #000;
+  }
+
+  .device-mock--island .device-mock-screen::after {
+    width: 30cqw;
+    height: 8.5cqw;
+    border-radius: 999px;
+  }
+
+  .device-mock--punch .device-mock-screen::after {
+    top: 6cqw;
+    width: 4cqw;
+    height: 4cqw;
+    border-radius: 50%;
+  }
+</style>

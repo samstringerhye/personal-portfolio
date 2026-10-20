@@ -1,6 +1,17 @@
 ---
+// A group that opens with a heading splits it from the text below, so on desktop the heading can
+// take the left 4 of 12 columns and the text the other 8
+const html = await Astro.slots.render('default')
+const headed = html.match(/^\s*(<h[23][^>]*>[\s\S]*?<\/h[23]>)([\s\S]*)$/)
 ---
-<div class="prose-group"><slot /></div>
+{headed ? (
+  <div class="prose-group prose-group--headed">
+    <Fragment set:html={headed[1]} />
+    <div class="prose-body" set:html={headed[2]} />
+  </div>
+) : (
+  <div class="prose-group"><Fragment set:html={html} /></div>
+)}
 
 <style is:global>
   .prose-group {
@@ -8,6 +19,12 @@
     flex-direction: column;
     gap: var(--prose-gap, var(--space-3));
     grid-column: 2 / 8;
+  }
+
+  .prose-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--prose-gap, var(--space-3));
   }
 
   @media (--2x) {

@@ -28,6 +28,7 @@ import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Carousel from '../../components/Carousel.astro'
 import Figure from '../../components/Figure.astro'
+import Device from '../../components/Device.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
 import uiMosaicOverviewSrc from '../../assets/work/samsung-redesign/revamp-ui-mosaic.jpg'
@@ -86,8 +87,8 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 </ZigzagSection>
 
 <ImagePair leftCaption="Product category: hero, subcategories, then best sellers" rightCaption="Product detail: color and carrier picked beside the product">
-  <Fragment slot="left"><Image src={productCategoryPageSrc} alt="Washers and dryers category page with hero, subcategories, and best sellers" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-  <Fragment slot="right"><Image src={productDetailZoomSrc} alt="Galaxy A50 product detail with color and carrier options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+  <Fragment slot="left"><Device kind="laptop" page><Image src={productCategoryPageSrc} alt="Washers and dryers category page with hero, subcategories, and best sellers" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
+  <Fragment slot="right"><Device kind="laptop"><Image src={productDetailZoomSrc} alt="Galaxy A50 product detail with color and carrier options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
 </ImagePair>
 
 <Carousel label="Samsung product pages">
@@ -108,7 +109,7 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 
 <ZigzagSection reversed>
   <Fragment slot="media">
-    <Image src={homepageFullPageSrc} alt="Samsung.com homepage full page" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
+    <Device kind="laptop" page><Image src={homepageFullPageSrc} alt="Samsung.com homepage full page" format="webp" sizes="(max-width: 768px) 100vw, 50vw" /></Device>
   </Fragment>
   <ProseGroup>
 
@@ -122,19 +123,27 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 <ImageGrid columns={2}>
 
 <Figure caption="Product detail: built for purchase confidence">
+<Device kind="laptop" page>
 ![Samsung.com product detail full page](../../assets/work/samsung-redesign/revamp-pd.jpg)
+</Device>
 </Figure>
 
 <Figure caption="Product category: holds catalogs of very different sizes per market">
+<Device kind="laptop" page>
 ![Samsung.com product category full page](../../assets/work/samsung-redesign/revamp-pcd.jpg)
+</Device>
 </Figure>
 
 <Figure caption="Product family: one line, every model">
+<Device kind="laptop" page>
 ![Samsung.com product family full page](../../assets/work/samsung-redesign/revamp-pfs.jpg)
+</Device>
 </Figure>
 
 <Figure caption="Homepage: built for discovery">
+<Device kind="laptop" page>
 ![Samsung.com homepage full page](../../assets/work/samsung-redesign/revamp-hp.jpg)
+</Device>
 </Figure>
 
 </ImageGrid>

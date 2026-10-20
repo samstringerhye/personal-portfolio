@@ -65,8 +65,6 @@ html.ek .footer-links :is(.footer-link):last-child {
 
 html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .off-hours, .home-contact),
 html.ek .cs-hero,
-html.ek .case-study-body > .cs-device-hero,
-html.ek .case-study-body > :is(.zigzag-section, .carousel, .cs-figure, .image-pair, .image-grid, .decision-stepper, .case-study-cta),
 html.ek main > :is(.cs-nav, .case-study-cta) {
   grid-column: 1 / -1;
   width: 100%;
@@ -632,150 +630,253 @@ html.ek .footer-link {
   font-size: 0.9375rem;
 }
 
-/* ── Case study: centered essay column, figures as windows ── */
+/* ── Case study: the homepage's 12 columns. A section's heading takes the left 4 and its text and
+   visuals the other 8; one gap between sections, a smaller one inside them, and the homepage's type
+   steps: 45px serif headings, 32px serif subheads, 22.5px lead, 16px body, 12px labels ── */
 html.ek .case-study-body {
-  padding-bottom: var(--space-7);
-}
-
-/* Prose shares the column's left edge; only its line length is shorter */
-html.ek .case-study-body .prose-group,
-html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
-html.ek .case-study-body .prose-group:has(> .cs-intro) {
-  grid-column: 1 / -1;
+  --cs-section-gap: var(--space-8);
+  --cs-block-gap: var(--space-5);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
   width: 100%;
   max-width: var(--ek-figure);
   margin-inline: auto;
+  padding-bottom: var(--cs-section-gap);
 }
 
-html.ek .case-study-body .prose-group > *,
-html.ek .case-study-body > :is(h1, h2, h3, p, ul, ol, blockquote),
-html.ek .case-study-cta-content {
-  max-width: var(--ek-prose);
+html.ek .case-study-body > * {
+  grid-column: 1 / -1;
+  min-width: 0;
+  max-width: none;
+  margin: var(--cs-block-gap) 0 0;
+  padding: 0;
 }
 
-html.ek .case-study-body .prose-group {
-  padding-block: var(--space-6) 0;
+html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, script, style) {
+  margin-top: 0;
 }
 
-html.ek .case-study-body .prose-group:has(> .cs-intro) {
-  padding-block: var(--space-6) var(--space-4);
+/* A heading starts a section */
+html.ek .case-study-body > :is(.prose-group--headed, .zigzag-section) {
+  margin-top: var(--cs-section-gap);
+}
+
+/* Type: one size per role */
+html.ek .case-study-body :is(h2, .prose-group h2) {
+  margin: 0;
+  font-size: var(--text-400);
+  line-height: 1.25;
+}
+
+html.ek .case-study-body h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-300);
+  font-weight: 300;
+  line-height: 1.25;
 }
 
 html.ek .case-study-body :is(.prose-group, .zigzag-prose) :is(p, li) {
+  font-size: var(--text-100);
+  line-height: var(--line-height-normal);
   color: var(--color-text-primary);
   text-wrap: pretty;
 }
 
-html.ek .case-study-body :is(.prose-group, .zigzag-prose) h2 {
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-2);
+html.ek .case-study-body .prose-group > .cs-intro {
+  font-size: var(--text-200);
+  line-height: 1.5;
 }
 
-html.ek .case-study-body :is(.prose-group, .zigzag-prose) * + p {
-  margin-top: 1.1em;
+html.ek .case-study-body .prose-group :is(p, ul, ol, blockquote) {
+  max-width: var(--ek-prose);
+  margin: 0;
 }
 
-/* Every visual block becomes a window: hairline, 10px corners, one soft shadow */
-html.ek .case-study-body :is(.image-pair, .carousel, .cs-figure, .image-grid, .lottie-grid, .decision-stepper),
-html.ek .case-study-body > img {
-  grid-column: 1 / -1;
-  width: 100%;
-  max-width: var(--ek-figure);
-  margin: var(--space-6) auto 0;
-  border: 1px solid var(--ek-hairline);
+html.ek .case-study-body .prose-group {
+  gap: 1em;
+}
+
+html.ek .case-study-body .prose-group--headed {
+  gap: 0;
+}
+
+html.ek .case-study-body .prose-body {
+  gap: 1em;
+}
+
+html.ek .case-study-body .prose-group--headed > :is(h2, h3) + .prose-body {
+  margin-top: var(--space-3);
+}
+
+/* Captions and the meta labels: the homepage's 12px label step, left on the image's edge */
+html.ek .case-study-body figcaption {
+  font-family: var(--font-sans);
+  font-size: var(--text-75);
+  line-height: 1.5;
+  color: var(--ek-ink-body);
+  text-align: left;
+  border: 0 !important;
+  padding: 0;
+  margin: 0;
+  background: none;
+}
+
+/* Every visual: a panel in the homepage card color, the screens framed in devices on it */
+html.ek .case-study-body :is(.cs-figure, .image-grid, .carousel, .lottie-grid, .decision-stepper),
+html.ek .case-study-body .image-pair > .image-pair-cell,
+html.ek .case-study-body .zigzag-media {
+  border: 0;
+  border-radius: var(--ek-window-radius);
+  box-shadow: none;
+  background: var(--ek-card);
+}
+
+html.ek .case-study-body .cs-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow: hidden;
+}
+
+html.ek .case-study-body .cs-figure > figcaption,
+html.ek .case-study-body .image-pair-cell > figcaption {
+  padding: 0 var(--space-4) var(--space-3);
+}
+
+html.ek .case-study-body .image-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 2), minmax(0, 1fr));
+  gap: var(--grid-gutter);
+  background: none;
+  border-radius: 0;
+}
+
+html.ek .case-study-body .image-grid > .cs-figure {
+  margin: 0;
+}
+
+html.ek .case-study-body .image-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gutter);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  overflow: visible;
+}
+
+html.ek .case-study-body .image-pair > .image-pair-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow: hidden;
+  line-height: normal;
+}
+
+html.ek .case-study-body .image-pair-media {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  overflow: hidden;
+}
+
+html.ek .case-study-body .carousel .cs-figure {
+  margin: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* A device stands on its panel with room around it */
+html.ek .case-study-body :is(.cs-figure:not(.carousel .cs-figure), .zigzag-media, .image-pair-media):has(.device-mock, .device-phone),
+html.ek .case-study-body .image-pair-cell:not(:has(.image-pair-media)):has(.device-mock, .device-phone) {
+  justify-content: center;
+  padding: var(--space-5) var(--space-5) var(--space-4);
+}
+
+html.ek .case-study-body .cs-figure:has(.device-mock) > figcaption {
+  padding: 0;
+}
+
+html.ek .case-study-body .image-pair-cell:has(.device-mock) > .image-pair-media {
+  align-items: center;
+}
+
+/* A big number: the heading step in the serif, on a panel like the other visuals */
+html.ek .case-study-body .stat-callout {
+  border: 0;
+  border-radius: var(--ek-window-radius);
+  background: var(--ek-card);
+  padding: var(--space-6) var(--space-5);
+}
+
+html.ek .case-study-body .stat-callout-number {
+  font-family: var(--font-serif);
+  font-size: var(--text-500);
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+html.ek .case-study-body .stat-callout-label {
+  font-size: var(--text-100);
+  line-height: var(--line-height-normal);
+  color: var(--ek-ink-body);
+}
+
+/* The white animations play on the app's own color */
+html.ek .case-study-body .lottie-grid {
+  background: var(--lottie-bg, var(--ek-card));
+}
+
+html.ek .case-study-body .image-pair .device-phone {
+  width: min(100%, 18rem);
+}
+
+/* Coded diagrams: the same rounded panel, their own color kept, with room inside */
+html.ek .case-study-body > :is(section, .hero-phone-scroll, .stat-callout) {
+  border: 0;
   border-radius: var(--ek-window-radius);
   overflow: hidden;
-  box-shadow: var(--ek-shadow);
-  background: #FFFFFF;
 }
 
-/* Its own 12 tracks instead of the page's subgrid, so it can sit on the narrower column */
+html.ek .case-study-body > section {
+  padding: var(--space-5);
+}
+
+/* Side by side: the text in the left 4 columns, the visual in the other 8, whichever way round
+   the MDX put them */
 html.ek .case-study-body .zigzag-section {
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--grid-gutter);
-  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-block-gap);
   border: 0;
 }
 
 html.ek .case-study-body .zigzag-section .zigzag-media {
-  grid-column: 1 / 7;
-}
-
-html.ek .case-study-body .zigzag-section .zigzag-prose {
-  grid-column: 8 / -1;
-  align-self: center;
-}
-
-html.ek .case-study-body .zigzag-reversed .zigzag-media {
-  grid-column: 7 / -1;
-}
-
-html.ek .case-study-body .zigzag-reversed .zigzag-prose {
-  grid-column: 1 / 6;
-}
-
-html.ek .case-study-body .zigzag-media {
-  border: 1px solid var(--ek-hairline);
-  border-radius: var(--ek-window-radius);
+  order: 1;
   overflow: hidden;
-  box-shadow: var(--ek-shadow);
+  line-height: normal;
 }
 
 html.ek .case-study-body .zigzag-media .cs-figure {
   margin: 0;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  background: none;
 }
 
-html.ek .case-study-body .carousel .cs-figure,
-html.ek .case-study-body .image-grid .cs-figure {
+html.ek .case-study-body .zigzag-media .cs-figure figcaption {
+  position: static;
+  color: var(--ek-ink-body);
+  background: none;
+}
+
+html.ek .case-study-body .zigzag-prose .prose-group {
   margin: 0;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-html.ek .case-study-body .image-grid {
-  background: var(--ek-hairline);
-}
-
-/* Image pairs: two separate cards side by side, each caption under its own card */
-html.ek .case-study-body .image-pair {
-  column-gap: var(--grid-gutter);
-  row-gap: var(--space-5);
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  background: none;
-  overflow: visible;
-}
-
-html.ek .case-study-body .image-pair--captioned > .image-pair-cell {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  background: none;
-  overflow: visible;
-  line-height: normal;
-  border: 0 !important;
-}
-
-/* The card is the media box with a caption, or the whole cell without one */
-html.ek .case-study-body .image-pair--captioned .image-pair-media,
-html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell {
-  border: 1px solid var(--ek-hairline);
-  border-radius: var(--ek-window-radius);
-  overflow: hidden;
-  background: #FFFFFF;
-  box-shadow: var(--ek-shadow);
-  line-height: 0;
-}
-
-html.ek .case-study-body .image-pair figcaption {
-  border-top: 0 !important;
-  padding: 0;
-  text-align: left;
 }
 
 html.ek .case-study-body .lottie-grid,
@@ -786,40 +887,76 @@ html.ek .ba {
 
 html.ek .case-study-body .image-pair-cell + .image-pair-cell,
 html.ek .case-study-body .cs-meta-item + .cs-meta-item {
-  border-left-color: var(--ek-hairline);
+  border-left: 0;
 }
 
-/* Captions: small sans, muted, centered under the image */
-html.ek .case-study-body figcaption {
-  font-family: var(--font-sans);
-  font-size: 0.84375rem;
-  line-height: 1.55;
-  color: var(--color-text-secondary);
-  text-align: center;
-  border-top-color: var(--ek-hairline) !important;
-}
-
-html.ek .case-study-body .zigzag-media .cs-figure figcaption {
-  color: #FFFFFF;
-  text-align: left;
-}
-
-/* Meta line: labels over values, on the column edge */
+/* Meta: labels over values, a 2 by 2 block */
 html.ek .case-study-body .cs-hero-meta {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
-  width: 100%;
-  max-width: var(--ek-figure);
-  margin: var(--space-6) auto 0;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3) var(--grid-gutter);
+  align-content: start;
   border: 0;
 }
 
 html.ek .case-study-body .cs-meta-item {
   padding: 0;
   border: 0 !important;
+}
+
+/* Desktop: headings and the meta in the left 4 of 12 columns, everything else in the other 8 */
+@media (min-width: 64.0625rem) {
+  html.ek .case-study-body > * {
+    grid-column: 5 / -1;
+  }
+
+  html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, .zigzag-section, .prose-group--headed) {
+    grid-column: 1 / -1;
+  }
+
+  html.ek .case-study-body > .cs-hero-meta {
+    grid-column: 1 / 5;
+  }
+
+  /* The intro sits beside the meta, on the same row */
+  html.ek .case-study-body > .cs-hero-meta + .prose-group {
+    grid-column: 5 / -1;
+  }
+
+  html.ek .case-study-body .zigzag-section {
+    display: grid;
+    grid-template-columns: subgrid;
+    column-gap: var(--grid-gutter);
+    align-items: center;
+  }
+
+  html.ek .case-study-body .zigzag-section .zigzag-media {
+    grid-column: 5 / -1;
+    grid-row: 1;
+  }
+
+  html.ek .case-study-body .zigzag-section .zigzag-prose {
+    grid-column: 1 / 5;
+    grid-row: 1;
+  }
+
+  html.ek .case-study-body > .prose-group--headed {
+    display: grid;
+    grid-template-columns: subgrid;
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+
+  html.ek .case-study-body > .prose-group--headed > :is(h2, h3) {
+    grid-column: 1 / 5;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  html.ek .case-study-body > .prose-group--headed > .prose-body {
+    grid-column: 5 / -1;
+    margin-top: 0;
+  }
 }
 
 /* Hero: the art framed on the project color, the back link above it and the title below on white,
@@ -987,11 +1124,6 @@ html.ek .case-study-body .zigzag-media:hover {
   scale: none;
 }
 
-html.ek .case-study-body :is(.cs-figure, .zigzag-media, .image-pair-media),
-html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell {
-  transition: box-shadow var(--duration-long) var(--ek-hover-ease);
-}
-
 @media (hover: hover) {
   html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link):hover {
     background: var(--ek-panel);
@@ -1007,13 +1139,6 @@ html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-c
 
   html.ek :is(.ek-link, a):hover > .ek-arrow {
     translate: 3px 0;
-  }
-
-  html.ek .case-study-body .cs-figure:not(.carousel .cs-figure, .image-grid .cs-figure, .zigzag-media .cs-figure):hover,
-  html.ek .case-study-body .zigzag-media:hover,
-  html.ek .case-study-body .image-pair-media:hover,
-  html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell:hover {
-    box-shadow: var(--ek-shadow-hover);
   }
 }
 

@@ -145,7 +145,7 @@ const { label, theme, before, after, stats } = Astro.props
   }
 
   .ba-label {
-    font-size: 0.7rem;
+    font-size: var(--text-75);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -161,7 +161,7 @@ const { label, theme, before, after, stats } = Astro.props
   }
 
   .ba-title {
-    font-size: 1.1rem;
+    font-size: var(--text-100);
     font-weight: 700;
     color: var(--ba-ink);
     margin: 0 0 1rem;
@@ -182,7 +182,7 @@ const { label, theme, before, after, stats } = Astro.props
     display: flex;
     gap: 0.6rem;
     align-items: flex-start;
-    font-size: 0.85rem;
+    font-size: var(--text-100);
     line-height: 1.4;
     color: var(--ba-ink);
   }
@@ -194,13 +194,13 @@ const { label, theme, before, after, stats } = Astro.props
   }
 
   .ba-detail {
-    font-size: 0.75rem;
+    font-size: var(--text-75);
     color: var(--ba-detail);
   }
 
   .ba-detail :global(code) {
     font-family: var(--font-primary);
-    font-size: 0.72rem;
+    font-size: var(--text-75);
     background: var(--ba-code-bg);
     padding: 0.1rem 0.3rem;
     border-radius: 3px;
@@ -214,7 +214,7 @@ const { label, theme, before, after, stats } = Astro.props
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 0.7rem;
+    font-size: var(--text-75);
     font-weight: 700;
     margin-top: 1px;
   }
@@ -253,14 +253,14 @@ const { label, theme, before, after, stats } = Astro.props
   }
 
   .ba-stat-number {
-    font-size: 1.5rem;
+    font-size: var(--text-200);
     font-weight: 700;
     color: var(--ba-accent);
     line-height: 1;
   }
 
   .ba-stat-label {
-    font-size: 0.7rem;
+    font-size: var(--text-75);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;

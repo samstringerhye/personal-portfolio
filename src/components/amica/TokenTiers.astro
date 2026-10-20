@@ -69,19 +69,19 @@ import '../../styles/amica-tokens.css'
   .flow { display: flex; align-items: stretch; gap: 0.5rem; }
   .tier { flex: 1; background: white; border: 1px solid var(--amica-mint); padding: 1.25rem; display: flex; flex-direction: column; }
   .tier-header { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--amica-mint); }
-  .tier-number { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; min-width: 28px; background: var(--amica-teal); color: white; border-radius: 50%; font-weight: 700; font-size: 0.85rem; }
-  .tier-title { font-size: 1.05rem; font-weight: 700; color: var(--amica-forest); margin: 0; line-height: 1.2; }
-  .tier-subtitle { font-size: 0.8rem; color: color-mix(in srgb, var(--amica-forest), white 35%); margin: 0.15rem 0 0; line-height: 1.3; }
+  .tier-number { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; min-width: 28px; background: var(--amica-teal); color: white; border-radius: 50%; font-weight: 700; font-size: var(--text-100); }
+  .tier-title { font-size: var(--text-100); font-weight: 700; color: var(--amica-forest); margin: 0; line-height: 1.2; }
+  .tier-subtitle { font-size: var(--text-75); color: color-mix(in srgb, var(--amica-forest), white 35%); margin: 0.15rem 0 0; line-height: 1.3; }
   .token-list { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
-  .token-list li { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; gap: 0.5rem; }
-  .token-list code { font-family: var(--font-primary); font-size: 0.75rem; color: var(--amica-ink); background: var(--amica-light-mint); padding: 0.15rem 0.4rem; border-radius: 4px; white-space: nowrap; }
-  .val, .ref { font-family: var(--font-primary); font-size: 0.72rem; text-align: right; }
+  .token-list li { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-75); gap: 0.5rem; }
+  .token-list code { font-family: var(--font-primary); font-size: var(--text-75); color: var(--amica-ink); background: var(--amica-light-mint); padding: 0.15rem 0.4rem; border-radius: 4px; white-space: nowrap; }
+  .val, .ref { font-family: var(--font-primary); font-size: var(--text-75); text-align: right; }
   .val { color: var(--amica-forest); }
   .ref { color: var(--amica-jungle); }
-  .tier-count { margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid var(--amica-mint); font-size: 0.75rem; color: var(--amica-forest); text-align: center; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tier-count { margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid var(--amica-mint); font-size: var(--text-75); color: var(--amica-forest); text-align: center; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
   .arrow { display: flex; align-items: center; color: var(--amica-teal); flex-shrink: 0; }
-  .why-box { margin-top: 1.25rem; padding: 0.85rem 1rem; background: white; border-left: 3px solid var(--amica-teal); font-size: 0.85rem; color: var(--amica-forest); line-height: 1.5; }
-  .why-box code { font-family: var(--font-primary); font-size: 0.8rem; background: var(--amica-light-mint); padding: 0.1rem 0.35rem; border-radius: 3px; }
+  .why-box { margin-top: 1.25rem; padding: 0.85rem 1rem; background: white; border-left: 3px solid var(--amica-teal); font-size: var(--text-100); color: var(--amica-forest); line-height: 1.5; }
+  .why-box code { font-family: var(--font-primary); font-size: var(--text-75); background: var(--amica-light-mint); padding: 0.1rem 0.35rem; border-radius: 3px; }
 
   @media (max-width: 768px) {
     .flow { flex-direction: column; gap: 0.25rem; }
