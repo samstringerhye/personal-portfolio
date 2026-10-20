@@ -901,7 +901,7 @@ html.ek .case-study-body figcaption {
 /* Every visual: a card in the homepage card color, the screens framed in devices on it. A caption
    sits under its card, never inside it */
 html.ek .case-study-body :is(.lottie-grid, .decision-stepper),
-html.ek .case-study-body .cs-figure > :not(figcaption),
+html.ek .case-study-body .cs-figure > :not(figcaption, section, .device-phone, .hero-phone-scroll, .lottie-grid, .amica-buttons),
 html.ek .case-study-body .image-pair-media,
 html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell,
 html.ek .case-study-body .zigzag-media:not(:has(figcaption)) {
@@ -1040,6 +1040,20 @@ html.ek .case-study-body > .mosaic {
   padding: 0;
   border-radius: 0;
   overflow: visible;
+}
+
+/* The outcome bar after the last section's visuals */
+html.ek .cs-section > .cs-metrics {
+  grid-column: 1 / -1;
+  margin-top: var(--cs-block-gap);
+}
+
+/* Coded diagrams and phone frames in a trio card keep their own color and room */
+html.ek .case-study-body .trio .cs-figure > section {
+  margin: 0;
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  padding: var(--space-4);
 }
 
 /* Side by side: the text in the left 4 columns, the visual in the other 8, whichever way round

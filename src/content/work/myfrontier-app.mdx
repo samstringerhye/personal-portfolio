@@ -27,12 +27,19 @@ import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import LottiePlayer from '../../components/LottiePlayer.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import Carousel from '../../components/Carousel.astro'
 import ImagePair from '../../components/ImagePair.astro'
-import Figure from '../../components/Figure.astro'
+import Trio from '../../components/Trio.astro'
 import Metrics from '../../components/Metrics.astro'
 import dashboard1Src from '../../assets/work/myfrontier-app/screens/dashboard-1.png'
 import dashboard2Src from '../../assets/work/myfrontier-app/screens/dashboard-2.png'
+import billPay1Src from '../../assets/work/myfrontier-app/screens/bill-pay-1.png'
+import billPay2Src from '../../assets/work/myfrontier-app/screens/bill-pay-2.png'
+import billPay3Src from '../../assets/work/myfrontier-app/screens/bill-pay-3.png'
+import billPay4Src from '../../assets/work/myfrontier-app/screens/bill-pay-4.png'
+import support1Src from '../../assets/work/myfrontier-app/screens/support-1.png'
+import support2Src from '../../assets/work/myfrontier-app/screens/support-2.png'
+import support4Src from '../../assets/work/myfrontier-app/screens/support-4.png'
+import intro4Src from '../../assets/work/myfrontier-app/screens/intro-4.png'
 
 <Meta client="Frontier" role="Associate Design Director" agency="Razorfish" year={2022} />
 
@@ -55,72 +62,30 @@ Nobody opens a telecom app to browse. People open MyFrontier with a question abo
 
 </ProseGroup>
 
+<Trio captions={["A bill: the amount and due date before anything else", "A technician on the way: the arrival window and who's coming", "Support: topics, open tickets, then FAQs"]}>
+  <Fragment slot="one"><Image src={billPay1Src} alt="Pay my bill screen showing the current balance and due date" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+  <Fragment slot="two"><Image src={support2Src} alt="Technician on the way, with arrival window and technician details" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={support1Src} alt="Support home screen" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
+
 <ProseGroup>
 
 ## The approach.
 
-</ProseGroup>
-
-<ProseGroup>
-
-### One layout system.
-
-The most important action on each screen gets the most visual weight, and secondary actions sit in the same groups from flow to flow, so people build muscle memory.
+The most important action on each screen gets the most visual weight, secondary actions sit in the same groups from flow to flow, and every animation answers a question the user is already asking. I built each Lottie in After Effects and handed dev the easing and timing.
 
 </ProseGroup>
 
-<Carousel label="Bill pay flow">
-
-<Figure caption="Pay my bill: amount and due date first, one primary action">
-![Pay my bill screen showing the current balance and due date](../../assets/work/myfrontier-app/screens/bill-pay-1.png)
-</Figure>
-
-<Figure caption="Payment method in a bottom sheet, default card marked">
-![Payment method sheet listing saved cards](../../assets/work/myfrontier-app/screens/bill-pay-2.png)
-</Figure>
-
-<Figure caption="Payment date: today and the due date marked on the calendar">
-![Payment date calendar sheet](../../assets/work/myfrontier-app/screens/bill-pay-3.png)
-</Figure>
-
-<Figure caption="Payment sent, with a confirmation number and an Auto Pay prompt">
-![Payment sent confirmation screen](../../assets/work/myfrontier-app/screens/bill-pay-4.png)
-</Figure>
-
-</Carousel>
-
-<ProseGroup>
-
-### Motion that answers a question.
-
-Every animation answers something the user is already asking: did my payment go through, is my appointment set, am I done. I built each Lottie in After Effects and handed dev the easing and timing.
-
-</ProseGroup>
-
-<div class="lottie-grid" style="--lottie-bg: #ff033a">
-  <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
-  <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
-  <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
-  <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
-</div>
-
-<ImagePair leftCaption="Launch: the intro animation runs while account data loads" rightCaption="Face ID confirmed before the dashboard opens">
-  <Fragment slot="left">![Splash screen with the Frontier mark on red](../../assets/work/myfrontier-app/screens/intro-1.png)</Fragment>
-  <Fragment slot="right">![Face ID confirmed with a check mark](../../assets/work/myfrontier-app/screens/intro-4.png)</Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-### A visit you can track.
-
-Support and scheduling follow each technician visit on one timeline, from the arrival window to every step checked off.
-
-</ProseGroup>
-
-<ImagePair leftCaption="Tech on the way: arrival window and technician name" rightCaption="All set: every step checked off">
-  <Fragment slot="left">![Technician on the way, with arrival window and technician details](../../assets/work/myfrontier-app/screens/support-2.png)</Fragment>
-  <Fragment slot="right">![Installation complete with every step checked](../../assets/work/myfrontier-app/screens/support-4.png)</Fragment>
-</ImagePair>
+<Trio captions={["Four animations: launch, payment, setup complete, confirmation", "Payment method in a bottom sheet, the default card marked", "Payment date: today and the due date marked on the calendar"]}>
+  <Fragment slot="one"><div class="lottie-grid" style="--lottie-bg: #ff033a">
+    <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
+    <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
+    <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
+    <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
+  </div></Fragment>
+  <Fragment slot="two"><Image src={billPay2Src} alt="Payment method sheet listing saved cards" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={billPay3Src} alt="Payment date calendar sheet" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
 
 <ProseGroup>
 
@@ -129,6 +94,12 @@ Support and scheduling follow each technician visit on one timeline, from the ar
 In four months the team delivered every core screen on one layout system, with four animations for launch, payment, setup and confirmation, each handed off with easing and timing specs.
 
 </ProseGroup>
+
+<Trio captions={["Payment sent, with a confirmation number and an Auto Pay prompt", "Installation complete: every step checked off", "Face ID confirmed before the dashboard opens"]}>
+  <Fragment slot="one"><Image src={billPay4Src} alt="Payment sent confirmation screen" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+  <Fragment slot="two"><Image src={support4Src} alt="Installation complete with every step checked" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={intro4Src} alt="Face ID confirmed with a check mark" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
 
 <Metrics items={[
   { value: '4', label: 'Core flows on one layout system: onboarding, dashboard, bill pay, support' },

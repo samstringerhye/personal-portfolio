@@ -24,16 +24,19 @@ tags: ["Design System", "E-commerce", "Accessibility", "Typography"]
 ---
 import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
-import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
+import Device from '../../components/Device.astro'
+import Trio from '../../components/Trio.astro'
 import Metrics from '../../components/Metrics.astro'
-import brandVisualLanguageSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
-import iconIllustrationSystemSrc from '../../assets/work/cvs-redesign/frame-10558.png'
-import iconConstructionSrc from '../../assets/work/cvs-redesign/frame-10629.png'
-import homepageResponsiveLayoutSrc from '../../assets/work/cvs-redesign/frame-10669.png'
-import uiComponentsHeadlinesSrc from '../../assets/work/cvs-redesign/frame-10630.png'
-import uiComponentsPaginationSrc from '../../assets/work/cvs-redesign/frame-10608.png'
+import visualLanguageSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
+import iconSetSrc from '../../assets/work/cvs-redesign/frame-10558.png'
+import iconGridSrc from '../../assets/work/cvs-redesign/frame-10629.png'
+import homeSrc from '../../assets/work/cvs-redesign/frame-10669.png'
+import shopNavSrc from '../../assets/work/cvs-redesign/frame-10672.png'
+import brandPageSrc from '../../assets/work/cvs-redesign/group-10604.png'
+import componentsASrc from '../../assets/work/cvs-redesign/frame-10630.png'
+import componentsBSrc from '../../assets/work/cvs-redesign/frame-10608.png'
 
 <Meta client="CVS" role="Associate Design Director" agency="Razorfish" year={2022} />
 
@@ -43,6 +46,10 @@ import uiComponentsPaginationSrc from '../../assets/work/cvs-redesign/frame-1060
 
 </ProseGroup>
 
+<Figure caption="The redesigned homepage on desktop and mobile">
+<Image src={homeSrc} alt="CVS.com homepage, desktop and mobile responsive layout" format="webp" sizes="100vw" />
+</Figure>
+
 <ProseGroup>
 
 ## The challenge.
@@ -51,61 +58,25 @@ CVS is both a pharmacy and a general retailer, and its shop grew through acquisi
 
 </ProseGroup>
 
+<Trio captions={["One brand stretched across pharmacy, beauty and everyday retail", "Shop navigation: pharmacy and retail categories in one structure", "Brand pages: each partner's look inside the CVS frame"]}>
+  <Fragment slot="one"><Image src={visualLanguageSrc} alt="CVS brand visual language: design elements and UI patterns" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="two"><Image src={shopNavSrc} alt="Shop navigation, category browsing on desktop and mobile" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={brandPageSrc} alt="Brand page template, Skin Care / Neutrogena on mobile and desktop" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
+
 <ProseGroup>
 
 ## The approach.
 
-</ProseGroup>
-
-<ProseGroup>
-
-### Type and icons first.
-
-I started with the parts every page shares: one rational type scale, and every icon and illustration drawn on one grid in CVS red, so a 16px icon and a 48px icon read as one family.
+I started with the parts every page shares: one rational type scale, and every icon and illustration drawn on one grid in CVS red. Every component was designed for desktop and mobile at once, and pages are assembled from one library of composable parts.
 
 </ProseGroup>
 
-<Figure caption="The visual language the system was built from">
-<Image src={brandVisualLanguageSrc} alt="Brand visual language showing CVS design elements and UI patterns" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
-</Figure>
-
-<ImagePair leftCaption="Icon and illustration set, all in CVS brand red" rightCaption="Every icon is drawn on the same construction grid">
-  <Fragment slot="left"><Image src={iconIllustrationSystemSrc} alt="Icon and illustration system, geometric shapes built for the CVS brand" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-  <Fragment slot="right"><Image src={iconConstructionSrc} alt="Icon construction, grid-based build process for consistent sizing" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-### Desktop and mobile at once.
-
-Every component was designed for both sizes from the start, not desktop first and adapted after.
-
-</ProseGroup>
-
-<Figure caption="Homepage: the same modules on desktop and mobile">
-<Image src={homepageResponsiveLayoutSrc} alt="CVS.com homepage, desktop and mobile responsive layout" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
-</Figure>
-
-<Figure caption="Shop navigation: the same category structure on desktop and mobile">
-![Shop navigation, category browsing on desktop and mobile](../../assets/work/cvs-redesign/frame-10672.png)
-</Figure>
-
-<ProseGroup>
-
-### Pages from shared parts.
-
-Home, category, brand and product pages are assembled from one library of composable parts, not built from page-specific components.
-
-</ProseGroup>
-
-<Figure caption="Brand page template: Neutrogena's skin care page, assembled from shared components">
-![Brand page template, Skin Care / Neutrogena on mobile and desktop](../../assets/work/cvs-redesign/group-10604.png)
-</Figure>
-
-<ImagePair leftCaption="Components: headlines, product cards, and product tabs" rightCaption="Components: pagination, brand modules, and category navigation">
-  <Fragment slot="left"><Image src={uiComponentsHeadlinesSrc} alt="UI components including headlines, product cards, and product tabs" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-  <Fragment slot="right"><Image src={uiComponentsPaginationSrc} alt="UI components including pagination, branding elements, and category navigation" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-</ImagePair>
+<Trio captions={["Icons and illustrations, all in CVS red", "Every icon on the same construction grid", "Components: headlines, product cards and product tabs"]}>
+  <Fragment slot="one"><Image src={iconSetSrc} alt="Icon and illustration system, geometric shapes built for the CVS brand" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
+  <Fragment slot="two"><Image src={iconGridSrc} alt="Icon construction, grid-based build process for consistent sizing" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+  <Fragment slot="three"><Image src={componentsASrc} alt="UI components including headlines, product cards, and product tabs" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
 
 <ProseGroup>
 
@@ -114,6 +85,12 @@ Home, category, brand and product pages are assembled from one library of compos
 In three months the team delivered one type scale, one icon grid and a component library, so new pages are assembled from shared parts instead of built one component at a time.
 
 </ProseGroup>
+
+<Trio captions={["The shop menu, built from the library", "A brand page, assembled from shared components", "Components: pagination, brand modules and category navigation"]}>
+  <Fragment slot="one"><Device kind="laptop"><img src="/motion/cvs/shop.webp" alt="CVS.com with the Shop menu open: categories, featured and trending" width="1280" height="798" loading="lazy" decoding="async" /></Device></Fragment>
+  <Fragment slot="two"><Device kind="laptop"><img src="/motion/cvs/brand.webp" alt="A CVS.com brand page built from shared components" width="1280" height="821" loading="lazy" decoding="async" /></Device></Fragment>
+  <Fragment slot="three"><Image src={componentsBSrc} alt="UI components including pagination, branding elements, and category navigation" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+</Trio>
 
 <Metrics items={[
   { value: '4', label: 'Page types on one component library' },
