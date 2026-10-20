@@ -59,20 +59,33 @@ const far = new IntersectionObserver(entries => entries.forEach(e => {
   state.wanted = false
   if (state.stop) { state.stop(); state.stop = null }
 }), { rootMargin: '400% 0px' })
-const live = new Map<HTMLElement, { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null }>()
+const live = new Map<HTMLElement, Live>()
 
-async function build(scene: HTMLElement, state: { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null }) {
+type Live = { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null; tries: number }
+// A failed build tries again after these waits, then the flat screen stays
+const RETRIES = [1000, 4000]
+
+async function build(scene: HTMLElement, state: Live) {
   if (state.building || state.stop) return
   state.building = true
+  // A lost context (iOS takes them back) tears the arrangement down; build it again
+  const lost = () => {
+    state.stop = null
+    if (state.wanted && scene.isConnected) window.setTimeout(() => build(scene, state), 300)
+  }
   try {
     await idle()
     const { mountArrangement } = await import('./model')
-    if (scene.isConnected && state.wanted) state.stop = await mountArrangement(scene, state.faces, scene.dataset.deviceScene as SceneName)
+    if (scene.isConnected && state.wanted) state.stop = await mountArrangement(scene, state.faces, scene.dataset.deviceScene as SceneName, lost)
+    state.tries = 0
     // Scrolled away while the models loaded
     if (!state.wanted && state.stop) { state.stop(); state.stop = null }
   } catch (e) {
-    // No WebGL or the models failed to load: the lead device's flat screen stands in
+    // No WebGL or the models failed to load: the lead device's flat screen stands in, and a couple
+    // more tries follow in case the context was only briefly unavailable
     console.warn('3D devices unavailable', e)
+    const wait = RETRIES[state.tries++]
+    if (wait !== undefined) window.setTimeout(() => { if (state.wanted && scene.isConnected) build(scene, state) }, wait)
   }
   state.building = false
   scene.dataset.ready = ''
@@ -87,7 +100,7 @@ async function mount(scene: HTMLElement) {
   // shows its flat screen; in 3D the screens move into the arrangement's view (model.ts)
   const hosts = placements.map((_, i) => scene.querySelector<HTMLElement>(`.device-scene-host[data-index="${i}"]`)!)
   own.push(...await Promise.all(placements.map((p, i) => mountScreen(hosts[i], p.screen, p.device))))
-  const state = { faces: hosts.map(h => h.querySelector<HTMLElement>('.device')!), wanted: true, building: false, stop: null as (() => void) | null }
+  const state: Live = { faces: hosts.map(h => h.querySelector<HTMLElement>('.device')!), wanted: true, building: false, stop: null, tries: 0 }
   live.set(scene, state)
   near.observe(scene)
   far.observe(scene)
