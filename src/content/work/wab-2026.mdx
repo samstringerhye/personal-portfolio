@@ -21,118 +21,79 @@ thumbnailAlt: "The Whataburger app icon on an iPhone home screen"
 thumbnailScene: "whataburger"
 thumbnailText: "dark"
 tags: ["Design System", "Design Tokens", "Mobile App", "Visual Design", "Component Architecture"]
+tint: "#FBF1E4"
 ---
-import { Image } from 'astro:assets'
-import Meta from '../../components/Meta.astro'
-import ImagePair from '../../components/ImagePair.astro'
-import ProseGroup from '../../components/ProseGroup.astro'
-import Figure from '../../components/Figure.astro'
+import Story from '../../components/Story.astro'
+import Gallery from '../../components/Gallery.astro'
+import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
-import DeviceFrame from '../../components/wab/DeviceFrame.astro'
-import HeroPhoneScroll from '../../components/wab/HeroPhoneScroll.astro'
-import DirectionExploration from '../../components/wab/DirectionExploration.astro'
-import TokenArchitecture from '../../components/wab/TokenArchitecture.astro'
-import ColorStates from '../../components/wab/ColorStates.astro'
-import TypographyScale from '../../components/wab/TypographyScale.astro'
-import SpacingSystem from '../../components/wab/SpacingSystem.astro'
-import MotionSystem from '../../components/wab/MotionSystem.astro'
-import ElevationSystem from '../../components/wab/ElevationSystem.astro'
-import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
-import ComponentLibrary from '../../components/wab/ComponentLibrary.astro'
 import ChaosToOrder from '../../components/wab/ChaosToOrder.astro'
-import TypeHierarchy from '../../components/wab/TypeHierarchy.astro'
 import DiagramAnimations from '../../components/wab/DiagramAnimations.astro'
-import heroSrc from '../../assets/work/wab-2026/hero.png'
-import menuLandingSrc from '../../assets/work/wab-2026/menu-landing.png'
-import menuCategorySrc from '../../assets/work/wab-2026/menu-category.png'
-import menuCustomizationSrc from '../../assets/work/wab-2026/menu-customization.png'
-import orderSummarySrc from '../../assets/work/wab-2026/order-summary.png'
-import signInSrc from '../../assets/work/wab-2026/sign-in-screens.png'
-import accountSrc from '../../assets/work/wab-2026/account-screens.png'
-import locationsSrc from '../../assets/work/wab-2026/locations-screens.png'
-import menuSidesSrc from '../../assets/work/wab-2026/menu-sides.png'
-import menuDrinkSrc from '../../assets/work/wab-2026/menu-drink.png'
-import menuSaucesSrc from '../../assets/work/wab-2026/menu-sauces.png'
-import menuAddToCartSrc from '../../assets/work/wab-2026/menu-add-to-cart.png'
-import menuFavoritesSrc from '../../assets/work/wab-2026/menu-favorites.png'
-import giftCardsSrc from '../../assets/work/wab-2026/gift-cards.png'
-import lifestyleMenuSrc from '../../assets/work/wab-2026/lifestyle-menu.jpeg'
-import lifestyleRewardsSrc from '../../assets/work/wab-2026/lifestyle-rewards.jpeg'
-import lifestyleScanSrc from '../../assets/work/wab-2026/lifestyle-scan.png'
-import lifestyleAccountSrc from '../../assets/work/wab-2026/lifestyle-account.png'
-import screensGridSrc from '../../assets/work/wab-2026/screens-grid.jpeg'
-import directionTestingSrc from '../../assets/work/wab-2026/direction-testing.png'
-import Trio from '../../components/Trio.astro'
-import Mock from '../../components/Mock.astro'
-import moodboardSrc from '../../assets/work/wab-2026/direction-vibrant-moodboard.png'
+import lifestyleHome from '../../assets/work/wab-2026/figma/lifestyle-home.webp'
+import home from '../../assets/work/wab-2026/figma/home.webp'
+import menuReorder from '../../assets/work/wab-2026/figma/menu-reorder.webp'
+import menuItem from '../../assets/work/wab-2026/figma/menu-item.webp'
+import rewards from '../../assets/work/wab-2026/figma/rewards.webp'
+import scan from '../../assets/work/wab-2026/figma/scan.webp'
+import account from '../../assets/work/wab-2026/figma/account.webp'
+import directionTesting from '../../assets/work/wab-2026/direction-testing.png'
+import moodboard from '../../assets/work/wab-2026/direction-vibrant-moodboard.png'
+import lifestyleMenu from '../../assets/work/wab-2026/lifestyle-menu.jpeg'
+import menuCustomization from '../../assets/work/wab-2026/menu-customization.png'
+import orderSummary from '../../assets/work/wab-2026/order-summary.png'
+import screensGrid from '../../assets/work/wab-2026/screens-grid.jpeg'
+import typographyVideo from '../../assets/work/wab-2026/motion/typography.mp4'
+import typographyPoster from '../../assets/work/wab-2026/motion/typography-poster.webp'
+import illustrationVideo from '../../assets/work/wab-2026/motion/illustration.mp4'
+import illustrationPoster from '../../assets/work/wab-2026/motion/illustration-poster.webp'
 
-<Meta client="Whataburger" role="Associate Design Director" agency="Razorfish" year={2026} />
+<Story
+  client="Whataburger"
+  role="Associate Design Director"
+  agency="Razorfish"
+  year={2026}
+  made={['Visual direction', 'Design system', 'Production screens']}
+  outcome="I cut Whataburger's path from home to checkout from 14 taps to 6, and handed off a rebuilt design system and every production screen in May 2026."
+  problem="The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, and ordering, rewards and locations felt like separate products."
+  did="I merged the two strongest visual directions, then cut the order path: home leads with reorders, and customization shows only what matters at each step."
+/>
 
-<ProseGroup>
+<Gallery title="The app">
+  <Panel kind="bleed" ratio="16 / 9" src={lifestyleHome} alt="A hand holding a phone on a mustard blanket: the home screen says Howdy" />
+  <Panel kind="screens" screens={[
+    { src: home, alt: 'Home: the Whatafresher hero and a welcome' },
+    { src: menuReorder, alt: 'Menu: reorder a past meal, then explore the menu' },
+  ]} />
+</Gallery>
 
-<p class="cs-intro">I cut Whataburger's path from home to checkout from 14 taps to 6, and handed off a rebuilt design system and every production screen in May 2026.</p>
+<Gallery title="Where it started" note="Three directions tested on one home screen, and a palette with no states to build from.">
+  <Panel kind="piece" ratio="16 / 8" src={directionTesting} alt="Three visual directions tested on the same home screen" />
+  <Panel kind="piece" span="half" ratio="4 / 5" src={moodboard} alt="Moodboard for the vibrant direction" />
+  <Panel kind="slot" span="half"><ChaosToOrder /></Panel>
+</Gallery>
 
-</ProseGroup>
+<Gallery title="Ordering" note="Home leads with reorders, and customization shows only what matters at each step.">
+  <Panel kind="bleed" ratio="16 / 9" src={lifestyleMenu} alt="A hand holding a phone, customizing a burger" />
+  <Panel kind="screens" screens={[
+    { src: menuItem, alt: 'A Whataburger with its ingredients as chips' },
+    { src: menuCustomization, alt: 'Customize your burger, one ingredient at a time' },
+    { src: orderSummary, alt: 'Confirm your meal: every change summed up' },
+  ]} />
+</Gallery>
 
-<HeroPhoneScroll screens={[
-  { src: menuFavoritesSrc, alt: "Favorites: quick reorder from saved items" },
-  { src: locationsSrc, alt: "Location finder: map view with nearby restaurants" },
-  { src: menuDrinkSrc, alt: "Choose your drink: consistent pattern across customization steps" },
-  { src: signInSrc, alt: "Sign in: clean authentication flow" },
-  { src: menuSaucesSrc, alt: "Sauces and extras: granular options without visual overload" },
-  { src: menuCategorySrc, alt: "Category browsing: visual hierarchy that surfaces options" },
-  { src: orderSummarySrc, alt: "Order summary: consistent component patterns across the full flow" },
-  { src: heroSrc, alt: "Home screen: personalized greeting, featured items, and rewards" },
-  { src: menuLandingSrc, alt: "Menu landing: category browsing with daypart-aware content" },
-  { src: menuCustomizationSrc, alt: "Item customization: progressive disclosure of options" },
-  { src: accountSrc, alt: "Account hub: personalized profile with condiment preference badges" },
-  { src: giftCardsSrc, alt: "Gift cards screen: card designs and balance" },
-  { src: menuSidesSrc, alt: "Choose your side: meal builder with clear selection states" },
-  { src: menuAddToCartSrc, alt: "Add to cart: order confirmation with full customization summary" },
-]} />
+<Gallery title="Brand system" note="A script for hellos, a wide face for headlines, and a sticker set for the moments in between.">
+  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={typographyVideo} poster={typographyPoster.src} alt="Type: Howdy in the script face, the Unbounded alphabet and the Frosted Berry lettering" />
+  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={illustrationVideo} poster={illustrationPoster.src} alt="Stickers, order icons and the navigation bar" />
+</Gallery>
 
-<ProseGroup>
-
-## The challenge.
-
-The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, and ordering, rewards and locations felt like separate products.
-
-</ProseGroup>
-
-<Trio captions={["One wireframe, three directions", "The bold direction's moodboard", "Values invented screen by screen"]}>
-  <Fragment slot="one"><Mock kind="plain" src={directionTestingSrc} alt="Three visual directions tested on the same home screen" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={moodboardSrc} alt="Moodboard for the vibrant direction" /></Fragment>
-  <Fragment slot="three"><ChaosToOrder /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The approach.
-
-I merged the two strongest directions, then cut the order path: home leads with reorders, and customization shows only what matters at each step.
-
-</ProseGroup>
-
-<Trio captions={["Customize in a tap", "Each ingredient one tap away", "Every change, summed up"]}>
-  <Fragment slot="one"><Mock kind="bleed" src={lifestyleMenuSrc} alt="A hand holding a phone, customizing a burger" /></Fragment>
-  <Fragment slot="two"><Mock kind="phone" src={menuCustomizationSrc} alt="Customize your burger" /></Fragment>
-  <Fragment slot="three"><Mock kind="phone" src={orderSummarySrc} alt="Confirm your meal: every change summarized" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The outcome.
-
-{/* Add launch results here once the app ships. */}
-I handed off the full system and every production screen in May 2026. The app launches in 2027.
-
-</ProseGroup>
-
-<Trio captions={["Every screen, handed off together", "Rewards", "Scan at the register"]}>
-  <Fragment slot="one"><Mock kind="bleed" src={screensGridSrc} alt="Every production screen, shown together" /></Fragment>
-  <Fragment slot="two"><Mock kind="bleed" src={lifestyleRewardsSrc} alt="The rewards screen on a phone" /></Fragment>
-  <Fragment slot="three"><Mock kind="bleed" src={lifestyleScanSrc} alt="Scanning a QR code to earn points at the register" /></Fragment>
-</Trio>
+<Gallery title="Rewards, scan and account">
+  <Panel kind="screens" screens={[
+    { src: rewards, alt: 'Rewards: 475 points and the offers' },
+    { src: scan, alt: 'Scan in store: a QR code, the wallet and points' },
+    { src: account, alt: 'Account hub with condiment badges' },
+  ]} />
+  <Panel kind="bleed" ratio="16 / 9" src={screensGrid} alt="Every production screen, shown together" />
+</Gallery>
 
 <Metrics items={[
   { value: '14 → 6', label: 'Taps from home to checkout' },

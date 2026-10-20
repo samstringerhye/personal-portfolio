@@ -21,81 +21,65 @@ heroImage: "../../assets/work/samsung-redesign/revamp-kv.jpg"
 featured: true
 sortOrder: 5
 tags: ["Design System", "E-commerce", "Global", "Navigation"]
+tint: "#EEF1F5"
 ---
-import Meta from '../../components/Meta.astro'
-import ProseGroup from '../../components/ProseGroup.astro'
-import ImagePair from '../../components/ImagePair.astro'
-import Trio from '../../components/Trio.astro'
-import Mock from '../../components/Mock.astro'
+import Story from '../../components/Story.astro'
+import Gallery from '../../components/Gallery.astro'
+import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
-import homeSrc from '../../assets/work/samsung-redesign/revamp-hp.jpg'
-import categorySrc from '../../assets/work/samsung-redesign/revamp-pcd.jpg'
-import pdOptionsSrc from '../../assets/work/samsung-redesign/mock/pd-options.webp'
-import pfCardsSrc from '../../assets/work/samsung-redesign/mock/pf-cards.webp'
-import iconsSrc from '../../assets/work/samsung-redesign/mock/icons.webp'
-import pdGallerySrc from '../../assets/work/samsung-redesign/mock/pd-gallery.webp'
-import gnbDesktopSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-desktop-full.jpg'
-import gnbCloseupSrc from '../../assets/work/samsung-redesign/samsung-section-3-gnb-closeup-desktop.jpg'
-import buttonsSrc from '../../assets/work/samsung-redesign/mock/buttons.webp'
-import showcaseSrc from '../../assets/work/samsung-redesign/samsung-section-4-showcase-desktop.jpg'
+import homeDesktop from '../../assets/work/samsung-redesign/figma/home-desktop.webp'
+import productMobile from '../../assets/work/samsung-redesign/figma/product-mobile.webp'
+import navDesktop from '../../assets/work/samsung-redesign/figma/nav-desktop.webp'
+import navAppliances from '../../assets/work/samsung-redesign/figma/nav-appliances.webp'
+import navFridges from '../../assets/work/samsung-redesign/figma/nav-fridges.webp'
+import categoryDesktop from '../../assets/work/samsung-redesign/figma/category-desktop.webp'
+import categoryMobile from '../../assets/work/samsung-redesign/figma/category-mobile.webp'
+import configureMobile from '../../assets/work/samsung-redesign/figma/configure-mobile.webp'
+import finderDesktop from '../../assets/work/samsung-redesign/figma/finder-desktop.webp'
+import pdOptions from '../../assets/work/samsung-redesign/mock/pd-options.webp'
+import buttons from '../../assets/work/samsung-redesign/mock/buttons.webp'
+import icons from '../../assets/work/samsung-redesign/mock/icons.webp'
 
-<Meta client="Samsung" role="Senior Designer" agency="Razorfish" year={2020} />
+<Story
+  client="Samsung"
+  role="Senior Designer"
+  agency="Razorfish"
+  year={2020}
+  made={['Navigation', 'Category and product pages', 'Shared components']}
+  outcome="Samsung.com's redesign rolled out market by market on one set of templates. I set the visual direction for its navigation and designed category and product pages for the shared system."
+  problem="Samsung's research found the old menu text-heavy, with too many clicks to reach a product, worst of all on phones. Every market had added its own categories and string lengths."
+  did="I put product pictures into the menu, so shoppers spot a product before they know its name, and built category and product pages around one big image and a few clear choices."
+/>
 
-<ProseGroup>
+<Gallery title="Samsung.com">
+  <Panel kind="page" src={homeDesktop} alt="Samsung.com homepage with the Galaxy S20 hero" />
+  <Panel kind="screens" screens={[
+    { src: '/motion/samsung-mobile/home.webp', alt: 'The homepage on a phone' },
+    { src: categoryMobile, alt: 'Refrigerators category page on a phone' },
+    { src: productMobile, alt: 'A Family Hub fridge product page on a phone, with color choices' },
+  ]} />
+</Gallery>
 
-<p class="cs-intro">One of twelve designers on Samsung.com's redesign: 12+ markets, six months. I set the navigation's visual direction and designed four core page types.</p>
+<Gallery title="Navigation" note="Pictures beside the categories on phones, and one featured product in every desktop menu.">
+  <Panel kind="screens" span="half" screens={[{ src: navAppliances, alt: 'Phone menu: Appliances, each category with a product photo' }]} />
+  <Panel kind="screens" span="half" screens={[{ src: navFridges, alt: 'Phone menu drill-in: refrigerators by type, each pictured' }]} />
+  <Panel kind="page" ratio="8 / 3" src={navDesktop} alt="Desktop menu open on Mobile: categories, products and one featured Galaxy S20 card" />
+</Gallery>
 
-</ProseGroup>
+<Gallery title="Category and product pages" note="One big picture up top, then a few clear choices.">
+  <Panel kind="page" src={categoryDesktop} alt="Smartphones category page: Be ready for the future, over a Galaxy S20" />
+  <Panel kind="screens" span="half" screens={[{ src: configureMobile, alt: 'Fridge finder on a phone: colour, width, capacity and door style as chips' }]} />
+  <Panel kind="piece" span="half" multiply src={pdOptions} alt="Galaxy A50 product page options: trade-in and color" />
+  <Panel kind="page" src={finderDesktop} alt="Product finder: Smart Fridge Freezers, two large product cards" />
+</Gallery>
 
-<ImagePair leftCaption="The homepage" rightCaption="The homepage on a phone">
-  <Fragment slot="left"><Mock kind="browser" src={homeSrc} alt="Samsung.com homepage with the Galaxy S20 hero" url="samsung.com" /></Fragment>
-  <Fragment slot="right"><Mock kind="phone" src="/motion/samsung-mobile/home.webp" alt="Samsung.com on a phone: the Galaxy S20 hero" /></Fragment>
-</ImagePair>
-
-<ProseGroup>
-
-## The challenge.
-
-Every market had added its own categories, string lengths and workarounds. The navigation had to read as one brand everywhere, including right-to-left scripts.
-
-</ProseGroup>
-
-<Trio captions={["Category pages, catalogs of every size", "Product detail", "Product family"]}>
-  <Fragment slot="one"><Mock kind="browser" src={categorySrc} alt="Samsung.com washers and dryers category page" url="samsung.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={pdOptionsSrc} alt="Galaxy A50 product detail: trade-in and color options" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={pfCardsSrc} alt="Two Galaxy product cards with prices and buttons" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The approach.
-
-A product image beside every category, from the desktop panel to the mobile drill-in, so shoppers spot a product before reading its label.
-
-</ProseGroup>
-
-<Trio captions={["Desktop: products beside every category", "Mobile: TVs by size, with pictures", "Shared buttons and controls"]}>
-  <Fragment slot="one"><Mock kind="plain" src={gnbDesktopSrc} alt="Desktop navigation menu: categories, product thumbnails and a promotion" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={gnbCloseupSrc} alt="Mobile navigation accordion: TVs by size, each with a picture" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={buttonsSrc} alt="Samsung.com buttons in their states" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The outcome.
-
-Over six months I delivered the navigation's direction, four page types and components for the shared system.
-
-</ProseGroup>
-
-<Trio captions={["The showcase page", "One icon set", "Galleries with AR and 360° views"]}>
-  <Fragment slot="one"><Mock kind="plain" src={showcaseSrc} alt="Samsung.com product showcase on a Galaxy Book" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={iconsSrc} alt="Samsung.com line icons: filter, device, edit, download and more" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={pdGallerySrc} alt="Product gallery: the phone, AR and 360° buttons, and videos" /></Fragment>
-</Trio>
+<Gallery title="Shared components" note="Buttons, controls and icons every page type draws from.">
+  <Panel kind="piece" ratio="16 / 6" multiply src={buttons} alt="Samsung.com buttons in their default, hover and disabled states" />
+  <Panel kind="piece" ratio="16 / 6" multiply src={icons} alt="Samsung.com line icons: filter, device, edit, download and more" />
+</Gallery>
 
 <Metrics items={[
   { value: '12+', label: 'Markets on one navigation' },
-  { value: '4', label: 'Core page types' },
-  { value: '6', label: 'Months, twelve designers' },
+  { value: '50+', label: 'Templates in the shared system' },
+  { value: '6', label: 'Months, first phase' },
 ]} />

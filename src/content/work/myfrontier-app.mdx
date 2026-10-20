@@ -22,87 +22,92 @@ heroImage: "../../assets/work/myfrontier-app/frontier-app-kv.png"
 featured: true
 sortOrder: 4
 tags: ["Mobile App", "Design System", "Motion Design", "UX"]
+tint: "#EAFFFD"
 ---
-import Meta from '../../components/Meta.astro'
-import ProseGroup from '../../components/ProseGroup.astro'
-import ImagePair from '../../components/ImagePair.astro'
-import Trio from '../../components/Trio.astro'
-import Mock from '../../components/Mock.astro'
+import Story from '../../components/Story.astro'
+import Gallery from '../../components/Gallery.astro'
+import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
 import LottiePlayer from '../../components/LottiePlayer.astro'
-import dashboard_1 from '../../assets/work/myfrontier-app/screens/dashboard-1.png'
-import dashboard_2 from '../../assets/work/myfrontier-app/screens/dashboard-2.png'
-import bill_pay_1 from '../../assets/work/myfrontier-app/screens/bill-pay-1.png'
-import bill_pay_2 from '../../assets/work/myfrontier-app/screens/bill-pay-2.png'
-import bill_pay_4 from '../../assets/work/myfrontier-app/screens/bill-pay-4.png'
-import support_1 from '../../assets/work/myfrontier-app/screens/support-1.png'
-import support_2 from '../../assets/work/myfrontier-app/screens/support-2.png'
-import support_4 from '../../assets/work/myfrontier-app/screens/support-4.png'
-import support_5 from '../../assets/work/myfrontier-app/screens/support-5.png'
-import intro_4 from '../../assets/work/myfrontier-app/screens/intro-4.png'
+import dashboard from '../../assets/work/myfrontier-app/figma/dashboard.webp'
+import faceId from '../../assets/work/myfrontier-app/figma/face-id.webp'
+import techMap from '../../assets/work/myfrontier-app/figma/tech-map.webp'
+import oldDashboard from '../../assets/work/myfrontier-app/figma/old-dashboard.webp'
+import oldMenu from '../../assets/work/myfrontier-app/figma/old-menu.webp'
+import oldPayment from '../../assets/work/myfrontier-app/figma/old-payment.webp'
+import billingZero from '../../assets/work/myfrontier-app/figma/billing-zero.webp'
+import payMyBill from '../../assets/work/myfrontier-app/figma/pay-my-bill.webp'
+import paymentSent from '../../assets/work/myfrontier-app/figma/payment-sent.webp'
+import techOnTheWay from '../../assets/work/myfrontier-app/figma/tech-on-the-way.webp'
+import installComplete from '../../assets/work/myfrontier-app/figma/install-complete.webp'
+import modifyAppointment from '../../assets/work/myfrontier-app/figma/modify-appointment.webp'
+import typeScale from '../../assets/work/myfrontier-app/figma/type.webp'
+import color from '../../assets/work/myfrontier-app/figma/color.webp'
 
-<Meta client="Frontier" role="Associate Design Director" agency="Razorfish" year={2022} />
+<Story
+  client="Frontier"
+  role="Associate Design Director"
+  agency="Razorfish"
+  year={2022}
+  made={['App visual design', 'Design library', 'Motion']}
+  outcome="MyFrontier 4.0 launched on November 21, 2022. Paying a bill, tracking a technician and restarting a router each end in one clear answer."
+  problem="People open a telecom app with a question: a bill, a technician, an outage. The old app put its menu behind one floating button and gave every row the same weight."
+  did="I led the visual design and the motion. The main action on every screen gets one red button, and every wait or finish gets an animation that says what is happening."
+/>
 
-<ProseGroup>
+<Gallery title="MyFrontier 4.0">
+  <Panel kind="screens" screens={[
+    { src: dashboard, alt: 'Dashboard: Good afternoon, the balance and a red Make a payment button' },
+    { src: faceId, alt: 'Sign in with Face ID' },
+    { src: techMap, alt: 'A technician on the way, shown on a map' },
+  ]} />
+</Gallery>
 
-<p class="cs-intro">I rebuilt the MyFrontier app's visual design and layout system and built its motion from scratch, with four designers in four months.</p>
+<Gallery title="Where it started" note="Version 3.5: a network gauge led the home screen, the bill sat below it, and every other screen hid behind a floating plus.">
+  <Panel kind="piece" span="half" tint="#F3F4F4" src={oldDashboard} alt="The old home screen: a green Online ring above the bill" />
+  <Panel kind="screens" span="half" tint="#F3F4F4" screens={[
+    { src: oldMenu, alt: 'The old navigation, a radial menu opened from a floating plus' },
+    { src: oldPayment, alt: 'The old Make a Payment screen: four outlined amounts and Continue' },
+  ]} />
+</Gallery>
 
-</ProseGroup>
+<Gallery title="Pay my bill" note="One ring for the balance and one red button for the action, on every billing screen.">
+  <Panel kind="screens" screens={[
+    { src: billingZero, alt: 'My billing with a zero balance and Make a payment' },
+    { src: payMyBill, alt: 'Pay my bill: the past-due amount in a mint ring and a red Pay button' },
+    { src: paymentSent, alt: 'Payment sent, with the confirmation number and Done' },
+  ]} />
+</Gallery>
 
-<ImagePair leftCaption="The dashboard" rightCaption="The account">
-  <Fragment slot="left"><Mock kind="plain" src={dashboard_1} alt="Dashboard with greeting, total balance and Make a Payment" /></Fragment>
-  <Fragment slot="right"><Mock kind="plain" src={dashboard_2} alt="Account screen with tickets, plans and network" /></Fragment>
-</ImagePair>
+<Gallery title="Appointments" note="New in 4.0: follow the technician live and move the appointment without a phone call.">
+  <Panel kind="screens" span="half" screens={[
+    { src: techOnTheWay, alt: 'Tech is on the way: a four-step tracker with the arrival window' },
+    { src: installComplete, alt: 'All done: the installation is complete' },
+  ]} />
+  <Panel kind="screens" span="half" screens={[
+    { src: modifyAppointment, alt: 'Modify appointment: pick a day, then a time range' },
+  ]} />
+</Gallery>
 
-<ProseGroup>
+<Gallery title="Type and color" note="A wide accent face for headlines, red for the one action, mint for every answer.">
+  <Panel kind="piece" ratio="16 / 7" tint="#FFFFFF" src={typeScale} alt="Type scale: the standard face beside the wide accent face, H1 to H4" />
+  <Panel kind="piece" ratio="16 / 6" tint="#FFFFFF" src={color} alt="Primary colors: pale red, red, pale mint, mint and navy" />
+</Gallery>
 
-## The challenge.
-
-People open a telecom app with a question: a bill, a technician, an outage. The app had drifted for years, with layouts that changed from flow to flow and no motion.
-
-</ProseGroup>
-
-<Trio captions={["A question about a bill", "A technician on the way", "Looking for help"]}>
-  <Fragment slot="one"><Mock kind="plain" src={bill_pay_1} alt="Pay my bill screen with the balance and due date" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={support_2} alt="Technician on the way, with the arrival window" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={support_1} alt="Support home screen" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The approach.
-
-The main action on every screen gets the most weight, and secondary actions sit in the same place in every flow. Every animation answers the user's question.
-
-</ProseGroup>
-
-<Trio captions={["Launch, payment, setup, confirmation", "One sheet for payment method", "Every flow ends in a clear answer"]}>
-  <Fragment slot="one"><div class="lottie-grid" style="--lottie-bg: #ff033a">
-    <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
-    <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
-    <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
-    <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
-  </div></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={bill_pay_2} alt="Payment method sheet listing saved cards" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={bill_pay_4} alt="Payment sent confirmation screen" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The outcome.
-
-Every core screen shipped on one layout system, with four animations handed off with easing and timing specs.
-
-</ProseGroup>
-
-<Trio captions={["Installation complete", "Face ID confirmed", "An appointment, moved in two taps"]}>
-  <Fragment slot="one"><Mock kind="plain" src={support_4} alt="Installation complete, every step checked" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={intro_4} alt="Face ID confirmed with a check mark" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={support_5} alt="Modify appointment: pick a day, then a time range" /></Fragment>
-</Trio>
+<Gallery title="Motion" note="Waits and finishes get an animation that says what is happening.">
+  <Panel kind="slot" tint="#FF0037">
+    <div class="lottie-grid" style="--lottie-bg: #FF0037">
+      <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
+      <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
+      <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" />
+      <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
+    </div>
+  </Panel>
+  <Panel kind="video" ratio="16 / 8" tint="#121A2C" src="/motion/frontier/router.mp4" poster="/motion/frontier/router-poster.webp" alt="Restarting your router: the router icon pulses while a spinner turns" />
+</Gallery>
 
 <Metrics items={[
-  { value: '4', label: 'Core flows, one layout system' },
-  { value: '4', label: 'Lottie animations' },
-  { value: '4', label: 'Months, four designers' },
+  { value: '4.0', label: 'Launched November 21, 2022' },
+  { value: '5', label: 'Sprints to dev handoff' },
+  { value: '9', label: 'Animations made' },
 ]} />

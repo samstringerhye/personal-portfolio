@@ -19,79 +19,61 @@ thumbnailText: "dark"
 featured: true
 sortOrder: 0
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
+tint: "#E6F4F1"
 ---
-import Meta from '../../components/Meta.astro'
-import ProseGroup from '../../components/ProseGroup.astro'
-import ImagePair from '../../components/ImagePair.astro'
-import Trio from '../../components/Trio.astro'
-import Mock from '../../components/Mock.astro'
+import Story from '../../components/Story.astro'
+import Gallery from '../../components/Gallery.astro'
+import Panel from '../../components/Panel.astro'
 import Metrics from '../../components/Metrics.astro'
-import homeDesktop from '../../assets/work/amica-design-system/figma/home-desktop.webp'
-import homeMobile from '../../assets/work/amica-design-system/figma/home-mobile.webp'
+import pageHome from '../../assets/work/amica-design-system/figma/page-home.webp'
+import screenHome from '../../assets/work/amica-design-system/figma/screen-home.webp'
 import legacyHome from '../../assets/work/amica-design-system/proof/amica-legacy-homepage.png'
 import legacyCard from '../../assets/work/amica-design-system/mock/legacy-hero-card.webp'
-import legacyPhoto from '../../assets/work/amica-design-system/mock/legacy-photo.webp'
-import lightDark from '../../assets/work/amica-design-system/mock/light-dark.webp'
 import quoteCard from '../../assets/work/amica-design-system/mock/quote-card.webp'
-import quoteSummaryMobile from '../../assets/work/amica-design-system/mock/quote-summary-mobile.webp'
-import autoPage from '../../assets/work/amica-design-system/mock/auto-page.webp'
-import quoteStep from '../../assets/work/amica-design-system/mock/quote-step.webp'
+import lightDark from '../../assets/work/amica-design-system/mock/light-dark.webp'
+import pageQuote from '../../assets/work/amica-design-system/figma/page-quote.webp'
 import quoteBundle from '../../assets/work/amica-design-system/mock/quote-bundle.webp'
+import screenQuoteSummary from '../../assets/work/amica-design-system/figma/screen-quote-summary.webp'
+import pageAuto from '../../assets/work/amica-design-system/figma/page-auto.webp'
 
-<Meta client="Amica" role="Associate Design Director" agency="Razorfish" year={2026} />
+<Story
+  client="Amica"
+  role="Associate Design Director"
+  agency="Razorfish"
+  year={2026}
+  made={['Design system', 'Homepage and product pages', 'Quote flow']}
+  outcome="Amica.com relaunched on October 2, 2026: 615 pages on one design system, in light and dark, built to WCAG 2.1 AA."
+  problem="The old library had no tokens. Color was hard-coded, dark mode meant a second copy of every component, and the rebuild couldn't pause a sprint."
+  did="I led six designers through the rebuild. Tokens name what you paint, not where, so one button works on light and dark, and the quote flow runs on the same parts from start to finish."
+/>
 
-<ProseGroup>
+<Gallery title="Amica.com">
+  <Panel kind="page" src={pageHome} alt="Amica.com homepage: a parent and son in the kitchen, the quote card over the photo" />
+  <Panel kind="screens" span="half" screens={[
+    { src: screenHome, alt: 'The homepage on a phone' },
+    { src: screenQuoteSummary, alt: 'The bundle quote on a phone' },
+  ]} />
+  <Panel kind="video" span="half" cover src="/motion/amica/anthem.mp4" poster="/motion/amica/home.webp" alt="The homepage brand film" />
+</Gallery>
 
-<p class="cs-intro">Amica relaunched amica.com on October 2, 2026. I led six designers to rebuild the design system underneath it: 615 pages, two platforms.</p>
+<Gallery title="Before and after" note="The old quote card beside the new one: two questions, one action.">
+  <Panel kind="page" ratio="16 / 9.2" tint="#EEF0F2" src={legacyHome} alt="Amica.com before the relaunch, with a purple call to action" />
+  <Panel kind="piece" span="half" ratio="1 / 1" tint="#EEF0F2" src={legacyCard} alt="Before: the old quote card with a purple Get a Quote button" caption="Before" />
+  <Panel kind="piece" span="half" ratio="1 / 1" src={quoteCard} alt="After: the new quote card, product and ZIP code, then Start my quote" caption="After" />
+</Gallery>
 
-</ProseGroup>
+<Gallery title="Light and dark" note="Tokens name what you paint, not where, so the same headline, link and button work on either.">
+  <Panel kind="piece" ratio="16 / 6" multiply src={lightDark} alt="The same headline, link and button on a light and a dark panel" />
+</Gallery>
 
-<ImagePair leftCaption="The new homepage" rightCaption="On a phone">
-  <Fragment slot="left"><Mock kind="browser" src={homeDesktop} alt="Amica.com homepage: a parent and son in the kitchen, the quote card over the photo" url="amica.com" /></Fragment>
-  <Fragment slot="right"><Mock kind="phone" src={homeMobile} alt="Amica.com homepage on a phone" /></Fragment>
-</ImagePair>
+<Gallery title="Quoting" note="The quote flow runs on the same parts as the rest of the site, start to finish.">
+  <Panel kind="page" src={pageQuote} alt="Quote flow, Vehicle Info: Thanks Tim, let's add some details about what you drive" />
+  <Panel kind="piece" ratio="16 / 6" multiply src={quoteBundle} alt="Quote summary: auto and home prices and the bundle price" />
+</Gallery>
 
-<ProseGroup>
-
-## The challenge.
-
-The old library had no tokens. Color was hard-coded, dark mode meant a second copy of every component, and the rebuild couldn't pause a sprint.
-
-</ProseGroup>
-
-<Trio captions={["Amica.com before the relaunch", "The old quote card", "The old photography"]}>
-  <Fragment slot="one"><Mock kind="browser" src={legacyHome} alt="Amica.com before the relaunch, with a purple call to action" url="amica.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={legacyCard} alt="The old quote card with a purple Get a Quote button" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={legacyPhoto} alt="The old hero photo: a family in their kitchen" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The approach.
-
-Tokens name what you paint, not where, so one button works on light and dark. The quote flow runs on the same parts, start to finish.
-
-</ProseGroup>
-
-<Trio captions={["One button, light and dark", "The new quote card", "Quoting, step by step"]}>
-  <Fragment slot="one"><Mock kind="plain" src={lightDark} alt="The same headline, link and button on a light and a dark panel" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={quoteCard} alt="The new quote card: product, ZIP code and Start my quote" /></Fragment>
-  <Fragment slot="three"><Mock kind="plain" src={quoteStep} alt="Quote flow, Vehicle Info step, under its progress bar" /></Fragment>
-</Trio>
-
-<ProseGroup>
-
-## The outcome.
-
-Amica relaunched on the system in October 2026, built to WCAG 2.1 AA, on Adobe Experience Manager and React.
-
-</ProseGroup>
-
-<Trio captions={["The auto insurance page", "Auto and home, quoted together", "The bundle quote on a phone"]}>
-  <Fragment slot="one"><Mock kind="browser" src={autoPage} alt="Amica auto insurance page: a driver at the wheel, the quote card beside him" url="amica.com" /></Fragment>
-  <Fragment slot="two"><Mock kind="plain" src={quoteBundle} alt="Quote summary: a house and car illustration over the auto and home prices" /></Fragment>
-  <Fragment slot="three"><Mock kind="phone" src={quoteSummaryMobile} alt="Quote summary on a phone" /></Fragment>
-</Trio>
+<Gallery title="Product pages">
+  <Panel kind="page" src={pageAuto} alt="Amica auto insurance page: a driver at the wheel, the quote card beside him" />
+</Gallery>
 
 <Metrics items={[
   { value: '615', label: 'Pages on one system' },
