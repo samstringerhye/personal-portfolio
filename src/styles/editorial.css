@@ -553,6 +553,13 @@ html.ek .hero-bio {
   margin-inline: auto;
 }
 
+/* Wide enough on desktop that the bio sets in three lines, not four */
+@media (min-width: 64.0625rem) {
+  html.ek .hero-bio {
+    max-width: 48rem;
+  }
+}
+
 /* ── Work list: one centered column. Each project is just its art and a few lines of type, with
    plenty of white between projects ── */
 html.ek .work-list-section {
@@ -1069,14 +1076,15 @@ html.ek .case-study-body .image-pair-cell + .image-pair-cell {
   border-left: 0;
 }
 
-/* Meta: a bar the width of the viewport, labels over values, a hairline between each. The rules
-   reach the window's edges through border-image-outset, which adds no scrollable width */
+/* Meta: a bar the width of the viewport, a hairline above and below that reaches the window's edges
+   (border-image-outset adds no scrollable width), its four items centered in equal columns */
 html.ek .case-study-body .cs-hero-meta {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
+  gap: var(--space-4);
   margin-top: var(--space-5);
+  padding: var(--space-4) 0;
   border-style: solid;
   border-width: 1px 0;
   border-image: linear-gradient(var(--ek-hairline) 0 0) 1 / 1px 0 / 0 100vw;
@@ -1085,17 +1093,11 @@ html.ek .case-study-body .cs-hero-meta {
 html.ek .case-study-body .cs-meta-item {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-1);
-  padding: var(--space-4) var(--space-4);
+  padding: 0;
   border: 0;
-}
-
-html.ek .case-study-body .cs-meta-item:first-child {
-  padding-left: 0;
-}
-
-html.ek .case-study-body .cs-meta-item + .cs-meta-item {
-  border-left: 1px solid var(--ek-hairline);
+  text-align: center;
 }
 
 html.ek .case-study-body .cs-meta-label {
@@ -1108,19 +1110,10 @@ html.ek .case-study-body .cs-meta-value {
   font-size: var(--text-100);
 }
 
-/* Phones: 2 by 2, the dividers between the columns and the rows */
+/* Phones: 2 by 2, still centered */
 @media (max-width: 48rem) {
   html.ek .case-study-body .cs-hero-meta {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  html.ek .case-study-body .cs-meta-item:nth-child(odd) {
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  html.ek .case-study-body .cs-meta-item:nth-child(n + 3) {
-    border-top: 1px solid var(--ek-hairline);
   }
 }
 

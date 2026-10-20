@@ -94,13 +94,16 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
     // it shows the device's insides; reflections are enough at this size
     if ('transmission' in mat) mat.transmission = 0
     if (spec.glass.includes(mat.name)) { mat.transparent = true; mat.opacity = 0.06; mesh.renderOrder = 2 }
-    const paint = color[mat.name] ?? spec.finish?.[mat.name]
+    // A placement's own color on keys the spec would invert keeps their legends: the texture is tinted
+    const tint = spec.neutral?.includes(mat.name) ? color[mat.name] : undefined
+    if (tint) { mat.color.set(tint); mat.needsUpdate = true }
+    const paint = tint ? undefined : color[mat.name] ?? spec.finish?.[mat.name]
     if (paint) { mat.map = null; mat.color.set(paint); mat.needsUpdate = true }
     const satin = spec.matte?.[mat.name]
     if (satin !== undefined) { mat.normalMap = null; mat.roughness = satin; mat.needsUpdate = true }
     // Invert the texture's brightness in the shader, color dropped: light keys with dark legends
     // become dark keys with light legends, like a silver MacBook's
-    if (spec.neutral?.includes(mat.name)) {
+    if (spec.neutral?.includes(mat.name) && !tint) {
       mat.onBeforeCompile = shader => {
         shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n\tdiffuseColor.rgb = vec3( 0.04 + 0.86 * ( 1.0 - dot( diffuseColor.rgb, vec3( 0.2126, 0.7152, 0.0722 ) ) ) );')
       }

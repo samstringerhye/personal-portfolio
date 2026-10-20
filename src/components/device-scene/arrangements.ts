@@ -44,9 +44,11 @@ export interface Arrangement {
 // Finishes from the real lineups (Silver and the tablet's Graphite are the devices' own, shared.ts).
 // iPhone 17 Pro: the aluminum unibody, its antenna bands and the glass window on the back, which
 // runs a shade lighter
-const COSMIC_ORANGE = { Anodized_aluminum: '#b4521f', Plastic_antena: '#9c4719', Frosted_glass: '#c2612e' }
-// Galaxy S22 Ultra: the polished frame and the frosted back
-const BURGUNDY = { Bezel: '#5c2a31', Back_Cover_Glass: '#4a1d25', Rearcase: '#4a1d25' }
+const COSMIC_ORANGE = { Anodized_aluminum: '#a35f3c', Plastic_antena: '#8e5133', Frosted_glass: '#b0714c' }
+// Galaxy S22 Ultra model: the polished frame and the frosted back. Violet after the S26's Cobalt Violet
+const COBALT_VIOLET = { Bezel: '#5d5e98', Back_Cover_Glass: '#7778b0', Rearcase: '#7778b0' }
+// MacBook Neo in its dark blue: the aluminum, the trackpad, and the keys tinted a pale periwinkle
+const NEO_BLUE = { Anodized_aluminum: '#3a4155', Touchpad_tint: '#3a4155', Touchpad_glass: '#40485e', Keycap: '#8c98d4' }
 const GREEN = { Bezel: '#4f5b52', Back_Cover_Glass: '#3a463d', Rearcase: '#3a463d' }
 
 // Turns: [pitch, yaw, roll]. Every screen faces the camera: the arrangement's rest yaw plus a
@@ -86,7 +88,7 @@ export const ARRANGEMENTS = {
     label: 'CVS.com on a laptop, playing the homepage, the Shop menu and the Neutrogena brand page, with the mobile homepage on an iPhone floating in front of it',
     fill: 0.74,
     placements: [
-      { device: 'macbook-neo', screen: { kind: 'tour', name: 'cvs' }, at: [0, 0, 0], turn: [0, 0, 0] },
+      { device: 'macbook-neo', screen: { kind: 'tour', name: 'cvs' }, at: [0, 0, 0], turn: [0, 0, 0], finish: NEO_BLUE },
       { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'cvs-mobile' }, at: [0.23, -0.02, 0.15], turn: [0.04, 0.24, -0.08], float: true, scale: 1.45 },
     ],
   },
@@ -96,7 +98,7 @@ export const ARRANGEMENTS = {
     fill: 0.74,
     placements: [
       { device: 'galaxy-tab-s8-ultra', screen: { kind: 'tour', name: 'samsung' }, at: [0, 0, 0], turn: [0, 0, 0] },
-      { device: 'galaxy-s22-ultra', screen: { kind: 'tour', name: 'samsung-mobile' }, at: [0.17, -0.045, 0.08], turn: [0.04, 0.2, -0.1], float: true, finish: BURGUNDY },
+      { device: 'galaxy-s22-ultra', screen: { kind: 'tour', name: 'samsung-mobile' }, at: [0.17, -0.045, 0.08], turn: [0.04, 0.2, -0.1], float: true, finish: COBALT_VIOLET },
     ],
   },
   // The Fold open on the configurator, a Galaxy phone floating in front on the mobile version
