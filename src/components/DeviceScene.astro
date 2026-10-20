@@ -50,7 +50,9 @@ const arrangement = arrangementOf(scene)
   /* Screen tours (tours.ts): screens laid out at the device's width, a flat bezel until the model loads */
   .device-scene .device { position: relative; width: var(--layout-w); aspect-ratio: var(--aspect); container-type: inline-size; }
   .device-scene:not(.is-3d) .device-scene-host:not([data-device="iphone-17-pro"]) .device { width: min(76%, calc(80cqh * var(--aspect))); border-radius: 1.2cqw; box-shadow: 0 0 0 1.6cqw #111; }
-  .device-scene .device:not(.phone) .screen { position: relative; width: 100%; height: 100%; overflow: hidden; }
+  /* clip-path as well as overflow: a page mid-slide is its own layer, which overflow alone lets past
+     the screen's edge */
+  .device-scene .device:not(.phone) .screen { position: relative; width: 100%; height: 100%; overflow: hidden; clip-path: inset(0 round 0 0 var(--screen-radius, 0px) var(--screen-radius, 0px)); }
   .device-scene .device:not(.phone):not(.home) .screen { background: #fff; }
   .device-scene .shot { position: absolute; inset: 0 0 auto 0; }
   /* Website tours in their browser (browser.ts): the toolbar and status bar in flow above the page,
@@ -117,9 +119,13 @@ const arrangement = arrangementOf(scene)
   /* Rounded like each display (in its layout pixels) so the black stays inside the body's corners */
   .device-scene.is-3d .device[data-device="macbook-neo"] { border-radius: 14px; }
   .device-scene.is-3d .device[data-device="ipad-mini-6"] { border-radius: 40px; }
-  .device-scene.is-3d .device[data-device="galaxy-z-fold8"] { border-radius: 36px; }
+  /* The Galaxy tablet's and the Fold's display corners are tighter than their bodies': the black
+     stays tight to fill them, and the page inside is rounded to follow the body, the black reading
+     as bezel. The Fold's panel also runs under its frame, so its page is inset to the opening */
+  .device-scene.is-3d .device[data-device="galaxy-z-fold8"] { border-radius: 16px; --screen-radius: 34px; padding: 22px; }
   .device-scene.is-3d .device[data-device="galaxy-s22-ultra"] { border-radius: 14px; }
-  .device-scene.is-3d .device[data-device="galaxy-tab-s8-ultra"] { border-radius: 44px; }
+  .device-scene.is-3d .device[data-device="galaxy-tab-s8-ultra"] { border-radius: 16px; --screen-radius: 46px; }
+  .device-scene.is-3d .device.web > :first-child { border-radius: var(--screen-radius, 0px) var(--screen-radius, 0px) 0 0; }
 
   /* The MyFrontier phone (myfrontier.ts). Flat fallback: fit the stage. In 3D the model supplies
      the band and bezel */

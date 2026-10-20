@@ -262,7 +262,7 @@
     },
     "scenes": {
       "myfrontier": {
-        "restYaw": -0.1,
+        "restYaw": 0,
         "restPitch": 0.06
       },
       "whataburger": {

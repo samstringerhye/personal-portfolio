@@ -51,15 +51,15 @@ const GREEN = { Bezel: '#4f5b52', Back_Cover_Glass: '#3a463d', Rearcase: '#3a463
 // Turns: [pitch, yaw, roll]. Every screen faces the camera: the arrangement's rest yaw plus a
 // device's own stays within about ±0.3, so no screen is seen edge on
 export const ARRANGEMENTS = {
-  // Three phones fanned out from the one in the middle, two Silver and one Cosmic Orange: the tour in
+  // Three phones fanned out evenly from the one in the middle, two Silver and one Cosmic Orange: the tour in
   // front, the dashboard and a bill floating either side
   myfrontier: {
     label: 'The MyFrontier app on three iPhones fanned out: the middle one plays a tour of signing in, paying a bill and checking a support order, with the dashboard and a bill floating either side',
     fill: 0.76,
     placements: [
       { device: 'iphone-17-pro', screen: { kind: 'myfrontier' }, at: [0, 0, 0.035], turn: [0, 0, 0] },
-      { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'dashboard-1' }, at: [-0.074, -0.008, -0.01], turn: [0.02, 0.36, 0.13], float: true },
-      { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'bill-pay-1' }, at: [0.074, -0.008, -0.01], turn: [0.02, -0.16, -0.13], float: true, finish: COSMIC_ORANGE },
+      { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'dashboard-1' }, at: [-0.078, -0.008, -0.01], turn: [0.02, 0.26, 0.12], float: true },
+      { device: 'iphone-17-pro', screen: { kind: 'myfrontier-still', shot: 'bill-pay-1' }, at: [0.078, -0.008, -0.01], turn: [0.02, -0.26, -0.12], float: true, finish: COSMIC_ORANGE },
     ],
   },
   // An orange phone with the icon floating in front, a silver one standing behind it
@@ -86,7 +86,7 @@ export const ARRANGEMENTS = {
     fill: 0.74,
     placements: [
       { device: 'macbook-neo', screen: { kind: 'tour', name: 'cvs' }, at: [0, 0, 0], turn: [0, 0, 0] },
-      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'cvs-mobile' }, at: [0.2, -0.04, 0.11], turn: [0.04, 0.24, -0.08], float: true, scale: 1.45 },
+      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'cvs-mobile' }, at: [0.23, -0.02, 0.15], turn: [0.04, 0.24, -0.08], float: true, scale: 1.45 },
     ],
   },
   // A Galaxy tablet, a Galaxy phone floating in front on the mobile homepage
