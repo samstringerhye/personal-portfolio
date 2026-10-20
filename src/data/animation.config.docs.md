@@ -99,7 +99,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.phone.swayPeriod` | seconds | `2.6` | Idle sway period |
 | `workCards.phone.follow` | 0–1 | `0.06` | Share of the distance to the target angle covered each frame while scrolling (reduced motion holds the rest angle) |
 | `workCards.phone.lensMm` | mm | `100` | Camera focal length, full-frame equivalent. Shorter shows more perspective |
-| `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
+| `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Air M2 `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
 | `workCards.scenes.<scene>.restYaw` / `restPitch` | radians | see below | Rest angle per arrangement, over its lead device's: MyFrontier `0` / `0.06` (the fan faces the camera, even on both sides), Whataburger `-0.2` / `0.06`, Samsung.com `-0.28` / `0.08` |
 | `workCards.float.bob` / `period` / `wobble` | m / s / rad | `0.004` / `4.6` / `0.025` | Floating devices in the arrangements bob this high, this slowly, leaning a touch as they go |
 | `workCards.float.drift` | m | `0` | A floating device starts this far below its place and drifts up as its card scrolls in; 0 keeps every device in its place, so nothing rises into frame |
@@ -221,7 +221,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 ## workCards.tours (device-scene/tours.ts)
 
-The CVS.com (MacBook Neo), Amica.com (MacBook Air 15), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6) card tours, in seconds. Each tour's steps are listed in `tours.ts`; the keys below are the names those steps use. Reduced motion skips the tours and holds on the first screen.
+The CVS.com (MacBook Air M2), Amica.com (MacBook Air 15), Samsung.com (Galaxy Z Fold8) and Bespoke (iPad mini 6) card tours, in seconds. Each tour's steps are listed in `tours.ts`; the keys below are the names those steps use. Reduced motion skips the tours and holds on the first screen.
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|

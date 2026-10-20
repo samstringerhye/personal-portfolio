@@ -1,6 +1,6 @@
 // Shared by the main thread and the renderer, kept apart so importing it doesn't pull in three.js
 
-export type DeviceName = 'iphone-17-pro' | 'macbook-neo' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8' | 'galaxy-s22-ultra' | 'galaxy-tab-s8-ultra'
+export type DeviceName = 'iphone-17-pro' | 'macbook-air-m2' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8' | 'galaxy-s22-ultra' | 'galaxy-tab-s8-ultra'
 
 export interface DeviceSpec {
   /** GLB under /motion/models/ */
@@ -44,11 +44,13 @@ export const DEVICES: Record<DeviceName, DeviceSpec> = {
     finish: { Anodized_aluminum: '#d9dbdd', Frosted_glass: '#e3e4e6' },
     matte: { Anodized_aluminum: 0.32, Frosted_glass: 0.45, Plastic_antena: 0.4 },
   },
-  // Ranguel, CC BY 4.0. Lid at 90°, display facing the keyboard
-  'macbook-neo': {
-    model: 'macbook-neo.glb', display: 'material', glass: ['Display_glass'], front: 1, roll: 0, screenWidth: 1280, realWidth: 0.287, aspect: 1.6,
-    finish: { Anodized_aluminum: '#c4c7cc', Touchpad_tint: '#c4c7cc', Touchpad_glass: '#c4c7cc' },
-    neutral: ['Keycap'],
+  // rtql8d, CC BY 4.0. Lid at 90°, display facing the keyboard; Midnight as modeled. The file's
+  // display glass covers the whole lid, so scripts/models/air-m2-display.mjs adds a screen-sized
+  // Display set into it
+  'macbook-air-m2': {
+    model: 'macbook-air-m2.glb', display: 'Display', glass: [], front: 1, roll: 0, screenWidth: 1280, realWidth: 0.285, aspect: 1.539,
+    // The glass carries a baked wallpaper that showed in the bezel: plain black glass instead
+    finish: { 'Glass_-_Heavy_Color': '#050608' },
   },
   // akshatmittal, CC BY 4.0. Material names are scrambled in the file: the display is VNZklasZKSWjWUk,
   // its lid open about 110°. Space gray as modeled
