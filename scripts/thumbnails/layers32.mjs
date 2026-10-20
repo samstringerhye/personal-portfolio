@@ -113,13 +113,13 @@ async function place(cut, bbox, zone, out, margin = 160) {
   console.log('myfrontier-app-subject-32.png')
 }
 
-// Amica: white logo, centered
+// Amica: logo in Amica ink, centered on the gray card
 {
   const LOGO_W = 900
   let svg = readFileSync(`${repo}/public/_protected-embeds/amica-prototype/icons/amica-logo.svg`, 'utf8')
   const vb = svg.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number)
   const logoH = Math.round(LOGO_W * vb[3] / vb[2])
-  svg = svg.replace(/<svg[^>]*>/, `<svg xmlns="http://www.w3.org/2000/svg" width="${LOGO_W}" height="${logoH}" viewBox="${vb.join(' ')}" fill="none">`).replace(/var\(--fill-0,\s*white\)/g, '#FFFFFF')
+  svg = svg.replace(/<svg[^>]*>/, `<svg xmlns="http://www.w3.org/2000/svg" width="${LOGO_W}" height="${logoH}" viewBox="${vb.join(' ')}" fill="none">`).replace(/var\(--fill-0,\s*white\)/g, '#231F20')
   const logo = await sharp(Buffer.from(svg), { density: 600 }).resize(LOGO_W, logoH).png().toBuffer()
   await sharp({ create: { width: W, height: H, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite([{ input: logo, gravity: 'center' }]).png({ compressionLevel: 9 }).toFile(A('amica-design-system/amica-design-system-subject-32.png'))

@@ -1,21 +1,22 @@
 ---
-title: "Samsung.com Global Navigation"
+title: "Samsung.com Redesign"
 client: "Samsung"
 year: 2020
 role: "Senior Designer"
 agency: "Razorfish"
-tagline: "Design system and global navigation for Samsung.com across 12+ markets."
+tagline: "A six-month redesign of Samsung.com across 12+ markets: page layouts, design system components and the global navigation."
 thumbnail: "../../assets/work/samsung-redesign/samsung-redesign-thumbnail-32.jpeg"
 thumbnailLayers:
   subject: "../../assets/work/samsung-redesign/samsung-redesign-subject-32.png"
-  background: "#F5F5F5"
+  background: "var(--ek-card)"
   heroOffset: 0.086
   subjectBox: { top: 0.223, right: 0.773, bottom: 0.597, left: 0.227 }
   frames:
     - "../../assets/work/samsung-redesign/samsung-redesign-subject-32.png"
     - "../../assets/work/samsung-redesign/samsung-redesign-frame-1.png"
 heroImageAlt: "Samsung.com redesign showing global navigation and product pages across desktop and mobile"
-thumbnailAlt: "Samsung.com global navigation open on Mobile, listing Featured, Smartphones and Tablets beside the tablet lineup"
+thumbnailAlt: "The redesigned Samsung.com on a Galaxy tablet and phone: the homepage and a category page on the tablet, the Galaxy S20 homepage hero on the phone"
+thumbnailScene: "samsung"
 heroImage: "../../assets/work/samsung-redesign/revamp-kv.jpg"
 featured: true
 sortOrder: 5
@@ -27,6 +28,7 @@ import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Carousel from '../../components/Carousel.astro'
 import Figure from '../../components/Figure.astro'
+import Device from '../../components/Device.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
 import ZigzagSection from '../../components/ZigzagSection.astro'
 import uiMosaicOverviewSrc from '../../assets/work/samsung-redesign/revamp-ui-mosaic.jpg'
@@ -41,7 +43,7 @@ import globalNavigationDesktopSrc from '../../assets/work/samsung-redesign/samsu
 
 <ProseGroup>
 
-<p class="cs-intro">I set the visual direction for Samsung.com's global navigation, the menu every shopper in 12+ markets uses to find a product. I was a Senior Designer on a twelve-designer, six-month redesign, and I also built page layouts and contributed components to the design system. The GNB was the hardest problem and took most of my time.</p>
+<p class="cs-intro">I was a Senior Designer on the Samsung.com redesign: twelve designers, six months, 12+ markets. I designed layouts for the homepage and the product detail, category and family pages, contributed components to the design system, and set the visual direction for the global navigation, the menu every shopper uses to find a product. The GNB was the hardest problem and took most of my time.</p>
 
 </ProseGroup>
 
@@ -85,8 +87,8 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 </ZigzagSection>
 
 <ImagePair leftCaption="Product category: hero, subcategories, then best sellers" rightCaption="Product detail: color and carrier picked beside the product">
-  <Fragment slot="left"><Image src={productCategoryPageSrc} alt="Washers and dryers category page with hero, subcategories, and best sellers" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
-  <Fragment slot="right"><Image src={productDetailZoomSrc} alt="Galaxy A50 product detail with color and carrier options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+  <Fragment slot="left"><Device kind="laptop" page><Image src={productCategoryPageSrc} alt="Washers and dryers category page with hero, subcategories, and best sellers" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
+  <Fragment slot="right"><Device kind="laptop"><Image src={productDetailZoomSrc} alt="Galaxy A50 product detail with color and carrier options" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Device></Fragment>
 </ImagePair>
 
 <Carousel label="Samsung product pages">
@@ -107,7 +109,7 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 
 <ZigzagSection reversed>
   <Fragment slot="media">
-    <Image src={homepageFullPageSrc} alt="Samsung.com homepage full page" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
+    <Device kind="laptop" page><Image src={homepageFullPageSrc} alt="Samsung.com homepage full page" format="webp" sizes="(max-width: 768px) 100vw, 50vw" /></Device>
   </Fragment>
   <ProseGroup>
 
@@ -121,19 +123,27 @@ Samsung.com's navigation had accumulated complexity from years of market-by-mark
 <ImageGrid columns={2}>
 
 <Figure caption="Product detail: built for purchase confidence">
+<Device kind="laptop" page>
 ![Samsung.com product detail full page](../../assets/work/samsung-redesign/revamp-pd.jpg)
+</Device>
 </Figure>
 
 <Figure caption="Product category: holds catalogs of very different sizes per market">
+<Device kind="laptop" page>
 ![Samsung.com product category full page](../../assets/work/samsung-redesign/revamp-pcd.jpg)
+</Device>
 </Figure>
 
 <Figure caption="Product family: one line, every model">
+<Device kind="laptop" page>
 ![Samsung.com product family full page](../../assets/work/samsung-redesign/revamp-pfs.jpg)
+</Device>
 </Figure>
 
 <Figure caption="Homepage: built for discovery">
+<Device kind="laptop" page>
 ![Samsung.com homepage full page](../../assets/work/samsung-redesign/revamp-hp.jpg)
+</Device>
 </Figure>
 
 </ImageGrid>

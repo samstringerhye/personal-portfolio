@@ -165,6 +165,38 @@ export function emptyLens(): Lens {
   return { x: 0, y: 0, r: 0, mag: 1, t0: 0, sign: 0, fade: 0, split: 0, dotRadius: 0 }
 }
 
+/** The pointer's push on the dots, in world units: dots within r of (x, y) move out and grow,
+    eased by strength (0–1). amount is this layer's share of the push (the RGB split) */
+export interface Push {
+  x: number
+  y: number
+  r: number
+  strength: number
+  push: number
+  grow: number
+  amount: number
+}
+
+/** The pointer's push as a damped spring: position and strength trail their targets, overshoot a
+    little and settle. Positions in CSS px over the canvas */
+export interface PointerSpring { x: number; y: number; vx: number; vy: number; strength: number; vs: number }
+
+export function newPointerSpring(): PointerSpring {
+  return { x: 0, y: 0, vx: 0, vy: 0, strength: 0, vs: 0 }
+}
+
+export function stepPointerSpring(p: PointerSpring, tx: number, ty: number, active: boolean, stiffness: number, damping: number): void {
+  // First touch: start at the pointer instead of springing in from the last place
+  if (active && p.strength === 0 && p.vs === 0) { p.x = tx; p.y = ty }
+  p.vx = (p.vx + (tx - p.x) * stiffness) * damping
+  p.vy = (p.vy + (ty - p.y) * stiffness) * damping
+  p.x += p.vx
+  p.y += p.vy
+  p.vs = (p.vs + ((active ? 1 : 0) - p.strength) * stiffness) * damping
+  p.strength = Math.max(0, p.strength + p.vs)
+  if (!active && p.strength < 0.002 && Math.abs(p.vs) < 0.002) { p.strength = 0; p.vs = 0 }
+}
+
 let placedX = 0
 let placedY = 0
 
@@ -192,13 +224,30 @@ export function updateDots(
   waveSpeed: number, propagation: number, waveSharpness: number,
   waveAmplitude: number, waveFrequency: number, baseScale: number, twistAmount: number,
   lens: Lens | null = null,
+  push: Push | null = null,
 ): void {
   const r2 = lens ? lens.r * lens.r : 0
+  const pr2 = push && push.strength > 0 ? push.r * push.r : 0
   for (let i = 0; i < total; i++) {
     placeDot(posX[i], posY[i], dist[i], time, waveSpeed, propagation, waveSharpness, waveAmplitude, waveFrequency, baseScale, twistAmount)
     let x = placedX
     let y = placedY
     let s = dotScales[i]
+    if (pr2) {
+      const dx = x - push!.x
+      const dy = y - push!.y
+      const d2 = dx * dx + dy * dy
+      if (d2 < pr2 && d2 > 1e-9) {
+        const d = Math.sqrt(d2)
+        // Smoothstep falloff to the rim
+        let f = 1 - d / push!.r
+        f = f * f * (3 - 2 * f) * push!.strength
+        const out = f * push!.push * push!.r * push!.amount / d
+        x += dx * out
+        y += dy * out
+        s *= 1 + f * push!.grow
+      }
+    }
     if (lens) {
       const dx = x - lens.x
       const dy = y - lens.y

@@ -8,21 +8,22 @@ tagline: "Re-architecting the foundation under a 615-page design system while th
 thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
 thumbnailLayers:
   subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
-  background: "#00A88F"
+  background: "var(--ek-card)"
   heroOffset: 0
   subjectBox: { top: 0.406, right: 0.725, bottom: 0.594, left: 0.275 }
 heroImage: "../../assets/work/amica-design-system/hero.png"
 heroImageAlt: "Amica.com homepage in the redesigned teal brand palette, showing the ambient hero, Trustpilot rating, and quote-start widget"
-thumbnailAlt: "Amica logo in white on Amica teal"
+thumbnailAlt: "Amica logo"
+thumbnailScene: "amica"
 thumbnailText: "dark"
 featured: true
 sortOrder: 0
-passwordProtected: true
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
 ---
 import Meta from '../../components/Meta.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
+import Device from '../../components/Device.astro'
 import Carousel from '../../components/Carousel.astro'
 import ImageGrid from '../../components/ImageGrid.astro'
 import TokenTiers from '../../components/amica/TokenTiers.astro'
@@ -58,7 +59,9 @@ I joined four sprints into a rescue: leadership had been split between two peopl
 <ImageGrid columns={1}>
 
 <Figure caption="Amica.com before the October 2026 relaunch, running on the library I inherited">
+<Device kind="laptop">
 ![Amica.com homepage before the relaunch, with a purple call-to-action and legacy color palette](../../assets/work/amica-design-system/proof/amica-legacy-homepage.png)
+</Device>
 </Figure>
 
 </ImageGrid>

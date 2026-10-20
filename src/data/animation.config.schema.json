@@ -131,6 +131,19 @@
             "maxDpr":        { "type": "number", "minimum": 0.5, "maximum": 3, "description": "Max device pixel ratio cap" },
             "cmyStagger":    { "$ref": "#/definitions/stagger", "description": "Delay between CMY color channels in hero dot wave (seconds)" },
             "accentOpacity": { "$ref": "#/definitions/opacity01", "description": "Opacity of accent color dot layers (0=invisible, 1=fully opaque)" },
+            "pointer": {
+              "type": "object",
+              "description": "Dots react to the pointer: pushed out and swollen near it, the red, green and blue layers pushed apart",
+              "properties": {
+                "radius": { "type": "number", "minimum": 0, "description": "Reach around the pointer, CSS px" },
+                "push": { "type": "number", "description": "Furthest a dot is pushed out, as a share of the radius" },
+                "grow": { "type": "number", "description": "Extra size at the pointer (1 doubles a dot)" },
+                "split": { "type": "number", "description": "How much more the red layer is pushed than green, and blue less" },
+                "stiffness": { "type": "number", "minimum": 0, "maximum": 1, "description": "Spring pull toward the pointer (and in or out as it enters or leaves), per frame" },
+                "damping": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the spring's speed kept each frame; lower settles sooner, higher bounces more" }
+              },
+              "additionalProperties": false
+            },
             "bgColor":       { "oneOf": [{ "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }, { "$ref": "#/definitions/tokenRef" }], "description": "Canvas background color (hex or token $ref)" }
           },
           "additionalProperties": false
@@ -287,18 +300,103 @@
         "flipFade": { "$ref": "#/definitions/duration", "description": "Crossfade between frames" },
         "phone": {
           "type": "object",
-          "description": "3D phone on coded work cards (PhoneScene). Angles in radians",
+          "description": "3D device on coded work cards (DeviceScene): motion shared by every device. Angles in radians",
           "properties": {
             "restYaw": { "type": "number", "description": "Turn at rest; negative shows the left side" },
             "restPitch": { "type": "number", "description": "Tilt at rest; positive leans the top back" },
-            "pointerYaw": { "type": "number", "description": "Turn across the full width of the window" },
-            "pointerPitch": { "type": "number", "description": "Tilt across the full height of the window" },
+            "dragYaw": { "type": "number", "description": "Turn for a drag across the full width of the device's box" },
+            "dragPitch": { "type": "number", "description": "Tilt for a drag across the full height of the device's box" },
+            "dragPitchLimit": { "type": "number", "minimum": 0, "description": "Furthest a drag tilts the device either way from its rest" },
+            "dragReturn": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the way back to rest covered each frame after a drag" },
+            "parallax": { "type": "number", "description": "Device offset per pixel the row sits from the viewport's center (scroll parallax)" },
             "scrollPitch": { "type": "number", "description": "Tilt from the card's place in the viewport, bottom to top" },
             "sway": { "type": "number", "description": "Idle turn amplitude" },
             "swayPeriod": { "$ref": "#/definitions/duration", "description": "Idle sway period" },
             "follow": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of the distance to the target angle covered each frame" },
             "lensMm": { "type": "number", "minimum": 10, "description": "Camera focal length, full-frame equivalent (vertical field of view on a 24mm sensor)" }
           },
+          "additionalProperties": false
+        },
+        "devices": {
+          "type": "object",
+          "description": "Rest angle per device on coded cards (DeviceScene), in radians; devices not listed use phone.restYaw and phone.restPitch",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "restYaw": { "type": "number" },
+              "restPitch": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "scenes": {
+          "type": "object",
+          "description": "Rest angle per arrangement (device-scene/arrangements.ts), in radians; overrides its lead device's",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "restYaw": { "type": "number" },
+              "restPitch": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "float": {
+          "type": "object",
+          "description": "Floating devices in the arrangements (device-scene/arrangements.ts): their bob, and how they drift up into place as the card scrolls in",
+          "properties": {
+            "bob": { "type": "number", "minimum": 0, "description": "Bob height, meters" },
+            "period": { "$ref": "#/definitions/duration", "description": "One bob, seconds" },
+            "wobble": { "type": "number", "description": "Lean that goes with the bob, radians" },
+            "drift": { "type": "number", "minimum": 0, "description": "How far below its place a floating device starts, meters" },
+            "enterFrom": { "type": "number", "description": "Where the card's center is (share of the viewport's height from the top) when the drift starts" },
+            "enterTo": { "type": "number", "description": "Where it is when the device has arrived" }
+          },
+          "additionalProperties": false
+        },
+        "deviceNav": {
+          "type": "object",
+          "description": "A device carried between its homepage card and case study hero (device-scene/mount.ts, global.css)",
+          "properties": {
+            "move": { "$ref": "#/definitions/duration", "description": "Device gliding to its new place" },
+            "fadeOut": { "$ref": "#/definitions/duration", "description": "Outgoing page fading out" },
+            "fadeIn": { "$ref": "#/definitions/duration", "description": "Incoming page fading in" },
+            "fadeInDelay": { "$ref": "#/definitions/duration", "description": "Wait before the incoming page fades in" }
+          },
+          "additionalProperties": false
+        },
+        "tours": {
+          "type": "object",
+          "description": "Screen tours on the CVS.com, Amica.com, Samsung.com and Bespoke cards (device-scene/tours.ts). Seconds",
+          "properties": {
+            "moves": {
+              "type": "object",
+              "description": "Transition durations shared by every tour",
+              "additionalProperties": { "$ref": "#/definitions/duration" }
+            }
+          },
+          "additionalProperties": {
+            "type": "object",
+            "description": "One tour's holds and scrolls, keyed by the step names in tours.ts",
+            "additionalProperties": { "$ref": "#/definitions/duration" }
+          }
+        },
+        "myfrontier": {
+          "type": "object",
+          "description": "The MyFrontier card's app tour (device-scene/myfrontier.ts). Seconds",
+          "properties": {
+            "moves": {
+              "type": "object",
+              "description": "Transition durations",
+              "additionalProperties": { "$ref": "#/definitions/duration" }
+            },
+            "holds": {
+              "type": "object",
+              "description": "Pauses between steps, in tour order",
+              "additionalProperties": { "$ref": "#/definitions/duration" }
+            }
+          },
+          "required": ["moves", "holds"],
           "additionalProperties": false
         }
       },

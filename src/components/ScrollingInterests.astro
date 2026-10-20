@@ -58,6 +58,16 @@ const dg = animations.dotGrid
     animation: dot-drift 2s linear infinite;
   }
 
+  /* The dots fade out toward the top and bottom of the band. A fixed overlay in the page color, not
+     a mask on the drifting dots, so the fade stays put while they move; the rows sit above it */
+  .interests-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--color-bg-primary), transparent 30%, transparent 70%, var(--color-bg-primary));
+    pointer-events: none;
+  }
+
   @keyframes dot-drift {
     from { transform: translate(0, 0); }
     to { transform: translate(calc(-1 * var(--dotSpacing)), calc(-1 * var(--dotSpacing))); }
@@ -72,6 +82,7 @@ const dg = animations.dotGrid
 
   .interests-row {
     position: relative;
+    z-index: 1;
     overflow: hidden;
     cursor: default;
   }

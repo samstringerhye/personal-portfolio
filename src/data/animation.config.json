@@ -35,7 +35,15 @@
       "zoom": 20,
       "maxDpr": 2,
       "cmyStagger": 0.03,
-      "accentOpacity": 0.6,
+      "accentOpacity": 1,
+      "pointer": {
+        "radius": 150,
+        "push": 0.22,
+        "grow": 0.4,
+        "split": 0.2,
+        "stiffness": 0.06,
+        "damping": 0.8
+      },
       "bgColor": { "$ref": "sys.color.bg.primary" }
     },
     "text": {
@@ -223,13 +231,134 @@
     "phone": {
       "restYaw": -0.46,
       "restPitch": 0.06,
-      "pointerYaw": 0.8,
-      "pointerPitch": 0.28,
+      "dragYaw": 3,
+      "dragPitch": 1.2,
+      "dragPitchLimit": 0.6,
+      "dragReturn": 0.05,
+      "parallax": 0.12,
       "scrollPitch": 0.22,
       "sway": 0.04,
       "swayPeriod": 2.6,
       "follow": 0.06,
-      "lensMm": 85
+      "lensMm": 100
+    },
+    "devices": {
+      "macbook-neo": {
+        "restYaw": -0.42,
+        "restPitch": 0.3
+      },
+      "macbook-air-15": {
+        "restYaw": -0.42,
+        "restPitch": 0.05
+      },
+      "ipad-mini-6": {
+        "restYaw": -0.42,
+        "restPitch": 0.08
+      },
+      "galaxy-z-fold8": {
+        "restYaw": -0.42,
+        "restPitch": 0.08
+      }
+    },
+    "scenes": {
+      "myfrontier": {
+        "restYaw": 0,
+        "restPitch": 0.06
+      },
+      "whataburger": {
+        "restYaw": -0.2,
+        "restPitch": 0.06
+      },
+      "samsung": {
+        "restYaw": -0.28,
+        "restPitch": 0.08
+      }
+    },
+    "float": {
+      "bob": 0.004,
+      "period": 4.6,
+      "wobble": 0.025,
+      "drift": 0,
+      "enterFrom": 0.95,
+      "enterTo": 0.45
+    },
+    "deviceNav": {
+      "move": 0.7,
+      "fadeOut": 0.3,
+      "fadeIn": 0.4,
+      "fadeInDelay": 0.15
+    },
+    "tours": {
+      "moves": {
+        "tap": 0.65,
+        "push": 0.7,
+        "fade": 0.6,
+        "drop": 0.45
+      },
+      "cvs": {
+        "home": 1.8,
+        "shop": 2.2,
+        "brand": 2.8
+      },
+      "samsung": {
+        "home": 1.6,
+        "homeScroll": 5,
+        "appliances": 1.2,
+        "category": 1.4,
+        "categoryScroll": 3.5,
+        "bestSellers": 2.2
+      },
+      "amica": {
+        "home": 2.2,
+        "quote": 1.4,
+        "quoteScroll": 3.5,
+        "empathy": 2.2
+      },
+      "bespoke": {
+        "depth": 2,
+        "colors": 2.2,
+        "summary": 2.8
+      }
+    },
+    "myfrontier": {
+      "moves": {
+        "tap": 0.65,
+        "signedIn": 0.76,
+        "push": 0.7,
+        "sheetUp": 0.56,
+        "sheetUpDim": 0.42,
+        "sheetDown": 0.46,
+        "sheetDownDim": 0.38,
+        "sheetDownDimDelay": 0.08,
+        "islandOpen": 0.52,
+        "islandClose": 0.38,
+        "refreshPull": 0.52,
+        "refreshSpin": 0.9,
+        "refreshSettle": 0.48,
+        "payWash": 0.7,
+        "matchCut": 0.64,
+        "relaunch": 0.6
+      },
+      "holds": {
+        "splash": 2.5,
+        "signIn": 0.9,
+        "faceIdScan": 2.5,
+        "home": 1.3,
+        "billPay": 1.1,
+        "methodSheet": 1,
+        "methodPicked": 0.5,
+        "dateSheet": 0.7,
+        "daySelected": 0.35,
+        "datePicked": 0.6,
+        "coin": 1.5,
+        "confirmation": 1.2,
+        "paymentSent": 1.9,
+        "support": 1.2,
+        "orderStatus": 2.2,
+        "refreshing": 0.9,
+        "statusUpdate": 2,
+        "statusFinal": 2.2
+      }
     }
   }
 }

@@ -422,9 +422,10 @@ function onBeforePreparation(e: Event) {
   lastNav = { from: event.from.pathname, to: event.to.pathname }
   if (reducedMotion()) return
 
-  // Forward: a homepage work card → its case study
+  // Forward: a homepage work card → its case study. Device cards carry their live device across
+  // instead (device-scene/mount.ts)
   const card = event.sourceElement?.closest<HTMLElement>('.work-list-card')
-  const cardMedia = card?.querySelector<HTMLElement>('.work-list-media[data-slug]')
+  const cardMedia = card?.querySelector<HTMLElement>('.work-list-media[data-slug]:not([data-scene])')
   if (cardMedia) {
     mode = 'forward'
     document.documentElement.dataset.flipNav = 'true'
