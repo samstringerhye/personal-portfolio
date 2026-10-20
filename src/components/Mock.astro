@@ -1,0 +1,144 @@
+---
+/**
+ * One visual for a case study card, set so it reads at a glance with room around it:
+ * - browser: a light browser window (traffic lights, the address in a pill) showing the top of the
+ *   page at 16:10
+ * - phone: a phone showing the top of the screen at 9:19.5
+ * - plain: the image as it is (a crop, an icon set), centered with room around it
+ * - bleed: a photo that fills the card edge to edge
+ */
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+interface Props {
+  kind: 'browser' | 'phone' | 'plain' | 'bleed'
+  src: ImageMetadata | string
+  alt: string
+  url?: string
+  /** Rendered width for the srcset's largest candidate */
+  width?: number
+}
+
+const { kind, src, alt, url, width = 1600 } = Astro.props
+const local = typeof src !== 'string'
+---
+
+<div class:list={['mock', `mock--${kind}`]}>
+  {kind === 'browser' ? (
+    <div class="mock-window">
+      <div class="mock-chrome" aria-hidden="true">
+        <span class="mock-dots"><i></i><i></i><i></i></span>
+        <span class="mock-url">{url}</span>
+      </div>
+      {local ? <Image src={src as ImageMetadata} alt={alt} width={width} format="webp" class="mock-img" /> : <img src={src as string} alt={alt} class="mock-img" loading="lazy" decoding="async" />}
+    </div>
+  ) : kind === 'phone' ? (
+    <div class="mock-phone">
+      {local ? <Image src={src as ImageMetadata} alt={alt} width={Math.min(width, 900)} format="webp" class="mock-img" /> : <img src={src as string} alt={alt} class="mock-img" loading="lazy" decoding="async" />}
+    </div>
+  ) : (
+    local ? <Image src={src as ImageMetadata} alt={alt} width={width} format="webp" class="mock-img" /> : <img src={src as string} alt={alt} class="mock-img" loading="lazy" decoding="async" />
+  )}
+</div>
+
+<style>
+  .mock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.75rem, 4vw, 4rem);
+    line-height: 0;
+  }
+
+  .mock--bleed {
+    padding: 0;
+  }
+
+  .mock :global(.mock-img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .mock--bleed :global(.mock-img) {
+    width: 100%;
+  }
+
+  .mock--plain :global(.mock-img) {
+    max-height: 32rem;
+    width: auto;
+    border-radius: 12px;
+  }
+
+  /* Browser: a light window with a soft shadow, the page's first screen */
+  .mock-window {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(11 33 64 / 0.06), 0 24px 48px -24px rgb(11 33 64 / 0.28);
+  }
+
+  .mock-chrome {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 36px;
+    padding: 0 14px;
+    background: #f3f4f6;
+    border-bottom: 1px solid #e6e8ec;
+    line-height: 1;
+  }
+
+  .mock-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mock-dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d4d7dd;
+  }
+
+  .mock-url {
+    flex: 1;
+    max-width: 18rem;
+    margin-inline: auto;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: #fff;
+    color: #5f6673;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .mock-window :global(.mock-img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Phone: a thin dark bezel, the screen's top */
+  .mock-phone {
+    width: min(100%, 15rem);
+    padding: 7px;
+    border-radius: 36px;
+    background: #15171c;
+    box-shadow: 0 24px 48px -24px rgb(11 33 64 / 0.4);
+  }
+
+  .mock-phone :global(.mock-img) {
+    width: 100%;
+    aspect-ratio: 9 / 19.5;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 29px;
+  }
+</style>

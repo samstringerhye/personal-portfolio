@@ -22,78 +22,78 @@ featured: true
 sortOrder: 3
 tags: ["Design System", "E-commerce", "Accessibility", "Typography"]
 ---
-import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import Figure from '../../components/Figure.astro'
-import Device from '../../components/Device.astro'
+import ImagePair from '../../components/ImagePair.astro'
 import Trio from '../../components/Trio.astro'
+import Mock from '../../components/Mock.astro'
 import Metrics from '../../components/Metrics.astro'
-import visualLanguageSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
 import iconSetSrc from '../../assets/work/cvs-redesign/frame-10558.png'
-import iconGridSrc from '../../assets/work/cvs-redesign/frame-10629.png'
-import homeSrc from '../../assets/work/cvs-redesign/frame-10669.png'
-import shopNavSrc from '../../assets/work/cvs-redesign/frame-10672.png'
-import brandPageSrc from '../../assets/work/cvs-redesign/group-10604.png'
-import componentsASrc from '../../assets/work/cvs-redesign/frame-10630.png'
-import componentsBSrc from '../../assets/work/cvs-redesign/frame-10608.png'
+import iconGridSrc from '../../assets/work/cvs-redesign/mock/icon-grid.webp'
+import componentASrc from '../../assets/work/cvs-redesign/mock/component-a.webp'
+import visualSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
+import shopPhone from '../../assets/work/cvs-redesign/mock/shop-phone.webp'
+import brandPhone from '../../assets/work/cvs-redesign/mock/brand-phone.webp'
+import summerCard from '../../assets/work/cvs-redesign/mock/summer-card.webp'
+import componentBSrc from '../../assets/work/cvs-redesign/mock/component-b.webp'
 
 <Meta client="CVS" role="Associate Design Director" agency="Razorfish" year={2022} />
 
 <ProseGroup>
 
-<p class="cs-intro">I led the design system behind CVS.com's shop redesign: one type scale, one icon grid and a component library for home, category, brand and product pages, built by five designers in three months.</p>
+<p class="cs-intro">I led the design system behind CVS.com's shop: one type scale, one icon grid and a component library, built by five designers in three months.</p>
 
 </ProseGroup>
 
-<Figure caption="The redesigned homepage on desktop and mobile">
-<Image src={homeSrc} alt="CVS.com homepage, desktop and mobile responsive layout" format="webp" sizes="100vw" />
-</Figure>
+<ImagePair leftCaption="The homepage" rightCaption="The homepage on a phone">
+  <Fragment slot="left"><Mock kind="browser" src="/motion/cvs/home.webp" alt="CVS.com homepage with a back-to-school promotion" url="cvs.com" /></Fragment>
+  <Fragment slot="right"><Mock kind="phone" src="/motion/cvs-mobile/home.webp" alt="CVS.com homepage on a phone" /></Fragment>
+</ImagePair>
 
 <ProseGroup>
 
 ## The challenge.
 
-CVS is both a pharmacy and a general retailer, and its shop grew through acquisitions: fractured type scales, inconsistent icons, components built one by one. The site was live with real customer volume, so nothing could start over.
+CVS is a pharmacy and a retailer, and its shop grew through acquisitions: fractured type, mixed icons, one-off components. The site was live, so nothing could start over.
 
 </ProseGroup>
 
-<Trio captions={["One brand stretched across pharmacy, beauty and everyday retail", "Shop navigation: pharmacy and retail categories in one structure", "Brand pages: each partner's look inside the CVS frame"]}>
-  <Fragment slot="one"><Image src={visualLanguageSrc} alt="CVS brand visual language: design elements and UI patterns" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="two"><Image src={shopNavSrc} alt="Shop navigation, category browsing on desktop and mobile" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
-  <Fragment slot="three"><Image src={brandPageSrc} alt="Brand page template, Skin Care / Neutrogena on mobile and desktop" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["One brand, pharmacy to beauty", "Pharmacy and retail, one menu", "Partner brands inside CVS"]}>
+  <Fragment slot="one"><Mock kind="plain" src={visualSrc} alt="CVS brand visual language: type, color, products and promotions" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={shopPhone} alt="CVS shop menu on a phone: Beauty, Baby and Child, Vitamins and every department" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={brandPhone} alt="Neutrogena's skin care page on CVS.com, on a phone" /></Fragment>
 </Trio>
 
 <ProseGroup>
 
 ## The approach.
 
-I started with the parts every page shares: one rational type scale, and every icon and illustration drawn on one grid in CVS red. Every component was designed for desktop and mobile at once, and pages are assembled from one library of composable parts.
+I started with what every page shares: one type scale, and every icon drawn on one grid in CVS red. Pages are assembled from one library of parts.
 
 </ProseGroup>
 
-<Trio captions={["Icons and illustrations, all in CVS red", "Every icon on the same construction grid", "Components: headlines, product cards and product tabs"]}>
-  <Fragment slot="one"><Image src={iconSetSrc} alt="Icon and illustration system, geometric shapes built for the CVS brand" format="webp" sizes="(max-width: 768px) 100vw, 60vw" /></Fragment>
-  <Fragment slot="two"><Image src={iconGridSrc} alt="Icon construction, grid-based build process for consistent sizing" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
-  <Fragment slot="three"><Image src={componentsASrc} alt="UI components including headlines, product cards, and product tabs" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["One icon family, in CVS red", "Every icon on one grid", "A product card"]}>
+  <Fragment slot="one"><Mock kind="plain" src={iconSetSrc} alt="CVS icon and illustration set, drawn in red" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={iconGridSrc} alt="A CVS sparkle icon on its construction grid" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={componentASrc} alt="A CVS product card component on a phone" /></Fragment>
 </Trio>
 
 <ProseGroup>
 
 ## The outcome.
 
-In three months the team delivered one type scale, one icon grid and a component library, so new pages are assembled from shared parts instead of built one component at a time.
+New pages are assembled from shared parts instead of built one component at a time.
 
 </ProseGroup>
 
-<Trio captions={["The shop menu, built from the library", "A brand page, assembled from shared components", "Components: pagination, brand modules and category navigation"]}>
-  <Fragment slot="one"><Device kind="laptop"><img src="/motion/cvs/shop.webp" alt="CVS.com with the Shop menu open: categories, featured and trending" width="1280" height="798" loading="lazy" decoding="async" /></Device></Fragment>
-  <Fragment slot="two"><Device kind="laptop"><img src="/motion/cvs/brand.webp" alt="A CVS.com brand page built from shared components" width="1280" height="821" loading="lazy" decoding="async" /></Device></Fragment>
-  <Fragment slot="three"><Image src={componentsBSrc} alt="UI components including pagination, branding elements, and category navigation" format="webp" sizes="(max-width: 768px) 100vw, 30vw" /></Fragment>
+<Trio captions={["The shop, built from the library", "A promotion module", "A beauty promotion"]}>
+  <Fragment slot="one"><Mock kind="browser" src="/motion/cvs/shop.webp" alt="CVS.com shop menu: categories, featured and trending" url="cvs.com" /></Fragment>
+  <Fragment slot="two"><Mock kind="plain" src={componentBSrc} alt="A CVS promotion module on a phone" /></Fragment>
+  <Fragment slot="three"><Mock kind="plain" src={summerCard} alt="A beauty promotion card: Get a glowing summer look" /></Fragment>
 </Trio>
 
 <Metrics items={[
-  { value: '4', label: 'Page types on one component library' },
+  { value: '4', label: 'Page types, one library' },
   { value: '5', label: 'Designers' },
   { value: '3', label: 'Months, on a live site' },
 ]} />

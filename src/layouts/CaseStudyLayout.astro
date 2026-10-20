@@ -225,6 +225,9 @@ const deviceHero = heroScene && !gate
       const ratios = Array.from(imgs).map(img => {
         // A laptop is as wide as its screen, whatever page it shows
         if (img.closest('.device-mock--laptop')) return 1.6
+        // Mockups set their own shape: a browser window is wide, a phone narrow
+        if (img.closest('.mock--browser')) return 1.8
+        if (img.closest('.mock--phone')) return 0.8
         const w = parseInt(img.getAttribute('width') ?? '') || img.naturalWidth
         const h = parseInt(img.getAttribute('height') ?? '') || img.naturalHeight
         return w && h ? w / h : 0
