@@ -1456,7 +1456,7 @@ html.ek .case-study-body > :is(.story, .gallery) {
 }
 
 html.ek .case-study-body > .story {
-  margin-top: var(--space-7);
+  margin-top: clamp(7rem, 14vw, 13rem);
   row-gap: var(--space-5);
 }
 
@@ -1465,11 +1465,12 @@ html.ek .case-study-body > .gallery {
 }
 
 html.ek .case-study-body > .story + .gallery {
-  margin-top: clamp(5rem, 9vw, 8rem);
+  margin-top: clamp(7rem, 14vw, 13rem);
 }
 
+/* The site's rule: facts and labels in the left 4 of 12 columns, text across the other 8 */
 html.ek .story-facts {
-  grid-column: 1 / 4;
+  grid-column: 1 / 5;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -1488,7 +1489,7 @@ html.ek .story-fact dd {
 }
 
 html.ek .story-text {
-  grid-column: 5 / 12;
+  grid-column: 5 / -1;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -1496,7 +1497,6 @@ html.ek .story-text {
 
 html.ek .case-study-body .story-lead {
   margin: 0;
-  max-width: 44rem;
   font-family: var(--font-serif);
   font-size: var(--text-300);
   font-weight: 300;
@@ -1508,7 +1508,6 @@ html.ek .story-part {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  max-width: var(--ek-prose);
 }
 
 html.ek .case-study-body .story-part h2 {
@@ -1541,8 +1540,7 @@ html.ek .case-study-body .gallery-title {
 }
 
 html.ek .case-study-body .gallery-note {
-  grid-column: 5 / 12;
-  max-width: var(--ek-prose);
+  grid-column: 5 / -1;
   margin: 0;
   font-size: var(--text-200);
   line-height: 1.45;
