@@ -634,8 +634,8 @@ html.ek .footer-link {
    visuals the other 8; one gap between sections, a smaller one inside them, and the homepage's type
    steps: 45px serif headings, 32px serif subheads, 22.5px lead, 16px body, 12px labels ── */
 html.ek .case-study-body {
-  --cs-section-gap: var(--space-8);
-  --cs-block-gap: var(--space-5);
+  --cs-section-gap: var(--ek-section);
+  --cs-block-gap: var(--space-6);
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--grid-gutter);
   width: 100%;
@@ -656,8 +656,9 @@ html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, script, style) {
   margin-top: 0;
 }
 
-/* A heading starts a section */
-html.ek .case-study-body > :is(.prose-group--headed, .zigzag-section) {
+/* A heading starts a section, as does the meta and intro row under the hero */
+html.ek .case-study-body > :is(.prose-group--headed, .zigzag-section, .cs-hero-meta),
+html.ek .case-study-body > .cs-hero-meta + .prose-group {
   margin-top: var(--cs-section-gap);
 }
 
