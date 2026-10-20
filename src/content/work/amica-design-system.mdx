@@ -4,7 +4,7 @@ client: "Amica"
 year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "Re-architecting the foundation under a 615-page design system while the team never stopped shipping."
+tagline: "The design system behind amica.com's October 2026 relaunch: 615 pages, light and dark, on two platforms."
 thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
 thumbnailLayers:
   subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
@@ -20,6 +20,7 @@ featured: true
 sortOrder: 0
 tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
 ---
+import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import Figure from '../../components/Figure.astro'
@@ -27,42 +28,42 @@ import ButtonStates from '../../components/amica/ButtonStates.astro'
 import Device from '../../components/Device.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import Metrics from '../../components/Metrics.astro'
-import TokenTiers from '../../components/amica/TokenTiers.astro'
-import BeforeAfterStats from '../../components/BeforeAfterStats.astro'
-import StatCallout from '../../components/amica/StatCallout.astro'
-import HeroMosaic from '../../components/amica/HeroMosaic.astro'
 import EmbeddedPrototype from '../../components/amica/EmbeddedPrototype.astro'
-import BrowserFrame from '../../components/amica/BrowserFrame.astro'
 import prototypeThumb from '../../assets/work/amica-design-system/prototype-v2/quote-thumbnail.jpg'
-import ambientHeroThumb from '../../assets/work/amica-design-system/prototype-v2/ambient-hero-thumbnail.jpg'
-import quoteFlyoutAddressSrc from '../../assets/work/amica-design-system/prototype-v2/quote-flyout-address-entry.png'
-import quoteFlyoutNotAvailableSrc from '../../assets/work/amica-design-system/prototype/quote-flyout-not-available.png'
+import homeDesktop from '../../assets/work/amica-design-system/figma/home-desktop.webp'
+import homeMobile from '../../assets/work/amica-design-system/figma/home-mobile.webp'
+import colorRule from '../../assets/work/amica-design-system/figma/color-rule.webp'
+import colorPrimitives from '../../assets/work/amica-design-system/figma/color-primitives.webp'
+import quoteSummary from '../../assets/work/amica-design-system/figma/quote-summary.webp'
+import coverAem from '../../assets/work/amica-design-system/figma/cover-aem.webp'
+import coverReact from '../../assets/work/amica-design-system/figma/cover-react.webp'
 
 <Meta client="Amica" role="Associate Design Director" agency="Razorfish" year={2026} />
 
 <ProseGroup>
 
-<p class="cs-intro">Amica relaunched amica.com on October 2, 2026, on a 615-page design system I led six designers to rebuild, with 3,044 broken references restored and no sprint paused.</p>
+<p class="cs-intro">Amica relaunched amica.com on October 2, 2026. I led six designers to rebuild the design system underneath it: 615 pages, one library, two platforms.</p>
 
 </ProseGroup>
 
-<HeroMosaic />
+<ImagePair leftCaption="The new homepage: a quote starts in the hero, the everyday tasks sit right under it" rightCaption="The same page on a phone">
+  <Fragment slot="left"><Device kind="laptop"><Image src={homeDesktop} alt="Amica.com homepage: a parent helping his son with a backpack in the kitchen, the Trustpilot rating and a quote form over it, quick links below" format="webp" sizes="(max-width: 768px) 100vw, 55vw" /></Device></Fragment>
+  <Fragment slot="right"><Device kind="phone"><Image src={homeMobile} alt="Amica.com homepage on mobile: the quote form under the hero photo" format="webp" sizes="(max-width: 768px) 100vw, 25vw" /></Device></Fragment>
+</ImagePair>
 
 <ProseGroup>
 
 ## The challenge.
 
-I joined four sprints into a rescue. The library was broken in ways no screenshot showed: no token system, components filed by page type, instances pointing at deleted masters. Indexing all 314,000 nodes found 3,044 flat references and 61 dead masters.
+The library behind the old site had no tokens. Color was hard-coded, dark mode meant a second copy of every component, and components were filed by page type. The rebuild had to happen without pausing a sprint.
 
 </ProseGroup>
 
-<Figure caption="Amica.com before the October 2026 relaunch, running on the library I inherited">
+<Figure caption="Amica.com before the relaunch, on the library I inherited">
 <Device kind="laptop">
 ![Amica.com homepage before the relaunch, with a purple call-to-action and legacy color palette](../../assets/work/amica-design-system/proof/amica-legacy-homepage.png)
 </Device>
 </Figure>
-
-<StatCallout number="314,000" label="Nodes indexed into one queryable database: every component, variable binding, color style, and off-library reference" />
 
 <ProseGroup>
 
@@ -72,54 +73,43 @@ I joined four sprints into a rescue. The library was broken in ways no screensho
 
 <ProseGroup>
 
-### Two tiers of color.
+### One color system for light and dark.
 
-Primitives sit hidden from pickers, and 54 semantic tokens name what you're painting, set for Light and Dark. Modes as variables let one component carry both, so Icon Button dropped from 80 variants to 60.
+Tokens name what you're painting, not where. A component reads the right token on any background, so one button works on light and dark, with no second copy.
 
 </ProseGroup>
 
-<TokenTiers />
+<Figure caption="The rule, from the system's documentation: the same elements on light and dark, and the token each one uses">
+<Image src={colorRule} alt="Two panels, light and dark green, each with a headline, supporting copy, a text link and a button, listing the color token behind every element" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Figure>
 
-<ButtonStates />
-
-<BeforeAfterStats
-  label='Amica design system before and after comparison'
-  theme="amica"
-  before={{
-    label: 'Before',
-    title: 'Inherited Library',
-    items: [
-      { title: '3,044 off-library references', detail: 'Some abandoned mid-migration, some never published' },
-      { title: '61 dead component masters', detail: 'Instances still on canvas with no live source' },
-      { title: 'No token system', detail: 'Hardcoded hex, duplicated into Primary Light / Primary Dark variants' },
-      { title: 'Deliverable-first organization', detail: '314,000 nodes grouped by page type, not component' },
-    ],
-  }}
-  after={{
-    label: 'After: rebuilt architecture',
-    title: 'Self-Contained System',
-    items: [
-      { title: 'One library behind every reference', detail: 'Every reference resolves back to the library' },
-      { title: '61 masters restored', detail: 'Zero visual regressions, verified by independent re-index' },
-      { title: 'Two-tier token architecture', detail: '54 semantic tokens across Light and Dark mode' },
-      { title: '209 component sets', detail: 'Composed freely across templates without new variants' },
-    ],
-  }}
-  stats={[
-    { value: 209, label: 'Component Sets' },
-    { value: 464, label: 'Local Variables' },
-    { value: 3044, label: 'References Restored' },
-    { value: 100, suffix: '%', label: 'Padding on Tokens' },
-  ]}
-/>
+<Figure caption="The primitives underneath: ten ramps the tokens point to, never used directly">
+<Image src={colorPrimitives} alt="Ten color ramps with hex values: teal, green, neutral, blue, red, orange, amber, purple, magenta and opacity" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Figure>
 
 <ProseGroup>
 
-### Proof in code.
+### Components that carry their own rules.
 
-A React prototype runs on the Figma tokens, and its quote flyout routes eight steps by real ZIP-based availability. A second prototype cuts broadcast footage into loop-ready hero clips.
+Each button carries its states, sizes and colors for light and dark. Icon Button's smallest sizes fall under the 44px touch target, so the component marks them desktop-only.
 
 </ProseGroup>
+
+<ButtonStates />
+
+<ProseGroup>
+
+### A quote flow built on it.
+
+The quote flow runs on the same parts, from the ZIP code in the homepage hero to the bundle summary.
+
+</ProseGroup>
+
+<Figure caption="The bundle quote: auto and home together, three auto packages side by side">
+<Device kind="laptop" page>
+<Image src={quoteSummary} alt="Quote summary: bundled options for auto and home with a total price, and Essential, Advantage and Signature auto packages compared" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Device>
+</Figure>
 
 <EmbeddedPrototype
   src="/work/amica-design-system/prototype"
@@ -130,39 +120,30 @@ A React prototype runs on the Figma tokens, and its quote flyout routes eight st
   thumbnailAlt="Amica home insurance product page in the prototype"
 />
 
-<ImagePair leftCaption="Quote flyout, ZIP detected" rightCaption="Quote flyout, auto unavailable for a Hawaii ZIP">
-  <Fragment slot="left"><BrowserFrame src={quoteFlyoutAddressSrc} alt="Quote flyout coverage picker with a ZIP code entered and location auto-detected as Forest Hills, NY" /></Fragment>
-  <Fragment slot="right"><BrowserFrame src={quoteFlyoutNotAvailableSrc} alt="Quote flyout picker with the auto option disabled for a ZIP code where auto insurance isn't sold online" /></Fragment>
-</ImagePair>
-
-<EmbeddedPrototype
-  src="/work/amica-design-system/ambient-hero"
-  title="Ambient hero video pipeline, live"
-  label="Live demo"
-  description="Desktop / mobile toggle, click to open"
-  thumbnail={ambientHeroThumb}
-  thumbnailAlt="Ambient hero video pipeline review tool, showing a cropped hero clip and the toggle bar"
-/>
-
 <ProseGroup>
 
-### Evidence over seniority.
+### Documented for two platforms.
 
-When the brand guide's 100% line height broke on real content, I backed the designer who flagged it, and we won the change on accessibility grounds.
+One system, two builds: Adobe Experience Manager for the marketing site and React for quoting and accounts, each with its own library and documentation.
 
 </ProseGroup>
+
+<ImagePair leftCaption="The AEM system documentation" rightCaption="The React system documentation">
+  <Fragment slot="left"><Image src={coverAem} alt="Cover of the AEM System Documentation file, white type on dark green" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+  <Fragment slot="right"><Image src={coverReact} alt="Cover of the React System Documentation file, dark type on mint" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
+</ImagePair>
 
 <ProseGroup>
 
 ## The outcome.
 
-Amica relaunched on the system on October 2, 2026. It ships as five Figma files built to WCAG 2.1 AA, used by Amica's email, quoting and media production teams.
+Amica relaunched on the system on October 2, 2026, built to WCAG 2.1 AA. A concept study before launch tested the direction with 500 people.
 
 </ProseGroup>
 
 <Metrics items={[
-  { value: '615', label: 'Pages on the rebuilt system' },
-  { value: '3,044', label: 'Broken references restored' },
-  { value: '62%', label: 'Rated it more trustworthy than the old site, in a concept study (n=500)' },
-  { value: '59%', label: 'Said it increased their intent to request a quote' },
+  { value: '615', label: 'Pages on one system' },
+  { value: '62%', label: 'Rated it more trustworthy than the old site' },
+  { value: '70%', label: 'Associated it with a premium carrier' },
+  { value: '59%', label: 'Said it raised their intent to request a quote' },
 ]} />
