@@ -26,8 +26,8 @@ import { Image } from 'astro:assets'
 import Meta from '../../components/Meta.astro'
 import ImagePair from '../../components/ImagePair.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import ZigzagSection from '../../components/ZigzagSection.astro'
 import Figure from '../../components/Figure.astro'
+import Metrics from '../../components/Metrics.astro'
 import brandVisualLanguageSrc from '../../assets/work/cvs-redesign/group-10624.jpg'
 import iconIllustrationSystemSrc from '../../assets/work/cvs-redesign/frame-10558.png'
 import iconConstructionSrc from '../../assets/work/cvs-redesign/frame-10629.png'
@@ -39,52 +39,64 @@ import uiComponentsPaginationSrc from '../../assets/work/cvs-redesign/frame-1060
 
 <ProseGroup>
 
-<p class="cs-intro">I led the design system behind CVS.com's shop redesign: one type scale, one icon grid, and a component library covering home, category, brand, and product pages. Five designers had three months, on a live site that couldn't be redesigned from scratch. I set the design direction and built composable parts instead of page-specific components, so teams could assemble what they needed.</p>
+<p class="cs-intro">I led the design system behind CVS.com's shop redesign: one type scale, one icon grid and a component library for home, category, brand and product pages, built by five designers in three months.</p>
 
 </ProseGroup>
 
 <ProseGroup>
 
-## The Problem
+## The challenge.
 
-CVS is both a pharmacy and a general retailer, so its shop serves a wider range of intent than most. It grew through acquisitions, not system thinking: fractured type scales, inconsistent icons, components built one by one. CVS.com was live with real customer volume, so I couldn't start over. I built shared parts that made every page downstream more consistent without breaking what was live.
+CVS is both a pharmacy and a general retailer, and its shop grew through acquisitions: fractured type scales, inconsistent icons, components built one by one. The site was live with real customer volume, so nothing could start over.
 
 </ProseGroup>
 
-<ZigzagSection>
-  <Fragment slot="media">
-    <Image src={brandVisualLanguageSrc} alt="Brand visual language showing CVS design elements and UI patterns" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
-  </Fragment>
-  <ProseGroup>
+<ProseGroup>
 
-  ## Type and Icons First
+## The approach.
 
-  Instead of designing a "homepage hero" or a "category card," I started with the parts every page shares. I built a type system on a rational scale, so every downstream component inherited consistency instead of engineering it in later. I drew every icon and illustration on one grid in CVS brand red, so a 16px icon and a 48px icon read as the same family, with no case-by-case adjustment.
+</ProseGroup>
 
-  </ProseGroup>
-</ZigzagSection>
+<ProseGroup>
+
+### Type and icons first.
+
+I started with the parts every page shares: one rational type scale, and every icon and illustration drawn on one grid in CVS red, so a 16px icon and a 48px icon read as one family.
+
+</ProseGroup>
+
+<Figure caption="The visual language the system was built from">
+<Image src={brandVisualLanguageSrc} alt="Brand visual language showing CVS design elements and UI patterns" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Figure>
 
 <ImagePair leftCaption="Icon and illustration set, all in CVS brand red" rightCaption="Every icon is drawn on the same construction grid">
   <Fragment slot="left"><Image src={iconIllustrationSystemSrc} alt="Icon and illustration system, geometric shapes built for the CVS brand" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
   <Fragment slot="right"><Image src={iconConstructionSrc} alt="Icon construction, grid-based build process for consistent sizing" format="webp" sizes="(max-width: 768px) 100vw, 40vw" /></Fragment>
 </ImagePair>
 
-<ZigzagSection reversed>
-  <Fragment slot="media">
-    <Image src={homepageResponsiveLayoutSrc} alt="CVS.com homepage, desktop and mobile responsive layout" format="webp" sizes="(max-width: 768px) 100vw, 50vw" />
-  </Fragment>
-  <ProseGroup>
+<ProseGroup>
 
-  ## Components & Templates
+### Desktop and mobile at once.
 
-  The component library covered homepage modules, product pages, and category navigation. I designed each piece for desktop and mobile from the start, instead of the usual desktop first and adapting after the fact.
+Every component was designed for both sizes from the start, not desktop first and adapted after.
 
-  </ProseGroup>
-</ZigzagSection>
+</ProseGroup>
+
+<Figure caption="Homepage: the same modules on desktop and mobile">
+<Image src={homepageResponsiveLayoutSrc} alt="CVS.com homepage, desktop and mobile responsive layout" format="webp" sizes="(max-width: 768px) 100vw, 60vw" />
+</Figure>
 
 <Figure caption="Shop navigation: the same category structure on desktop and mobile">
 ![Shop navigation, category browsing on desktop and mobile](../../assets/work/cvs-redesign/frame-10672.png)
 </Figure>
+
+<ProseGroup>
+
+### Pages from shared parts.
+
+Home, category, brand and product pages are assembled from one library of composable parts, not built from page-specific components.
+
+</ProseGroup>
 
 <Figure caption="Brand page template: Neutrogena's skin care page, assembled from shared components">
 ![Brand page template, Skin Care / Neutrogena on mobile and desktop](../../assets/work/cvs-redesign/group-10604.png)
@@ -97,16 +109,14 @@ CVS is both a pharmacy and a general retailer, so its shop serves a wider range 
 
 <ProseGroup>
 
-## What Shipped
+## The outcome.
 
-In three months, the team delivered one type scale, one icon grid, and a component library covering home, category, brand, and product pages. New pages could be assembled from shared parts instead of built one component at a time.
-
-</ProseGroup>
-
-<ProseGroup>
-
-## What I Learned
-
-The biggest lesson was restraint. On a live platform, the instinct is to redesign everything. Not breaking what shipped forced better thinking: build the smallest possible shared parts, and let consistency propagate through adoption rather than mandates. The teams that picked up the system fastest were the ones who felt the pain of the old fragmentation most. It removed decisions they were tired of making.
+In three months the team delivered one type scale, one icon grid and a component library, so new pages are assembled from shared parts instead of built one component at a time.
 
 </ProseGroup>
+
+<Metrics items={[
+  { value: '4', label: 'Page types on one component library' },
+  { value: '5', label: 'Designers' },
+  { value: '3', label: 'Months, on a live site' },
+]} />

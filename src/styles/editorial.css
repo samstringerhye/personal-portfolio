@@ -745,7 +745,8 @@ html.ek .footer-link {
 
 /* ── Case study: the homepage's 12 columns. A section's heading takes the left 4 and its text and
    visuals the other 8; one gap between sections, a smaller one inside them, and the homepage's type
-   steps: 45px serif headings, 32px serif subheads, 22.5px lead, 16px body, 12px labels ── */
+   steps, set larger for the short agency-style copy: 45px serif headings, 32px serif subheads and
+   32px lead, 22.5px body, 16px captions, 12px labels ── */
 html.ek .case-study-body {
   --cs-section-gap: var(--ek-section);
   --cs-block-gap: var(--space-6);
@@ -824,15 +825,15 @@ html.ek .case-study-body h3 {
 }
 
 html.ek .case-study-body :is(.prose-group, .zigzag-prose) :is(p, li) {
-  font-size: var(--text-100);
-  line-height: var(--line-height-normal);
+  font-size: var(--text-200);
+  line-height: 1.45;
   color: var(--color-text-primary);
   text-wrap: pretty;
 }
 
 html.ek .case-study-body .prose-group > .cs-intro {
-  font-size: var(--text-200);
-  line-height: 1.5;
+  font-size: var(--text-300);
+  line-height: 1.3;
 }
 
 html.ek .case-study-body .prose-group :is(p, ul, ol, blockquote) {
@@ -856,10 +857,10 @@ html.ek .case-study-body .prose-group--headed > :is(h2, h3) + .prose-body {
   margin-top: var(--space-3);
 }
 
-/* Captions and the meta labels: the homepage's 12px label step, left on the image's edge */
+/* Captions: the body step below the copy, left on the image's edge */
 html.ek .case-study-body figcaption {
   font-family: var(--font-sans);
-  font-size: var(--text-75);
+  font-size: var(--text-100);
   line-height: 1.5;
   color: var(--ek-ink-body);
   text-align: left;
