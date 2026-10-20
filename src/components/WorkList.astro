@@ -107,7 +107,7 @@ const featured = (await getCollection('work'))
               <CardTitleTag class={`work-list-title typo-${cardTitleRole}`}>{entry.data.title.replaceAll('-', '\u2011')}</CardTitleTag>
               <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
             </div>
-            <a href={`/work/${entry.id}`} class="ek-pill work-list-cta" aria-label={`View the ${entry.data.title} case study`} data-astro-prefetch="hover">
+            <a href={`/work/${entry.id}`} class="ek-pill work-list-cta" aria-label={`View case study: ${entry.data.title}`} data-astro-prefetch="hover">
               View case study
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M3.5 10h13M11.5 5l5 5-5 5" />
