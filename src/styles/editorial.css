@@ -514,10 +514,12 @@ html.ek .work-list-item .work-list-card .work-list-media[data-layered] .work-lis
   filter: none;
 }
 
+/* Meta, then title and tagline as one pair, then the way in. Each step a bigger gap than the
+   one inside it */
 html.ek .work-list-item .work-list-card .work-list-caption {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 0;
   min-height: var(--work-caption-height);
   padding: var(--space-4) 0 0;
   background: none;
@@ -532,7 +534,8 @@ html.ek .work-list-item .work-list-card :is(.work-list-meta, .work-list-text) {
 
 /* Matches the page, so the zoom's copy of this block rides on white rather than the project color */
 html.ek .work-list-item .work-list-card .work-list-text {
-  gap: var(--space-1);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
   background: #FFFFFF;
 }
 
@@ -609,9 +612,23 @@ html.ek .work-list-item .work-list-card .work-list-tagline {
   color: var(--ek-ink-body);
 }
 
+html.ek .work-list-item .work-list-card .work-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-5);
+}
+
 html.ek .work-list-item .work-list-card .work-list-cta {
-  align-self: flex-start;
-  margin-top: var(--space-3);
+  margin: 0;
+}
+
+html.ek .work-list-item .work-list-card .work-list-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--ek-ink-body);
 }
 
 /* ── Contact and footer: hairlines, sans links ── */
