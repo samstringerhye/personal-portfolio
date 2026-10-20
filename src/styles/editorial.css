@@ -938,7 +938,6 @@ html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link) {
 html.ek .ek-pill svg {
   width: 1.15em;
   height: 1.15em;
-  transition: translate var(--duration-short) var(--ek-hover-ease);
 }
 
 /* Text links outside prose: no underline at rest, a 1px one on hover (the nav's own treatment) */
@@ -977,10 +976,6 @@ html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-c
     background: var(--ek-panel);
     border-color: var(--color-text-primary);
     color: var(--color-text-primary);
-  }
-
-  html.ek .ek-pill:hover svg {
-    translate: 0 2px;
   }
 
   html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .not-found-link):hover,
