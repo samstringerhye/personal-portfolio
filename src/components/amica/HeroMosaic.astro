@@ -287,9 +287,10 @@ const down = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m
 </style>
 
 <style>
-  .mosaic { --teal:#00a88f; --forest:#003d33; --mint:#d6fcf5; --tint:#effffc; --ink:#001512; --cream:#f7f4e8; --tile-padding-standard:clamp(16px,1.67vw,24px); --tile-padding-compact:clamp(10px,1.11vw,16px); font-family:"Apercu Pro",var(--font-primary,system-ui); }
-  .mosaic__grid { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); grid-template-rows:repeat(3,1fr); gap:1px; background:#001512; aspect-ratio:2 / 1; }
-  .tile { position:relative; min-width:0; min-height:0; overflow:hidden; color:var(--ink); }
+  .mosaic { --teal:#00a88f; --forest:#003d33; --mint:#d6fcf5; --tint:#effffc; --ink:#001512; --cream:#f7f4e8; --tile-padding-standard:clamp(16px,1.67vw,24px); --tile-padding-compact:clamp(10px,1.11vw,16px); --bento-gap:clamp(8px,1vw,14px); --bento-radius:clamp(12px,1.4vw,20px); font-family:"Apercu Pro",var(--font-primary,system-ui); }
+  .mosaic__grid { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); grid-template-rows:repeat(3,1fr); gap:var(--bento-gap); aspect-ratio:2 / 1; }
+  /* A bento: each tile its own rounded card, gutters between them */
+  .tile { position:relative; min-width:0; min-height:0; overflow:hidden; color:var(--ink); border-radius:var(--bento-radius); outline:1px solid rgba(0,21,18,.08); outline-offset:-1px; }
   .tile--masthead{grid-column:1/3;grid-row:1;background:var(--forest)}
   .masthead-image{display:block;width:100%;height:100%;object-fit:cover;object-position:59% center}
   .tile--masthead::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,21,18,.12),transparent 66%);pointer-events:none}

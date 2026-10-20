@@ -996,7 +996,7 @@ html.ek .case-study-body .image-pair .device-phone {
 }
 
 /* Coded diagrams: the same rounded panel, their own color kept, with room inside */
-html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero), .hero-phone-scroll, .stat-callout) {
+html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero, .mosaic), .hero-phone-scroll, .stat-callout) {
   border: 0;
   border-radius: var(--ek-window-radius);
   overflow: hidden;
@@ -1006,12 +1006,11 @@ html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .
   padding: var(--space-5);
 }
 
-/* The mosaic runs to the edge of its rounded shape, which crops it */
+/* The mosaic is a bento of rounded tiles: no panel of its own */
 html.ek .case-study-body > .mosaic {
   padding: 0;
-  border-radius: var(--ek-window-radius);
-  overflow: hidden;
-  isolation: isolate;
+  border-radius: 0;
+  overflow: visible;
 }
 
 /* Side by side: the text in the left 4 columns, the visual in the other 8, whichever way round
