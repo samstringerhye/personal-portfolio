@@ -7,13 +7,7 @@ import { animations } from '../data/tokens'
 import headphone from '../assets/about/icons/headphone.png'
 import videoGame from '../assets/about/icons/video_game.png'
 import ghost from '../assets/about/icons/ghost.png'
-import flyingSaucer from '../assets/about/icons/flying_saucer.png'
 import clapperBoard from '../assets/about/icons/clapper_board.png'
-import books from '../assets/about/icons/books.png'
-import watch from '../assets/about/icons/watch.png'
-import jeans from '../assets/about/icons/jeans.png'
-import hammerAndWrench from '../assets/about/icons/hammer_and_wrench.png'
-import floppyDisk from '../assets/about/icons/floppy_disk.png'
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -30,22 +24,14 @@ const aboutJsonLd = {
   },
 }
 
-// Things from the interests list, as Fluent 3D emoji (MIT, Microsoft), on a ring around the photo
+// A few things from the interests list, as Fluent 3D emoji (MIT, Microsoft), placed loosely around the
+// photo: x and y are the icon's center in % of the photo's box, size its width in %
 const ICONS = [
-  { src: headphone, alt: 'Audiophile' },
-  { src: books, alt: 'Reader' },
-  { src: videoGame, alt: 'Gamer' },
-  { src: watch, alt: 'Watch nerd' },
-  { src: ghost, alt: 'Horror fiend' },
-  { src: clapperBoard, alt: 'Cinephile' },
-  { src: floppyDisk, alt: 'Archivist' },
-  { src: jeans, alt: 'Denim nerd' },
-  { src: flyingSaucer, alt: 'Sci-fi nerd' },
-  { src: hammerAndWrench, alt: 'Tinkerer' },
-].map((icon, i, all) => {
-  const a = (i / all.length) * Math.PI * 2 - Math.PI / 2
-  return { ...icon, x: 50 + 46 * Math.cos(a), y: 50 + 46 * Math.sin(a), size: i % 3 === 0 ? 17 : i % 3 === 1 ? 14 : 12 }
-})
+  { src: headphone, alt: 'Audiophile', x: 10, y: 16, size: 21 },
+  { src: videoGame, alt: 'Gamer', x: 93, y: 34, size: 15 },
+  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 19 },
+  { src: clapperBoard, alt: 'Cinephile', x: 4, y: 70, size: 13 },
+]
 const float = animations.about.icons
 
 const skills = [
