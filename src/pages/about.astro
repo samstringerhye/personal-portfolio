@@ -25,15 +25,15 @@ const aboutJsonLd = {
 }
 
 // A few things from the interests list, placed loosely around the photo: x and y are the center in %
-// of the photo's box, size the width in %. Real 3D models (about-icons.ts) replace the flat Fluent
-// emoji (MIT, Microsoft) once they load; the emoji stay as the fallback.
+// of the photo's box, size the width in %. Clay sculpts in 3D (about-icons.ts) replace the flat
+// Fluent emoji (MIT, Microsoft) once the canvas is up; the emoji stay as the fallback.
 const ICONS = [
-  { src: headphone, alt: 'Audiophile', x: 10, y: 14, size: 30, model: '/motion/models/about/headphones.glb', yaw: 0.5, pitch: 0.25 },
-  { src: videoGame, alt: 'Gamer', x: 94, y: 36, size: 24, model: '/motion/models/about/gamepad.glb', yaw: -1.25, pitch: 0.75 },
-  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 26, model: '/motion/models/about/ghost.glb', yaw: -0.35, pitch: 0.1, clip: 'idle' },
-  { src: clapperBoard, alt: 'Cinephile', x: 3, y: 72, size: 22, model: '/motion/models/about/clapperboard.glb', yaw: 0.35, pitch: 1.3 },
+  { src: headphone, alt: 'Audiophile', x: 10, y: 14, size: 30, sculpt: 'headphones', yaw: 0.35, pitch: 0.15 },
+  { src: videoGame, alt: 'Gamer', x: 94, y: 36, size: 24, sculpt: 'gamepad', yaw: -0.3, pitch: 0.3 },
+  { src: ghost, alt: 'Horror fiend', x: 84, y: 88, size: 26, sculpt: 'ghost', yaw: -0.3, pitch: 0.05 },
+  { src: clapperBoard, alt: 'Cinephile', x: 3, y: 72, size: 22, sculpt: 'clapperboard', yaw: 0.4, pitch: 0.1 },
 ]
-const models = ICONS.map(({ model, x, y, size, yaw, pitch, clip }) => ({ url: model, x, y, size, yaw, pitch, clip }))
+const models = ICONS.map(({ sculpt, x, y, size, yaw, pitch }) => ({ sculpt, x, y, size, yaw, pitch }))
 const float = animations.about.icons
 
 const skills = [
@@ -315,7 +315,7 @@ const skills = [
     if (!orbit || !canvas) return
     const icons = JSON.parse(canvas.dataset.models ?? '[]') as AboutIcon[]
     const { mountAboutIcons } = await import('../components/about-icons')
-    teardown = await mountAboutIcons(orbit, canvas, icons)
+    teardown = mountAboutIcons(orbit, canvas, icons)
   }
 
   document.addEventListener('astro:page-load', init)
