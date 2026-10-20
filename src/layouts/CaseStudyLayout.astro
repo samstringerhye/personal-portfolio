@@ -39,7 +39,7 @@ const deviceHero = heroScene && !gate
 
 <BaseLayout title={`${title} | Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
-  {!heroLayers && !deviceHero && <div class="cs-back-bar grid-12"><BackToWork /></div>}
+  <div class="cs-back" transition:persist="cs-back"><BackToWork /></div>
   <article class="case-study-body">
     {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} />}
     {heroLayers && !deviceHero && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}

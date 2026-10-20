@@ -351,17 +351,31 @@ html.nav-open {
   top: 0;
 }
 
-/* Back to the work list: an arrow where the year sat on the card. The year stays in the markup (hidden)
-   so the card-to-hero zoom can still measure it. Case studies without a hero get .cs-back-bar. */
+/* Back to the work list: an arrow in a circle that stays under the nav for the whole case study.
+   Its wrapper takes no height, so the page lays out as if it weren't there. */
+.cs-back {
+  grid-column: 1 / -1;
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-3));
+  z-index: calc(var(--z-nav, 100) - 1);
+  height: 0;
+  pointer-events: none;
+}
+
 .back-to-work {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1);
-  min-width: var(--touch-target);
-  min-height: var(--touch-target);
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border: 1px solid var(--ek-hairline, #e6eaee);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   color: var(--color-text-primary);
   text-decoration: none;
+  pointer-events: auto;
 }
 
 .back-to-work svg {
@@ -371,11 +385,12 @@ html.nav-open {
 
 @media (hover: hover) {
   .back-to-work {
-    transition: opacity var(--duration-short) ease;
+    transition: background-color var(--duration-short) ease, border-color var(--duration-short) ease;
   }
 
   .back-to-work:hover {
-    opacity: var(--opacity-50);
+    background: var(--ek-panel, #f7f8fa);
+    border-color: var(--color-text-primary);
   }
 }
 

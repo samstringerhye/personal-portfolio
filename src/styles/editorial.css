@@ -673,8 +673,8 @@ html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, script, style) {
   margin-top: 0;
 }
 
-/* A heading starts a section, as does the meta and intro row under the hero */
-html.ek .case-study-body > :is(.prose-group--headed, .zigzag-section, .cs-hero-meta),
+/* A heading starts a section, as does the intro under the meta bar */
+html.ek .case-study-body > :is(.prose-group--headed, .zigzag-section),
 html.ek .case-study-body > .cs-hero-meta + .prose-group {
   margin-top: var(--cs-section-gap);
 }
@@ -740,34 +740,43 @@ html.ek .case-study-body figcaption {
   background: none;
 }
 
-/* Every visual: a panel in the homepage card color, the screens framed in devices on it */
-html.ek .case-study-body :is(.cs-figure, .image-grid, .carousel, .lottie-grid, .decision-stepper),
-html.ek .case-study-body .image-pair > .image-pair-cell,
-html.ek .case-study-body .zigzag-media {
+/* Every visual: a card in the homepage card color, the screens framed in devices on it. A caption
+   sits under its card, never inside it */
+html.ek .case-study-body :is(.lottie-grid, .decision-stepper),
+html.ek .case-study-body .cs-figure > :not(figcaption),
+html.ek .case-study-body .image-pair-media,
+html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell,
+html.ek .case-study-body .zigzag-media:not(:has(figcaption)) {
+  margin: 0;
   border: 0;
   border-radius: var(--ek-window-radius);
   box-shadow: none;
   background: var(--ek-card);
+  overflow: hidden;
+}
+
+html.ek .case-study-body :is(.cs-figure, .image-grid, .carousel, .image-pair-cell, .zigzag-media:has(figcaption)) {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
 }
 
 html.ek .case-study-body .cs-figure {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  overflow: hidden;
+  overflow: visible;
 }
 
-html.ek .case-study-body .cs-figure > figcaption,
-html.ek .case-study-body .image-pair-cell > figcaption {
-  padding: 0 var(--space-4) var(--space-3);
+html.ek .case-study-body :is(.cs-figure, .image-pair-cell) > figcaption {
+  padding: 0;
 }
 
 html.ek .case-study-body .image-grid {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols, 2), minmax(0, 1fr));
   gap: var(--grid-gutter);
-  background: none;
-  border-radius: 0;
 }
 
 html.ek .case-study-body .image-grid > .cs-figure {
@@ -789,7 +798,7 @@ html.ek .case-study-body .image-pair > .image-pair-cell {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  overflow: hidden;
+  overflow: visible;
   line-height: normal;
 }
 
@@ -798,32 +807,33 @@ html.ek .case-study-body .image-pair-media {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  background: none;
+}
+
+html.ek .case-study-body .carousel {
   overflow: hidden;
 }
 
 html.ek .case-study-body .carousel .cs-figure {
   margin: 0;
-  border-radius: 0;
-  background: none;
 }
 
-/* A device stands on its panel with room around it */
-html.ek .case-study-body :is(.cs-figure:not(.carousel .cs-figure), .zigzag-media, .image-pair-media):has(.device-mock, .device-phone),
+html.ek .case-study-body .carousel .carousel-controls {
+  border-top: 0;
+}
+
+/* A device stands on its card with room around it */
+html.ek .case-study-body :is(.cs-figure > :not(figcaption, .device-mock), .zigzag-media, .image-pair-media):has(.device-mock, .device-phone),
 html.ek .case-study-body .image-pair-cell:not(:has(.image-pair-media)):has(.device-mock, .device-phone) {
-  justify-content: center;
-  padding: var(--space-5) var(--space-5) var(--space-4);
-}
-
-html.ek .case-study-body .cs-figure:has(.device-mock) > figcaption {
-  padding: 0;
-}
-
-html.ek .case-study-body .image-pair-cell:has(.device-mock) > .image-pair-media {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+/* The device is the card itself when the figure holds it directly */
+html.ek .case-study-body .cs-figure > .device-mock {
+  padding: var(--space-5);
 }
 
 /* A big number: the heading step in the serif, on a panel like the other visuals */
@@ -857,13 +867,13 @@ html.ek .case-study-body .image-pair .device-phone {
 }
 
 /* Coded diagrams: the same rounded panel, their own color kept, with room inside */
-html.ek .case-study-body > :is(section, .hero-phone-scroll, .stat-callout) {
+html.ek .case-study-body > :is(section:not(.cs-device-hero, .cs-hero), .hero-phone-scroll, .stat-callout) {
   border: 0;
   border-radius: var(--ek-window-radius);
   overflow: hidden;
 }
 
-html.ek .case-study-body > section {
+html.ek .case-study-body > section:not(.cs-device-hero, .cs-hero) {
   padding: var(--space-5);
 }
 
@@ -903,26 +913,66 @@ html.ek .ba {
   border-color: transparent;
 }
 
-html.ek .case-study-body .image-pair-cell + .image-pair-cell,
-html.ek .case-study-body .cs-meta-item + .cs-meta-item {
+html.ek .case-study-body .image-pair-cell + .image-pair-cell {
   border-left: 0;
 }
 
-/* Meta: labels over values, a 2 by 2 block */
+/* Meta: a bar the width of the viewport, labels over values, a hairline between each. The rules
+   reach the window's edges through border-image-outset, which adds no scrollable width */
 html.ek .case-study-body .cs-hero-meta {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3) var(--grid-gutter);
-  align-content: start;
-  border: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: var(--space-5);
+  border-style: solid;
+  border-width: 1px 0;
+  border-image: linear-gradient(var(--ek-hairline) 0 0) 1 / 1px 0 / 0 100vw;
 }
 
 html.ek .case-study-body .cs-meta-item {
-  padding: 0;
-  border: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-4);
+  border: 0;
 }
 
-/* Desktop: headings and the meta in the left 4 of 12 columns, everything else in the other 8 */
+html.ek .case-study-body .cs-meta-item:first-child {
+  padding-left: 0;
+}
+
+html.ek .case-study-body .cs-meta-item + .cs-meta-item {
+  border-left: 1px solid var(--ek-hairline);
+}
+
+html.ek .case-study-body .cs-meta-label {
+  font-size: var(--text-75);
+  color: var(--ek-ink-body);
+}
+
+html.ek .case-study-body .cs-meta-value {
+  margin: 0;
+  font-size: var(--text-100);
+}
+
+/* Phones: 2 by 2, the dividers between the columns and the rows */
+@media (max-width: 48rem) {
+  html.ek .case-study-body .cs-hero-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html.ek .case-study-body .cs-meta-item:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  html.ek .case-study-body .cs-meta-item:nth-child(n + 3) {
+    border-top: 1px solid var(--ek-hairline);
+  }
+}
+
+/* Desktop: headings in the left 4 of 12 columns, everything else in the other 8; the meta bar spans all 12 */
 @media (min-width: 64.0625rem) {
   html.ek .case-study-body > * {
     grid-column: 5 / -1;
@@ -933,12 +983,7 @@ html.ek .case-study-body .cs-meta-item {
   }
 
   html.ek .case-study-body > .cs-hero-meta {
-    grid-column: 1 / 5;
-  }
-
-  /* The intro sits beside the meta, on the same row */
-  html.ek .case-study-body > .cs-hero-meta + .prose-group {
-    grid-column: 5 / -1;
+    grid-column: 1 / -1;
   }
 
   html.ek .case-study-body .zigzag-section {
@@ -968,7 +1013,7 @@ html.ek .case-study-body .cs-meta-item {
   html.ek .case-study-body > .prose-group--headed > :is(h2, h3) {
     grid-column: 1 / 5;
     position: sticky;
-    top: calc(var(--nav-height) + var(--space-4));
+    top: calc(var(--nav-height) + var(--space-3) + var(--touch-target) + var(--space-4));
   }
 
   html.ek .case-study-body > .prose-group--headed > .prose-body {
@@ -1117,7 +1162,7 @@ html.ek .ek-pill svg {
 }
 
 /* Text links outside prose: no underline at rest, a 1px one on hover (the nav's own treatment) */
-html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .cs-nav-title, .not-found-link) {
+html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .cs-nav-title, .not-found-link) {
   text-decoration-line: underline;
   text-decoration-color: transparent;
   text-decoration-thickness: 1px;
@@ -1149,7 +1194,7 @@ html.ek .case-study-body .zigzag-media:hover {
     color: var(--color-text-primary);
   }
 
-  html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .back-to-work, .not-found-link):hover,
+  html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .not-found-link):hover,
   html.ek .cs-nav-link:hover .cs-nav-title {
     text-decoration-color: currentColor;
     opacity: 1;
