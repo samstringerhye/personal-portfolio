@@ -678,9 +678,10 @@ html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, script, style) {
   margin-top: 0;
 }
 
-/* A heading starts a section, as does the intro under the meta bar */
+/* One gap between every section: the intro, the opening visual under it, and each headed section */
 html.ek .case-study-body > .cs-section,
-html.ek .case-study-body > .cs-hero-meta + .prose-group {
+html.ek .case-study-body > .cs-hero-meta + .prose-group,
+html.ek .case-study-body > .cs-hero-meta + .prose-group + :not(.cs-section) {
   margin-top: var(--cs-section-gap);
 }
 
@@ -905,8 +906,16 @@ html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-her
   overflow: hidden;
 }
 
-html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .cs-hero) {
+html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .cs-hero, .mosaic) {
   padding: var(--space-5);
+}
+
+/* The mosaic runs to the edge of its rounded shape, which crops it */
+html.ek .case-study-body > .mosaic {
+  padding: 0;
+  border-radius: var(--ek-window-radius);
+  overflow: hidden;
+  isolation: isolate;
 }
 
 /* Side by side: the text in the left 4 columns, the visual in the other 8, whichever way round
