@@ -140,6 +140,10 @@
     "loopRepeatDelay": 0.5
   },
   "caseStudy": {
+    "buttonStates": {
+      "hold": 1.6,
+      "transition": 0.25
+    },
     "decisionStepper": {
       "hold": 3.5,
       "fade": 0.3
