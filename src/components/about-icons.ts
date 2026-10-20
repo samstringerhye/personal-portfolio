@@ -1,13 +1,13 @@
-// The About page's 3D icons: four visionOS-style badges (about-badges.ts) in one transparent canvas
+// The About page's 3D icons: three retro objects (about-objects.ts) in one transparent canvas
 // around the headshot, bobbing, turning and leaning toward the cursor. The flat images underneath stay until the
-// canvas is up, and stay for good without WebGL. Under reduced motion the badges hold one pose.
+// canvas is up, and stay for good without WebGL. Under reduced motion the objects hold one pose.
 import {
   Box3, Clock, DirectionalLight, Group, HemisphereLight, NeutralToneMapping, OrthographicCamera, PMREMGenerator, Scene, Vector3,
   WebGLRenderer, type Material, type Mesh, type Object3D,
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { animations } from '../data/tokens'
-import { SCULPTS, type SculptName } from './about-badges'
+import { SCULPTS, type SculptName } from './about-objects'
 
 export interface AboutIcon {
   sculpt: SculptName
@@ -48,10 +48,10 @@ export function mountAboutIcons(orbit: HTMLElement, canvas: HTMLCanvasElement, i
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.02).texture
   pmrem.dispose()
   scene.add(new HemisphereLight(0xffffff, 0xd8dce6, 0.6))
-  const key = new DirectionalLight(0xffffff, 2.2)
+  const key = new DirectionalLight(0xfff4e8, 2.2)
   key.position.set(-2, 3, 4)
   scene.add(key)
-  const rim = new DirectionalLight(0xffffff, 1.4)
+  const rim = new DirectionalLight(0xe8f0ff, 1.6)
   rim.position.set(1.5, 2, -3)
   scene.add(rim)
 
