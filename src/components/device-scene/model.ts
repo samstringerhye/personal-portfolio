@@ -15,6 +15,8 @@ interface Backend {
   /** Draws a frame, then hands back where each display sits once it's on the canvas (null when
       no frame could be drawn) */
   frame: (rx: number, ry: number, lift: number, t: number, enter: number, drawn: (matrices: Float32Array | null) => void) => void
+  /** Called if the WebGL context is lost and the scene can't draw again */
+  onLost: (lost: () => void) => void
   dispose: () => void
 }
 
@@ -42,10 +44,15 @@ let nextId = 0
 interface Ready { geometry: ArrangementGeometry; matrices: Float32Array; frame: ImageBitmap }
 const pending = new Map<number, { resolve: (r: Ready) => void; reject: (e: Error) => void }>()
 const drawnCallbacks = new Map<number, (matrices: Float32Array | null, frame?: ImageBitmap) => void>()
+const lostCallbacks = new Map<number, () => void>()
 function sharedWorker(): Worker {
   if (worker) return worker
   const w = new Worker(new URL('./model.worker.ts', import.meta.url), { type: 'module' })
   w.onmessage = e => {
+    if (e.data.type === 'lost') {
+      lostCallbacks.get(e.data.id)?.()
+      return
+    }
     if (e.data.type === 'drawn') {
       const done = drawnCallbacks.get(e.data.id)
       drawnCallbacks.delete(e.data.id)
@@ -94,8 +101,10 @@ async function workerBackend(canvas: HTMLCanvasElement, w: number, h: number, bl
       drawnCallbacks.set(id, (m, bitmap) => { if (bitmap) show(bitmap); drawn(m) })
       target.postMessage({ type: 'frame', id, rx, ry, lift, t, enter })
     },
+    onLost: lost => { lostCallbacks.set(id, lost) },
     dispose: () => {
       drawnCallbacks.delete(id)
+      lostCallbacks.delete(id)
       target.postMessage({ type: 'dispose', id })
     },
   }
@@ -108,7 +117,10 @@ async function mainBackend(canvas: HTMLCanvasElement, w: number, h: number, blee
     geometry: r.geometry,
     first: r.render(rest.pitch, rest.yaw),
     resize: r.resize,
-    frame: (rx, ry, lift, t, enter, drawn) => drawn(r.render(rx, ry, lift, t, enter)),
+    frame: (rx, ry, lift, t, enter, drawn) => {
+      try { drawn(r.render(rx, ry, lift, t, enter)) } catch { drawn(null) }
+    },
+    onLost: lost => canvas.addEventListener('webglcontextlost', lost, { once: true }),
     dispose: r.dispose,
   }
 }
@@ -189,7 +201,7 @@ const restOf = (scene: SceneName, device: DeviceName): Rest => {
 
 // Mounts the scene's arrangement in art, with faces (each placement's DOM screen, in order) laid on
 // their displays. Returns a stop function
-export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], scene: SceneName) {
+export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], scene: SceneName, onLost?: () => void) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!tracking) {
     tracking = true
@@ -389,7 +401,10 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
 
   // Tears the 3D down and puts the screens back in their hosts, still playing, ready for the next
   // mount (mount.ts keeps only the arrangements near the viewport live)
-  return () => {
+  let stopped = false
+  const stop = () => {
+    if (stopped) return
+    stopped = true
     on = false
     cancelAnimationFrame(raf)
     io.disconnect()
@@ -400,4 +415,7 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     stage.remove()
     art.classList.remove('is-3d')
   }
+  // The context was taken back (iOS does this): tear down, and the caller builds the scene again
+  backend.onLost(() => { stop(); onLost?.() })
+  return stop
 }

@@ -152,6 +152,18 @@ function contextFor(canvas: HTMLCanvasElement | OffscreenCanvas): Context {
   context.users++
   return context
 }
+/** iOS Safari takes WebGL contexts back under memory pressure and on returning to a page; a lost
+    context never draws again */
+export const isLost = (canvas: HTMLCanvasElement | OffscreenCanvas) => contexts.get(canvas)?.gl.getContext().isContextLost() ?? false
+/** Drops a lost context, so the next scene on the canvas starts a fresh one */
+export function forget(canvas: HTMLCanvasElement | OffscreenCanvas) {
+  const context = contexts.get(canvas)
+  if (!context) return
+  contexts.delete(canvas)
+  context.environment.dispose()
+  context.gl.dispose()
+}
+
 // The last scene on a canvas lets go of it: its context goes back now, not at garbage collection
 function release(canvas: HTMLCanvasElement | OffscreenCanvas) {
   const context = contexts.get(canvas)
