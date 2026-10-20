@@ -23,6 +23,8 @@ export interface Placement {
   turn: [number, number, number]
   /** Floats: bobs gently, and drifts up into place as the card scrolls in */
   float?: boolean
+  /** Larger than life by this much, the way a product shot cheats a phone forward beside a laptop */
+  scale?: number
   /** Its color, over the model's own: hex by material name */
   finish?: Record<string, string>
 }
@@ -75,7 +77,7 @@ export const ARRANGEMENTS = {
     fill: 0.74,
     placements: [
       { device: 'macbook-air-15', screen: { kind: 'tour', name: 'amica' }, at: [0.04, 0, -0.06], turn: [0, 0.12, 0] },
-      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'amica-mobile' }, at: [-0.15, -0.035, 0.12], turn: [-0.04, 0.42, -0.05] },
+      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'amica-mobile' }, at: [-0.16, -0.03, 0.12], turn: [-0.04, 0.42, -0.05], scale: 1.45 },
     ],
   },
   // The laptop open, the phone floating in front of it on the right
@@ -84,7 +86,7 @@ export const ARRANGEMENTS = {
     fill: 0.74,
     placements: [
       { device: 'macbook-neo', screen: { kind: 'tour', name: 'cvs' }, at: [0, 0, 0], turn: [0, 0, 0] },
-      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'cvs-mobile' }, at: [0.19, -0.05, 0.11], turn: [0.04, 0.24, -0.08], float: true },
+      { device: 'iphone-17-pro', screen: { kind: 'tour', name: 'cvs-mobile' }, at: [0.2, -0.04, 0.11], turn: [0.04, 0.24, -0.08], float: true, scale: 1.45 },
     ],
   },
   // A Galaxy tablet, a Galaxy phone floating in front on the mobile homepage

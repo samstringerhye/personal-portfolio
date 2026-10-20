@@ -48,33 +48,22 @@ class WebPTextures {
 
 // A display that wraps round the device's edges (the S22 Ultra's) is a hole only where it's flat:
 // the flat DOM screen doesn't reach the curves, which would show whatever screen lies behind. The
-// curves render as the dark glass they are. Flat within this cosine of the display's own normal
+// curves render as the dark glass they are. Flat within this cosine of the way the display faces
 const FLAT = 0.97
+/** display's world matrix is its place in the oriented device, where every display faces +z */
 function holeFor(display: Mesh, hole: MeshBasicMaterial): MeshBasicMaterial {
-  const geometry = display.geometry
-  const position = geometry.attributes.position, normal = geometry.attributes.normal
+  const normal = display.geometry.attributes.normal
   if (!normal) return hole
-  // The display's facing: its triangles' normals, weighted by area, so a densely cut curve can't
-  // outweigh the flat face
-  const facing = new Vector3()
-  const a = new Vector3(), b = new Vector3(), c = new Vector3()
-  const index = geometry.index
-  const count = index ? index.count : position.count
-  for (let i = 0; i < count; i += 3) {
-    const [i0, i1, i2] = index ? [index.getX(i), index.getX(i + 1), index.getX(i + 2)] : [i, i + 1, i + 2]
-    a.fromBufferAttribute(position, i0)
-    b.fromBufferAttribute(position, i1).sub(a)
-    c.fromBufferAttribute(position, i2).sub(a)
-    facing.add(b.cross(c))
-  }
-  if (!facing.lengthSq()) return hole
-  facing.normalize()
-  // Point it the way the vertex normals do (triangle winding can run either way)
+  // +z in the mesh's own space: normals map out by the inverse transpose, so back by the transpose
+  const e = display.matrixWorld.elements
+  const facing = new Vector3(e[2], e[6], e[10]).normalize()
+  const n = new Vector3()
   let sum = 0
-  for (let i = 0; i < normal.count; i++) sum += a.fromBufferAttribute(normal, i).dot(facing)
+  for (let i = 0; i < normal.count; i++) sum += n.fromBufferAttribute(normal, i).dot(facing)
+  // A mesh modeled with its normals inward
   if (sum < 0) facing.negate()
   let curved = false
-  for (let i = 0; i < normal.count && !curved; i++) curved = a.fromBufferAttribute(normal, i).normalize().dot(facing) < FLAT
+  for (let i = 0; i < normal.count && !curved; i++) curved = n.fromBufferAttribute(normal, i).normalize().dot(facing) < FLAT
   if (!curved) return hole
   const material = hole.clone()
   material.onBeforeCompile = shader => {
@@ -120,8 +109,23 @@ function prepare(model: Object3D, spec: DeviceSpec, device: DeviceName, textures
     Object.values(mat).forEach(v => { if ((v as Texture)?.isTexture) textures.add(v as Texture) })
   })
   if (!displays.length) throw new Error(`${device} has no ${spec.display} mesh`)
-  displays.forEach(d => { d.material = holeFor(d, hole); d.renderOrder = 1 })
+  displays.forEach(d => { d.material = hole; d.renderOrder = 1 })
   return displays
+}
+
+// Each model is loaded and parsed once per worker (or page) and copied into every scene that shows
+// it. Preparing a scene changes the shared materials only in ways that come out the same every time
+const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).register(p => new WebPTextures(p) as any)
+const files = new Map<DeviceName, Promise<Group>>()
+const modelOf = (device: DeviceName) => {
+  let file = files.get(device)
+  if (!file) {
+    file = loader.loadAsync(modelUrl(device)).then(g => g.scene)
+    // A failed load is tried again next time
+    file.catch(() => files.delete(device))
+    files.set(device, file)
+  }
+  return file
 }
 
 export async function createArrangementRenderer(
@@ -130,17 +134,11 @@ export async function createArrangementRenderer(
 ) {
   const arrangement = arrangementOf(name)
   const placements = arrangement.placements
-  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).register(p => new WebPTextures(p) as any)
   const kinds = [...new Set(placements.map(p => p.device))]
-  const loaded = new Map(await Promise.all(kinds.map(async d => [d, (await loader.loadAsync(modelUrl(d))).scene] as const)))
-  // A device that appears twice is cloned before any material is touched, so each copy still finds
-  // its display by name
-  const seen = new Set<DeviceName>()
-  const models = placements.map(p => {
-    const model = loaded.get(p.device)!
-    if (!seen.has(p.device)) { seen.add(p.device); return model }
-    return model.clone(true)
-  })
+  const loaded = new Map(await Promise.all(kinds.map(async d => [d, await modelOf(d)] as const)))
+  // Every placement gets its own copy (sharing geometry, materials and textures with the file), so
+  // each finds its display by name and a scene can come and go without loading its models again
+  const models = placements.map(p => loaded.get(p.device)!.clone(true))
 
   const gl = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' })
   gl.setPixelRatio(dpr)
@@ -191,6 +189,7 @@ export async function createArrangementRenderer(
     roll.rotation.z = spec.roll
     roll.add(upright)
     roll.updateMatrixWorld(true)
+    displays.forEach(d => { d.material = holeFor(d, hole) })
     const screen = new Box3()
     displays.forEach(d => screen.expandByObject(d))
     const ds = screen.getSize(new Vector3())
@@ -204,6 +203,7 @@ export async function createArrangementRenderer(
     const place = new Group()
     place.position.set(...p.at)
     place.rotation.set(p.turn[0], p.turn[1], p.turn[2], 'YXZ')
+    place.scale.setScalar(p.scale ?? 1)
     place.add(holder)
     // The display's own frame: origin at its center, x along its width, y up its height
     const marker = new Object3D()
@@ -299,16 +299,10 @@ export async function createArrangementRenderer(
     markers.forEach((m, i) => out.set(m.matrixWorld.elements, i * 16))
     return out
   }
-  // One worker outlives its scenes, so free the models' GPU memory explicitly
+  // The models' geometry, materials and textures are shared with the other scenes (modelOf), so they
+  // aren't disposed one by one, which would make those scenes upload and compile them again; losing
+  // this scene's context below frees everything it put on the GPU
   const dispose = () => {
-    scene.traverse(o => {
-      const mesh = o as Mesh
-      if (!mesh.isMesh) return
-      mesh.geometry.dispose()
-      const mat = mesh.material as MeshPhysicalMaterial
-      Object.values(mat).forEach(v => { if ((v as Texture)?.isTexture) (v as Texture).dispose() })
-      mat.dispose()
-    })
     scene.environment?.dispose()
     shadow.dispose()
     pmrem.dispose()

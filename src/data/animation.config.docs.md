@@ -102,7 +102,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.devices.<device>.restYaw` / `restPitch` | radians | see below | Rest angle per device: MacBook Neo `-0.42` / `0.3` (looking down onto the keyboard); MacBook Air 15 `-0.42` / `0.05` (its lid leans back, so standing the display upright already tips the keyboard toward the camera), iPad mini 6 and Galaxy Z Fold8 `-0.42` / `0.08` |
 | `workCards.scenes.<scene>.restYaw` / `restPitch` | radians | see below | Rest angle per arrangement, over its lead device's: MyFrontier `-0.1` / `0.06` (the fan faces the camera), Whataburger `-0.2` / `0.06`, Samsung.com `-0.28` / `0.08` |
 | `workCards.float.bob` / `period` / `wobble` | m / s / rad | `0.004` / `4.6` / `0.025` | Floating devices in the arrangements bob this high, this slowly, leaning a touch as they go |
-| `workCards.float.drift` | m | `0.06` | A floating device starts this far below its place and drifts up as its card scrolls in |
+| `workCards.float.drift` | m | `0` | A floating device starts this far below its place and drifts up as its card scrolls in; 0 keeps every device in its place, so nothing rises into frame |
 | `workCards.float.enterFrom` / `enterTo` | share of viewport | `0.95` / `0.45` | The drift runs while the card's center moves from near the bottom of the viewport to just above its middle (reduced motion: in place, no bob) |
 | `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
 | `workCards.deviceNav.fadeOut` / `fadeIn` / `fadeInDelay` | seconds | `0.3` / `0.4` / `0.15` | The rest of the page crossfading around it (the color shutter sits these out) |

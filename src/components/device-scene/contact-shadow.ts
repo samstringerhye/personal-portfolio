@@ -16,8 +16,8 @@ const SIZE = 512
 const REACH = 0.25
 // Blur in texels of the 512px texture, and how dark the silhouette starts
 const BLUR = 5
-const DARKNESS = 4
-const OPACITY = 0.7
+const DARKNESS = 3
+const OPACITY = 0.42
 
 export function contactShadow(span: number, height: number, reach = REACH) {
   const group = new Group()

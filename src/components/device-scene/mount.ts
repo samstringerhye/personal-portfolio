@@ -42,16 +42,23 @@ async function mountScreen(host: HTMLElement, screen: ScreenSource, device: Devi
   return mountTour(host, screen.name, device)
 }
 
-// A browser keeps only so many WebGL contexts, so the 3D arrangements stay live only within about
-// a viewport and a half of the screen; the screens themselves keep playing
+// A browser keeps only so many WebGL contexts, so the 3D arrangements aren't all live at once. Each
+// builds once it's within two viewports of the screen, well before it scrolls in, and is torn down
+// only past four, so scrolling back and forth never catches one rebuilding; the screens themselves
+// keep playing
 const near = new IntersectionObserver(entries => entries.forEach(e => {
   const scene = e.target as HTMLElement
   const state = live.get(scene)
-  if (!state) return
-  state.wanted = e.isIntersecting
-  if (state.wanted) build(scene, state)
-  else if (state.stop) { state.stop(); state.stop = null }
-}), { rootMargin: '150% 0px' })
+  if (!state || !e.isIntersecting) return
+  state.wanted = true
+  build(scene, state)
+}), { rootMargin: '200% 0px' })
+const far = new IntersectionObserver(entries => entries.forEach(e => {
+  const state = live.get(e.target as HTMLElement)
+  if (!state || e.isIntersecting) return
+  state.wanted = false
+  if (state.stop) { state.stop(); state.stop = null }
+}), { rootMargin: '400% 0px' })
 const live = new Map<HTMLElement, { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null }>()
 
 async function build(scene: HTMLElement, state: { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: (() => void) | null }) {
@@ -83,8 +90,10 @@ async function mount(scene: HTMLElement) {
   const state = { faces: hosts.map(h => h.querySelector<HTMLElement>('.device')!), wanted: true, building: false, stop: null as (() => void) | null }
   live.set(scene, state)
   near.observe(scene)
+  far.observe(scene)
   own.push(() => {
     near.unobserve(scene)
+    far.unobserve(scene)
     live.delete(scene)
     state.stop?.()
   })
@@ -97,7 +106,7 @@ function init() {
     if (!e.isIntersecting) return
     io!.unobserve(e.target)
     mount(e.target as HTMLElement)
-  }), { rootMargin: '100% 0px' })
+  }), { rootMargin: '250% 0px' })
   // Persisted scenes arrive already bound and keep running
   document.querySelectorAll<HTMLElement>('.device-scene[data-device-scene]:not([data-bound])').forEach(scene => {
     scene.dataset.bound = ''

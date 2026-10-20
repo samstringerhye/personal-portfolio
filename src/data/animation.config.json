@@ -278,7 +278,7 @@
       "bob": 0.004,
       "period": 4.6,
       "wobble": 0.025,
-      "drift": 0.06,
+      "drift": 0,
       "enterFrom": 0.95,
       "enterTo": 0.45
     },
