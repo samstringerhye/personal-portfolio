@@ -99,53 +99,9 @@ const arrangement = arrangementOf(scene)
   .device-scene [data-browser~="phone"] .lock { width: 2.8cqw; }
   .device-scene [data-browser~="phone"] .tabs { width: 6.5cqw; border-width: 0.6cqw; border-radius: 1.4cqw; font-size: 3.4cqw; }
   .device-scene [data-browser~="phone"] .dots { width: 1.2cqw; }
-  /* Whataburger (homescreen.ts): an iPhone home screen and Spotlight search, the Whataburger icon
-     among generic apps.
-     Sizes in cqw of the 360px screen */
-  .device-scene .home .screen { position: relative; display: flex; flex-direction: column; background: radial-gradient(120% 80% at 20% 10%, #f6b58f 0%, transparent 60%), radial-gradient(120% 90% at 90% 90%, #6f7fd8 0%, transparent 60%), linear-gradient(170deg, #e88c74 0%, #8f6fb8 55%, #3d4c9a 100%); font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
-  .device-scene .home-status { display: flex; justify-content: space-between; align-items: center; height: 14cqw; padding: 2cqw 9cqw 0 11cqw; color: #fff; font-size: 4.4cqw; font-weight: 600; }
-  .device-scene .home-status-icons { width: 18cqw; height: auto; }
-  .device-scene .home-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 5cqw; padding: 3cqw 6cqw 0; }
-  .device-scene .home-widget { position: relative; aspect-ratio: 1; border-radius: 6cqw; padding: 3.6cqw; color: #fff; box-shadow: 0 1cqw 3cqw rgba(0, 0, 0, 0.12); }
-  .device-scene .home-weather { display: grid; align-content: start; background: linear-gradient(#3d8fe0, #2b6cc2); }
-  .device-scene .w-place { font-size: 3.4cqw; font-weight: 600; }
-  .device-scene .w-temp { font-size: 9.5cqw; font-weight: 300; line-height: 1.05; }
-  .device-scene .home-weather svg { width: 5cqw; margin-top: 3cqw; }
-  .device-scene .w-sky, .device-scene .w-range { font-size: 3cqw; font-weight: 600; }
-  .device-scene .home-cal { display: grid; align-content: start; background: #fff; color: #111; }
-  .device-scene .c-day { font-size: 2.9cqw; font-weight: 700; color: #c8301f; letter-spacing: 0.02em; }
-  .device-scene .c-date { font-size: 13cqw; font-weight: 300; line-height: 1; }
-  .device-scene .c-event { margin-top: 2.5cqw; font-size: 3cqw; color: #6c6c70; }
-  .device-scene .home-grid { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 5.5cqw; padding: 6cqw 6cqw 0; }
-  .device-scene .home-dots { display: flex; justify-content: center; gap: 2cqw; margin: auto 0 3.5cqw; }
-  .device-scene .home-dots :is(b, i) { width: 1.8cqw; aspect-ratio: 1; border-radius: 50%; background: rgba(255, 255, 255, 0.45); }
-  .device-scene .home-dots b { background: #fff; }
-  /* Spotlight: the wallpaper dimmed and blurred behind the results, the field above the keyboard */
-  .device-scene .home-search-view .screen::before { content: ''; position: absolute; inset: 0; background: rgba(20, 22, 40, 0.42); backdrop-filter: blur(10px); }
-  .device-scene .home-search-view .screen > * { position: relative; }
-  .device-scene .spot { padding: 4cqw 5cqw 0; color: #fff; }
-  .device-scene .spot-head { margin: 4cqw 0 2.4cqw; font-size: 3.6cqw; font-weight: 700; }
-  .device-scene .spot-hit { display: flex; align-items: center; gap: 3.5cqw; padding: 3cqw; border-radius: 5cqw; background: rgba(255, 255, 255, 0.16); }
-  .device-scene .spot-hit .home-icon { width: 13cqw; }
-  .device-scene .spot-name { flex: 1; font-size: 4.2cqw; font-weight: 600; }
-  .device-scene .spot-open { padding: 1.3cqw 3.6cqw; border-radius: 999px; background: rgba(255, 255, 255, 0.22); font-size: 3.4cqw; font-weight: 600; }
-  .device-scene .spot-row { display: flex; align-items: center; gap: 3cqw; padding: 2.6cqw 1cqw; border-bottom: 0.25cqw solid rgba(255, 255, 255, 0.14); font-size: 3.8cqw; }
-  .device-scene .spot-glass { width: 3.6cqw; aspect-ratio: 1; border: 0.6cqw solid currentColor; border-radius: 50%; opacity: 0.7; }
-  .device-scene .spot-field { display: flex; align-items: center; gap: 2.4cqw; margin: auto 4cqw 3cqw; padding: 2.6cqw 4cqw; border-radius: 999px; background: rgba(255, 255, 255, 0.24); color: #fff; font-size: 4cqw; }
-  .device-scene .spot-caret { width: 0.5cqw; height: 5cqw; margin-left: -1.6cqw; background: #4c8dff; }
-  .device-scene .spot-keys { display: grid; gap: 2.6cqw; padding: 2.6cqw 1cqw 10cqw; background: rgba(210, 212, 220, 0.82); }
-  .device-scene .k-row { display: flex; justify-content: center; gap: 1.5cqw; }
-  .device-scene .k-row b { display: grid; place-items: center; width: 8.4cqw; height: 11cqw; border-radius: 1.4cqw; background: #fff; box-shadow: 0 0.3cqw 0 rgba(0, 0, 0, 0.25); color: #111; font-size: 5cqw; font-weight: 400; }
-  .device-scene .k-row .k-wide { width: 11.5cqw; background: #aeb3be; font-size: 4cqw; }
-  .device-scene .k-row .k-space { width: 48cqw; font-size: 3.6cqw; }
-  .device-scene .k-row .k-go { width: 20cqw; background: #2f7cf6; color: #fff; font-size: 3.8cqw; }
-  .device-scene .home-app { display: grid; justify-items: center; gap: 1.6cqw; }
-  .device-scene .home-icon { display: grid; place-items: center; width: 16.4cqw; aspect-ratio: 1; border-radius: 23%; box-shadow: inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.12); }
-  .device-scene .home-icon svg { width: 58%; height: auto; }
-  .device-scene .home-wab { background: #FD7801; box-shadow: 0 1cqw 3cqw rgba(11, 13, 27, 0.25); }
-  .device-scene .home-wab::before { content: ''; width: 100%; height: 100%; background: #FFFFFF; -webkit-mask: url(/logos/whataburger.svg) center / 66% no-repeat; mask: url(/logos/whataburger.svg) center / 66% no-repeat; }
-  .device-scene .home-label { font-size: 3.1cqw; font-weight: 500; color: #fff; text-shadow: 0 0.3cqw 1cqw rgba(0, 0, 0, 0.25); white-space: nowrap; }
-  .device-scene .home-dock { display: flex; justify-content: space-between; margin: 0 4cqw 4.5cqw; padding: 4cqw 4.5cqw; border-radius: 11cqw; background: rgba(255, 255, 255, 0.28); backdrop-filter: blur(6px); }
+  /* Whataburger (homescreen.ts): screens flattened from Apple's iOS kit */
+  .device-scene .home .screen { background: #000; }
+  .device-scene .home .screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .device-scene:not(.is-3d) .home { width: auto; height: 80%; border-radius: 13cqw; box-shadow: 0 0 0 2.4cqw #111; overflow: hidden; }
   /* The case study's image rule (max-height 100vh, a page background) would cut the tours' long pages
      short and fill the status bars' transparent overlays: not for the screens */
