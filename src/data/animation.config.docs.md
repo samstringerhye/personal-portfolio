@@ -86,7 +86,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `hero.canvas.pointer.push` / `grow` | ratio | `0.3` / `0.25` | The bulge: the spacing under the pointer magnifies by this much and fades to nothing at the rim, and the dots there grow by this much |
 | `hero.canvas.pointer.split` | ratio | `0.08` | Red is pushed this much further than green, blue this much less, so dots near the pointer split into their subpixels |
 | `hero.canvas.pointer.stiffness` / `damping` | 0–1 | `0.06` / `0.8` | A spring, not an ease: the push trails the pointer, overshoots a touch and settles, and swells in and out the same way as the pointer enters and leaves |
-| `hero.canvas.pointer.attack` / `release` | 0–1 per frame | `0.2` / `0.04` | Each dot eases into its displacement as the bulge reaches it (attack) and back once it has passed (release), so a moving pointer leaves a trail. A lower release is a longer tail |
+| `hero.canvas.pointer.attack` / `release` | 0–1 per frame | `0.12` / `0.02` | Each dot eases into its displacement as the bulge reaches it (attack) and back once it has passed (release), so a moving pointer leaves a trail. A lower release is a longer tail |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
 | `workCards.phone.restYaw` | radians | `-0.46` | 3D device's turn at rest (negative shows its left side); devices and arrangements can override it in `workCards.devices` and `workCards.scenes` |

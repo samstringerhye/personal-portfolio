@@ -43,8 +43,8 @@
         "split": 0.08,
         "stiffness": 0.06,
         "damping": 0.8,
-        "attack": 0.2,
-        "release": 0.04
+        "attack": 0.12,
+        "release": 0.02
       },
       "bgColor": { "$ref": "sys.color.bg.primary" }
     },
