@@ -107,7 +107,8 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.float.enterFrom` / `enterTo` | share of viewport | `0.95` / `0.45` | The drift runs while the card's center moves from near the bottom of the viewport to just above its middle (reduced motion: in place, no bob) |
 | `workCards.deviceNav.align` | seconds | `0.55` | On a card click the homepage first scrolls the card to where its case study hero's device sits, so the device and title line up as the page changes |
 | `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
-| `workCards.deviceNav.fadeOut` / `fadeIn` / `fadeInDelay` | seconds | `0.3` / `0.4` / `0.15` | The rest of the page crossfading around it (the color shutter sits these out) |
+| `workCards.deviceNav.fadeIn` | seconds | `0.4` | The rest of the page crossfading around the carried device: the old page out as the new one in, on the same curve, so the title and tagline that land in the same place hold (the color shutter sits this out) |
+| `workCards.deviceNav.fadeInDelay` | seconds | `0.15` | Direct visits to a case study with a device: wait before the hero's words slide in. Arriving from a card, the text is already there and doesn't animate |
 | `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |
 | `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-device-scenemyfrontierts) |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |

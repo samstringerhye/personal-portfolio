@@ -17,7 +17,8 @@ const { scene, label, title, tagline, year } = Astro.props
 // Non-breaking hyphens: the narrow column would otherwise split "E-commerce" across lines
 const heading = title.replaceAll('-', '\u2011')
 // The text slides in like the homepage headline: the year, the title word by word, then the
-// tagline, timed from textReveal and starting as the page fades in behind a carried device
+// tagline, timed from textReveal. Arriving from its card it doesn't: the card's text is already
+// in this place (mount.ts marks the hero data-carried)
 const words = heading.split(/\s+/).filter(Boolean)
 const reveal = animations.textReveal
 const csWordDuration = `${reveal.duration}s`
@@ -43,6 +44,10 @@ const csWordEase = reveal.cssEase
   .cs-hero-in {
     animation: cs-hero-in var(--csWordDuration) var(--csWordEase) both;
     animation-delay: calc(var(--csWordStart) + var(--i) * var(--csWordStagger));
+  }
+
+  .cs-device-hero[data-carried] .cs-hero-in {
+    animation: none;
   }
 
   .cs-device-hero-title .cs-hero-in {

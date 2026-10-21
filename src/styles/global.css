@@ -541,13 +541,18 @@ html[data-flip-nav]::view-transition-old(root) {
 }
 
 /* A device carried between its card and its case study hero (device-scene/mount.ts): it glides to
-   its new place while the rest of the page crossfades. Timings come from workCards.deviceNav */
+   its new place while the rest of the page crossfades. The old page goes out as the new one comes
+   in, on the same curve and added (plus-lighter, since the shutter sets normal), so the two sum to
+   a whole and the title and tagline that land in the same place hold instead of dipping. Timings
+   come from workCards.deviceNav */
 html[data-device-nav]::view-transition-old(root) {
-  animation: var(--device-nav-fadeOut) ease both device-nav-out !important;
+  animation: var(--device-nav-fadeIn) ease both device-nav-out !important;
+  mix-blend-mode: plus-lighter;
 }
 
 html[data-device-nav]::view-transition-new(root) {
-  animation: var(--device-nav-fadeIn) ease var(--device-nav-fadeInDelay) both device-nav-in !important;
+  animation: var(--device-nav-fadeIn) ease both device-nav-in !important;
+  mix-blend-mode: plus-lighter;
 }
 
 html[data-device-nav]::view-transition-group(device) {

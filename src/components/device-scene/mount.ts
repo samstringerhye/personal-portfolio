@@ -212,6 +212,8 @@ if (!mw.__deviceScenesBound) {
     // clear it once the transition has played (page-load can come sooner)
     if (!moving) return
     markNav(doc.documentElement)
+    // The card's text already sits where the hero's does: no entrance to replay
+    doc.querySelector('.cs-device-hero')?.setAttribute('data-carried', '')
     const scene = moving
     moving = null
     ;(e as SwapEvent).viewTransition.finished.finally(() => {
