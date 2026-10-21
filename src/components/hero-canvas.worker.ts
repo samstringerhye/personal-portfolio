@@ -3,7 +3,7 @@
 // Static import so Three.js downloads as soon as the worker script loads,
 // not waiting for the first 'init' message.
 import {
-  Scene, OrthographicCamera, Color, SRGBColorSpace, WebGLRenderer, AdditiveBlending,
+  Scene, OrthographicCamera, SRGBColorSpace, WebGLRenderer, AdditiveBlending,
   InstancedMesh, CircleGeometry, MeshBasicMaterial,
 } from 'three'
 import {
@@ -35,7 +35,6 @@ interface InitMessage {
   width: number
   height: number
   dpr: number
-  bgColor: string
   dark: boolean
   isMobile: boolean
   prefersReduced: boolean
@@ -195,14 +194,14 @@ async function initScene(msg: InitMessage) {
   renderer = new WebGLRenderer({
     canvas: msg.canvas,
     antialias: false,
-    alpha: false,
+    alpha: true,
     powerPreference: 'low-power',
   })
   renderer.sortObjects = false
   renderer.outputColorSpace = SRGBColorSpace
   renderer.setPixelRatio(msg.dpr)
-  const bgColor = new Color(msg.bgColor)
-  renderer.setClearColor(bgColor, 1)
+  // Clear, not the page color: the page shows through, so the field can't differ from it
+  renderer.setClearColor(0x000000, 0)
 
   camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 1000)
   camera.position.set(0, 0, 100)
