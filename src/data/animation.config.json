@@ -37,10 +37,10 @@
       "cmyStagger": 0.03,
       "accentOpacity": 1,
       "pointer": {
-        "radius": 150,
-        "push": 0.22,
-        "grow": 0.4,
-        "split": 0.2,
+        "radius": 280,
+        "push": 0.3,
+        "grow": 0.25,
+        "split": 0.08,
         "stiffness": 0.06,
         "damping": 0.8
       },
