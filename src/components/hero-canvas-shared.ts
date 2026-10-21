@@ -275,7 +275,7 @@ export function updateDots(
         tx = wake[j]
         ty = wake[j + 1]
         tg = wake[j + 2]
-        if (Math.abs(tx) + Math.abs(ty) + tg > 1e-4) live = 1
+        if (Math.abs(tx) + Math.abs(ty) + tg > 0.01) live = 1
       }
       x += tx
       y += ty
