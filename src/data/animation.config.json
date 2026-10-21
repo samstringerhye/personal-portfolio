@@ -303,7 +303,6 @@
     "deviceNav": {
       "align": 0.55,
       "move": 0.7,
-      "fadeOut": 0.3,
       "fadeIn": 0.4,
       "fadeInDelay": 0.15
     },
