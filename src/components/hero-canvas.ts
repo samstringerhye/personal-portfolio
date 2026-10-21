@@ -90,7 +90,6 @@ function initWithWorker(
 ): () => void {
   const offscreen = canvas.transferControlToOffscreen()
   const dpr = Math.min(window.devicePixelRatio, isMobile ? 1.5 : cfg.maxDpr)
-  const bgStyle = getComputedStyle(container).backgroundColor || 'rgb(239,244,245)'
   const accentColors = semantic.color.accent
 
   const worker = new Worker(
@@ -144,7 +143,6 @@ function initWithWorker(
     width: w,
     height: h,
     dpr,
-    bgColor: bgStyle,
     dark,
     isMobile,
     prefersReduced,
@@ -234,7 +232,7 @@ async function initFallback(
     hexagonal: generateHexagonal, rose: generateRose,
   }
 
-  const { Scene, OrthographicCamera, Color, SRGBColorSpace, WebGLRenderer, InstancedMesh, CircleGeometry, MeshBasicMaterial, AdditiveBlending } = await import('three')
+  const { Scene, OrthographicCamera, SRGBColorSpace, WebGLRenderer, InstancedMesh, CircleGeometry, MeshBasicMaterial, AdditiveBlending } = await import('three')
 
   const gen = generators[cfg.arrangement] || generators.concentric
   const numRays = isMobile ? Math.round(cfg.numRays * MOBILE_FACTOR) : cfg.numRays
@@ -277,13 +275,13 @@ async function initFallback(
   }
 
   const dpr = Math.min(window.devicePixelRatio, isMobile ? 1.5 : cfg.maxDpr)
-  const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'low-power' })
+  const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'low-power' })
   renderer.sortObjects = false
   renderer.outputColorSpace = SRGBColorSpace
   renderer.setPixelRatio(dpr)
-  const bgStyle = getComputedStyle(container).backgroundColor || 'rgb(239,244,245)'
-  const bgColor = new Color(bgStyle)
-  renderer.setClearColor(bgColor, 1)
+  // Clear, not the page color: the page shows through, so the field can't differ from it and the
+  // hero's fade only has the dots to fade
+  renderer.setClearColor(0x000000, 0)
 
   const effectiveZoom = isMobile ? cfg.zoom * MOBILE_FACTOR : cfg.zoom
 

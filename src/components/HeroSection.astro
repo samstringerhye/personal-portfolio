@@ -93,13 +93,20 @@ const heroWordEase = revealCfg.cssEase
     inset: 0;
     z-index: var(--z-base);
     background: radial-gradient(ellipse at 50% 60%, var(--color-bg-alt) 0%, var(--color-bg-primary) 70%);
+    transition: opacity 0.3s ease;
+  }
+
+  /* Only for the moment before the canvas, and for visitors who never get one. Once the dots are
+     up it goes: the canvas's fade at the hero's foot would otherwise show it, and bg-alt isn't the
+     page's color */
+  .hero:has(#hero-canvas-root.is-ready) .hero-canvas-fallback {
+    opacity: 0;
   }
 
   #hero-canvas-root {
     position: absolute;
     inset: 0;
     z-index: var(--z-base);
-    background-color: var(--color-bg-primary);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
