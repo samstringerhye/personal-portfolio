@@ -1685,6 +1685,21 @@ html.ek .case-study-body .panel--multiply .panel-media {
   mix-blend-mode: multiply;
 }
 
+/* A board with a dark twin (Panel srcDark): one image per scheme, the other not drawn at all */
+html.ek .case-study-body .panel-media--dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html.ek .case-study-body .panel-media--light {
+    display: none;
+  }
+
+  html.ek .case-study-body .panel-media--dark {
+    display: block;
+  }
+}
+
 html.ek .case-study-body .panel--slot .lottie-grid {
   border-radius: 0;
 }
