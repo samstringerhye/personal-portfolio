@@ -1,0 +1,83 @@
+---
+/**
+ * A quiet cue at the foot of a case study's first screen: the hero isn't the whole page. Fixed to
+ * the viewport and gone as soon as the page moves. Decorative, so hidden from screen readers.
+ */
+---
+
+<div class="scroll-cue" aria-hidden="true">
+  <span class="scroll-cue-label typo-ui-caps">Scroll</span>
+  <span class="scroll-cue-track"><span class="scroll-cue-dot"></span></span>
+</div>
+
+<style>
+  .scroll-cue {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+    /* Over the hero's scene, under the nav and the back button */
+    z-index: var(--z-nav);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    translate: -50% 0;
+    color: var(--color-text-secondary);
+    pointer-events: none;
+    /* Waits out the page change and the hero's own arrival */
+    animation: scroll-cue-in 0.6s ease 1.2s both;
+    transition: opacity var(--duration-quick) ease;
+  }
+
+  .scroll-cue.is-gone {
+    opacity: 0 !important;
+    animation: none;
+  }
+
+  .scroll-cue-track {
+    position: relative;
+    width: 1px;
+    height: 2.25rem;
+    overflow: hidden;
+    background: var(--ek-line-strong, var(--color-border));
+  }
+
+  .scroll-cue-dot {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 40%;
+    background: var(--color-text-primary);
+    animation: scroll-cue-run 2.2s var(--easing-standard) infinite;
+  }
+
+  @keyframes scroll-cue-in {
+    from { opacity: 0; }
+  }
+
+  @keyframes scroll-cue-run {
+    from { translate: 0 -100%; }
+    to { translate: 0 250%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue {
+      animation: none;
+    }
+
+    .scroll-cue-dot {
+      animation: none;
+      height: 100%;
+      opacity: 0.35;
+    }
+  }
+</style>
+
+<script>
+  // Shown only while the page is at the top; the case study below takes over from there
+  const update = () => {
+    const gone = window.scrollY > 24
+    document.querySelectorAll('.scroll-cue').forEach(el => el.classList.toggle('is-gone', gone))
+  }
+  window.addEventListener('scroll', update, { passive: true })
+  document.addEventListener('astro:page-load', update)
+</script>

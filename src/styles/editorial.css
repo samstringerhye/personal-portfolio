@@ -773,7 +773,8 @@ html.ek .case-study-body {
   width: 100%;
   max-width: var(--ek-figure);
   margin-inline: auto;
-  padding-bottom: var(--cs-section-gap);
+  /* The room above the closing prompt: a section margin, not a chapter gap */
+  padding-bottom: clamp(8rem, 20vw, 12rem);
 }
 
 html.ek .case-study-body > * {
@@ -1461,6 +1462,18 @@ html.ek .case-study-body > .story + .gallery {
   margin-top: clamp(7rem, 14vw, 13rem);
 }
 
+/* Beside each other on a desktop, sections are never closer than 12rem, whatever the width */
+@media (min-width: 48.0625rem) {
+  html.ek .case-study-body > .story,
+  html.ek .case-study-body > .story + .gallery {
+    margin-top: clamp(12rem, 14vw, 13rem);
+  }
+
+  html.ek .case-study-body > .gallery {
+    margin-top: clamp(12rem, 16vw, 15rem);
+  }
+}
+
 /* The site's rule: facts and labels in the left 4 of 12 columns, text across the other 8 */
 html.ek .story-facts {
   grid-column: 1 / 5;
@@ -1517,12 +1530,20 @@ html.ek .story-part p {
   text-wrap: pretty;
 }
 
+/* The title and the note start on the same line: both trimmed to their cap height, so the tops of
+   the letters meet whatever the sizes and faces. Without text-box they share the top of their boxes */
 html.ek .gallery-head {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
-  align-items: baseline;
+  align-items: start;
   margin-bottom: var(--space-6);
+}
+
+@supports (text-box: trim-both cap alphabetic) {
+  html.ek .case-study-body :is(.gallery-title, .gallery-note) {
+    text-box: trim-both cap alphabetic;
+  }
 }
 
 html.ek .case-study-body .gallery-title {
@@ -1707,7 +1728,8 @@ html.ek .case-study-body > .cs-metrics {
 /* The closing prompt in a callout frame */
 html.ek .case-study-cta-content {
   align-items: center;
-  margin-top: var(--ek-section);
+  /* The body's bottom padding is already the gap above it */
+  margin-top: 0;
   padding: clamp(3rem, 6vw, 5rem) var(--space-5);
   border-radius: var(--ek-window-radius);
   background: var(--ek-panel);
