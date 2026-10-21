@@ -370,7 +370,7 @@ html.nav-open {
   height: var(--touch-target);
   border: 1px solid var(--ek-hairline, #e6eaee);
   border-radius: 50%;
-  background: rgb(255 255 255 / 0.92);
+  background: color-mix(in srgb, var(--ek-surface, #fff) 92%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   color: var(--color-text-primary);

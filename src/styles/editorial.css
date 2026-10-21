@@ -6,6 +6,7 @@ html.ek {
   /* No monospace in this direction: labels use the sans in caps */
   --font-mono: var(--font-sans);
 
+  color-scheme: light dark;
   --color-text-primary: #0B2140;
   --color-text-secondary: #5E7186;
   --color-bg-primary: #FFFFFF;
@@ -19,6 +20,10 @@ html.ek {
   --page-margin: clamp(1.5rem, 0.5rem + 3.5vw, 5rem);
 
   --ek-hairline: #E6EAEE;
+  /* Page-colored surfaces (nav, pills, text blocks), strong pill border, prose link underline */
+  --ek-surface: #FFFFFF;
+  --ek-line-strong: #C9D1DA;
+  --ek-link-line: #A9B4C0;
   --ek-panel: #F7F8FA;
   /* Work cards and case study heroes: one gray for every project, a step darker than the panel */
   --ek-card: #F2F3F5;
@@ -493,7 +498,7 @@ html.ek .section-rule::after {
 
 /* ── Nav: serif name, quiet sans links, underline for the current page ── */
 html.ek .nav {
-  background: color-mix(in srgb, #FFFFFF 92%, transparent);
+  background: color-mix(in srgb, var(--ek-surface) 92%, transparent);
   backdrop-filter: blur(12px);
 }
 
@@ -656,7 +661,7 @@ html.ek .work-list-item .work-list-card :is(.work-list-meta, .work-list-text) {
 html.ek .work-list-item .work-list-card .work-list-text {
   gap: var(--space-2);
   margin-top: var(--space-3);
-  background: #FFFFFF;
+  background: var(--ek-surface);
 }
 
 html.ek .work-list-item .work-list-card .work-list-meta {
@@ -1194,7 +1199,7 @@ html.ek .case-study-body .cs-meta-value {
    at every width. hero-fit.ts marks wide heroes cs-hero--stacked so the zoom lands on this layout. */
 html.ek .cs-hero .cs-hero-text,
 html.ek .cs-hero--light .cs-hero-text {
-  background: #FFFFFF;
+  background: var(--ek-surface);
   color: var(--color-text-primary);
 }
 
@@ -1275,7 +1280,7 @@ html.ek :is(.cs-nav, .case-study-nav) {
 
 /* Inline links in prose: hairline underline that darkens on hover */
 html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a {
-  text-decoration-color: #A9B4C0;
+  text-decoration-color: var(--ek-link-line);
 }
 
 html.ek :is(.case-study-body, .blog-post-body, .colophon-body) a:hover {
@@ -1313,9 +1318,9 @@ html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link) {
   gap: var(--space-2);
   min-height: var(--touch-target);
   padding: 0 1.375rem;
-  border: 1px solid #C9D1DA;
+  border: 1px solid var(--ek-line-strong);
   border-radius: 999px;
-  background: #FFFFFF;
+  background: var(--ek-surface);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   font-size: 0.9375rem;
@@ -1739,4 +1744,37 @@ html.ek .cs-nav-title {
 /* The footer's own hairline, across the window */
 html.ek .footer {
   border-top: 1px solid var(--ek-hairline);
+}
+
+/* ── Dark: follows the system setting, no toggle. Same roles, same hue family, inverted. ── */
+@media (prefers-color-scheme: dark) {
+  html.ek {
+    --color-text-primary: #E8EDF3;
+    --color-text-secondary: #9AA9BA;
+    --color-bg-primary: #0B1220;
+    --color-bg-alt: #101929;
+    --color-bg-warm: #101929;
+    --color-border: #1E2A3D;
+    --color-backdrop: #000000B3;
+    --color-accent-text-1: #FF6B77;
+    --color-accent-text-2: #3DDC8A;
+    --color-accent-text-3: #7FAEFF;
+    --focus-ring-color: #7FAEFF;
+    --prose-code-bg: #162033;
+
+    --ek-hairline: #1E2A3D;
+    --ek-surface: #0B1220;
+    --ek-line-strong: #34445C;
+    --ek-link-line: #5E7186;
+    --ek-panel: #101929;
+    --ek-card: #141E30;
+    --ek-ink-body: #C3CEDB;
+    --ek-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.6);
+    --ek-shadow-hover: 0 36px 72px -30px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Client marks are black SVGs: shown white on the dark page */
+  html.ek .client-logo {
+    filter: brightness(0) invert(1);
+  }
 }
