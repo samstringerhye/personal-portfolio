@@ -243,8 +243,7 @@ function isActive(href: string) {
       padding: 0;
     }
 
-    /* The nav's backdrop-filter makes it the containing block for this fixed panel, so bottom: 0
-       would end the panel at the nav's own bottom edge; an explicit height reaches the screen's */
+    /* An explicit height, not bottom: 0, so the panel reaches the screen's bottom edge */
     .nav-links {
       position: fixed;
       top: calc(var(--nav-height) + env(safe-area-inset-top));

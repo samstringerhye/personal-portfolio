@@ -112,28 +112,12 @@ html.ek #hero-canvas-root {
   mask-image: linear-gradient(to bottom, #000 72%, transparent);
 }
 
-/* The hero's dot field runs up behind the nav to the top of the window and fills exactly one screen.
-   The nav starts clear over it and fills in as the page scrolls; browsers without scroll timelines
-   keep the solid nav. The height counts the nav it sits under. */
+/* The hero's dot field runs up behind the nav to the top of the window and fills exactly one
+   screen. The height counts the nav it sits under. */
 html.ek main > .hero {
   height: 100svh;
   margin-top: calc(-1 * var(--nav-height));
   padding-top: var(--nav-height);
-}
-
-@supports (animation-timeline: scroll()) {
-  html.ek:has(main > .hero) .nav {
-    animation: ek-nav-fill linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0 30vh;
-  }
-}
-
-@keyframes ek-nav-fill {
-  from {
-    background: transparent;
-    backdrop-filter: none;
-  }
 }
 
 html.ek :is(.work-list-heading, .leadership-heading, .experience-heading) {
@@ -498,8 +482,12 @@ html.ek .section-rule::after {
 
 /* ── Nav: serif name, quiet sans links, underline for the current page ── */
 html.ek .nav {
-  background: color-mix(in srgb, var(--ek-surface) 92%, transparent);
-  backdrop-filter: blur(12px);
+  background: transparent;
+}
+
+/* The phone menu is a page of its own: a solid bar over it while it's open */
+html.ek.nav-open .nav {
+  background: var(--color-bg-primary);
 }
 
 html.ek .nav::after,
