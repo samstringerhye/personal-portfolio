@@ -703,7 +703,7 @@ html.ek .work-list-meta > span:first-child {
     grid-column: 1 / 5;
     grid-row: 1;
     min-height: 0;
-    padding: 0 0 8rem;
+    padding: 0;
   }
 }
 
