@@ -85,6 +85,18 @@ const csWordEase = reveal.cssEase
       aspect-ratio: 1.1;
     }
 
+    /* The homepage card's caption (editorial.css) under its art: a space-4 step to the year row,
+       whose tag pills make it taller than the year alone, then a space-3 step to the title. The
+       title lands where the card's did when the page changes */
+    .cs-device-hero-stage {
+      margin-bottom: 0;
+    }
+
+    /* The year is centered in the card's 21px pill row, 3px below its top */
+    .cs-device-hero .cs-device-hero-year {
+      margin: calc(var(--space-4) - var(--space-2) + 3px) 0 calc(var(--space-3) - var(--space-2) + 3px);
+    }
+
     .cs-device-hero-stage:not(:has(.device-scene-host:not([data-device="iphone-17-pro"]))) {
       aspect-ratio: 0.95;
     }
@@ -139,6 +151,14 @@ const csWordEase = reveal.cssEase
       justify-content: flex-end;
       align-self: stretch;
       gap: var(--space-2);
+      /* The homepage card's caption (editorial.css): its 8rem below, and its button's room above
+         that, so the year, title and tagline land where the card's were */
+      padding-bottom: calc(8rem + var(--space-5) + var(--touch-target));
+    }
+
+    /* The card's year shares a row with taller tag pills and sits a step further from the title */
+    .cs-device-hero-year {
+      margin-bottom: calc(var(--space-3) - var(--space-2) + 0.5em - 3px);
     }
 
     .cs-device-hero {
