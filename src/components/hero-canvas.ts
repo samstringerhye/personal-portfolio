@@ -5,6 +5,7 @@ import {
   generateRose,
   generateSpiral,
   sizeTaper,
+  dotLayers,
   updateDots,
   newPointerSpring,
   stepPointerSpring,
@@ -22,6 +23,30 @@ const MOBILE_FACTOR = 0.5
  * Returns a cleanup function.
  */
 export async function initHeroCanvas(container: HTMLElement): Promise<() => void> {
+  // The dots change with the system scheme (RGB on dark), and a transferred canvas can't be
+  // reused, so a change swaps in a fresh canvas and starts over
+  const scheme = window.matchMedia('(prefers-color-scheme: dark)')
+  let stop = await startHeroCanvas(container)
+  let disposed = false
+  const onScheme = async () => {
+    stop()
+    const fresh = document.createElement('canvas')
+    fresh.style.cssText = 'display:block;width:100%;height:100%'
+    container.innerHTML = ''
+    container.appendChild(fresh)
+    const next = await startHeroCanvas(container)
+    if (disposed) next()
+    else stop = next
+  }
+  scheme.addEventListener('change', onScheme)
+  return () => {
+    disposed = true
+    scheme.removeEventListener('change', onScheme)
+    stop()
+  }
+}
+
+async function startHeroCanvas(container: HTMLElement): Promise<() => void> {
   // WebGL support check
   try {
     const testCanvas = document.createElement('canvas')
@@ -30,6 +55,7 @@ export async function initHeroCanvas(container: HTMLElement): Promise<() => void
   } catch { return () => {} }
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const isMobile = window.matchMedia('(max-width: 768px)').matches
 
   // Get the canvas element from the DOM (added in HeroSection.astro)
@@ -49,9 +75,9 @@ export async function initHeroCanvas(container: HTMLElement): Promise<() => void
   } catch {}
 
   if (supportsOffscreen) {
-    return initWithWorker(container, canvas, isMobile, prefersReduced)
+    return initWithWorker(container, canvas, isMobile, prefersReduced, dark)
   }
-  return initFallback(container, canvas, isMobile, prefersReduced)
+  return initFallback(container, canvas, isMobile, prefersReduced, dark)
 }
 
 /* -- OffscreenCanvas Worker path -- */
@@ -60,6 +86,7 @@ function initWithWorker(
   canvas: HTMLCanvasElement,
   isMobile: boolean,
   prefersReduced: boolean,
+  dark: boolean,
 ): () => void {
   const offscreen = canvas.transferControlToOffscreen()
   const dpr = Math.min(window.devicePixelRatio, isMobile ? 1.5 : cfg.maxDpr)
@@ -85,7 +112,7 @@ function initWithWorker(
     newCanvas.style.cssText = 'display:block;width:100%;height:100%'
     container.innerHTML = ''
     container.appendChild(newCanvas)
-    initFallback(container, newCanvas, isMobile, prefersReduced)
+    initFallback(container, newCanvas, isMobile, prefersReduced, dark)
   }
 
   worker.onerror = fallbackToInline
@@ -118,6 +145,7 @@ function initWithWorker(
     height: h,
     dpr,
     bgColor: bgStyle,
+    dark,
     isMobile,
     prefersReduced,
     config: {
@@ -199,13 +227,14 @@ async function initFallback(
   canvas: HTMLCanvasElement,
   isMobile: boolean,
   prefersReduced: boolean,
+  dark: boolean,
 ): Promise<() => void> {
   const generators: Record<string, ArrangementGenerator> = {
     spiral: generateSpiral, concentric: generateConcentric,
     hexagonal: generateHexagonal, rose: generateRose,
   }
 
-  const { Scene, OrthographicCamera, Color, SRGBColorSpace, WebGLRenderer, InstancedMesh, CircleGeometry, MeshBasicMaterial } = await import('three')
+  const { Scene, OrthographicCamera, Color, SRGBColorSpace, WebGLRenderer, InstancedMesh, CircleGeometry, MeshBasicMaterial, AdditiveBlending } = await import('three')
 
   const gen = generators[cfg.arrangement] || generators.concentric
   const numRays = isMobile ? Math.round(cfg.numRays * MOBILE_FACTOR) : cfg.numRays
@@ -226,13 +255,12 @@ async function initFallback(
   const scene = new Scene()
   const geometry = new CircleGeometry(cfg.dotRadius, 6)
   const accentColors = semantic.color.accent
-  const accentOpacity = cfg.accentOpacity ?? 1
-  const layers = [
-    { color: accentColors['1'], delay: 1, opacity: accentOpacity },
-    { color: accentColors['2'], delay: 2, opacity: accentOpacity },
-    { color: accentColors['3'], delay: 3, opacity: accentOpacity },
-    { color: semantic.color.text.secondary, delay: 0, opacity: 1 },
-  ]
+  const layers = dotLayers(
+    dark,
+    [accentColors['1'], accentColors['2'], accentColors['3']],
+    semantic.color.text.secondary,
+    cfg.accentOpacity ?? 1,
+  )
 
   const meshes: InstanceType<typeof InstancedMesh>[] = []
   const delays: number[] = []
@@ -240,6 +268,7 @@ async function initFallback(
     const mat = new MeshBasicMaterial({
       color: layer.color, depthWrite: false, depthTest: false,
       transparent: true, opacity: layer.opacity,
+      ...(layer.additive && { blending: AdditiveBlending }),
     })
     const mesh = new InstancedMesh(geometry, mat, total)
     scene.add(mesh)

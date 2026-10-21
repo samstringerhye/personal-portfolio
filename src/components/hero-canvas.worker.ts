@@ -3,7 +3,7 @@
 // Static import so Three.js downloads as soon as the worker script loads,
 // not waiting for the first 'init' message.
 import {
-  Scene, OrthographicCamera, Color, SRGBColorSpace, WebGLRenderer,
+  Scene, OrthographicCamera, Color, SRGBColorSpace, WebGLRenderer, AdditiveBlending,
   InstancedMesh, CircleGeometry, MeshBasicMaterial,
 } from 'three'
 import {
@@ -12,6 +12,7 @@ import {
   generateRose,
   generateSpiral,
   sizeTaper,
+  dotLayers,
   updateDots,
   newPointerSpring,
   stepPointerSpring,
@@ -34,6 +35,7 @@ interface InitMessage {
   height: number
   dpr: number
   bgColor: string
+  dark: boolean
   isMobile: boolean
   prefersReduced: boolean
   config: {
@@ -162,13 +164,12 @@ async function initScene(msg: InitMessage) {
   scene = new Scene()
   const geometry = new CircleGeometry(cfg.dotRadius, 6)
 
-  const accentOpacity = cfg.accentOpacity ?? 1
-  const layers = [
-    { color: msg.colors.accent1, delay: 1, opacity: accentOpacity },
-    { color: msg.colors.accent2, delay: 2, opacity: accentOpacity },
-    { color: msg.colors.accent3, delay: 3, opacity: accentOpacity },
-    { color: msg.colors.dot, delay: 0, opacity: 1 },
-  ]
+  const layers = dotLayers(
+    msg.dark,
+    [msg.colors.accent1, msg.colors.accent2, msg.colors.accent3],
+    msg.colors.dot,
+    cfg.accentOpacity ?? 1,
+  )
 
   meshes = []
   delays = []
@@ -179,6 +180,7 @@ async function initScene(msg: InitMessage) {
       depthTest: false,
       transparent: true,
       opacity: layer.opacity,
+      ...(layer.additive && { blending: AdditiveBlending }),
     })
     const mesh = new InstancedMesh(geometry, mat, total)
     scene.add(mesh)
