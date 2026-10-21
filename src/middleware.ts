@@ -451,6 +451,21 @@ function passwordPage(caseStudyTitle: string, error: boolean, rateLimited = fals
       text-underline-offset: 0.15em;
     }
     .access a:hover { color: #0B0D1B; }
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; }
+      body { background: #0B1220; color: #E8EDF3; }
+      .brand, .back:hover, .access a:hover { color: #E8EDF3; }
+      .brand-mark { background: #E8EDF3; }
+      .lock, .project-name, .subtitle, .back, input[type="password"]::placeholder { color: #9AA9BA; }
+      .access a { text-decoration-color: #9AA9BA; }
+      input[type="password"] { background: #101929; border-color: #1E2A3D; color: #E8EDF3; }
+      input[type="password"]:focus { border-color: #7FAEFF; box-shadow: 0 0 0 2px #7FAEFF; }
+      button { color: #0B1220; background: #E8EDF3; }
+      button:hover { background: #C3CEDB; }
+      button:active { background: #9AA9BA; }
+      button:focus-visible, .back:focus-visible { box-shadow: 0 0 0 2px #0B1220, 0 0 0 4px #7FAEFF; }
+      .error { color: #FF6B77; }
+    }
   </style>
 </head>
 <body>
