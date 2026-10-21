@@ -26,12 +26,12 @@ tags: ["Mobile App", "Design System", "Motion Design", "UX"]
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import Metrics from '../../components/Metrics.astro'
 import LottiePlayer from '../../components/LottiePlayer.astro'
 import dashboard from '../../assets/work/myfrontier-app/figma/dashboard.webp'
 import faceId from '../../assets/work/myfrontier-app/figma/face-id.webp'
 import techMap from '../../assets/work/myfrontier-app/figma/tech-map.webp'
 import oldDashboard from '../../assets/work/myfrontier-app/figma/old-dashboard.webp'
+import oldBilling from '../../assets/work/myfrontier-app/figma/old-billing.webp'
 import oldMenu from '../../assets/work/myfrontier-app/figma/old-menu.webp'
 import oldPayment from '../../assets/work/myfrontier-app/figma/old-payment.webp'
 import billingZero from '../../assets/work/myfrontier-app/figma/billing-zero.webp'
@@ -49,25 +49,28 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
   agency="Razorfish"
   year={2022}
   made={['App visual design', 'Design library', 'Motion']}
-  outcome="MyFrontier 4.0 launched on November 21, 2022. Paying a bill, tracking a technician and restarting a router each end in one clear answer."
+  outcome="MyFrontier 4.0 launched on November 21, 2022, with bill payment, technician tracking and self-service support paths."
   problem="People open a telecom app with a question: a bill, a technician, an outage. The old app put its menu behind one floating button and gave every row the same weight."
+  decision="Put the bill on home, move the rest of the service tasks into a tab bar, and give each wait state a clear visual response."
   did="I led the visual design and designed the motion from scratch. I set the type and color system, shaped the billing and appointment screens, and gave every wait and finish its own animation."
 />
 
-<Gallery title="MyFrontier 4.0">
+<Gallery title="The redesigned app">
   <Panel kind="screens" screens={[
     { src: dashboard, alt: 'Dashboard: Good afternoon, the balance and a red Make a payment button' },
     { src: faceId, alt: 'Sign in with Face ID' },
     { src: techMap, alt: 'A technician on the way, shown on a map' },
-  ]} />
+  ]} caption="The home screen, sign-in and technician status share one visual system." />
 </Gallery>
-
-<Gallery title="Where it started" note="Version 3.5 led with a network gauge and hid every other screen behind a floating plus. The UX team ranked billing first, so I moved the bill to the top of home and put the rest in a tab bar.">
-  <Panel kind="piece" span="half" tint="#F3F4F4" src={oldDashboard} alt="The old home screen: a green Online ring above the bill" />
+<Gallery title="Where it started" note="The dated working files show version 3.5 leading with a network gauge and a separate billing route. The UX team ranked billing first, so I moved the bill to the top of home and put the rest in a tab bar.">
+  <Panel kind="screens" span="half" tint="#F3F4F4" screens={[
+    { src: oldDashboard, alt: 'The old home screen: a green Online ring above the bill' },
+    { src: oldBilling, alt: 'The old billing screen: a balance card and payment action' },
+  ]} caption="The old home and billing screens separated the status view from the task customers returned for." />
   <Panel kind="screens" span="half" tint="#F3F4F4" screens={[
     { src: oldMenu, alt: 'The old navigation, a radial menu opened from a floating plus' },
     { src: oldPayment, alt: 'The old Make a Payment screen: four outlined amounts and Continue' },
-  ]} />
+  ]} caption="The floating-plus menu scattered primary tasks across separate paths." />
 </Gallery>
 
 <Gallery title="Pay my bill" note="I gave every billing screen the same shape: the balance in one ring, one red button for the action. Paying from home, the bill or a reminder looks the same, so nobody learns it twice.">
@@ -75,26 +78,26 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
     { src: billingZero, alt: 'My billing with a zero balance and Make a payment' },
     { src: payMyBill, alt: 'Pay my bill: the past-due amount in a mint ring and a red Pay button' },
     { src: paymentSent, alt: 'Payment sent, with the confirmation number and Done' },
-  ]} />
+  ]} caption="A shared billing pattern carries from a zero balance to confirmation." />
 </Gallery>
 
-<Gallery title="Appointments" note="New in 4.0. I designed the tracker so customers see where the technician is and when they arrive, and can move the appointment in two taps instead of calling.">
+<Gallery title="Appointments" note="New in 4.0. I designed the tracker so customers see where the technician is, when they arrive and how to change the appointment in the app.">
   <Panel kind="screens" span="half" screens={[
     { src: techOnTheWay, alt: 'Tech is on the way: a four-step tracker with the arrival window' },
     { src: installComplete, alt: 'All done: the installation is complete' },
-  ]} />
+  ]} caption="The tracker shows progress and the expected arrival in one place." />
   <Panel kind="screens" span="half" screens={[
     { src: modifyAppointment, alt: 'Modify appointment: pick a day, then a time range' },
-  ]} />
+  ]} caption="The rescheduling path keeps the change inside the app." />
 </Gallery>
 
 <Gallery title="Type and color" note="I paired a plain face for reading with a wide accent face for headlines, kept red for the one action on each screen, and darkened that red so white text on it passes contrast.">
-  <Panel kind="piece" ratio="16 / 7" tint="#FFFFFF" src={typeScale} alt="Type scale: the standard face beside the wide accent face, H1 to H4" />
-  <Panel kind="piece" ratio="16 / 6" tint="#FFFFFF" src={color} alt="Primary colors: pale red, red, pale mint, mint and navy" />
+  <Panel kind="piece" ratio="16 / 7" tint="#FFFFFF" src={typeScale} alt="Type scale: the standard face beside the wide accent face, H1 to H4" caption="The type system separates service information from brand expression." />
+  <Panel kind="piece" ratio="16 / 6" tint="#FFFFFF" src={color} alt="Primary colors: pale red, red, pale mint, mint and navy" caption="Color gives actions, answers and service states distinct roles." />
 </Gallery>
 
 <Gallery title="Motion" note="A customer restarting a router can't tell a working app from a frozen one. I gave every wait and every finish its own animation, so the app always says what it is doing.">
-  <Panel kind="slot" tint="#FF0037">
+  <Panel kind="slot" tint="#FF0037" caption="Short loops confirm progress at the moments when a customer might otherwise wait.">
     <div class="lottie-grid" style="--lottie-bg: #FF0037">
       <LottiePlayer src="src/lottie/Lottie-Intro.json" label="App launch" maxWidth="100%" />
       <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" />
@@ -102,11 +105,5 @@ import color from '../../assets/work/myfrontier-app/figma/color.webp'
       <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" />
     </div>
   </Panel>
-  <Panel kind="video" ratio="16 / 8" tint="#121A2C" src="/motion/frontier/router.mp4" poster="/motion/frontier/router-poster.webp" alt="Restarting your router: the router icon pulses while a spinner turns" />
+  <Panel kind="video" ratio="16 / 8" tint="#121A2C" src="/motion/frontier/router.mp4" poster="/motion/frontier/router-poster.webp" alt="Restarting your router: the router icon pulses while a spinner turns" caption="The restart loop makes ongoing work visible instead of leaving a blank wait." />
 </Gallery>
-
-<Metrics items={[
-  { value: '4.0', label: 'Launched November 21, 2022' },
-  { value: '5', label: 'Sprints to dev handoff' },
-  { value: '9', label: 'Animations made' },
-]} />

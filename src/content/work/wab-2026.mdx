@@ -25,7 +25,6 @@ tags: ["Design System", "Design Tokens", "Mobile App", "Visual Design", "Compone
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import Metrics from '../../components/Metrics.astro'
 import ChaosToOrder from '../../components/wab/ChaosToOrder.astro'
 import DiagramAnimations from '../../components/wab/DiagramAnimations.astro'
 import lifestyleHome from '../../assets/work/wab-2026/figma/lifestyle-home.webp'
@@ -52,37 +51,38 @@ import illustrationPoster from '../../assets/work/wab-2026/motion/illustration-p
   agency="Razorfish"
   year={2026}
   made={['Visual direction', 'Design system', 'Production screens']}
-  outcome="I cut Whataburger's path from home to checkout from 14 taps to 6, and handed off a rebuilt design system and every production screen in May 2026."
-  problem="The old app worked, but it didn't feel like Whataburger. Ordering took too many taps, and ordering, rewards and locations felt like separate products."
-  did="I merged the two strongest visual directions, then cut the order path: home leads with reorders, and customization shows only what matters at each step."
+  outcome="A new order flow, rebuilt design system and production screen set handed off in May 2026."
+  problem="The old app worked, but ordering, rewards and locations did not feel like one product or a clear expression of Whataburger."
+  decision="Use reorders as the first path from home, limit customization to the choice in front of the guest, and carry one visual system through every utility screen."
+  did="I set the visual direction, rebuilt the system, and took the production screens through handoff. I merged the two strongest directions, led with reorders on home, and showed only the choice that matters at each customization step."
 />
 
-<Gallery title="The app">
-  <Panel kind="bleed" ratio="16 / 9" src={lifestyleHome} alt="A hand holding a phone on a mustard blanket: the home screen says Howdy" />
+<Gallery title="Homepage and menu">
+  <Panel kind="bleed" ratio="16 / 9" src={lifestyleHome} alt="A hand holding a phone on a mustard blanket: the home screen says Howdy" caption="The home screen uses Whataburger's voice before it asks for an order." />
   <Panel kind="screens" screens={[
     { src: home, alt: 'Home: the Whatafresher hero and a welcome' },
     { src: menuReorder, alt: 'Menu: reorder a past meal, then explore the menu' },
-  ]} />
+  ]} caption="Reorders and the full menu share one entry point." />
 </Gallery>
 
 <Gallery title="Where it started" note="I tested three visual directions on the same home screen, then merged the two strongest. The old palette had one orange and no states, so I built the color system from scratch.">
-  <Panel kind="piece" ratio="16 / 8" src={directionTesting} alt="Three visual directions tested on the same home screen" />
-  <Panel kind="piece" span="half" ratio="4 / 5" src={moodboard} alt="Moodboard for the vibrant direction" />
-  <Panel kind="slot" span="half"><ChaosToOrder /></Panel>
+  <Panel kind="piece" ratio="16 / 8" src={directionTesting} alt="Three visual directions tested on the same home screen" caption="Three directions tested against the same home screen." />
+  <Panel kind="piece" span="half" ratio="4 / 5" src={moodboard} alt="Moodboard for the vibrant direction" caption="The visual reference for the direction that set the tone." />
+  <Panel kind="slot" span="half" caption="The system expands one orange into a working palette of roles and states."><ChaosToOrder /></Panel>
 </Gallery>
 
-<Gallery title="Ordering" note="Whataburger's research found 54% of guests come for convenience. I put reorders first on home, and split customization into one step per ingredient group, so each screen asks one question.">
-  <Panel kind="bleed" ratio="16 / 9" src={lifestyleMenu} alt="A hand holding a phone, customizing a burger" />
+<Gallery title="Ordering" note="I put reorders first on home, then split customization into one step per ingredient group so each screen asks one question.">
+  <Panel kind="bleed" ratio="16 / 9" src={lifestyleMenu} alt="A hand holding a phone, customizing a burger" caption="Customization stays focused on the decision in front of the guest." />
   <Panel kind="screens" screens={[
     { src: menuItem, alt: 'A Whataburger with its ingredients as chips' },
     { src: menuCustomization, alt: 'Customize your burger, one ingredient at a time' },
     { src: orderSummary, alt: 'Confirm your meal: every change summed up' },
-  ]} />
+  ]} caption="The order moves from item to ingredients to a final check without repeating choices." />
 </Gallery>
 
 <Gallery title="Brand system" note="I gave the app Whataburger's voice: a script for hellos, a wide face for headlines, and a sticker set for the moments in between.">
-  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={typographyVideo} poster={typographyPoster.src} alt="Type: Howdy in the script face, the Unbounded alphabet and the Frosted Berry lettering" />
-  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={illustrationVideo} poster={illustrationPoster.src} alt="Stickers, order icons and the navigation bar" />
+  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={typographyVideo} poster={typographyPoster.src} alt="Type: Howdy in the script face, the Unbounded alphabet and the Frosted Berry lettering" caption="Type gives greetings and headings their own jobs." />
+  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={illustrationVideo} poster={illustrationPoster.src} alt="Stickers, order icons and the navigation bar" caption="Stickers and icons carry the brand through the utility screens." />
 </Gallery>
 
 <Gallery title="Rewards, scan and account" note="Scan puts the QR code, the wallet and your points on one screen, so earning, redeeming and paying at the register take one step.">
@@ -90,15 +90,8 @@ import illustrationPoster from '../../assets/work/wab-2026/motion/illustration-p
     { src: rewards, alt: 'Rewards: 475 points and the offers' },
     { src: scan, alt: 'Scan in store: a QR code, the wallet and points' },
     { src: account, alt: 'Account hub with condiment badges' },
-  ]} />
-  <Panel kind="bleed" ratio="16 / 9" src={screensGrid} alt="Every production screen, shown together" />
+  ]} caption="Rewards, payment and account details meet at the register in one scan." />
+  <Panel kind="bleed" ratio="16 / 9" src={screensGrid} alt="Every production screen, shown together" caption="The production set applies the same system across the app." />
 </Gallery>
-
-<Metrics items={[
-  { value: '14 → 6', label: 'Taps from home to checkout' },
-  { value: '258', label: 'Tokens' },
-  { value: '90+', label: 'Components' },
-  { value: '11', label: 'Color states' },
-]} />
 
 <DiagramAnimations />

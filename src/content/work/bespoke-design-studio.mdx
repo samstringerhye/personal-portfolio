@@ -2,10 +2,10 @@
 title: "Samsung Bespoke Appliance Configurator"
 client: "Samsung"
 year: 2024
-yearLabel: "2022–2025"
+yearLabel: "2021–2025"
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "An appliance configurator that beat standard product pages on add-to-cart by 6x+ for fridges and 10x+ for kitchens."
+tagline: "An appliance configurator for Bespoke kitchens and refrigerators."
 thumbnail: "../../assets/work/bespoke-design-studio/bespoke-design-studio-thumbnail-32.jpeg"
 thumbnailLayers:
   subject: "../../assets/work/bespoke-design-studio/bespoke-design-studio-subject-32.png"
@@ -27,7 +27,6 @@ tags: ["Design System", "E-commerce", "Interactive", "Motion Design"]
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import Metrics from '../../components/Metrics.astro'
 import yellowDesktop from '../../assets/work/bespoke-design-studio/figma/yellow-desktop.webp'
 import yellowMobile from '../../assets/work/bespoke-design-studio/figma/yellow-mobile.webp'
 import configMobile from '../../assets/work/bespoke-design-studio/figma/config-mobile.webp'
@@ -44,45 +43,38 @@ import kvMobile from '../../assets/work/bespoke-design-studio/figma/kv-mobile.we
   client="Samsung"
   role="Associate Design Director"
   agency="Razorfish"
-  year="2022–2025"
+  year="2021–2025"
   made={['Configurator UX and UI', 'Kitchen simulator', 'Motion']}
-  outcome="Shoppers who used the configurator added fridges to cart at more than 6 times the rate of product pages. Over 12 months it drove nine figures in revenue."
-  problem="A Bespoke fridge means a model, a size and a color for each of four door panels. Online, every choice arrived at once, and people left."
+  outcome="A shipped configurator that guides a complex appliance purchase through one manageable choice at a time."
+  problem="A Bespoke fridge means a model, a size and a color for each of four door panels. The challenge was to make those decisions clear without putting every option on one screen."
+  decision="Stage the purchase like a sales conversation: choose the product, then its model and depth, then finish each door panel."
   did="I led the configurator's UX and UI. I ordered the decisions the way a salesperson would: products, model, depth, then colors, one door panel at a time."
 />
 
-<Gallery title="Bespoke Design Studio">
-  <Panel kind="page" ratio="5 / 3" src={yellowDesktop} alt="A sunrise-yellow Bespoke fridge in a white kitchen, the finish swatches beside it" />
+<Gallery title="The configurator">
+  <Panel kind="page" ratio="5 / 3" src={yellowDesktop} alt="A sunrise-yellow Bespoke fridge in a white kitchen, the finish swatches beside it" caption="A kitchen scene shows each finish change in context." />
   <Panel kind="screens" screens={[
     { src: configMobile, alt: 'Choose your kitchen configuration: seven appliance tiles' },
     { src: yellowMobile, alt: 'The same yellow fridge on a phone, with Save' },
-  ]} />
+  ]} caption="The phone version keeps the kitchen and its choices in view." />
 </Gallery>
-
 <Gallery title="The choices" note="Seven appliances, each with its own steps, and twelve finishes for every door panel. Shown all at once, that is thousands of combinations on one screen.">
-  <Panel kind="piece" ratio="16 / 9" tint="#F7F7F7" src={selections} alt="Selections: refrigerator, range, cooktop, wall oven, dishwasher, microwave and range hood, each with its steps" />
-  <Panel kind="bleed" ratio="16 / 9" src={kitchenRender} alt="A charcoal kitchen render with a white Bespoke fridge" />
+  <Panel kind="piece" ratio="16 / 9" tint="#F7F7F7" src={selections} alt="Selections: refrigerator, range, cooktop, wall oven, dishwasher, microwave and range hood, each with its steps" caption="Seven appliance types each introduce their own decisions." />
+  <Panel kind="bleed" ratio="16 / 9" src={kitchenRender} alt="A charcoal kitchen render with a white Bespoke fridge" caption="The kitchen render makes a single appliance feel part of the whole room." />
 </Gallery>
 
 <Gallery title="One decision at a time" note="I staged the choices: model, then depth, then color, one door panel at a time. Each step opens only once the last is settled, and the steps stay in view so nobody gets lost.">
-  <Panel kind="page" ratio="5 / 3" src={panelDesktop} alt="Model, Depth and Color tabs, one door turned yellow, and a hint to click a panel" />
+  <Panel kind="page" ratio="5 / 3" src={panelDesktop} alt="Model, Depth and Color tabs, one door turned yellow, and a hint to click a panel" caption="The desktop flow stages model, depth and color in that order." />
   <Panel kind="screens" span="half" screens={[
     { src: panelMobile, alt: 'On a phone: one panel outlined, four swatches for it' },
-  ]} />
-  <Panel kind="bleed" span="half" src={fridgeCloseup} alt="The yellow fridge with one door panel outlined" />
+  ]} caption="On mobile, the selected panel stays obvious while its options remain close." />
+  <Panel kind="bleed" span="half" src={fridgeCloseup} alt="The yellow fridge with one door panel outlined" caption="The outline ties a swatch choice to the exact door it changes." />
 </Gallery>
 
 <Gallery title="As built" note="The fridge simulator running in 2021, and the summary that turns a design into a cart line.">
-  <Panel kind="page" ratio="5 / 3" src={builtDesktop} alt="The built simulator: a navy and rose fridge in a styled kitchen" />
+  <Panel kind="page" ratio="5 / 3" src={builtDesktop} alt="The built simulator: a navy and rose fridge in a styled kitchen" caption="The shipped simulator keeps the visual promise of the design work." />
   <Panel kind="screens" span="half" screens={[
     { src: builtSummaryMobile, alt: 'Your Bespoke design, $1,798.99, with Add to cart' },
-  ]} />
-  <Panel kind="bleed" span="half" src={kvMobile} alt="The launch key visual: a sky blue and grey Bespoke fridge in a pale kitchen" />
+  ]} caption="The summary turns a configured appliance into a cart-ready selection." />
+  <Panel kind="bleed" span="half" src={kvMobile} alt="The launch key visual: a sky blue and grey Bespoke fridge in a pale kitchen" caption="The launch visual brings the configurator's color choices into the campaign." />
 </Gallery>
-
-<Metrics items={[
-  { value: '6x+', label: 'Fridge add-to-cart vs product pages' },
-  { value: '10x+', label: 'Kitchen add-to-cart vs product pages' },
-  { value: '9 figures', label: 'Revenue over 12 months' },
-  { value: '73%', label: 'Customization rate' },
-]} />

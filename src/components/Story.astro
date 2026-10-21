@@ -1,7 +1,7 @@
 ---
 /**
  * The whole story in one block under the hero: the facts in the left columns, then the outcome as
- * the lead and the problem and what I did, a sentence or two each. The visuals after it carry the
+ * the lead, problem, decision, and leadership contribution, a sentence or two each. The visuals after it carry the
  * rest (Gallery, Panel).
  */
 interface Props {
@@ -13,16 +13,17 @@ interface Props {
   made: string[]
   outcome: string
   problem: string
+  decision: string
   did: string
 }
 
-const { client, role, agency, year, made, outcome, problem, did } = Astro.props
+const { client, role, agency, year, made, outcome, problem, decision, did } = Astro.props
 const facts: [string, string | string[]][] = [
   ['Client', client],
   ['Role', role],
   ['Agency', agency],
   ['Year', String(year)],
-  ['Made', made],
+  ['Scope', made],
 ]
 ---
 
@@ -42,7 +43,11 @@ const facts: [string, string | string[]][] = [
       <p>{problem}</p>
     </div>
     <div class="story-part">
-      <h2 class="typo-ui-caps">What I did</h2>
+      <h2 class="typo-ui-caps">The decision</h2>
+      <p>{decision}</p>
+    </div>
+    <div class="story-part">
+      <h2 class="typo-ui-caps">Leadership and design</h2>
       <p>{did}</p>
     </div>
   </div>
