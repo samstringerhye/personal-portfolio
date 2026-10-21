@@ -20,6 +20,26 @@ import { grade } from './grade'
 // How far a held arrangement rises off the floor, as a share of its height
 const LIFT = 0.05
 
+/** The middle of the arrangement as the camera sees it, in world units at the origin's depth. The
+    box's own middle sits off it: perspective enlarges what's nearer, so a phone in front pulls the
+    visible edge out further than the box says. */
+function silhouetteCenter(root: Object3D, distance: number): [number, number] {
+  const v = new Vector3()
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity
+  root.traverse(o => {
+    const mesh = o as Mesh
+    const position = mesh.isMesh && mesh.geometry.attributes.position
+    if (!position) return
+    for (let i = 0; i < position.count; i++) {
+      v.fromBufferAttribute(position, i).applyMatrix4(mesh.matrixWorld)
+      const k = distance / (distance - v.z)
+      x0 = Math.min(x0, v.x * k); x1 = Math.max(x1, v.x * k)
+      y0 = Math.min(y0, v.y * k); y1 = Math.max(y1, v.y * k)
+    }
+  })
+  return [(x0 + x1) / 2, (y0 + y1) / 2]
+}
+
 // Three-point lighting: a key high on the left, barely warm, a fill low on the right, barely cool,
 // at a quarter of its strength, and a rim behind on the right that traces the frames' edges. Near
 // white, so the finishes keep their true colors; the environment is turned down to let them read
@@ -295,14 +315,14 @@ export async function createArrangementRenderer(
   spin.rotation.y = rest.ry
   tilt.updateMatrixWorld(true)
   const body = new Box3().setFromObject(spin, true)
-  const center = body.getCenter(new Vector3())
+  const tan = Math.tan((fov / 2) * Math.PI / 180)
+  const viewHeight = (body.max.y - body.min.y) / arrangement.fill
   const geometry: ArrangementGeometry = {
-    viewHeight: (body.max.y - body.min.y) / arrangement.fill,
+    viewHeight,
     viewWidth: (body.max.x - body.min.x) / arrangement.fill,
-    center: [center.x, center.y],
+    center: silhouetteCenter(spin, (viewHeight / 2) / tan),
     aspects,
   }
-  const tan = Math.tan((fov / 2) * Math.PI / 180)
   const camera = new PerspectiveCamera(fov, width / height)
   // w × h is the stage the arrangement is framed in; the canvas runs past it by bleed on each side,
   // so the shadow and a device dragged toward the edge are drawn whole
