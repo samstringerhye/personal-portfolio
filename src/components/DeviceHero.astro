@@ -140,32 +140,33 @@ const csWordEase = reveal.cssEase
     color: var(--ek-ink-body);
   }
 
-  /* Desktop: the homepage row's grid, the title at the bottom of the left 4 of 12 columns beside the
-     device in the other 8 */
+  /* Desktop: the homepage row's grid, the title centered on the height of the device in the left 4
+     of 12 columns beside it in the other 8 */
   @media (min-width: 64.0625rem) {
-    /* The text at the bottom of the column */
+    /* The text centered on the stage, like the card's caption */
     .cs-device-hero-text {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: flex-end;
+      justify-content: center;
       align-self: stretch;
       gap: var(--space-2);
-      /* The homepage card's caption (editorial.css): its 8rem below, and its button's room above
-         that, so the year, title and tagline land where the card's were */
-      padding-bottom: calc(8rem + var(--space-5) + var(--touch-target));
+      /* The card's button and the step above it, so the year, title and tagline land where the
+         card's did */
+      padding-bottom: calc(var(--space-5) + var(--touch-target));
     }
 
-    /* The card's year shares a row with taller tag pills and sits a step further from the title */
+    /* The card's year shares a row with taller tag pills and sits a step further from the title.
+       No space above it: the text is centered, so every step counts toward where it lands */
     .cs-device-hero-year {
-      margin-bottom: calc(var(--space-3) - var(--space-2) + 0.5em - 3px);
+      margin-block: 0 calc(var(--space-3) - var(--space-2) + 0.5em);
     }
 
     .cs-device-hero {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--grid-gutter);
-      align-items: end;
+      align-items: center;
       padding-block: var(--page-margin);
     }
 
