@@ -15,6 +15,7 @@ import {
   dotLayers,
   updateDots,
   newPointerSpring,
+  newWake,
   stepPointerSpring,
   type ArrangementGenerator,
   type Push,
@@ -59,7 +60,7 @@ interface InitMessage {
     accentOpacity: number
     cmyStagger: number
     wavePaused?: boolean
-    pointer: { radius: number; push: number; grow: number; split: number; stiffness: number; damping: number }
+    pointer: { radius: number; push: number; grow: number; split: number; stiffness: number; damping: number; attack: number; release: number }
   }
   colors: {
     accent1: string
@@ -116,7 +117,8 @@ let pointerTo: PointerMessage | null = null
 const pointer = newPointerSpring()
 let width = 0
 let height = 0
-const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: 0, grow: 0, amount: 1 }
+const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: 0, grow: 0, amount: 1, wake: null, attack: 0, release: 0 }
+let wakes: Float32Array[] = []
 
 // Scene state (set during init)
 let renderer: any
@@ -173,6 +175,7 @@ async function initScene(msg: InitMessage) {
 
   meshes = []
   delays = []
+  wakes = []
   for (const layer of layers) {
     const mat = new MeshBasicMaterial({
       color: layer.color,
@@ -186,6 +189,7 @@ async function initScene(msg: InitMessage) {
     scene.add(mesh)
     meshes.push(mesh)
     delays.push(layer.delay)
+    wakes.push(newWake(total))
   }
 
   renderer = new WebGLRenderer({
@@ -263,11 +267,14 @@ function tick() {
   push.strength = pointer.strength
   push.push = p.push
   push.grow = p.grow
+  push.attack = p.attack
+  push.release = p.release
   const amounts = [1 + p.split, 1, 1 - p.split, 1]
 
   for (let i = 0; i < meshes.length; i++) {
     const mesh = meshes[i]
     push.amount = amounts[i]
+    push.wake = wakes[i]
     updateDots(
       mesh.instanceMatrix.array as Float32Array, total,
       posX, posY, dist, dotScales, time - delays[i] * cmyDelay,

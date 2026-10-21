@@ -42,7 +42,9 @@
         "grow": 0.25,
         "split": 0.08,
         "stiffness": 0.06,
-        "damping": 0.8
+        "damping": 0.8,
+        "attack": 0.2,
+        "release": 0.04
       },
       "bgColor": { "$ref": "sys.color.bg.primary" }
     },

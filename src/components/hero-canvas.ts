@@ -8,6 +8,7 @@ import {
   dotLayers,
   updateDots,
   newPointerSpring,
+  newWake,
   stepPointerSpring,
   type ArrangementGenerator,
   type Push,
@@ -339,7 +340,8 @@ async function initFallback(
   const p = cfg.pointer
   const target = { x: 0, y: 0, active: false }
   const pointer = newPointerSpring()
-  const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: p.push, grow: p.grow, amount: 1 }
+  const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: p.push, grow: p.grow, amount: 1, wake: null, attack: p.attack, release: p.release }
+  const wakes = meshes.map(() => newWake(total))
   const amounts = [1 + p.split, 1, 1 - p.split, 1]
   const onPointer = (e: PointerEvent) => {
     const r = container.getBoundingClientRect()
@@ -363,6 +365,7 @@ async function initFallback(
     push.strength = pointer.strength
     meshes.forEach((mesh, i) => {
       push.amount = amounts[i]
+      push.wake = wakes[i]
       updateDots(
         mesh.instanceMatrix.array as Float32Array, total,
         posX, posY, dist, dotScales, time - delays[i] * cmyDelay,
