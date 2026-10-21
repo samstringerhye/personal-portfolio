@@ -275,3 +275,31 @@ export function updateDots(
     matArr[o + 13] = y
   }
 }
+
+export interface DotLayer {
+  color: string
+  delay: number
+  opacity: number
+  /** Light adds on dark: red, green and blue sum to white where they overlap */
+  additive: boolean
+}
+
+// Pure primaries, so the three layers sum to exactly white
+const SCREEN_PRIMARIES = ['#FF0000', '#00FF00', '#0000FF']
+
+/** Light page: the accents over a gray dot, as printed ink. Dark page: three additive RGB layers,
+ *  like subpixels. Red, green and blue stay first, since the pointer splits them in that order. */
+export function dotLayers(
+  dark: boolean,
+  accents: string[],
+  dot: string,
+  accentOpacity: number,
+): DotLayer[] {
+  if (dark) {
+    return SCREEN_PRIMARIES.map((color, i) => ({ color, delay: i + 1, opacity: accentOpacity, additive: true }))
+  }
+  return [
+    ...accents.map((color, i) => ({ color, delay: i + 1, opacity: accentOpacity, additive: false })),
+    { color: dot, delay: 0, opacity: 1, additive: false },
+  ]
+}
