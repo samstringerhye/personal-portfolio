@@ -131,6 +131,33 @@ type NavEvent = Event & { sourceElement?: Element; from: URL; to: URL }
 type SwapEvent = Event & { newDocument: Document; viewTransition: ViewTransition }
 const persistId = (el: Element) => el.getAttribute('data-astro-transition-persist')
 let moving: HTMLElement | null = null
+let frozen: HTMLElement | null = null
+let pausedAnimations: Animation[] = []
+let playingVideos: HTMLVideoElement[] = []
+
+// Hold the exact device and screen frame while the page scrolls into alignment and the shared
+// element moves between its card and case-study hero.
+function freezeScene(scene: HTMLElement) {
+  if (frozen === scene) return
+  if (frozen) resumeScene(frozen)
+  frozen = scene
+  scene.dataset.deviceFreeze = ''
+  pausedAnimations = scene.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running' || animation.playState === 'pending')
+  pausedAnimations.forEach(animation => animation.pause())
+  playingVideos = [...scene.querySelectorAll('video')].filter(video => !video.paused)
+  playingVideos.forEach(video => video.pause())
+}
+
+function resumeScene(scene: HTMLElement) {
+  if (frozen !== scene) return
+  delete scene.dataset.deviceFreeze
+  pausedAnimations.forEach(animation => animation.play())
+  pausedAnimations = []
+  playingVideos.forEach(video => { void video.play().catch(() => {}) })
+  playingVideos = []
+  scene.dispatchEvent(new Event('device-resume'))
+  frozen = null
+}
 
 // The scene that will travel: the clicked card's, or the hero's on the way back to the homepage
 function travelling(e: NavEvent): HTMLElement | null {
@@ -165,13 +192,18 @@ function alignThenGo(e: MouseEvent) {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   const link = (e.target as Element | null)?.closest<HTMLAnchorElement>('.work-list-card a[href^="/work/"]')
-  const stage = link?.closest('.work-list-card')?.querySelector<HTMLElement>('.device-scene[data-ready]')?.parentElement
-  if (!link || !stage) return
+  const scene = link?.closest('.work-list-card')?.querySelector<HTMLElement>('.device-scene[data-ready]')
+  const stage = scene?.parentElement
+  if (!link || !stage || !scene) return
   const max = document.documentElement.scrollHeight - window.innerHeight
   const target = Math.min(max, Math.max(0, window.scrollY + stage.getBoundingClientRect().top - heroStageTop()))
   if (Math.abs(target - window.scrollY) < 4) return
   e.preventDefault()
-  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link }))
+  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link })).catch(error => {
+    resumeScene(scene)
+    throw error
+  })
+  freezeScene(scene)
   const lenis = (window as Window & { __siteLenis?: { scrollTo: (t: number, o: object) => void } | null }).__siteLenis
   const duration = animations.workCards.deviceNav.align
   if (lenis) {
@@ -194,6 +226,7 @@ if (!mw.__deviceScenesBound) {
     const scene = travelling(e as NavEvent)
     if (!scene) return
     moving = scene
+    freezeScene(scene)
     scene.style.viewTransitionName = 'device'
     markNav(document.documentElement)
   })
@@ -219,6 +252,7 @@ if (!mw.__deviceScenesBound) {
     ;(e as SwapEvent).viewTransition.finished.finally(() => {
       scene.style.viewTransitionName = ''
       delete document.documentElement.dataset.deviceNav
+      resumeScene(scene)
     })
   })
 }

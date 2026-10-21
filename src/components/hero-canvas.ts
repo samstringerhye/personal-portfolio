@@ -1,4 +1,4 @@
-import { animations, semantic } from '../data/tokens'
+import { animations } from '../data/tokens'
 import {
   generateConcentric,
   generateHexagonal,
@@ -91,8 +91,6 @@ function initWithWorker(
 ): () => void {
   const offscreen = canvas.transferControlToOffscreen()
   const dpr = Math.min(window.devicePixelRatio, isMobile ? 1.5 : cfg.maxDpr)
-  const accentColors = semantic.color.accent
-
   const worker = new Worker(
     new URL('./hero-canvas.worker.ts', import.meta.url),
     { type: 'module' },
@@ -170,13 +168,6 @@ function initWithWorker(
       wavePaused: cfg.wavePaused,
       pointer: cfg.pointer,
     },
-    colors: {
-      accent1: accentColors['1'],
-      accent2: accentColors['2'],
-      accent3: accentColors['3'],
-      // Dots sit one step lighter than body text so the hero copy reads above them
-      dot: semantic.color.text.secondary,
-    },
   } as any, [offscreen])
 
   // ResizeObserver → post size changes to worker
@@ -233,7 +224,7 @@ async function initFallback(
     hexagonal: generateHexagonal, rose: generateRose,
   }
 
-  const { Scene, OrthographicCamera, SRGBColorSpace, WebGLRenderer, InstancedMesh, CircleGeometry, MeshBasicMaterial, AdditiveBlending } = await import('three')
+  const { Scene, OrthographicCamera, SRGBColorSpace, WebGLRenderer, InstancedMesh, CircleGeometry, MeshBasicMaterial, AdditiveBlending, MultiplyBlending } = await import('three')
 
   const gen = generators[cfg.arrangement] || generators.concentric
   const numRays = isMobile ? Math.round(cfg.numRays * MOBILE_FACTOR) : cfg.numRays
@@ -253,13 +244,7 @@ async function initFallback(
 
   const scene = new Scene()
   const geometry = new CircleGeometry(cfg.dotRadius, 6)
-  const accentColors = semantic.color.accent
-  const layers = dotLayers(
-    dark,
-    [accentColors['1'], accentColors['2'], accentColors['3']],
-    semantic.color.text.secondary,
-    cfg.accentOpacity ?? 1,
-  )
+  const layers = dotLayers(dark, cfg.accentOpacity ?? 1)
 
   const meshes: InstanceType<typeof InstancedMesh>[] = []
   const delays: number[] = []
@@ -268,6 +253,7 @@ async function initFallback(
       color: layer.color, depthWrite: false, depthTest: false,
       transparent: true, opacity: layer.opacity,
       ...(layer.additive && { blending: AdditiveBlending }),
+      ...(layer.multiply && { blending: MultiplyBlending }),
     })
     const mesh = new InstancedMesh(geometry, mat, total)
     scene.add(mesh)
@@ -340,7 +326,7 @@ async function initFallback(
   const pointer = newPointerSpring()
   const push: Push = { x: 0, y: 0, r: 0, strength: 0, push: p.push, grow: p.grow, amount: 1, wake: null, attack: p.attack, release: p.release }
   const wakes = meshes.map(() => newWake(total))
-  const amounts = [1 + p.split, 1, 1 - p.split, 1]
+  const amounts = [1 + p.split, 1, 1 - p.split]
   const onPointer = (e: PointerEvent) => {
     const r = container.getBoundingClientRect()
     const x = e.clientX - r.left, y = e.clientY - r.top
@@ -362,7 +348,7 @@ async function initFallback(
     push.r = p.radius / effectiveZoom
     push.strength = pointer.strength
     meshes.forEach((mesh, i) => {
-      push.amount = amounts[i]
+      push.amount = amounts[i % 3]
       push.wake = wakes[i]
       updateDots(
         mesh.instanceMatrix.array as Float32Array, total,

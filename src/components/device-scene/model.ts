@@ -355,6 +355,9 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   const frame = (now: number) => {
     if (!on) return
     raf = requestAnimationFrame(frame)
+    // The card-to-hero transition carries this same canvas. Hold its last rendered pose while the
+    // page aligns and the view transition runs, so scroll parallax and sway cannot rotate it away.
+    if (art.hasAttribute('data-device-freeze')) return
     const box = (art.parentElement ?? art).getBoundingClientRect()
     const fromCenter = box.top + box.height / 2 - window.innerHeight / 2
     if (!reduced) {

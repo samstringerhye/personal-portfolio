@@ -3,10 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import ClientLogos from '../components/ClientLogos.astro'
 import { Image } from 'astro:assets'
 import portrait from '../assets/about/sam-portrait.jpg'
-import { animations } from '../data/tokens'
-import headphone from '../assets/about/icons/headphone.png'
-import videoGame from '../assets/about/icons/video_game.png'
-import laptop from '../assets/about/icons/laptop.png'
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -22,18 +18,6 @@ const aboutJsonLd = {
     "knowsAbout": ["Design Leadership", "Brand Identity", "Content Platforms", "Design Systems", "Product Design"],
   },
 }
-
-// A few things from the interests list, placed loosely around the photo: x and y are the center in %
-// of the photo's box, size the width in %. 3D models of an iBook, a Rio and a Dreamcast pad
-// (about-icons.ts) replace the flat Fluent emoji (MIT, Microsoft) once the canvas is up; the emoji
-// stay as the fallback.
-const ICONS = [
-  { src: laptop, alt: 'Apple fanboy: a Tangerine iBook G3', x: 6, y: 16, size: 40, sculpt: 'ibook', yaw: 0.45, pitch: 0.5 },
-  { src: headphone, alt: 'Audiophile: a Diamond Rio PMP300', x: 96, y: 40, size: 27, sculpt: 'rio', yaw: -0.35, pitch: 0.12 },
-  { src: videoGame, alt: 'Gamer: a Dreamcast controller', x: 82, y: 92, size: 32, sculpt: 'dreamcast', yaw: -0.25, pitch: 0.35 },
-]
-const models = ICONS.map(({ sculpt, x, y, size, yaw, pitch }) => ({ sculpt, x, y, size, yaw, pitch }))
-const float = animations.about.icons
 
 const skills = [
   { title: 'Design Leadership', desc: 'Leading teams of three to six designers, including six on Amica.com' },
@@ -55,7 +39,7 @@ const skills = [
           I'm the person who notices when the spacing is off, when a transition feels wrong, or when a component system only works in the deck.
         </p>
       </div>
-      <div class="about-portrait-cell" data-no-reveal style={`--float: ${float.float}px; --tilt: ${float.tilt}deg; --float-duration: ${float.duration}s`}>
+      <div class="about-portrait-cell" data-no-reveal>
         <div class="about-orbit">
           <Image
             src={portrait}
@@ -68,14 +52,6 @@ const skills = [
             fetchpriority="high"
             class="about-portrait"
           />
-          <canvas class="about-icons-3d" aria-hidden="true" data-models={JSON.stringify(models)}></canvas>
-          <ul class="about-icons" aria-label="Things I'm into">
-            {ICONS.map((icon, i) => (
-              <li class="about-icon" style={`left: ${icon.x.toFixed(1)}%; top: ${icon.y.toFixed(1)}%; width: ${icon.size}%; animation-delay: -${(i * float.stagger).toFixed(2)}s`}>
-                <Image src={icon.src} alt={icon.alt} width={256} format="webp" loading="eager" />
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
@@ -300,23 +276,3 @@ const skills = [
     }
   }
 </style>
-
-<script>
-  import type { AboutIcon } from '../components/about-icons'
-
-  let teardown: (() => void) | undefined
-
-  async function init() {
-    teardown?.()
-    teardown = undefined
-    const orbit = document.querySelector<HTMLElement>('.about-orbit')
-    const canvas = orbit?.querySelector<HTMLCanvasElement>('.about-icons-3d')
-    if (!orbit || !canvas) return
-    const icons = JSON.parse(canvas.dataset.models ?? '[]') as AboutIcon[]
-    const { mountAboutIcons } = await import('../components/about-icons')
-    teardown = mountAboutIcons(orbit, canvas, icons)
-  }
-
-  document.addEventListener('astro:page-load', init)
-  document.addEventListener('astro:before-swap', () => { teardown?.(); teardown = undefined })
-</script>

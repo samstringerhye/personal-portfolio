@@ -1,10 +1,11 @@
 ---
-title: "Samsung.com Redesign"
+title: "Samsung.com Redesign: Visual Design and Shared Components"
 client: "Samsung"
 year: 2020
+yearLabel: "2020–2021"
 role: "Senior Designer"
 agency: "Razorfish"
-tagline: "A six-month redesign of Samsung.com across 12+ markets: page layouts, design system components and the global navigation."
+tagline: "I translated approved wireframes into Samsung.com page designs and reusable visual components."
 thumbnail: "../../assets/work/samsung-redesign/samsung-redesign-thumbnail-32.jpeg"
 thumbnailLayers:
   subject: "../../assets/work/samsung-redesign/samsung-redesign-subject-32.png"
@@ -25,17 +26,15 @@ tags: ["Design System", "E-commerce", "Global", "Navigation"]
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
+import ProseGroup from '../../components/ProseGroup.astro'
 import homeDesktop from '../../assets/work/samsung-redesign/figma/home-desktop.webp'
-import highlightsMobile from '../../assets/work/samsung-redesign/figma/highlights-mobile.webp'
-import warrantyMobile from '../../assets/work/samsung-redesign/figma/warranty-mobile.webp'
 import navDesktop from '../../assets/work/samsung-redesign/figma/nav-desktop.webp'
 import navAppliances from '../../assets/work/samsung-redesign/figma/nav-appliances.webp'
 import navFridges from '../../assets/work/samsung-redesign/figma/nav-fridges.webp'
-import categoryDesktop from '../../assets/work/samsung-redesign/figma/category-desktop.webp'
-import categoryMobile from '../../assets/work/samsung-redesign/figma/category-mobile.webp'
-import configureMobile from '../../assets/work/samsung-redesign/figma/configure-mobile.webp'
-import finderDesktop from '../../assets/work/samsung-redesign/figma/finder-desktop.webp'
-import pdOptions from '../../assets/work/samsung-redesign/mock/pd-options.webp'
+import productCategory from '../../assets/work/samsung-redesign/samsung-section-2-pcd-desktop.jpg'
+import productFamilyScreen from '../../assets/work/samsung-redesign/samsung-section-6-pf-desktop.jpg'
+import productDetail from '../../assets/work/samsung-redesign/samsung-section-5-pd-desktop.jpg'
+import systemStyleGuide from '../../assets/work/samsung-redesign/system-style-guide-board.jpg'
 import buttons from '../../assets/work/samsung-redesign/mock/buttons.webp'
 import icons from '../../assets/work/samsung-redesign/mock/icons.webp'
 
@@ -43,35 +42,35 @@ import icons from '../../assets/work/samsung-redesign/mock/icons.webp'
   client="Samsung"
   role="Senior Designer"
   agency="Razorfish"
-  year={2020}
-  made={['Navigation', 'Category and product pages', 'Shared components']}
-  outcome="A shared navigation and page system designed to roll out market by market without losing local category depth."
-  problem="The brief called for a product path that worked across markets, categories and string lengths, especially on phones where the old navigation required too much reading before a shopper could act."
-  decision="Use product imagery to make categories recognizable on phones, then pair that navigation with reusable category and product templates."
-  did="I set the visual direction for the global navigation and designed the category pages, from the first mobile concepts in February 2020 to the shared templates."
+  year="2020–2021"
+  made={['Homepage, GNB, PDP, PCP, and Product Family visuals', 'GNB imagery layout, hierarchy, and type spacing', 'Reusable components and organized design-system files']}
+  outcome="My work ended with final visual design handoff to Samsung’s development team in 2021. Project documents report a phased global rollout, but no post-launch user or business result attributable to my contribution."
+  problem="Samsung was bringing regional sites into a shared global system. I received approved wireframes and existing page content to translate into the new templates. Team testing had identified category imagery as a recognition cue and flagged small text and unclear labels in the navigation."
+  decision="I used category imagery to shape the GNB layout and hierarchy, then adjusted type spacing in response to the team’s testing findings. Across the page templates, I applied Samsung’s global type and color foundations and built reusable components for repeated interface patterns."
+  did="As a senior designer on a larger cross-functional team, I translated approved wireframes into visual designs for the homepage, GNB, product detail page (PDP), product category page (PCP), and Product Family page. I shaped the GNB’s imagery layout and hierarchy, and built and organized reusable components and design-system files. Samsung’s global system set the core typography and color foundations."
 />
 
-<Gallery title="Homepage">
-  <Panel kind="page" src={homeDesktop} alt="Samsung.com homepage with the Galaxy S20 hero" caption="The homepage gives the current flagship product the first, clearest story." />
-  <Panel kind="screens" screens={[
-    { src: categoryMobile, alt: 'Refrigerators category page on a phone' },
-    { src: highlightsMobile, alt: 'Category highlights: Open up a little, over a fridge interior' },
-    { src: warrantyMobile, alt: 'Category offers: a five-year appliance warranty' },
-  ]} caption="The category templates adapt the same structure to phone screens." /></Gallery>
-
-<Gallery title="Navigation" note="The navigation had to work for people who recognize a product before they know its name. I put a picture beside every category on phones. Desktop keeps scan-friendly text lists and one featured product per menu.">
-  <Panel kind="screens" span="half" screens={[{ src: navAppliances, alt: 'Phone menu: Appliances, each category with a product photo' }]} caption="Product images help people recognize a category before they know its name." />
-  <Panel kind="screens" span="half" screens={[{ src: navFridges, alt: 'Phone menu drill-in: refrigerators by type, each pictured' }]} caption="The second level keeps that visual recognition through product type." />
-  <Panel kind="page" ratio="8 / 3" src={navDesktop} alt="Desktop menu open on Mobile: categories, products and one featured Galaxy S20 card" caption="Desktop keeps the scan-friendly list and adds one product story." />
-</Gallery>
-<Gallery title="Category and product pages" note="I built category pages around one big picture, then let shoppers narrow by what they care about, color, width, capacity, door style, as tappable chips instead of a long filter list.">
-  <Panel kind="page" src={categoryDesktop} alt="Smartphones category page: Be ready for the future, over a Galaxy S20" caption="A single product image sets the category's entry point." />
-  <Panel kind="screens" span="half" screens={[{ src: configureMobile, alt: 'Fridge finder on a phone: colour, width, capacity and door style as chips' }]} caption="Chips turn a long filter list into visible product traits." />
-  <Panel kind="piece" span="half" multiply src={pdOptions} alt="Galaxy A50 product page options: trade-in and color" caption="Product choices sit beside the purchase decision." />
-  <Panel kind="page" src={finderDesktop} alt="Product finder: Smart Fridge Freezers, two large product cards" caption="The finder narrows a category through a few clear questions." />
+<Gallery title="GNB: imagery, hierarchy, and spacing" note="Team testing identified category imagery as a recognition cue and flagged small text and unclear labels. I shaped the imagery layout and hierarchy, and adjusted type spacing in response. These visuals show the design response, not post-launch validation.">
+  <Panel kind="page" ratio="8 / 3" src={navDesktop} alt="Samsung desktop global navigation with product categories, a featured product, and top-level destinations" caption="I set the menu hierarchy and placed featured imagery alongside product categories." />
+  <Panel kind="screens" span="half" screens={[{ src: navAppliances, alt: 'Appliance navigation with category images beside each product group' }]} caption="The appliance menu pairs category labels with product imagery, the recognition cue identified in team testing." />
+  <Panel kind="screens" span="half" screens={[{ src: navFridges, alt: 'Refrigerator navigation showing product types with images' }]} caption="The refrigerator menu carries the image and label pattern into a product subcategory." />
 </Gallery>
 
-<Gallery title="Shared components" note="The buttons, controls and icons I designed for the shared system, used by every page type.">
-  <Panel kind="piece" ratio="16 / 6" multiply src={buttons} alt="Samsung.com buttons in their default, hover and disabled states" caption="Button states stay consistent across templates." />
-  <Panel kind="piece" ratio="16 / 6" multiply src={icons} alt="Samsung.com line icons: filter, device, edit, download and more" caption="The icon set gives common actions a shared visual language." />
+<Gallery title="Page templates: one system across five page types" note="I translated approved wireframes and existing content into visual designs. Samsung’s global system set the core type and color; I applied those foundations to the homepage, GNB, PDP, PCP, and Product Family pages.">
+  <Panel kind="page" ratio="16 / 7" src={homeDesktop} alt="Samsung homepage with a Galaxy S20 hero and product-story modules" caption="The homepage shows how the global visual foundations work across a launch hero, category entry points, and editorial modules." />
+  <Panel kind="piece" span="half" ratio="16 / 9" src={productFamilyScreen} alt="Tablet mockup showing the Samsung Product Family page with a filter column, product cards, and a promotional panel" caption="The Product Family page applies the shared visual system to a product range, filters, and product cards." />
+  <Panel kind="page" span="half" ratio="5 / 3" src={productCategory} alt="Samsung washers and dryers category page with subcategory links, product stories, and product cards" caption="The PCP carries the system into a focused product group, with subcategories, stories, and product cards." />
+  <Panel kind="piece" ratio="16 / 9" src={productDetail} alt="Tablet mockup showing a Samsung Galaxy A50 product detail page with product imagery, color choices, and purchase information" caption="The PDP brings product imagery, configuration choices, and purchase information into one page." />
 </Gallery>
+
+<Gallery title="Reusable components and design-system files" note="I built and organized the file, component library, and style assets. Samsung’s global foundations set the core type and color; I developed the reusable parts used across the page designs.">
+  <Panel kind="piece" ratio="4 / 3" src={systemStyleGuide} alt="Samsung design-system style-guide board showing layout grids, spacing, color palettes, iconography, motion, and component foundations" caption="The style-guide board shows the wider system context. I built and organized reusable components within Samsung’s global foundations." />
+  <Panel kind="piece" span="half" ratio="16 / 7" multiply src={buttons} alt="Samsung button components shown in primary, secondary, disabled, and alternate states" caption="The component file includes buttons in multiple states for reuse across page designs." />
+  <Panel kind="piece" span="half" ratio="16 / 7" multiply src={icons} alt="Samsung interface icons for filtering, navigation, editing, download, and other common actions" caption="I organized interface icons as reusable assets for repeated actions." />
+</Gallery>
+
+<ProseGroup>
+## Project scale and impact evidence
+
+The P6 case-study deck reports that Release 1 reached 45 markets by June 2020, with later phases planned across 88+ markets. The October 2021 Samsung Global case study describes the broader rollout as underway. Those figures describe the team’s program scale; they do not measure the effect of my design contribution. My documented milestone was final design handoff to Samsung’s development team in 2021. The project records reviewed do not provide a post-launch user or business measure tied to my work.
+</ProseGroup>

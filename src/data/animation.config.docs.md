@@ -80,7 +80,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | Section.Key | Type | Value | What it controls |
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
-| `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
+| `hero.canvas.cmyStagger` | seconds | `0.1` | Delay between the hero dot layers in the wave (independent from text reveal stagger) |
 | `hero.canvas.accentOpacity` | 0–1 | `1` | Opacity of the red, green and blue dot layers (fully saturated). On a dark system scheme the layers are pure RGB, added together so overlaps read white, and the gray base dot is dropped |
 | `hero.canvas.pointer.radius` | CSS px | `280` | How far around the pointer the dots react (off under reduced motion) |
 | `hero.canvas.pointer.push` / `grow` | ratio | `0.3` / `0.25` | The bulge: the spacing under the pointer magnifies by this much and fades to nothing at the rim, and the dots there grow by this much |
@@ -168,19 +168,6 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `lottie.loopRepeatDelay` | `0.5` | Pause at each end of the loop |
 
 ---
-
-## about (about.astro)
-
-| Key | Default | What it controls |
-|-----|---------|-----------------|
-| `icons.float` | `10` | How far, in px, each 3D model around the headshot bobs up and down (about-icons.ts) |
-| `icons.tilt` | `6` | How far, in degrees, each icon rocks as it floats |
-| `icons.duration` | `3.6` | One float cycle |
-| `icons.stagger` | `0.45` | Offset between icons, so they don't move in step |
-| `icons.turn` | `0.6` | How far, in radians, each 3D model turns either way, so it reads as an object |
-| `icons.turnDuration` | `9` | One full turn back and forth |
-| `icons.follow` | `0.35` | How far, in radians, the models lean toward the cursor |
-| `icons.followEase` | `0.08` | Share of the way to the cursor lean the models cover each frame |
 
 ## caseStudy (Amica and Whataburger diagrams, Bespoke stepper)
 

@@ -7,7 +7,6 @@ import DeviceHero from '../components/DeviceHero.astro'
 import type { SceneName } from '../components/DeviceScene.astro'
 import ContactEmail from '../components/ContactEmail.astro'
 import BackToWork from '../components/BackToWork.astro'
-import ScrollCue from '../components/ScrollCue.astro'
 import ImageZoom from '../components/ImageZoom.astro'
 import type { ImageMetadata } from 'astro'
 
@@ -40,10 +39,9 @@ const deviceHero = heroScene && !gate
 
 <BaseLayout title={`${title} | Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
-  {!gate && <ScrollCue />}
   <div class="cs-back" transition:persist="cs-back"><BackToWork /></div>
   <article class="case-study-body">
-    {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} />}
+    {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} />}
     {heroLayers && !deviceHero && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
     <slot />
   </article>
@@ -123,6 +121,12 @@ const deviceHero = heroScene && !gate
   }
 
   /* Layout, spacing and the visual panels: editorial.css (html.ek) */
+
+  /* Case study artwork scrolls beneath the sticky header. Keep the navigation readable while
+     figures and motion panels pass behind it; the homepage keeps its transparent hero treatment. */
+  html.ek:has(.case-study-body) .nav {
+    background: var(--color-bg-primary);
+  }
 
   .case-study-body .carousel-track {
     cursor: grab;

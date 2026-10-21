@@ -4,7 +4,7 @@ client: "Amica"
 year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "The design system behind amica.com's October 2026 relaunch: 615 pages on two platforms."
+tagline: "I set the shared design rules behind Amica.com’s 615-page rebuild."
 thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
 thumbnailLayers:
   subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
@@ -42,35 +42,35 @@ import screenQuoteSummary from '../../assets/work/amica-design-system/figma/scre
   role="Associate Design Director"
   agency="Razorfish"
   year={2026}
-  made={['Visual direction', 'Design token system', 'Homepage and quote screens']}
-  outcome="Amica.com relaunched on October 2, 2026, with one WCAG 2.1 AA design system across 615 pages."
-  problem="Amica's old site had no design tokens. Every color was typed in by hand, dark sections needed a second copy of each component, and the rebuild couldn't pause the sites already in use."
-  decision="Build semantic tokens first, then use the same foundations across the site, quote tools and app instead of treating dark mode as a second product."
-  did="I was creative lead for a team of six designers. I set the visual direction, designed the token system with the team, and led the homepage, product pages and quote screens built on it."
+  made={['Visual direction', 'Color rules for light and dark themes', 'Homepage and quote screens']}
+  outcome="Amica.com relaunched on October 2, 2026, after a rebuild covering 615 pages. I led the work on the shared color and component rules."
+  problem="The project had gone four sprints without a dedicated design lead. The existing site had no shared color rules, so teams entered colors by hand and duplicated components for dark pages. The site also had to stay live during the rebuild."
+  decision="I grouped colors by their job and gave each job a name. Components could then use the same color rules in light and dark themes, without separate copies for each theme."
+  did="I joined as the first dedicated design lead. I set visual direction and led the team’s work on the homepage, product pages and quote screens. The component library already existed. I rebuilt the color rules and structure it depended on."
 />
 
-<Gallery title="Homepage" note="I set three goals: unlock Amica's teal, read as a premium carrier, and lead with empathy. Teal carries the top banner and every primary button. The footer goes deep forest green so the teal logo and the quote buttons stand out.">
-  <Panel kind="page" src={pageHome} alt="Amica.com homepage: a parent and son in the kitchen, the quote card over the photo" caption="The new homepage pairs an everyday moment with a short path into a quote." />
+<Gallery title="Homepage" note="The quote form sits over a family photo and asks visitors to choose insurance and enter a ZIP code. Amica’s teal marks the utility bar and main action; the dark green footer carries the brand color below the page.">
+  <Panel kind="page" src={pageHome} alt="Amica.com homepage: a father helps his son in the kitchen beside a quote form" caption="The form keeps the first quote step on the homepage: choose insurance, enter a ZIP code, then start." />
 </Gallery>
-<Gallery title="Before and after" note="A quote is the price Amica offers before you buy. I cut the card that starts one down to two questions and one button, so the first step takes seconds.">
+<Gallery title="Quote entry" note="The old card asked for a ZIP code and used a purple “Get a Quote” button. The new card adds an insurance choice, keeps the ZIP code field, and names the action “Start my quote.”">
   <Panel kind="piece" span="half" ratio="1 / 1" src={legacyCard} alt="Before: the old quote card with a purple Get a Quote button" caption="Before" />
   <Panel kind="piece" span="half" ratio="1 / 1" src={quoteCard} alt="After: the new quote card, product and ZIP code, then Start my quote" caption="After" />
 </Gallery>
 
-<Gallery title="Design tokens" note="Before naming anything, I studied how established design systems organize their tokens and audited Amica's own site, quote tools and app. Tokens are grouped by job, so a designer picks a color by what it does, not by how it looks.">
-  <Panel kind="bleed" ratio="3111 / 1618" src={tokenLayers} srcDark={tokenLayersDark} alt="Color layers: canvas, surface, content, border and elevation, then all five together on one card" caption="Five token layers keep color decisions consistent across a component." />
-  <Panel kind="bleed" span="half" ratio="1514 / 973" src={tokenChain} srcDark={tokenChainDark} alt="A primitive teal points to a semantic token, which fills the Continue button" caption="A raw teal becomes a named button token." />
-  <Panel kind="bleed" span="half" ratio="1515 / 973" src={tokenStates} srcDark={tokenStatesDark} alt="Hover adds a translucent overlay over the button's fill" caption="States sit on top of the base color instead of replacing it." />
+<Gallery title="Color rules" note="Design tokens are named rules that components can share. I grouped colors by where they appear: page background, cards and panels, text, borders, and depth. Each role has light and dark values, so components can switch themes without a duplicate set.">
+  <Panel kind="bleed" ratio="3111 / 1618" src={tokenLayers} srcDark={tokenLayersDark} alt="Five color roles shown separately and together on a card: page background, card surface, content, border and elevation" caption="The diagram shows how the page, card, text, border and depth colors work together." />
+  <Panel kind="bleed" span="half" ratio="1514 / 973" src={tokenChain} srcDark={tokenChainDark} alt="A base teal maps to a named color rule used by a Continue button" caption="A button uses a named rule instead of a one-off color value." />
+  <Panel kind="bleed" span="half" ratio="1515 / 973" src={tokenStates} srcDark={tokenStatesDark} alt="A translucent hover layer appears over the button’s base color" caption="Hover adds a translucent layer while keeping the base color." />
 </Gallery>
 
-<Gallery title="Getting a quote" note="The quote screens ask about you, your car and your home, then show the price. I built them from the same tokens and parts as the rest of the site, so the flow feels like Amica from first question to final price.">
-  <Panel kind="page" src={pageQuote} alt="Quote screen, Vehicle Info: Thanks Tim, let's add some details about what you drive" caption="The flow asks one plain-language question at a time." />
-  <Panel kind="piece" ratio="16 / 6" multiply src={quoteBundle} alt="Quote summary: auto and home prices and the bundle price" caption="The final price makes the value of bundling visible." />
+<Gallery title="Quote flow" note="The quote flow collects details about the driver and vehicle, then presents auto, home and bundled prices. It uses the same color rules and components shown above.">
+  <Panel kind="page" src={pageQuote} alt="Vehicle information step in the quote flow, with options to enter details manually or use the VIN" caption="The vehicle step offers manual entry or VIN entry, then asks for vehicle details." />
+  <Panel kind="piece" ratio="16 / 6" multiply src={quoteBundle} alt="Quote summary comparing auto, home and combined bundle prices" caption="The summary places the two individual prices beside the bundle price." />
 </Gallery>
 
 <Gallery title="The quote flow on a phone">
   <Panel kind="screens" screens={[
     { src: screenHome, alt: 'The homepage on a phone' },
     { src: screenQuoteSummary, alt: 'The bundle quote on a phone' },
-  ]} caption="The same system carries from the homepage to a finished bundle quote." />
+  ]} caption="The homepage and quote summary use the same visual rules on a phone." />
 </Gallery>

@@ -3,7 +3,7 @@
 // Static import so Three.js downloads as soon as the worker script loads,
 // not waiting for the first 'init' message.
 import {
-  Scene, OrthographicCamera, SRGBColorSpace, WebGLRenderer, AdditiveBlending,
+  Scene, OrthographicCamera, SRGBColorSpace, WebGLRenderer, AdditiveBlending, MultiplyBlending,
   InstancedMesh, CircleGeometry, MeshBasicMaterial,
 } from 'three'
 import {
@@ -60,12 +60,6 @@ interface InitMessage {
     cmyStagger: number
     wavePaused?: boolean
     pointer: { radius: number; push: number; grow: number; split: number; stiffness: number; damping: number; attack: number; release: number }
-  }
-  colors: {
-    accent1: string
-    accent2: string
-    accent3: string
-    dot: string
   }
 }
 
@@ -165,12 +159,7 @@ async function initScene(msg: InitMessage) {
   scene = new Scene()
   const geometry = new CircleGeometry(cfg.dotRadius, 6)
 
-  const layers = dotLayers(
-    msg.dark,
-    [msg.colors.accent1, msg.colors.accent2, msg.colors.accent3],
-    msg.colors.dot,
-    cfg.accentOpacity ?? 1,
-  )
+  const layers = dotLayers(msg.dark, cfg.accentOpacity ?? 1)
 
   meshes = []
   delays = []
@@ -183,6 +172,7 @@ async function initScene(msg: InitMessage) {
       transparent: true,
       opacity: layer.opacity,
       ...(layer.additive && { blending: AdditiveBlending }),
+      ...(layer.multiply && { blending: MultiplyBlending }),
     })
     const mesh = new InstancedMesh(geometry, mat, total)
     scene.add(mesh)
@@ -268,11 +258,11 @@ function tick() {
   push.grow = p.grow
   push.attack = p.attack
   push.release = p.release
-  const amounts = [1 + p.split, 1, 1 - p.split, 1]
+  const amounts = [1 + p.split, 1, 1 - p.split]
 
   for (let i = 0; i < meshes.length; i++) {
     const mesh = meshes[i]
-    push.amount = amounts[i]
+    push.amount = amounts[i % 3]
     push.wake = wakes[i]
     updateDots(
       mesh.instanceMatrix.array as Float32Array, total,

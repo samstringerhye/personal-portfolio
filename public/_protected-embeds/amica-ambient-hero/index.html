@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Amica ambient video prototype</title>
 <style>
   /* Tokens from the AEM design system (Figma node 1468:24404) */
@@ -157,7 +158,17 @@
   /* Viewport sizes taken from the Figma example frame */
   .device[data-view="desktop"] { width: 1440px; height: auto; }
   .device { max-height: calc(100dvh - var(--chrome-h, 90px) - 48px); }
-  .device[data-view="mobile"] { width: 393px; height: auto; }
+  .device[data-view="mobile"] {
+    width: 393px;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+  }
+  .device[data-view="mobile"]::-webkit-scrollbar { width: 4px; }
+  .device[data-view="mobile"]::-webkit-scrollbar-track { background: transparent; }
+  .device[data-view="mobile"]::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 4px; }
 
   @media (max-width: 1540px) {
     .device[data-view="desktop"] { width: 100%; max-width: 1440px; }
@@ -457,6 +468,9 @@
     font-size: var(--size-headline-l);
     line-height: 62px;
   }
+  .headline span,
+  .headline em { display: block; }
+  .headline em { color: var(--surface-interactive-default); }
   .device[data-view="mobile"] .headline { font-size: var(--size-headline-m); line-height: 50px; }
   .subcopy {
     margin: 0;
@@ -524,6 +538,7 @@
   .tp-brand { display: flex; align-items: center; gap: 2px; }
   .tp-brand-star { width: 21.93px; height: 20.85px; }
   .tp-brand-word { width: 67.52px; height: 14.52px; }
+  .device[data-view="mobile"] .tp-brand-word { filter: brightness(0) invert(1); }
 
   /* Only the selected Type and Trustpilot combination renders. Toggling a class
      rather than an inline style keeps each block's own display value intact. */
@@ -604,7 +619,7 @@
           <img class="logo" src="/work/amica-design-system/ambient-hero/assets/amica-logo.svg" alt="Amica">
           <nav class="nav-links" data-desktop-only>
             <a href="#">Insurance <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
-            <a href="#">Get A Quote</a>
+            <a href="#">Get a Quote</a>
             <a href="#">Claims <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
             <a href="#">Customer Service <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
             <a href="#">Resources <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></a>
@@ -631,7 +646,7 @@
         <div class="hero-body">
           <div class="quote-card">
             <div class="heading-block">
-              <p class="eyebrow" data-when-trustpilot="false">Amet elit exercitation id nulla</p>
+              <p class="eyebrow" data-when-trustpilot="false">Insurance</p>
               <div class="microstar" data-when-trustpilot="true">
                 <span>Excellent</span>
                 <span class="stars">
@@ -646,23 +661,23 @@
                   <img class="tp-brand-word" src="/work/amica-design-system/ambient-hero/assets/trustpilot-wordmark.svg" alt="Trustpilot">
                 </span>
               </div>
-              <h2 class="headline">Culpa do excepteur ut eu magna anim</h2>
-              <p class="subcopy">Culpa ex ut quis cupidatat tempor veniam duis</p>
+              <h2 class="headline"><span>Your world is</span><em>worth everything.</em></h2>
+              <p class="subcopy">What you value, we protect.</p>
             </div>
 
             <!-- Type=Dropdown -->
             <div class="actions" data-when-type="dropdown">
               <div class="field-row">
                 <div class="field">
-                  <label>Select Your Insurance</label>
+                  <label>Select your insurance</label>
                   <div class="control">Auto + Home <img src="/work/amica-design-system/ambient-hero/assets/icon-chevron-down.svg" alt=""></div>
                 </div>
                 <div class="field">
-                  <label>Enter Your ZIP Code</label>
+                  <label>Enter your ZIP code</label>
                   <div class="control placeholder">12345</div>
                 </div>
               </div>
-              <button class="btn btn-primary">Get A Quote</button>
+              <button class="btn btn-primary">Start my quote</button>
               <div class="tertiary-row">
                 <button class="btn btn-tertiary"><span>Continue A Saved Quote</span></button>
                 <div class="divider"></div>
@@ -674,10 +689,10 @@
             <div class="actions" data-when-type="zip">
               <div class="zip-row">
                 <div class="field">
-                  <label>Enter Your ZIP</label>
-                  <div class="control placeholder">Placeholder</div>
+                  <label>Enter your ZIP</label>
+                  <div class="control placeholder">ZIP Code</div>
                 </div>
-                <button class="btn btn-primary">Get A Quote</button>
+                <button class="btn btn-primary">Start my quote</button>
               </div>
               <div class="tertiary-row centered">
                 <button class="btn btn-tertiary"><span>Call (800)-242-6422</span></button>
@@ -687,7 +702,7 @@
             <!-- Type=Button -->
             <div class="actions" data-when-type="button">
               <div class="inline-row">
-                <button class="btn btn-primary">Get A Quote</button>
+                <button class="btn btn-primary">Start my quote</button>
                 <button class="btn btn-tertiary"><span>Continue A Saved Quote</span></button>
               </div>
             </div>
@@ -695,7 +710,7 @@
             <!-- Type=Phone -->
             <div class="actions" data-when-type="phone">
               <div class="inline-row">
-                <button class="btn btn-primary">Get A Quote</button>
+                <button class="btn btn-primary">Start my quote</button>
                 <button class="btn btn-tertiary"><span>Or Call (800)-242-6422</span></button>
               </div>
             </div>
@@ -916,7 +931,12 @@
   // Any combination is linkable, e.g. ?view=mobile&type=zip&tp=on
   const params = new URLSearchParams(location.search);
   const hashView = location.hash.replace("#", "");
-  setView(params.get("view") === "mobile" || hashView === "mobile" ? "mobile" : "desktop");
+  const requestedView = params.get("view") || hashView;
+  const initialView = requestedView === "mobile"
+    || (!requestedView && window.matchMedia("(max-width: 600px)").matches)
+    ? "mobile"
+    : "desktop";
+  setView(initialView);
 
   const TYPES = ["dropdown", "zip", "button", "phone"];
   const startType = TYPES.includes(params.get("type")) ? params.get("type") : "dropdown";
@@ -936,7 +956,7 @@
     document.getElementById("debug-btn").click();
   }
 
-  const startTp = params.get("tp") === "on";
+  const startTp = params.get("tp") !== "off";
   device.dataset.trustpilot = String(startTp);
   trustpilotBtn.setAttribute("aria-pressed", String(startTp));
   trustpilotBtn.textContent = startTp ? "On" : "Off";

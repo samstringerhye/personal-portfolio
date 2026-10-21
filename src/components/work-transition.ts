@@ -39,7 +39,7 @@ const NARROW = 780
 const heroShift = (offset: number, w: number, h: number, stacked = false) => (w <= NARROW || stacked ? 0 : offset * Math.max(h, w / 1.5))
 const ART_VARS = ['--art-ratio', '--art-l', '--art-t', '--art-w', '--art-h', '--art-bleed-r', '--art-bleed-b']
 
-/* ── Text that rides along with the image (year, title, tagline) ── */
+/* ── Text that rides along with the image (title, tagline, and an optional lock label) ── */
 type Line = { text: string; cls: string; size: number; leading: number }
 type TextLayout = {
   color: string
@@ -186,9 +186,6 @@ function buildCopy(media: HTMLElement, background: string, text: TextLayout | nu
     const meta = document.createElement('div')
     meta.dataset.copyMeta = ''
     Object.assign(meta.style, { position: 'absolute', top: '0', left: '0', padding: `${text.metaPad}px`, display: 'flex', gap: '1.5rem' })
-    const year = textEl('span', text.year, text.color)
-    year.dataset.copyYear = ''
-    meta.appendChild(year)
     if (text.lock) {
       const lock = textEl('span', { ...text.year, text: text.lock }, text.color)
       lock.dataset.copyLock = ''
@@ -254,7 +251,6 @@ function fit(target: HTMLElement | Flip.FlipState, from: number, to: number, end
     if (endText) {
       const sized = (l: Line) => ({ fontSize: l.size, lineHeight: `${l.leading}px` })
       gsap.to(q('[data-copy-meta]'), { padding: endText.metaPad, ...tween })
-      gsap.to(q('[data-copy-year]'), { ...sized(endText.year), ...tween })
       if (q('[data-copy-lock]')) gsap.to(q('[data-copy-lock]'), { opacity: 0, duration: DURATION * 0.4, ease: 'power1.out' })
       gsap.to(q('[data-copy-block]'), { padding: endText.blockPad, width: endText.blockWidth, rowGap: endText.blockGap, ...tween })
       gsap.to(q('[data-copy-title]'), { ...sized(endText.title), ...tween })

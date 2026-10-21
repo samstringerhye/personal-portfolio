@@ -314,26 +314,25 @@ export interface DotLayer {
   color: string
   delay: number
   opacity: number
-  /** Light adds on dark: red, green and blue sum to white where they overlap */
+  /** Dark-mode light layers add; light-mode ink layers multiply over a white underlay. */
   additive: boolean
+  multiply: boolean
 }
 
-// Pure primaries, so the three layers sum to exactly white
+// Screen primaries add to white, print primaries multiply to black.
 const SCREEN_PRIMARIES = ['#FF0000', '#00FF00', '#0000FF']
+const INK_PRIMARIES = ['#00FFFF', '#FF00FF', '#FFFF00']
 
-/** Light page: the accents over a gray dot, as printed ink. Dark page: three additive RGB layers,
- *  like subpixels. Red, green and blue stay first, since the pointer splits them in that order. */
-export function dotLayers(
-  dark: boolean,
-  accents: string[],
-  dot: string,
-  accentOpacity: number,
-): DotLayer[] {
+/** Light page: three CMY inks multiply over white; dark page: additive RGB subpixels. */
+export function dotLayers(dark: boolean, accentOpacity: number): DotLayer[] {
   if (dark) {
-    return SCREEN_PRIMARIES.map((color, i) => ({ color, delay: i + 1, opacity: accentOpacity, additive: true }))
+    return SCREEN_PRIMARIES.map((color, i) => ({ color, delay: i + 1, opacity: accentOpacity, additive: true, multiply: false }))
   }
+  const inkOpacity = accentOpacity
   return [
-    ...accents.map((color, i) => ({ color, delay: i + 1, opacity: accentOpacity, additive: false })),
-    { color: dot, delay: 0, opacity: 1, additive: false },
+    // Give each moving ink a white backing at the same position. Draw all three backings first,
+    // then the inks, so overlapping full-strength CMY layers multiply to black.
+    ...INK_PRIMARIES.map((_, i) => ({ color: '#FFFFFF', delay: i + 1, opacity: 1, additive: false, multiply: false })),
+    ...INK_PRIMARIES.map((color, i) => ({ color, delay: i + 1, opacity: inkOpacity, additive: false, multiply: true })),
   ]
 }

@@ -68,11 +68,19 @@ const heroWordEase = revealCfg.cssEase
 
 <style define:vars={{ heroInitBlur, heroWordDuration, heroWordStagger, heroWordStart, heroWordSlide, heroWordEase }}>
   .hero {
+    --hero-paper: var(--color-bg-primary);
     position: relative;
     width: 100%;
     height: 87vh;
     overflow: hidden;
-    background-color: var(--color-bg-primary);
+    background-color: var(--hero-paper);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .hero {
+      --hero-paper: var(--color-bg-primary);
+      background-color: var(--color-bg-primary);
+    }
   }
 
   @media (--2x) {
@@ -92,8 +100,14 @@ const heroWordEase = revealCfg.cssEase
     position: absolute;
     inset: 0;
     z-index: var(--z-base);
-    background: radial-gradient(ellipse at 50% 60%, var(--color-bg-alt) 0%, var(--color-bg-primary) 70%);
+    background: radial-gradient(ellipse at 50% 60%, var(--hero-paper) 0%, var(--hero-paper) 70%);
     transition: opacity 0.3s ease;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .hero-canvas-fallback {
+      background: radial-gradient(ellipse at 50% 60%, var(--color-bg-alt) 0%, var(--color-bg-primary) 70%);
+    }
   }
 
   /* Only for the moment before the canvas, and for visitors who never get one. Once the dots are
@@ -108,7 +122,14 @@ const heroWordEase = revealCfg.cssEase
     inset: 0;
     z-index: var(--z-base);
     opacity: 0;
+    mix-blend-mode: multiply;
     transition: opacity 0.3s ease;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #hero-canvas-root {
+      mix-blend-mode: normal;
+    }
   }
 
   #hero-canvas-root.is-ready {
@@ -136,16 +157,6 @@ const heroWordEase = revealCfg.cssEase
     flex-direction: column;
     align-items: center;
     gap: var(--space-4);
-  }
-
-  /* Thins the dot field behind the copy so the bio stays readable; dots keep full density at the edges */
-  .hero-copy::before {
-    content: '';
-    position: absolute;
-    inset: calc(var(--space-5) * -1) calc(var(--space-6) * -1);
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(closest-side, var(--color-bg-primary) 60%, transparent);
   }
 
   .hero-bio {

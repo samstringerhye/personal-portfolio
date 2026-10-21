@@ -34,7 +34,7 @@
       "twistAmount": 0.5,
       "zoom": 20,
       "maxDpr": 2,
-      "cmyStagger": 0.03,
+      "cmyStagger": 0.1,
       "accentOpacity": 1,
       "pointer": {
         "radius": 280,
@@ -140,18 +140,6 @@
   "lottie": {
     "loopDuration": 2,
     "loopRepeatDelay": 0.5
-  },
-  "about": {
-    "icons": {
-      "float": 10,
-      "tilt": 6,
-      "duration": 3.6,
-      "stagger": 0.45,
-      "turn": 0.6,
-      "turnDuration": 9,
-      "follow": 0.35,
-      "followEase": 0.08
-    }
   },
   "caseStudy": {
     "buttonStates": {

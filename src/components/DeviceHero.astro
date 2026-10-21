@@ -3,6 +3,7 @@
 // as its homepage card on the right, the composition the card's row has. Coming from the card, the
 // device carries straight across the page change (device-scene/mount.ts).
 import DeviceScene, { type SceneName } from './DeviceScene.astro'
+import ScrollCue from './ScrollCue.astro'
 import { animations } from '../data/tokens'
 
 interface Props {
@@ -10,14 +11,13 @@ interface Props {
   label: string
   title: string
   tagline?: string
-  year?: number | string
 }
 
-const { scene, label, title, tagline, year } = Astro.props
+const { scene, label, title, tagline } = Astro.props
 // Non-breaking hyphens: the narrow column would otherwise split "E-commerce" across lines
 const heading = title.replaceAll('-', '\u2011')
-// The text slides in like the homepage headline: the year, the title word by word, then the
-// tagline, timed from textReveal. Arriving from its card it doesn't: the card's text is already
+// The text slides in like the homepage headline: title word by word, then the tagline, timed from
+// textReveal. Arriving from its card it doesn't: the card's text is already
 // in this place (mount.ts marks the hero data-carried)
 const words = heading.split(/\s+/).filter(Boolean)
 const reveal = animations.textReveal
@@ -31,9 +31,9 @@ const csWordEase = reveal.cssEase
 
 <section class="cs-device-hero">
   <div class="cs-device-hero-text">
-    {year && <p class="cs-device-hero-year cs-hero-in typo-ui-caps" style="--i: 0">{year}</p>}
-    <h1 class="cs-device-hero-title typo-headline-lg">{words.map((w, i) => <><span class="cs-hero-in" style={`--i: ${i + 1}`}>{w}</span>{i < words.length - 1 && ' '}</>)}</h1>
-    {tagline && <p class="cs-device-hero-tagline cs-hero-in typo-body-lg" style={`--i: ${words.length + 1}`}>{tagline}</p>}
+    <h1 class="cs-device-hero-title typo-headline-lg">{words.map((w, i) => <><span class="cs-hero-in" style={`--i: ${i}`}>{w}</span>{i < words.length - 1 && ' '}</>)}</h1>
+    {tagline && <p class="cs-device-hero-tagline cs-hero-in typo-body-lg" style={`--i: ${words.length}`}>{tagline}</p>}
+    <ScrollCue />
   </div>
   <div class="cs-device-hero-stage">
     <DeviceScene scene={scene} label={label} />
@@ -90,16 +90,10 @@ const csWordEase = reveal.cssEase
       aspect-ratio: 1.1;
     }
 
-    /* The homepage card's caption (editorial.css) under its art: a space-4 step to the year row,
-       whose tag pills make it taller than the year alone, then a space-3 step to the title. The
-       title lands where the card's did when the page changes */
+    /* The homepage card's caption (editorial.css) under its art; the title lands where the card's
+       did when the page changes */
     .cs-device-hero-stage {
       margin-bottom: 0;
-    }
-
-    /* The year is centered in the card's 21px pill row, 3px below its top */
-    .cs-device-hero .cs-device-hero-year {
-      margin: calc(var(--space-4) - var(--space-2) + 3px) 0 calc(var(--space-3) - var(--space-2) + 3px);
     }
 
     .cs-device-hero-stage:not(:has(.device-scene-host:not([data-device="iphone-17-pro"]))) {
@@ -113,14 +107,9 @@ const csWordEase = reveal.cssEase
     display: contents;
   }
 
-  /* The device first, then the year, title and tagline, as on the homepage card it zooms from */
+  /* The device first, then the title and tagline, as on the homepage card it zooms from */
   .cs-device-hero-text > * {
     order: 2;
-  }
-
-  .cs-device-hero-year {
-    margin: var(--space-4) 0 0;
-    color: var(--ek-ink-body);
   }
 
   .cs-device-hero-title,
@@ -156,15 +145,8 @@ const csWordEase = reveal.cssEase
       justify-content: center;
       align-self: stretch;
       gap: var(--space-2);
-      /* The card's button and the step above it, so the year, title and tagline land where the
-         card's did */
-      padding-bottom: calc(var(--space-5) + var(--touch-target));
-    }
-
-    /* The card's year shares a row with taller tag pills and sits a step further from the title.
-       No space above it: the text is centered, so every step counts toward where it lands */
-    .cs-device-hero-year {
-      margin-block: 0 calc(var(--space-3) - var(--space-2) + 0.5em);
+      /* The scroll cue fills the CTA space under the title and tagline */
+      padding-bottom: var(--space-5);
     }
 
     .cs-device-hero {
@@ -181,6 +163,7 @@ const csWordEase = reveal.cssEase
 
     .cs-device-hero-stage {
       grid-column: 5 / -1;
+      /* Match the landing card's desktop stage exactly so its device has the same transition box. */
       height: calc(100svh - var(--nav-height) - 2 * var(--page-margin));
       margin-block: 0;
     }
