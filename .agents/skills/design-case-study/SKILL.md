@@ -17,7 +17,7 @@ Every study covers these seven parts. Keep the order. Headings can be the site's
 
 1. **Problem and hypothesis.** What you saw in users, data, or stakeholder requests. What the stakeholders asked for. Where what people said differed from what you observed. How you framed the problem before designing.
 2. **Your role and collaboration.** What you owned versus what the team owned. Who you worked with and how. Facilitation, reviews, and how your work fit into engineering and product. Name the team size and your part in it.
-3. **Solution and the decision.** The pretty pictures: screens, flows, components. Then the reasoning. Explain why this option won over the others you considered. Show rejected directions if they taught something.
+3. **Solution and the decision.** The pretty pictures: screens, flows, components. Then the reasoning. Explain why this option won over the others you considered. Show unselected concepts when they show range, described neutrally. Don't write a contentious case against a rejected idea.
 4. **How the solution solves the problem.** What a user can do now that they couldn't before. Tie each claim to the problem from part 1.
 5. **Challenges and the messy middle.** Sketches, journey maps, workshop photos, test results, and the constraints that forced trade-offs. This is the proof of process. Unfinished is fine here.
 6. **Impact.** Users and business effect, in real numbers. If no numbers exist, say what you could observe and do not invent a figure.
@@ -28,7 +28,7 @@ Every study covers these seven parts. Keep the order. Headings can be the site's
 Most real projects were not done correctly. Readers expect trade-offs; a perfect story reads as fiction, and experienced reviewers spot it quickly. Write the project as it happened:
 
 - **Name the constraint, then your response.** "Engineering had already built the old flow, so I scoped the change to the checkout step" beats "the process was broken."
-- **Show what you pushed for and what happened.** If your recommendation lost, say what it was and what it would have solved. Keep it factual and without blame toward named people.
+- **Show what you pushed for and what happened.** If your recommendation lost, say what it was and what it would have solved. Keep it factual and without blame toward named people. Leave out any account of a fight; the outcome and the trade-off carry the point.
 - **Show research you could do.** Even without access to users, comps, analytics, support tickets, and competitor flows count. Say what you would have done with the access you wanted.
 - **Do not fabricate process or results.** Do not show research that did not happen, and do not present a rejected design as the one that shipped. If a "what I'd do differently" section helps, label it as hindsight.
 - **Keep it to the work you own.** Leave out venting, personal conflict, and anything you wouldn't say in an interview.
@@ -48,7 +48,13 @@ Most real projects were not done correctly. Readers expect trade-offs; a perfect
 Twenty-four sources were reviewed (verdicts and notes in `references/sources.md`). Where they agree, the skill follows them:
 
 - **Choose three to five projects.** Pick the ones that show the work you want next. Cut any that no longer reflect your skills.
-- **Keep the read short.** A starting point is roughly 600 to 900 words, with the images carrying part of the story. Cut words before cutting substance.
+- **Keep the read short.** The sources give 600 words, 800 to 1,500 words, and a one-to-three-minute read. Use roughly 600 to 900 words as a starting point, with the images carrying part of the story. Cut words before cutting substance.
+- **Define versus explain.** "I ran a competitive analysis" defines a method. Say what you looked for, what you found, and how it changed the next decision.
+- **Choose the decisions over the phases.** A chronological "story" (Wix) and a decision-based structure (Opendoors, NN/g) pull in different directions. Use decisions as the spine, and keep the order of events only where it explains a decision.
+- **Pick three takeaways first.** NN/g suggests deciding the three things a reader should remember, then checking that the study delivers them.
+- **Use testimonials and live links** where you have them, and make your role clear where you didn't design everything you link to.
+- **Make the portfolio itself accessible.** Check contrast, text size, and keyboard use. Toptal and Wix both point out that captions and alt text help screen-reader users too.
+- **Student and personal work** can be a case study. Label it as school or personal work, and acknowledge the artificial constraints.
 - **Make captions stand alone.** A reader who only reads captions should still follow the project.
 - **Credit your role explicitly.** Name what you did, your collaborators, and the team's shape.
 - **Show the messy middle.** Include early drafts, abandoned ideas, and unselected concepts. Final screens alone don't show thinking.
@@ -57,7 +63,7 @@ Twenty-four sources were reviewed (verdicts and notes in `references/sources.md`
 - **Name the constraints** (budget, staffing, deadlines, phased rollout) and say what is still unfinished.
 - **Write for the skimmer.** Descriptive headings work as a track. Open each section with its claim.
 - **Validate method when relevant.** One line on a pilot session or practice run shows the study was tested, if the case study is about research.
-- **Anonymize NDA work.** Focus on process over proprietary detail, and say what was withheld.
+- **Anonymize NDA work.** Focus on process over proprietary detail, and say what was withheld. Options: show process photos (whiteboards, sketches, black-and-white wireframes), blur identifying data, or recreate the design with generic branding.
 
 Two of the sources recommend outcome-led titles (Opendoors, UXfolio). Most use topic titles. Use an outcome-led title here, which matches the site's rule to lead with the outcome.
 
