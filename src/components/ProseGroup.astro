@@ -1,6 +1,5 @@
 ---
-// A group that opens with a heading splits it from the text below, so on desktop the heading can
-// take the left 4 of 12 columns and the text the other 8
+// Keep an opening heading separate so the shared heading gap precedes the paragraph group.
 const html = await Astro.slots.render('default')
 const headed = html.match(/^\s*(<h[23][^>]*>[\s\S]*?<\/h[23]>)([\s\S]*)$/)
 ---
@@ -17,14 +16,14 @@ const headed = html.match(/^\s*(<h[23][^>]*>[\s\S]*?<\/h[23]>)([\s\S]*)$/)
   .prose-group {
     display: flex;
     flex-direction: column;
-    gap: var(--prose-gap, var(--space-3));
+    gap: var(--prose-gap, var(--cs-paragraph-gap));
     grid-column: 2 / 8;
   }
 
   .prose-body {
     display: flex;
     flex-direction: column;
-    gap: var(--prose-gap, var(--space-3));
+    gap: var(--prose-gap, var(--cs-paragraph-gap));
   }
 
   @media (--2x) {

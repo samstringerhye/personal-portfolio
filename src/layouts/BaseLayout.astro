@@ -98,6 +98,9 @@ const layoutVars = [
   `--nav-height: ${sys.layout.navHeight};`,
 ].join('\n    ')
 
+const caseStudyVars = Object.entries(sys.layout.caseStudy)
+  .map(([role, value]) => `--cs-${kebab(role)}: ${cssVal(value)};`).join('\n    ')
+
 /* ── Sizing vars ── */
 const sizingVars = [
   `--touch-target: ${ref.sizing.touchTarget};`,
@@ -108,7 +111,6 @@ const sizingVars = [
   `--nav-toggle-bar-height: ${ref.sizing.navToggleBarHeight};`,
   `--nav-toggle-gap: ${ref.sizing.navToggleGap};`,
   `--prose-measure: ${ref.sizing.proseMeasure};`,
-  `--cs-section-gap: var(--space-3);`,
 ].join('\n    ')
 
 /* ── Inline spacing vars ── */
@@ -227,6 +229,7 @@ const typoCss = `:root {
     ${spacingVars}
     ${inlineSpacingVars}
     ${layoutVars}
+    ${caseStudyVars}
     ${sizingVars}
     ${radiiVars}
     ${zVars}

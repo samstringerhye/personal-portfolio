@@ -454,7 +454,24 @@
             },
             "gridGutter": { "$ref": "#/definitions/refObject" },
             "sectionPadding": { "$ref": "#/definitions/refObject" },
-            "navHeight": { "$ref": "#/definitions/refObject" }
+            "navHeight": { "$ref": "#/definitions/refObject" },
+            "caseStudy": {
+              "type": "object",
+              "description": "Case-study spacing roles. Fluid rem ranges share the site's 400–1200px interpolation; references reuse primitive spacing.",
+              "properties": {
+                "sectionGap": { "$ref": "#/definitions/fluidOrFixed" },
+                "blockGap": { "$ref": "#/definitions/fluidOrFixed" },
+                "headingGap": { "$ref": "#/definitions/fluidOrFixed" },
+                "paragraphGap": { "$ref": "#/definitions/refObject" },
+                "captionGap": { "$ref": "#/definitions/refObject" },
+                "labelGap": { "$ref": "#/definitions/refObject" },
+                "summaryGap": { "$ref": "#/definitions/refObject" },
+                "heroGap": { "$ref": "#/definitions/fluidOrFixed" },
+                "calloutInset": { "$ref": "#/definitions/fluidOrFixed" }
+              },
+              "required": ["sectionGap", "blockGap", "headingGap", "paragraphGap", "captionGap", "labelGap", "summaryGap", "heroGap", "calloutInset"],
+              "additionalProperties": false
+            }
           },
           "additionalProperties": false
         },

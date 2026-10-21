@@ -1,5 +1,5 @@
-/* Editorial Kit direction (preview). Overrides the token-driven base without touching
-   tokens.json, so the hub's build is unaffected. Every rule hangs off html.ek, which outranks
+/* Editorial Kit direction (preview). Case-study spacing comes from semantic tokens;
+   other visual overrides stay local to this stylesheet. Every rule hangs off html.ek, which outranks
    the :root token block and the components' scoped styles. */
 
 html.ek {
@@ -32,6 +32,8 @@ html.ek {
   --ek-ink-body: #34475C;
   --ek-window-radius: 24px;
   --ek-image-radius: 16px;
+  --ek-surface-stroke: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  --ek-image-stroke: var(--ek-surface-stroke);
   /* Color around the framed project art on cards and heroes (global.css default is 2x) */
   --narrow-art-pad: calc(3 * var(--narrow-pad));
   --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
@@ -73,7 +75,7 @@ html.ek .footer-links :is(.footer-link):last-child {
 
 html.ek main > :is(.work-list-section, .leadership-section, .experience-section, .off-hours, .home-contact),
 html.ek .cs-hero,
-html.ek main > :is(.cs-nav, .case-study-cta) {
+html.ek .case-study-layout > :is(.cs-nav, .case-study-cta) {
   grid-column: 1 / -1;
   width: 100%;
   min-width: 0;
@@ -387,24 +389,6 @@ html.ek .skill-grid {
   }
 }
 
-/* Prev / next and the closing prompt: on the column edge, spaced like a section */
-html.ek .case-study-cta {
-  display: block;
-}
-
-html.ek .case-study-cta-content {
-  padding: var(--ek-section) 0 0;
-}
-
-html.ek .cs-nav {
-  display: block;
-  margin-top: var(--ek-section);
-}
-
-html.ek .cs-nav-inner {
-  padding: 0 0 var(--ek-section);
-}
-
 /* ── Type: the site's own Perfectly Nineties and DM Sans (tokens.json), no caps or italics ── */
 /* No italics in site copy (client brand mockups keep their own type) */
 html.ek :is(em, i, cite, address) {
@@ -712,50 +696,61 @@ html.ek .footer-link {
   font-size: 0.9375rem;
 }
 
-/* ── Case study: the homepage's 12 columns. A section's heading takes the left 4 and its text and
-   visuals the other 8; one gap between sections, a smaller one inside them, and the homepage's type
-   steps, set larger for the short agency-style copy: 45px serif headings, 32px serif subheads and
-   32px lead, 22.5px body, 16px captions, 12px labels ── */
+/* Case studies share the homepage's 12 columns. Section headings precede their copy;
+   semantic gaps distinguish sections, internal blocks, headings, and paragraphs. */
 html.ek .case-study-body {
-  /* Between sections: more than the homepage's rhythm, so each reads as its own chapter */
-  --cs-section-gap: clamp(8rem, 20vw, 18rem);
-  --cs-block-gap: var(--space-6);
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--grid-gutter);
   width: 100%;
   max-width: var(--ek-figure);
   margin-inline: auto;
-  /* The room above the closing prompt: a section margin, not a chapter gap */
-  padding-bottom: clamp(8rem, 20vw, 12rem);
-}
-
-html.ek .case-study-body > * {
-  grid-column: 1 / -1;
-  min-width: 0;
-  max-width: none;
-  margin: var(--cs-block-gap) 0 0;
-}
-
-/* The heroes keep their own padding: it is part of filling the first screen, which puts the meta
-   bar just below the fold */
-html.ek .case-study-body > :not(.cs-device-hero, .cs-hero) {
   padding: 0;
 }
 
-html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, script, style) {
-  margin-top: 0;
+/* The content grid owns every section gap. Components do not add outer spacing. */
+html.ek .case-study-layout,
+html.ek .case-study-content {
+  width: 100%;
+  min-width: 0;
 }
 
-/* One gap between every section: the intro, the opening visual under it, and each headed section */
-html.ek .case-study-body > .cs-section,
-html.ek .case-study-body > .cs-hero-meta + .prose-group,
-html.ek .case-study-body > .cs-hero-meta + .prose-group + :not(.cs-section) {
-  margin-top: var(--cs-section-gap);
+html.ek .case-study-body > :is(.cs-device-hero, .cs-hero) {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+html.ek .case-study-content > * {
+  grid-column: 1 / -1;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+html.ek .case-study-content > :is(script, style) {
+  display: none;
 }
 
 /* A section (remark-case-study-sections.mjs): its head (the heading, or a side-by-side block's
    heading and text), then its body of text and visuals; a carousel runs between body parts */
+html.ek :is(.cs-section, .cs-section-pin) {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  column-gap: var(--grid-gutter);
+  align-items: start;
+}
+
+html.ek .cs-section {
+  row-gap: var(--cs-block-gap);
+}
+
+html.ek .cs-section-pin {
+  row-gap: var(--cs-heading-gap);
+}
+
 html.ek .cs-section-head {
+  grid-column: 1 / -1;
   margin: 0;
 }
 
@@ -763,21 +758,15 @@ html.ek .cs-section-body {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  margin-top: var(--space-4);
+  gap: var(--cs-block-gap);
+  grid-column: 1 / -1;
+  margin: 0;
 }
 
 html.ek .cs-section-body > * {
   min-width: 0;
-  margin: var(--cs-block-gap) 0 0;
+  margin: 0;
   padding: 0;
-}
-
-html.ek .cs-section-body > :first-child {
-  margin-top: 0;
-}
-
-html.ek .cs-section > .carousel {
-  margin-top: var(--cs-block-gap);
 }
 
 /* Type: one size per role */
@@ -796,8 +785,8 @@ html.ek .case-study-body h3 {
 }
 
 html.ek .case-study-body :is(.prose-group, .zigzag-prose) :is(p, li) {
-  font-size: var(--text-200);
-  line-height: 1.45;
+  font-size: var(--text-100);
+  line-height: 1.6;
   color: var(--color-text-primary);
   text-wrap: pretty;
 }
@@ -818,19 +807,15 @@ html.ek .case-study-body .prose-group > .cs-intro {
 }
 
 html.ek .case-study-body .prose-group {
-  gap: 1em;
+  gap: var(--cs-paragraph-gap);
 }
 
 html.ek .case-study-body .prose-group--headed {
-  gap: 0;
+  gap: var(--cs-heading-gap);
 }
 
 html.ek .case-study-body .prose-body {
-  gap: 1em;
-}
-
-html.ek .case-study-body .prose-group--headed > :is(h2, h3) + .prose-body {
-  margin-top: var(--space-3);
+  gap: var(--cs-paragraph-gap);
 }
 
 /* Captions: the body step below the copy, left on the image's edge */
@@ -871,7 +856,7 @@ html.ek .case-study-body :is(.cs-figure, .image-grid, .carousel, .image-pair-cel
 html.ek .case-study-body .cs-figure {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--cs-caption-gap);
   overflow: visible;
 }
 
@@ -903,7 +888,7 @@ html.ek .case-study-body .image-pair {
 html.ek .case-study-body .image-pair > .image-pair-cell {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--cs-caption-gap);
   overflow: visible;
   line-height: normal;
 }
@@ -947,7 +932,7 @@ html.ek .case-study-body .stat-callout {
   border: 0;
   border-radius: var(--ek-window-radius);
   background: var(--ek-card);
-  padding: var(--space-6) var(--space-5);
+  padding: var(--cs-callout-inset);
 }
 
 html.ek .case-study-body .stat-callout-number {
@@ -973,18 +958,18 @@ html.ek .case-study-body .image-pair .device-phone {
 }
 
 /* Coded diagrams: the same rounded panel, their own color kept, with room inside */
-html.ek :is(.case-study-body, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero, .mosaic, .story, .gallery), .hero-phone-scroll, .stat-callout) {
+html.ek :is(.case-study-content, .cs-section-body) > :is(section:not(.cs-device-hero, .cs-hero, .mosaic, .story, .gallery), .hero-phone-scroll, .stat-callout) {
   border: 0;
   border-radius: var(--ek-window-radius);
   overflow: hidden;
 }
 
-html.ek :is(.case-study-body, .cs-section-body) > section:not(.cs-device-hero, .cs-hero, .mosaic, .story, .gallery) {
-  padding: var(--space-5);
+html.ek :is(.case-study-content, .cs-section-body) > section:not(.cs-device-hero, .cs-hero, .mosaic, .story, .gallery) {
+  padding: var(--cs-block-gap);
 }
 
 /* The mosaic is a bento of rounded tiles: no panel of its own */
-html.ek .case-study-body > .mosaic {
+html.ek .case-study-content > .mosaic {
   padding: 0;
   border-radius: 0;
   overflow: visible;
@@ -993,7 +978,6 @@ html.ek .case-study-body > .mosaic {
 /* The outcome bar after the last section's visuals */
 html.ek .cs-section > .cs-metrics {
   grid-column: 1 / -1;
-  margin-top: var(--cs-block-gap);
 }
 
 /* Coded diagrams and phone frames in a trio card keep their own color and room */
@@ -1050,9 +1034,9 @@ html.ek .case-study-body .cs-hero-meta {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-4);
-  margin-top: var(--space-5);
-  padding: var(--space-4) 0;
+  gap: var(--cs-block-gap);
+  margin: 0;
+  padding: var(--cs-block-gap) 0;
   border-style: solid;
   border-width: 1px 0;
   border-image: linear-gradient(var(--ek-hairline) 0 0) 1 / 1px 0 / 0 100vw;
@@ -1062,7 +1046,7 @@ html.ek .case-study-body .cs-meta-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--cs-label-gap);
   padding: 0;
   border: 0;
   text-align: center;
@@ -1085,57 +1069,6 @@ html.ek .case-study-body .cs-meta-value {
   }
 }
 
-/* Desktop: each section's head pinned in the left 4 of 12 columns while its text and visuals scroll
-   past in the other 8. The meta bar, the opening visual and carousels span all 12; the intro runs
-   from the left margin across 10 */
-@media (min-width: 64.0625rem) {
-  html.ek .case-study-body > * {
-    grid-column: 5 / -1;
-  }
-
-  html.ek .case-study-body > :is(.cs-device-hero, .cs-hero, .cs-section, .cs-hero-meta, .mosaic, .hero-phone-scroll, .carousel),
-  html.ek .case-study-body > .cs-hero-meta + .prose-group + :not(.cs-section) {
-    grid-column: 1 / -1;
-  }
-
-  html.ek .case-study-body > .cs-hero-meta + .prose-group {
-    grid-column: 1 / 11;
-  }
-
-  html.ek :is(.cs-section, .cs-section-pin) {
-    display: grid;
-    grid-template-columns: subgrid;
-    column-gap: var(--grid-gutter);
-    align-items: start;
-  }
-
-  html.ek .cs-section-pin {
-    grid-column: 1 / -1;
-  }
-
-  /* A body part after a full-width block keeps to the right 8 */
-  html.ek .cs-section > .cs-section-body {
-    grid-column: 5 / -1;
-  }
-
-  /* Sticky within its grid row, which is as tall as the body beside it */
-  html.ek .cs-section-head {
-    grid-column: 1 / 5;
-    grid-row: 1;
-    position: sticky;
-    top: calc(var(--nav-height) + var(--space-3) + var(--touch-target) + var(--space-4));
-  }
-
-  html.ek .cs-section-body {
-    grid-column: 5 / -1;
-    margin-top: 0;
-  }
-
-  html.ek .cs-section > .carousel {
-    grid-column: 1 / -1;
-  }
-}
-
 /* Hero: the art framed on the project color, the back link above it and the title below on the page,
    at every width. hero-fit.ts marks wide heroes cs-hero--stacked so the zoom lands on this layout. */
 html.ek .cs-hero .cs-hero-text,
@@ -1150,7 +1083,7 @@ html.ek .cs-hero--light .cs-hero-back {
 }
 
 html.ek .cs-hero .cs-hero-text {
-  padding: var(--space-4) 0 0;
+  padding: var(--cs-heading-gap) 0 0;
 }
 
 html.ek .cs-hero .cs-hero-back {
@@ -1201,7 +1134,7 @@ html.ek .cs-hero {
     flex: none;
     position: static;
     max-width: none;
-    padding: var(--space-5) 0 0;
+    padding: var(--cs-heading-gap) 0 0;
   }
 }
 
@@ -1248,8 +1181,8 @@ html.ek .xp-intro {
   }
 }
 
-/* ── Hover: one vocabulary. Text links draw an underline, pills fill with the panel tone and darken
-   their edge, art and figures lift on a deeper shadow, arrows lean the way they point. Touch screens
+/* Hover: text links draw an underline, filled pills change tone,
+   art and figures lift on a deeper shadow, arrows lean the way they point. Touch screens
    get none of it; reduced motion keeps the color changes and drops the movement. ── */
 html.ek {
   --ek-shadow-hover: 0 36px 72px -30px rgba(11, 33, 64, 0.32);
@@ -1264,15 +1197,15 @@ html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link) {
   gap: var(--space-2);
   min-height: var(--touch-target);
   padding: 0 1.375rem;
-  border: 1px solid var(--ek-line-strong);
+  border: 0;
   border-radius: 999px;
-  background: var(--ek-surface);
-  color: var(--color-text-primary);
+  background: var(--color-text-primary);
+  color: var(--color-bg-primary);
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 500;
   text-decoration: none;
-  transition: background-color var(--duration-short) ease, border-color var(--duration-short) ease;
+  transition: background-color var(--duration-short) ease;
 }
 
 html.ek .ek-pill svg {
@@ -1308,9 +1241,8 @@ html.ek .case-study-body .zigzag-media:hover {
 
 @media (hover: hover) {
   html.ek:root :is(.ek-pill, .home-contact-link, .case-study-cta-link):hover {
-    background: var(--ek-panel);
-    border-color: var(--color-text-primary);
-    color: var(--color-text-primary);
+    background: var(--ek-ink-body);
+    color: var(--color-bg-primary);
   }
 
   html.ek:root :is(.ek-link, .footer-link, .footer-colophon-link, .not-found-link):hover,
@@ -1399,36 +1331,19 @@ html.ek .archive-row--motion {
 /* ── Case study, studio layout (Story, Gallery, Panel): the story in one block under the hero, then
    runs of visuals named for what was made. Every visual sits frameless on the client's tint; the room
    is inside the panels, the gutters between them stay tight ── */
-html.ek .case-study-body > :is(.story, .gallery) {
+html.ek .case-study-content > :is(.story, .gallery) {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
   column-gap: var(--grid-gutter);
 }
 
-html.ek .case-study-body > .story {
-  margin-top: clamp(7rem, 14vw, 13rem);
-  row-gap: var(--space-5);
+html.ek .case-study-content > .story {
+  row-gap: var(--cs-summary-gap);
 }
 
-html.ek .case-study-body > .gallery {
-  margin-top: clamp(8rem, 16vw, 15rem);
-}
-
-html.ek .case-study-body > .story + .gallery {
-  margin-top: clamp(7rem, 14vw, 13rem);
-}
-
-/* Beside each other on a desktop, sections are never closer than 12rem, whatever the width */
-@media (min-width: 48.0625rem) {
-  html.ek .case-study-body > .story,
-  html.ek .case-study-body > .story + .gallery {
-    margin-top: clamp(12rem, 14vw, 13rem);
-  }
-
-  html.ek .case-study-body > .gallery {
-    margin-top: clamp(12rem, 16vw, 15rem);
-  }
+html.ek .case-study-content > .gallery {
+  row-gap: var(--cs-block-gap);
 }
 
 /* The site's rule: facts and labels in the left 4 of 12 columns, text across the other 8 */
@@ -1436,7 +1351,7 @@ html.ek .story-facts {
   grid-column: 1 / 5;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--cs-paragraph-gap);
   margin: 0;
 }
 
@@ -1455,7 +1370,7 @@ html.ek .story-text {
   grid-column: 5 / -1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--cs-block-gap);
 }
 
 html.ek .case-study-body .story-lead {
@@ -1470,7 +1385,7 @@ html.ek .case-study-body .story-lead {
 html.ek .story-part {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--cs-label-gap);
 }
 
 html.ek .case-study-body .story-part h2 {
@@ -1482,19 +1397,18 @@ html.ek .case-study-body .story-part h2 {
 
 html.ek .story-part p {
   margin: 0;
-  font-size: var(--text-200);
-  line-height: 1.45;
+  font-size: var(--text-100);
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
-/* The title and the note start on the same line: both trimmed to their cap height, so the tops of
-   the letters meet whatever the sizes and faces. Without text-box they share the top of their boxes */
+/* Section headings precede their copy at every width. */
 html.ek .gallery-head {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
   align-items: start;
-  margin-bottom: var(--space-6);
+  row-gap: var(--cs-heading-gap);
 }
 
 @supports (text-box: trim-both cap alphabetic) {
@@ -1504,26 +1418,36 @@ html.ek .gallery-head {
 }
 
 html.ek .case-study-body .gallery-title {
-  grid-column: 1 / 5;
+  grid-column: 1 / -1;
   font-family: var(--font-serif);
   font-size: var(--text-300);
   font-weight: 300;
 }
 
 html.ek .case-study-body .gallery-note {
-  grid-column: 5 / -1;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-paragraph-gap);
   margin: 0;
-  font-size: var(--text-200);
-  line-height: 1.45;
+  font-size: var(--text-100);
+  line-height: 1.6;
   color: var(--ek-ink-body);
   text-wrap: pretty;
+}
+
+html.ek .case-study-body .gallery-note p {
+  margin: 0;
+  max-width: var(--ek-prose);
+  font-size: inherit;
+  line-height: inherit;
 }
 
 html.ek .gallery-grid {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  gap: var(--cs-block-gap);
 }
 
 /* Panel */
@@ -1531,7 +1455,7 @@ html.ek .panel {
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--cs-caption-gap);
   min-width: 0;
   margin: 0;
 }
@@ -1558,6 +1482,31 @@ html.ek .panel-field {
   border-radius: 6px;
   background: var(--panel-tint, var(--ek-panel));
   container-type: inline-size;
+}
+
+html.ek .panel .panel-field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: var(--border-width-1) solid var(--ek-surface-stroke);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Surface edges share one faint stroke. Inset outlines preserve layout and existing shadows. */
+html.ek :is(.case-study-cta-content, .home-contact, .off-hours-cell, .about-page .skill-cell),
+html.ek .case-study-body :is(.stat-callout, .lottie-grid, .decision-stepper, .image-pair-media),
+html.ek .case-study-body .cs-figure > :not(figcaption, section, .device-phone, .hero-phone-scroll, .lottie-grid, .amica-buttons),
+html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell,
+html.ek .case-study-body .zigzag-media:not(:has(figcaption)) {
+  outline: var(--border-width-1) solid var(--ek-surface-stroke);
+  outline-offset: calc(-1 * var(--border-width-1));
+}
+
+html.ek .case-study-body .cs-figure > :focus-visible {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 3px;
 }
 
 html.ek .panel figcaption {
@@ -1668,12 +1617,8 @@ html.ek .case-study-body .panel--slot .lottie-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  html.ek :is(.story-text, .case-study-body .gallery-title, .case-study-body .gallery-note) {
+  html.ek .story-text {
     grid-column: 1 / -1;
-  }
-
-  html.ek .case-study-body .gallery-note {
-    margin-top: var(--space-2);
   }
 
   html.ek .gallery-grid {
@@ -1691,18 +1636,14 @@ html.ek .case-study-body .panel--slot .lottie-grid {
 }
 
 /* The outcome bar under the last gallery spans all 12 columns, with room above and below */
-html.ek .case-study-body > .cs-metrics {
+html.ek .case-study-content > .cs-metrics {
   grid-column: 1 / -1;
-  margin-top: clamp(8rem, 16vw, 15rem);
-  padding-block: var(--space-7);
 }
 
 /* The closing prompt in a callout frame */
 html.ek .case-study-cta-content {
+  grid-column: 1 / -1;
   align-items: center;
-  /* The body's bottom padding is already the gap above it */
-  margin-top: 0;
-  padding: clamp(3rem, 6vw, 5rem) var(--space-5);
   border-radius: var(--ek-window-radius);
   background: var(--ek-panel);
   text-align: center;
@@ -1710,11 +1651,10 @@ html.ek .case-study-cta-content {
 
 /* Previous and next: quiet links, not headlines; a hairline above them */
 html.ek .cs-nav {
-  margin-top: var(--space-7);
+  margin: 0;
 }
 
 html.ek .cs-nav-inner {
-  padding: var(--space-5) 0 var(--ek-section);
   border-top: 1px solid var(--ek-hairline);
 }
 

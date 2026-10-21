@@ -57,7 +57,7 @@ const { prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked } = Ast
     grid-template-columns: 1fr 1fr;
     align-items: start;
     gap: var(--grid-gutter);
-    padding: var(--space-6);
+    padding: var(--cs-block-gap) 0 var(--cs-section-gap);
   }
 
   .cs-nav-inner::before {
@@ -74,7 +74,7 @@ const { prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked } = Ast
 
   .cs-nav-link {
     text-decoration: none;
-    padding: var(--space-2) 0;
+    padding: var(--cs-caption-gap) 0;
   }
 
   .cs-nav-next {
@@ -83,7 +83,7 @@ const { prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked } = Ast
 
   .cs-nav-label {
     display: block;
-    margin-bottom: var(--space-1);
+    margin-bottom: var(--cs-label-gap);
     font-size: var(--text-75);
     opacity: var(--opacity-60);
   }

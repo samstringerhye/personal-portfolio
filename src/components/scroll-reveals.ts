@@ -138,8 +138,9 @@ function initImageReveals() {
   const body = document.querySelector('.case-study-body')
 
   if (body) {
+    const content = body.querySelector('.case-study-content') ?? body
     // ── Standalone images: fade up with blur ──
-    body.querySelectorAll<HTMLElement>(':scope > p:has(> img), :scope > .cs-figure').forEach(el => {
+    content.querySelectorAll<HTMLElement>(':scope > p:has(> img), :scope > .cs-figure').forEach(el => {
       gsap.set(el, blurUp)
       gsap.to(el, {
         ...blurUpTo,
@@ -221,7 +222,7 @@ function initImageReveals() {
     })
 
     // ── Standalone headings outside prose-group ──
-    body.querySelectorAll<HTMLElement>(
+    content.querySelectorAll<HTMLElement>(
       ':scope > h1, :scope > h2, :scope > h3'
     ).forEach(el => {
       createCmyAutoSplitReveal(el, cfg, stVars(el), 'lines')

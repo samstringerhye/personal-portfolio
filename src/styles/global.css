@@ -368,7 +368,7 @@ html.nav-open {
   justify-content: center;
   width: var(--touch-target);
   height: var(--touch-target);
-  border: 1px solid var(--ek-hairline, #e6eaee);
+  border: 0;
   border-radius: 50%;
   background: color-mix(in srgb, var(--ek-surface, #fff) 92%, transparent);
   -webkit-backdrop-filter: blur(12px);
@@ -385,12 +385,11 @@ html.nav-open {
 
 @media (hover: hover) {
   .back-to-work {
-    transition: background-color var(--duration-short) ease, border-color var(--duration-short) ease;
+    transition: background-color var(--duration-short) ease;
   }
 
   .back-to-work:hover {
     background: var(--ek-panel, #f7f8fa);
-    border-color: var(--color-text-primary);
   }
 }
 

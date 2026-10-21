@@ -5,7 +5,7 @@
  */
 interface Props {
   title: string
-  note?: string
+  note?: string | string[]
 }
 
 const { title, note } = Astro.props
@@ -15,7 +15,7 @@ const id = `gallery-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
 <section class="gallery" aria-labelledby={id}>
   <div class="gallery-head">
     <h2 id={id} class="gallery-title">{title}</h2>
-    {note && <p class="gallery-note">{note}</p>}
+    {note && <div class="gallery-note">{(Array.isArray(note) ? note : [note]).map(paragraph => <p>{paragraph}</p>)}</div>}
   </div>
   <div class="gallery-grid"><slot /></div>
 </section>

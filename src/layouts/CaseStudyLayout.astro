@@ -40,38 +40,50 @@ const deviceHero = heroScene && !gate
 <BaseLayout title={`${title} | Sam Stringer-Hye`} description={tagline} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex}>
   {!gate && <div class="scroll-progress" aria-hidden="true"></div>}
   <div class="cs-back" transition:persist="cs-back"><BackToWork /></div>
-  <article class="case-study-body">
-    {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} />}
-    {heroLayers && !deviceHero && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
-    <slot />
-  </article>
+  <div class="case-study-layout">
+    <article class="case-study-body">
+      {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} />}
+      {heroLayers && !deviceHero && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
+      {!gate && <div class="case-study-content"><slot /></div>}
+    </article>
 
-  {!gate && <section class="case-study-cta" aria-labelledby="case-study-cta-heading">
-    <hr class="section-rule" />
-    <div class="case-study-cta-content">
-      <h2 id="case-study-cta-heading" class="typo-headline-sm">Want to talk about this work?</h2>
-      <ContactEmail class="case-study-cta-link typo-body-lg" />
-    </div>
-  </section>}
+    {!gate && <section class="case-study-cta" aria-labelledby="case-study-cta-heading">
+      <hr class="section-rule" />
+      <div class="case-study-cta-content">
+        <h2 id="case-study-cta-heading" class="typo-headline-sm">Want to talk about this work?</h2>
+        <ContactEmail class="case-study-cta-link typo-body-lg" />
+      </div>
+    </section>}
+
+    {!gate && <CaseStudyNav
+      prevSlug={prevSlug}
+      prevTitle={prevTitle}
+      prevLocked={prevLocked}
+      nextSlug={nextSlug}
+      nextTitle={nextTitle}
+      nextLocked={nextLocked}
+    />}
+  </div>
 
   {!gate && <ImageZoom />}
-
-  {!gate && <CaseStudyNav
-    prevSlug={prevSlug}
-    prevTitle={prevTitle}
-    prevLocked={prevLocked}
-    nextSlug={nextSlug}
-    nextTitle={nextTitle}
-    nextLocked={nextLocked}
-  />}
 </BaseLayout>
 
 <style is:global>
-  .case-study-body {
+  .case-study-layout,
+  .case-study-body,
+  .case-study-content {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
-    row-gap: 0;
+  }
+
+  .case-study-layout,
+  .case-study-content {
+    row-gap: var(--cs-section-gap);
+  }
+
+  .case-study-body {
+    row-gap: var(--cs-hero-gap);
   }
 
   /* ── Contact CTA ── */
@@ -90,8 +102,8 @@ const deviceHero = heroScene && !gate
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-2);
-    padding-block: var(--space-6);
+    gap: var(--cs-heading-gap);
+    padding: var(--cs-callout-inset);
   }
 
   /* The end-of-study contact, styled as a button so it reads as the next step */
@@ -103,7 +115,8 @@ const deviceHero = heroScene && !gate
     padding: var(--space-1) var(--space-4);
     color: var(--color-text-primary);
     text-decoration: none;
-    border: var(--border-width-1) solid var(--color-text-primary);
+    border: 0;
+    background: var(--ek-surface, var(--color-bg-primary));
     transition: background-color var(--duration-short) ease, color var(--duration-short) ease;
   }
 
@@ -178,8 +191,6 @@ const deviceHero = heroScene && !gate
   @media (--2x) {
     .case-study-cta-content {
       grid-column: 1 / -1;
-      padding-inline: var(--content-inset-sm);
-      padding-block: var(--space-5);
     }
 
     .case-study-body img {
