@@ -25,7 +25,6 @@ tags: ["Design System", "E-commerce", "Global", "Navigation"]
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import Metrics from '../../components/Metrics.astro'
 import homeDesktop from '../../assets/work/samsung-redesign/figma/home-desktop.webp'
 import highlightsMobile from '../../assets/work/samsung-redesign/figma/highlights-mobile.webp'
 import warrantyMobile from '../../assets/work/samsung-redesign/figma/warranty-mobile.webp'
@@ -46,39 +45,33 @@ import icons from '../../assets/work/samsung-redesign/mock/icons.webp'
   agency="Razorfish"
   year={2020}
   made={['Navigation', 'Category and product pages', 'Shared components']}
-  outcome="Samsung.com's redesign rolled out market by market on one set of templates. I set the visual direction for its navigation and designed category and product pages for the shared system."
-  problem="Samsung's research found the old menu text-heavy, with too many clicks to reach a product, worst of all on phones. Every market had added its own categories and string lengths."
+  outcome="A shared navigation and page system designed to roll out market by market without losing local category depth."
+  problem="The brief called for a product path that worked across markets, categories and string lengths, especially on phones where the old navigation required too much reading before a shopper could act."
+  decision="Use product imagery to make categories recognizable on phones, then pair that navigation with reusable category and product templates."
   did="I set the visual direction for the global navigation and designed the category pages, from the first mobile concepts in February 2020 to the shared templates."
 />
 
-<Gallery title="Samsung.com">
-  <Panel kind="page" src={homeDesktop} alt="Samsung.com homepage with the Galaxy S20 hero" />
+<Gallery title="Homepage">
+  <Panel kind="page" src={homeDesktop} alt="Samsung.com homepage with the Galaxy S20 hero" caption="The homepage gives the current flagship product the first, clearest story." />
   <Panel kind="screens" screens={[
     { src: categoryMobile, alt: 'Refrigerators category page on a phone' },
     { src: highlightsMobile, alt: 'Category highlights: Open up a little, over a fridge interior' },
     { src: warrantyMobile, alt: 'Category offers: a five-year appliance warranty' },
-  ]} /></Gallery>
+  ]} caption="The category templates adapt the same structure to phone screens." /></Gallery>
 
-<Gallery title="Navigation" note="Samsung's research found shoppers had to know a product's name to find it. I put a picture beside every category on phones, so people recognize a fridge before they read the word. Desktop keeps text lists and one featured product per menu.">
-  <Panel kind="screens" span="half" screens={[{ src: navAppliances, alt: 'Phone menu: Appliances, each category with a product photo' }]} />
-  <Panel kind="screens" span="half" screens={[{ src: navFridges, alt: 'Phone menu drill-in: refrigerators by type, each pictured' }]} />
-  <Panel kind="page" ratio="8 / 3" src={navDesktop} alt="Desktop menu open on Mobile: categories, products and one featured Galaxy S20 card" />
+<Gallery title="Navigation" note="The navigation had to work for people who recognize a product before they know its name. I put a picture beside every category on phones. Desktop keeps scan-friendly text lists and one featured product per menu.">
+  <Panel kind="screens" span="half" screens={[{ src: navAppliances, alt: 'Phone menu: Appliances, each category with a product photo' }]} caption="Product images help people recognize a category before they know its name." />
+  <Panel kind="screens" span="half" screens={[{ src: navFridges, alt: 'Phone menu drill-in: refrigerators by type, each pictured' }]} caption="The second level keeps that visual recognition through product type." />
+  <Panel kind="page" ratio="8 / 3" src={navDesktop} alt="Desktop menu open on Mobile: categories, products and one featured Galaxy S20 card" caption="Desktop keeps the scan-friendly list and adds one product story." />
 </Gallery>
-
 <Gallery title="Category and product pages" note="I built category pages around one big picture, then let shoppers narrow by what they care about, color, width, capacity, door style, as tappable chips instead of a long filter list.">
-  <Panel kind="page" src={categoryDesktop} alt="Smartphones category page: Be ready for the future, over a Galaxy S20" />
-  <Panel kind="screens" span="half" screens={[{ src: configureMobile, alt: 'Fridge finder on a phone: colour, width, capacity and door style as chips' }]} />
-  <Panel kind="piece" span="half" multiply src={pdOptions} alt="Galaxy A50 product page options: trade-in and color" />
-  <Panel kind="page" src={finderDesktop} alt="Product finder: Smart Fridge Freezers, two large product cards" />
+  <Panel kind="page" src={categoryDesktop} alt="Smartphones category page: Be ready for the future, over a Galaxy S20" caption="A single product image sets the category's entry point." />
+  <Panel kind="screens" span="half" screens={[{ src: configureMobile, alt: 'Fridge finder on a phone: colour, width, capacity and door style as chips' }]} caption="Chips turn a long filter list into visible product traits." />
+  <Panel kind="piece" span="half" multiply src={pdOptions} alt="Galaxy A50 product page options: trade-in and color" caption="Product choices sit beside the purchase decision." />
+  <Panel kind="page" src={finderDesktop} alt="Product finder: Smart Fridge Freezers, two large product cards" caption="The finder narrows a category through a few clear questions." />
 </Gallery>
 
 <Gallery title="Shared components" note="The buttons, controls and icons I designed for the shared system, used by every page type.">
-  <Panel kind="piece" ratio="16 / 6" multiply src={buttons} alt="Samsung.com buttons in their default, hover and disabled states" />
-  <Panel kind="piece" ratio="16 / 6" multiply src={icons} alt="Samsung.com line icons: filter, device, edit, download and more" />
+  <Panel kind="piece" ratio="16 / 6" multiply src={buttons} alt="Samsung.com buttons in their default, hover and disabled states" caption="Button states stay consistent across templates." />
+  <Panel kind="piece" ratio="16 / 6" multiply src={icons} alt="Samsung.com line icons: filter, device, edit, download and more" caption="The icon set gives common actions a shared visual language." />
 </Gallery>
-
-<Metrics items={[
-  { value: '12+', label: 'Markets on one navigation' },
-  { value: '50+', label: 'Templates in the shared system' },
-  { value: '6', label: 'Months, first phase' },
-]} />
