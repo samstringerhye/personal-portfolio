@@ -676,15 +676,15 @@ html.ek .work-list-meta > span:first-child {
 }
 
 /* Desktop: Selected Work heads the list, and each project is a row on the 12-column grid How I lead
-   and Experience use: its text at the bottom of the left 4 columns, its art the full height of the
-   row in the other 8 */
+   and Experience use: its text centered on the height of the art in the left 4 columns, its art the
+   full height of the row in the other 8 */
 @media (min-width: 64.0625rem) {
   html.ek .work-list-card {
     --work-caption-height: 0rem;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--grid-gutter);
-    align-items: end;
+    align-items: center;
   }
 
   /* The art's own width, not the row's, for the --narrow-* sizing (cqw) */
