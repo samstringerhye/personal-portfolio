@@ -176,6 +176,15 @@ export interface Push {
   push: number
   grow: number
   amount: number
+  /** Each dot's eased response, three floats a dot and a live flag after them (newWake): a dot
+      eases toward its displacement at attack and back at release, so the bulge leaves a wake */
+  wake: Float32Array | null
+  attack: number
+  release: number
+}
+
+export function newWake(total: number): Float32Array {
+  return new Float32Array(total * 3 + 1)
 }
 
 /** The pointer's push as a damped spring: position and strength trail their targets, overshoot a
@@ -228,27 +237,49 @@ export function updateDots(
   push: Push | null = null,
 ): void {
   const r2 = lens ? lens.r * lens.r : 0
-  const pr2 = push && push.strength > 0 ? push.r * push.r : 0
+  const wake = push ? push.wake : null
+  // The wake keeps the loop running after the pointer leaves, until every dot is back
+  const pushing = !!push && (push.strength > 0 || (!!wake && wake[total * 3] > 0))
+  const pr2 = pushing ? push!.r * push!.r : 0
+  let live = 0
   for (let i = 0; i < total; i++) {
     placeDot(posX[i], posY[i], dist[i], time, waveSpeed, propagation, waveSharpness, waveAmplitude, waveFrequency, baseScale, twistAmount)
     let x = placedX
     let y = placedY
     let s = dotScales[i]
     if (pr2) {
+      let tx = 0
+      let ty = 0
+      let tg = 0
       const dx = x - push!.x
       const dy = y - push!.y
       const d2 = dx * dx + dy * dy
-      if (d2 < pr2 && d2 > 1e-9) {
+      if (d2 < pr2 && d2 > 1e-9 && push!.strength > 0) {
         const d = Math.sqrt(d2)
         // Smoothstep falloff to the rim. Each dot moves in proportion to its distance, so the
         // middle spreads smoothly instead of opening a hole under the pointer
         let f = 1 - d / push!.r
         f = f * f * (3 - 2 * f) * push!.strength
         const out = f * push!.push * push!.amount
-        x += dx * out
-        y += dy * out
-        s *= 1 + f * push!.grow
+        tx = dx * out
+        ty = dy * out
+        tg = f * push!.grow
       }
+      if (wake) {
+        const j = i * 3
+        const rising = Math.abs(tx) + Math.abs(ty) + tg > Math.abs(wake[j]) + Math.abs(wake[j + 1]) + wake[j + 2]
+        const rate = rising ? push!.attack : push!.release
+        wake[j] += (tx - wake[j]) * rate
+        wake[j + 1] += (ty - wake[j + 1]) * rate
+        wake[j + 2] += (tg - wake[j + 2]) * rate
+        tx = wake[j]
+        ty = wake[j + 1]
+        tg = wake[j + 2]
+        if (Math.abs(tx) + Math.abs(ty) + tg > 1e-4) live = 1
+      }
+      x += tx
+      y += ty
+      s *= 1 + tg
     }
     if (lens) {
       const dx = x - lens.x
@@ -276,6 +307,7 @@ export function updateDots(
     matArr[o + 12] = x
     matArr[o + 13] = y
   }
+  if (wake && pr2) wake[total * 3] = live
 }
 
 export interface DotLayer {
