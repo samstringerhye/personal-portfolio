@@ -2,9 +2,7 @@
 
 Notes and verdicts only. No article text is reproduced here.
 
-Read status matters for how far to trust each note:
-- **Full text:** read in the page's own wording (Firecrawl scrape).
-- **Summary:** read as a model-written summary (WebFetch). Wording and details may be off. Check before quoting a figure or a claim.
+Read status: every source below was read in the page's own wording, either by Firecrawl or by Exa's page fetch. Firecrawl hit its rate limit partway through, and WebFetch returned model summaries instead of page text. The summary-only pages were re-read with Exa, and their notes were checked against the full text.
 
 Verdicts: useful, marginal, off-topic.
 
@@ -21,7 +19,7 @@ Verdicts: useful, marginal, off-topic.
 - **Wix Playground (Dana Meir): "How to write case studies for your design portfolio"** (useful). Checklist: background (client, what they do, date, location, role, team credits), goal from the brief, process and key decisions, results and learnings. Make it skimmable with headers, short paragraphs, and captions. Write it like a short story in chronological order. Its own page shows an unrendered template placeholder, so check output. Note: its chronological "story" structure is the opposite of NN/g's advice to organize by decisions.
 - **NN/g (Jakob Nielsen): "Writing Style for Print vs. Web"** (useful, for copy). Print is linear and author-driven; the web is reader-driven and needs actionable content. Front-load the first words of headings and links, because readers scan. Use fragments where they carry information, and cut word count. Use specific keywords over vague labels. Users rarely read to the end of a page, so the opening has to carry the point.
 
-## Summary only (WebFetch; verify before quoting)
+## Full text via Exa (checked against the page)
 
 - **Ellen Covey: "The Beakery"** (useful as an exemplar). Self-initiated iOS app case study. Four owner interviews, two personas, four audited adjacent services, five defined features. Two rounds of usability testing: one moderated plus seven unmoderated participants, then 14. Metadata block, a one-line goal, and jump links per design stage. Metrics are the author's own study counts. The gap to avoid: the case study states no business outcome.
 - **Opendoors Careers: "How to write a strong case study for your portfolio in 2025"** (useful). Context in two or three sentences. Role, timeline, and team as a quick summary block. Put the impact in the title if you have one. Without a metric, name the effect (clearer hierarchy, less friction), or say so for student work. Organize around decisions and trade-offs, not phases. Use descriptive headings that work as a skim track. Show the work through a few key flows, not a grid of every screen, and caption every visual. Its own title is instructional, a counter-example to its advice.
