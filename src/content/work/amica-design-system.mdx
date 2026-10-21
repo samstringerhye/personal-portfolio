@@ -29,8 +29,11 @@ import screenHome from '../../assets/work/amica-design-system/figma/screen-home.
 import legacyCard from '../../assets/work/amica-design-system/mock/legacy-hero-card.webp'
 import quoteCard from '../../assets/work/amica-design-system/mock/quote-card.webp'
 import tokenLayers from '../../assets/work/amica-design-system/figma/token-layers.webp'
+import tokenLayersDark from '../../assets/work/amica-design-system/figma/token-layers-dark.webp'
 import tokenChain from '../../assets/work/amica-design-system/figma/token-chain.webp'
+import tokenChainDark from '../../assets/work/amica-design-system/figma/token-chain-dark.webp'
 import tokenStates from '../../assets/work/amica-design-system/figma/token-states.webp'
+import tokenStatesDark from '../../assets/work/amica-design-system/figma/token-states-dark.webp'
 import pageQuote from '../../assets/work/amica-design-system/figma/page-quote.webp'
 import quoteBundle from '../../assets/work/amica-design-system/mock/quote-bundle.webp'
 import screenQuoteSummary from '../../assets/work/amica-design-system/figma/screen-quote-summary.webp'
@@ -56,9 +59,9 @@ import screenQuoteSummary from '../../assets/work/amica-design-system/figma/scre
 </Gallery>
 
 <Gallery title="Design tokens" note="Before naming anything, I studied how established design systems organize their tokens and audited Amica's own site, quote tools and app. Tokens are grouped by job, so a designer picks a color by what it does, not by how it looks.">
-  <Panel kind="bleed" ratio="3111 / 1618" src={tokenLayers} alt="Color layers: canvas, surface, content, border and elevation, then all five together on one card" />
-  <Panel kind="bleed" span="half" ratio="1514 / 973" src={tokenChain} alt="A primitive teal points to a semantic token, which fills the Continue button" />
-  <Panel kind="bleed" span="half" ratio="1515 / 973" src={tokenStates} alt="Hover adds a translucent overlay over the button's fill" />
+  <Panel kind="bleed" ratio="3111 / 1618" src={tokenLayers} srcDark={tokenLayersDark} alt="Color layers: canvas, surface, content, border and elevation, then all five together on one card" />
+  <Panel kind="bleed" span="half" ratio="1514 / 973" src={tokenChain} srcDark={tokenChainDark} alt="A primitive teal points to a semantic token, which fills the Continue button" />
+  <Panel kind="bleed" span="half" ratio="1515 / 973" src={tokenStates} srcDark={tokenStatesDark} alt="Hover adds a translucent overlay over the button's fill" />
 </Gallery>
 
 <Gallery title="Getting a quote" note="The quote screens ask about you, your car and your home, then show the price. I built them from the same tokens and parts as the rest of the site, so the flow feels like Amica from first question to final price.">

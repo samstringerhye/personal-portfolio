@@ -15,6 +15,9 @@ type Src = ImageMetadata | string
 interface Props {
   kind: 'screens' | 'page' | 'piece' | 'bleed' | 'video' | 'slot'
   src?: Src
+  /** The same image for a dark page: transparent, with its labels re-inked light, so the board sits
+      on the panel instead of showing a white box. Swapped in by prefers-color-scheme */
+  srcDark?: Src
   alt?: string
   screens?: { src: Src; alt: string }[]
   span?: 'full' | 'half'
@@ -30,7 +33,7 @@ interface Props {
   cover?: boolean
 }
 
-const { kind, src, alt = '', screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
+const { kind, src, srcDark, alt = '', screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
 const half = span === 'half'
 const aspect = ratio ?? (kind === 'screens' || kind === 'slot' ? undefined : half ? '4 / 5' : '16 / 10')
 const style = [tint && `--panel-tint: ${tint}`, aspect && `--panel-ratio: ${aspect}`, kind === 'screens' && `--n: ${screens.length}`]
@@ -56,9 +59,14 @@ const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
     ) : kind === 'slot' ? (
       <slot />
     ) : src && (
-      isLocal(src)
-        ? <Image src={src} alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class="panel-media" />
-        : <img src={src} alt={alt} class="panel-media" loading="lazy" decoding="async" />
+      <>
+        {isLocal(src)
+          ? <Image src={src} alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class:list={['panel-media', srcDark && 'panel-media--light']} />
+          : <img src={src} alt={alt} class:list={['panel-media', srcDark && 'panel-media--light']} loading="lazy" decoding="async" />}
+        {srcDark && (isLocal(srcDark)
+          ? <Image src={srcDark} alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class="panel-media panel-media--dark" />
+          : <img src={srcDark} alt={alt} class="panel-media panel-media--dark" loading="lazy" decoding="async" />)}
+      </>
     )}
   </div>
   {caption && <figcaption>{caption}</figcaption>}
