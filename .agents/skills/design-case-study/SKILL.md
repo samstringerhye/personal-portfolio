@@ -5,7 +5,9 @@ description: Write or revise a design portfolio case study for this site. Use wh
 
 # Design case study
 
-A case study shows how you worked, not only what shipped. Readers want the problem, your role, the decisions you made and why, what changed, and what you learned. Lead with the outcome, then show the path to it.
+A case study shows how you worked, not only what shipped. Readers want the problem, your role, the decisions you made and why, what changed, and what you learned.
+
+Lead with the outcome in the title and the `Story` summary. The body then follows the seven-part order below, starting with the problem. The outcome in `Story` is the promise; the body is the proof.
 
 Read `AGENTS.md` (copy rules) and the `Gotchas` section of `CLAUDE.md` before writing. Match the voice of the published studies in `src/content/work/`. `amica-design-system.mdx` is the current reference.
 
@@ -35,8 +37,29 @@ Most real projects were not done correctly. Readers expect trade-offs; a perfect
 ## Metrics
 
 - Use real numbers from the project, with their source and timeframe available if asked.
-- If there is no number, omit the metric. Never write "significantly improved" or "much faster".
+- Record a baseline before the change and reuse the same measure afterwards. Report per-task results, not only averages.
+- Be candid about attribution. If a revenue or usage gain can't be isolated from other changes, say so and present analytics as supporting evidence.
+- Use a metric a non-expert can explain. If it needs a footnote to be honest, add the footnote.
+- If there is no number, omit the metric. Name the qualitative effect instead (clearer hierarchy, fewer steps), backed by quotes or annotated before/after screens. Never write "significantly improved" or "much faster".
 - Tie the number to the decision it supports. A 59% lift means little without the test it came from.
+
+## Guidance from the reference sources
+
+Twenty-four sources were reviewed (verdicts and notes in `references/sources.md`). Where they agree, the skill follows them:
+
+- **Choose three to five projects.** Pick the ones that show the work you want next. Cut any that no longer reflect your skills.
+- **Keep the read short.** A starting point is roughly 600 to 900 words, with the images carrying part of the story. Cut words before cutting substance.
+- **Make captions stand alone.** A reader who only reads captions should still follow the project.
+- **Credit your role explicitly.** Name what you did, your collaborators, and the team's shape.
+- **Show the messy middle.** Include early drafts, abandoned ideas, and unselected concepts. Final screens alone don't show thinking.
+- **Organize around decisions.** Each decision gets the options considered and the trade-off accepted, not a list of phases.
+- **Include a "what works" note** when you critique a product or a design. Balance keeps the critique credible.
+- **Name the constraints** (budget, staffing, deadlines, phased rollout) and say what is still unfinished.
+- **Write for the skimmer.** Descriptive headings work as a track. Open each section with its claim.
+- **Validate method when relevant.** One line on a pilot session or practice run shows the study was tested, if the case study is about research.
+- **Anonymize NDA work.** Focus on process over proprietary detail, and say what was withheld.
+
+Two of the sources recommend outcome-led titles (Opendoors, UXfolio). Most use topic titles. Use an outcome-led title here, which matches the site's rule to lead with the outcome.
 
 ## Copy rules (from AGENTS.md)
 
@@ -62,9 +85,9 @@ Components (import from `../../components/`):
 
 - `Story`: the opening summary. Props: `client`, `role`, `agency`, `year`, `made` (array of what you owned), `outcome` (lead with it), `problem`, `did`.
 - `Gallery`: a titled section with an optional `note`. Holds `Panel` children.
-- `Panel`: one image or a set. `kind` is `page`, `piece`, `bleed`, or `screens`. Give every image an `alt`.
+- `Panel`: one visual. `kind` is `screens`, `page`, `piece`, `bleed`, `video`, or `slot` (see `src/components/Panel.astro`). Props include `src`, `alt`, `screens` (for `kind="screens"`), `span` (`full` or `half`), `ratio`, `caption`, `multiply`, `tint`, `poster`, and `cover`. Give every image an `alt`. Use `caption` for a short label that stands alone.
 - `Metrics`: a row of `{ value, label }` items. Use it only for real numbers.
-- `DecisionStepper`: a sequence of decisions with reasons. Read `src/components/DecisionStepper.astro` for its props before use.
+- `DecisionStepper`: a sequence of decisions, one screen each. Props: `label` (accessible name) and `steps`, each with `label`, `caption`, `image` (imported `ImageMetadata`), and `alt`. Use it when the decision path matters more than a single final screen.
 
 Practical steps:
 
