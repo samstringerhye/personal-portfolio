@@ -165,8 +165,9 @@ export function emptyLens(): Lens {
   return { x: 0, y: 0, r: 0, mag: 1, t0: 0, sign: 0, fade: 0, split: 0, dotRadius: 0 }
 }
 
-/** The pointer's push on the dots, in world units: dots within r of (x, y) move out and grow,
-    eased by strength (0–1). amount is this layer's share of the push (the RGB split) */
+/** The pointer's bulge on the dots, in world units: dots within r of (x, y) swell away from it
+    like a lens under the surface, eased by strength (0–1). push is the magnification at the
+    center. amount is this layer's share of it (the RGB split) */
 export interface Push {
   x: number
   y: number
@@ -239,10 +240,11 @@ export function updateDots(
       const d2 = dx * dx + dy * dy
       if (d2 < pr2 && d2 > 1e-9) {
         const d = Math.sqrt(d2)
-        // Smoothstep falloff to the rim
+        // Smoothstep falloff to the rim. Each dot moves in proportion to its distance, so the
+        // middle spreads smoothly instead of opening a hole under the pointer
         let f = 1 - d / push!.r
         f = f * f * (3 - 2 * f) * push!.strength
-        const out = f * push!.push * push!.r * push!.amount / d
+        const out = f * push!.push * push!.amount
         x += dx * out
         y += dy * out
         s *= 1 + f * push!.grow

@@ -82,9 +82,9 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
 | `hero.canvas.cmyStagger` | seconds | `0.03` | Delay between the red, green and blue dot layers in the hero wave (independent from text reveal stagger) |
 | `hero.canvas.accentOpacity` | 0–1 | `1` | Opacity of the red, green and blue dot layers (fully saturated). On a dark system scheme the layers are pure RGB, added together so overlaps read white, and the gray base dot is dropped |
-| `hero.canvas.pointer.radius` | CSS px | `150` | How far around the pointer the dots react (off under reduced motion) |
-| `hero.canvas.pointer.push` / `grow` | ratio | `0.22` / `0.4` | Dots at the pointer are pushed out by this share of the radius and grow by this much |
-| `hero.canvas.pointer.split` | ratio | `0.2` | Red is pushed this much further than green, blue this much less, so dots near the pointer split into their subpixels |
+| `hero.canvas.pointer.radius` | CSS px | `280` | How far around the pointer the dots react (off under reduced motion) |
+| `hero.canvas.pointer.push` / `grow` | ratio | `0.3` / `0.25` | The bulge: the spacing under the pointer magnifies by this much and fades to nothing at the rim, and the dots there grow by this much |
+| `hero.canvas.pointer.split` | ratio | `0.08` | Red is pushed this much further than green, blue this much less, so dots near the pointer split into their subpixels |
 | `hero.canvas.pointer.stiffness` / `damping` | 0–1 | `0.06` / `0.8` | A spring, not an ease: the push trails the pointer, overshoots a touch and settles, and swells in and out the same way as the pointer enters and leaves |
 | `workCards.flipHold` | seconds | `1.4` | How long each work card flipbook frame holds |
 | `workCards.flipFade` | seconds | `0.35` | Crossfade between flipbook frames |
