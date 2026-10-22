@@ -18,6 +18,8 @@ interface Props {
   /** The same image for a dark page: transparent, with its labels re-inked light, so the board sits
       on the panel instead of showing a white box. Swapped in by prefers-color-scheme */
   srcDark?: Src
+  /** Preserve PNG delivery for Figma exports when requested. */
+  format?: 'png' | 'webp' | 'avif'
   alt?: string
   screens?: { src: Src; alt: string }[]
   span?: 'full' | 'half'
@@ -33,7 +35,7 @@ interface Props {
   cover?: boolean
 }
 
-const { kind, src, srcDark, alt = '', screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
+const { kind, src, srcDark, format, alt = '', screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
 const half = span === 'half'
 const aspect = ratio ?? (kind === 'screens' || kind === 'slot' ? undefined : half ? '4 / 5' : '16 / 10')
 const style = [tint && `--panel-tint: ${tint}`, aspect && `--panel-ratio: ${aspect}`, kind === 'screens' && `--n: ${screens.length}`]
@@ -42,6 +44,10 @@ const style = [tint && `--panel-tint: ${tint}`, aspect && `--panel-ratio: ${aspe
 const sizes = half ? '(max-width: 768px) 92vw, 46vw' : '(max-width: 768px) 92vw, 90vw'
 const screenSizes = '(max-width: 768px) 45vw, 18rem'
 const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
+// Fresh PNG exports retain their native pixel ceiling instead of generating larger derivatives.
+const pngWidths = (s: ImageMetadata, widths: number[]) => format === 'png'
+  ? [...new Set([...widths.filter((w) => w <= s.width), Math.min(s.width, widths[widths.length - 1])])]
+  : widths
 ---
 
 <figure class:list={['panel', `panel--${kind}`, half && 'panel--half', multiply && 'panel--multiply', cover && 'panel--cover']} style={style || undefined}>
@@ -50,7 +56,7 @@ const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
       <div class="panel-screens">
         {screens.map((s) => (
           isLocal(s.src)
-            ? <Image src={s.src} alt={s.alt} widths={[400, 750, 1080]} sizes={screenSizes} class="panel-screen" />
+            ? <Image src={s.src} format={format} alt={s.alt} widths={pngWidths(s.src, [400, 750, 1080])} sizes={screenSizes} class="panel-screen" />
             : <img src={s.src} alt={s.alt} class="panel-screen" loading="lazy" decoding="async" />
         ))}
       </div>
@@ -61,10 +67,10 @@ const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
     ) : src && (
       <>
         {isLocal(src)
-          ? <Image src={src} alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class:list={['panel-media', srcDark && 'panel-media--light']} />
+          ? <Image src={src} format={format} alt={alt} widths={pngWidths(src, [640, 1080, 1600, 2200, 2880])} sizes={sizes} class:list={['panel-media', srcDark && 'panel-media--light']} />
           : <img src={src} alt={alt} class:list={['panel-media', srcDark && 'panel-media--light']} loading="lazy" decoding="async" />}
         {srcDark && (isLocal(srcDark)
-          ? <Image src={srcDark} alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class="panel-media panel-media--dark" />
+          ? <Image src={srcDark} format={format} alt={alt} widths={pngWidths(srcDark, [640, 1080, 1600, 2200, 2880])} sizes={sizes} class="panel-media panel-media--dark" />
           : <img src={srcDark} alt={alt} class="panel-media panel-media--dark" loading="lazy" decoding="async" />)}
       </>
     )}

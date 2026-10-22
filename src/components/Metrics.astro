@@ -11,7 +11,7 @@ interface Props {
 const { items, variant = 'metrics' } = Astro.props
 ---
 
-<dl class:list={['cs-metrics', variant === 'summary' && 'cs-metrics--summary']}>
+<dl class:list={['cs-metrics', variant === 'summary' && 'cs-metrics--summary']} style={variant === 'summary' ? `--cs-summary-columns: ${items.length}` : undefined}>
   {items.map(m => (
     <div class="cs-metric">
       <dt class="cs-metric-value">{m.value}</dt>
@@ -59,7 +59,7 @@ const { items, variant = 'metrics' } = Astro.props
   }
 
   .cs-metrics--summary {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--cs-summary-columns, 4), minmax(0, 1fr));
   }
 
   .cs-metrics--summary .cs-metric {

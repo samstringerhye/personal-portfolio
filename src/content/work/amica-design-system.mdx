@@ -4,7 +4,7 @@ client: "Amica"
 year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "I set the shared design rules behind Amica.com’s 615-page rebuild."
+tagline: "I led design-system work for Amica.com’s 615-page rebuild across AEM and React."
 thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
 thumbnailLayers:
   subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
@@ -18,59 +18,101 @@ thumbnailScene: "amica"
 thumbnailText: "dark"
 featured: true
 sortOrder: 0
-tags: ["Design System", "Design Tokens", "Design Leadership", "Prototyping"]
+tags: ["Design System", "Design Leadership", "AEM", "React"]
 ---
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import pageHome from '../../assets/work/amica-design-system/figma/page-home.webp'
-import screenHome from '../../assets/work/amica-design-system/figma/screen-home.webp'
-import legacyCard from '../../assets/work/amica-design-system/mock/legacy-hero-card.webp'
-import quoteCard from '../../assets/work/amica-design-system/mock/quote-card.webp'
-import tokenLayers from '../../assets/work/amica-design-system/figma/token-layers.svg'
-import tokenLayersDark from '../../assets/work/amica-design-system/figma/token-layers-dark.svg'
-import tokenChain from '../../assets/work/amica-design-system/figma/token-chain.svg'
-import tokenChainDark from '../../assets/work/amica-design-system/figma/token-chain-dark.svg'
-import tokenStates from '../../assets/work/amica-design-system/figma/token-states.svg'
-import tokenStatesDark from '../../assets/work/amica-design-system/figma/token-states-dark.svg'
-import pageQuote from '../../assets/work/amica-design-system/figma/page-quote.webp'
-import quoteBundle from '../../assets/work/amica-design-system/mock/quote-bundle.webp'
-import screenQuoteSummary from '../../assets/work/amica-design-system/figma/screen-quote-summary.webp'
+import ProseGroup from '../../components/ProseGroup.astro'
+import Metrics from '../../components/Metrics.astro'
+import ComponentExamples from '../../components/ComponentExamples.astro'
+import cardDefault from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-default-2x.png'
+import cardActive from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-active-2x.png'
+import cardDisabled from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-disabled-2x.png'
+import cardError from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-error-2x.png'
+import quoteDesktop from '../../assets/work/amica-design-system/figma-fresh/aem-quote-dropdown-desktop-library-2x.png'
+import quoteMobile from '../../assets/work/amica-design-system/figma-fresh/aem-quote-dropdown-mobile-library-2x.png'
+import bundleDesktop from '../../assets/work/amica-design-system/figma-fresh/product-bundle-hero-desktop-2x.png'
+import bundleMobile from '../../assets/work/amica-design-system/figma-fresh/product-bundle-hero-mobile-2x.png'
 
 <Story
   client="Amica"
   role="Associate Design Director"
   agency="Razorfish"
   year={2026}
-  made={['Visual direction', 'Color rules for light and dark themes', 'Homepage and quote screens']}
-  outcome="Amica.com relaunched on October 2, 2026, after a rebuild covering 615 pages. I led the work on the shared color and component rules."
-  problem="The project had gone four sprints without a dedicated design lead. The existing site had no shared color rules, so teams entered colors by hand and duplicated components for dark pages. The site also had to stay live during the rebuild."
-  decision="I grouped colors by their job and gave each job a name. Components could then use the same color rules in light and dark themes, without separate copies for each theme."
-  did="I joined as the first dedicated design lead. I set visual direction and led the team’s work on the homepage, product pages and quote screens. The component library already existed. I rebuilt the color rules and structure it depended on."
+  made={['Design leadership', 'AEM and React system organization', 'Component and documentation direction']}
+  outcome="Amica.com relaunched on October 2, 2026, after a 615-page rebuild. I led the design team and shaped the components, library structure, and handoff across AEM and React."
+  problem="The rebuild already had a component library, but teams needed a clearer structure for finding, reusing, documenting, and handing off patterns across two implementation stacks. The work also had to support nine page templates without treating the existing system as a blank slate."
+  decision="I organized the system into Foundations, Components, and Sections, with templates kept separate. I also distinguished internal working files from published libraries, reference documentation, and client-facing material so each audience could find the right source."
+  did="I joined during active delivery as design lead. I set priorities, delegated component refinement and documentation, reviewed the work, and organized the files and libraries. My role covered system structure, component decisions, documentation, and review across the project."
 />
 
-<Gallery title="Homepage" note="The quote form sits over a family photo and asks visitors to choose insurance and enter a ZIP code. Amica’s teal marks the utility bar and main action; the dark green footer carries the brand color below the page.">
-  <Panel kind="page" src={pageHome} alt="Amica.com homepage: a father helps his son in the kitchen beside a quote form" caption="The form keeps the first quote step on the homepage: choose insurance, enter a ZIP code, then start." />
-</Gallery>
-<Gallery title="Quote entry" note="The old card asked for a ZIP code and used a purple “Get a Quote” button. The new card adds an insurance choice, keeps the ZIP code field, and names the action “Start my quote.”">
-  <Panel kind="piece" span="half" ratio="1 / 1" src={legacyCard} alt="Before: the old quote card with a purple Get a Quote button" caption="Before" />
-  <Panel kind="piece" span="half" ratio="1 / 1" src={quoteCard} alt="After: the new quote card, product and ZIP code, then Start my quote" caption="After" />
+<ProseGroup>
+## One system, organized for two build stacks
+
+The existing library gave the project a foundation. I organized it into Foundations for shared rules, Components for reusable interface patterns, and Sections for patterns combined into larger page structures. Templates stayed distinct so teams could assemble pages without confusing page composition with source components.
+
+I kept component names simple and used properties for type, size, state, layout, and media. That gave variations a place within each component family instead of turning every combination into another name to find.
+
+I separated working files, published libraries, reference documentation, and client-share materials. I intended that structure to help design, implementation, and client review find the right source. I set the direction, delegated focused component and documentation work, and kept ownership of system structure and cross-file consistency.
+
+The existing library and parallel AEM and React tracks shaped the approach. I clarified what the project already had and guided the parts that needed refinement for launch. The work extended an existing system rather than replacing it wholesale.
+</ProseGroup>
+
+<Gallery title="From card states to a reusable section" note="The Product Bundle Hero makes the hierarchy concrete. Its selection cards carry state and breakpoint properties; the larger section combines those cards with ZIP entry and a quote action.">
+  <Panel kind="slot" tint="#E5E5E5" caption="Default, active, disabled, and error selection cards from the AEM Component Library. Presentation arrangement of four unmodified Figma exports.">
+    <ComponentExamples examples={[
+      { image: cardDefault, label: 'Default', alt: 'Default insurance selection card with an empty checkbox' },
+      { image: cardActive, label: 'Active', alt: 'Active insurance selection card with a filled green checkbox and check mark' },
+      { image: cardDisabled, label: 'Disabled', alt: 'Disabled insurance selection card with muted icon, label, and checkbox' },
+      { image: cardError, label: 'Error', alt: 'Insurance selection card with a red error outline' },
+    ]} />
+  </Panel>
+  <Panel kind="slot" tint="#E5E5E5" caption="Desktop and mobile Product Bundle Hero views from the AEM System Documentation. The same selection cards combine with ZIP entry and the quote action; placeholder copy remains in the source.">
+    <ComponentExamples columns={2} layout="section" examples={[
+      { image: bundleDesktop, label: 'Desktop section', alt: 'Desktop Product Bundle Hero with five insurance choices, ZIP field, and inline quote action' },
+      { image: bundleMobile, label: 'Mobile section', alt: 'Mobile Product Bundle Hero with five insurance choices arranged in two rows above the ZIP field and quote action' },
+    ]} />
+  </Panel>
 </Gallery>
 
-<Gallery title="Color rules" note="Design tokens are named rules that components can share. I grouped colors by where they appear: page background, cards and panels, text, borders, and depth. Each role has light and dark values, so components can switch themes without a duplicate set.">
-  <Panel kind="bleed" ratio="3111 / 1618" src={tokenLayers} srcDark={tokenLayersDark} alt="Five color roles shown separately and together on a card: page background, card surface, content, border and elevation" caption="The diagram shows how the page, card, text, border and depth colors work together." />
-  <Panel kind="bleed" span="half" ratio="1514 / 973" src={tokenChain} srcDark={tokenChainDark} alt="A base teal maps to a named color rule used by a Continue button" caption="A button uses a named rule instead of a one-off color value." />
-  <Panel kind="bleed" span="half" ratio="1515 / 973" src={tokenStates} srcDark={tokenStatesDark} alt="A translucent hover layer appears over the button’s base color" caption="Hover adds a translucent layer while keeping the base color." />
+<ProseGroup>
+## A quote-start choice shaped around the constraint
+
+In a separate product-dropdown exploration, the “Wedding & Event” label clipped in the menu. I presented three options. Amica selected the option that widened the dropdown and narrowed the ZIP field, keeping the quote action inline. The team also confirmed that this layout should hold through the 1024px breakpoint rather than introduce another breakpoint. Amica approved the direction, and this was the option that shipped.
+
+The choice balanced two visible needs in the same row: show the full product label and keep the quote action beside the ZIP field. I used the menu width to solve the clipped label, then gave up some width in the ZIP input to preserve that inline action. The documented breakpoint decision kept the team from solving the same layout with an extra responsive rule.
+
+Amica’s in-house team took ownership of the broader Quote Start redesign. Our agency scope covered the visual reskin, not a functional redesign of the quote flow. I led the visual refinement of quote entry; I did not redesign the larger flow.
+</ProseGroup>
+
+<Gallery title="Other quote-entry layouts in the library" note="Separate quote-entry variants show the other layout patterns in the AEM library: paired fields on desktop and stacked fields on mobile, both above a full-width CTA. These examples sit alongside the approved inline-action exploration described above.">
+  <Panel kind="slot" tint="#E5E5E5" caption="Quote-entry blocks from the AEM Component Library. Presentation arrangement of unmodified exports, with the original desktop and mobile variant labels preserved.">
+    <ComponentExamples columns={2} examples={[
+      { image: quoteDesktop, label: 'Desktop · Dropdown (Old)', alt: 'Desktop quote-entry library variant with insurance selection and ZIP fields side by side above a full-width quote button' },
+      { image: quoteMobile, label: 'Mobile · Dropdown (Updated)', alt: 'Mobile quote-entry library variant with product selection, ZIP entry, and quote button stacked vertically' },
+    ]} />
+  </Panel>
 </Gallery>
 
-<Gallery title="Quote flow" note="The quote flow collects details about the driver and vehicle, then presents auto, home and bundled prices. It uses the same color rules and components shown above.">
-  <Panel kind="page" src={pageQuote} alt="Vehicle information step in the quote flow, with options to enter details manually or use the VIN" caption="The vehicle step offers manual entry or VIN entry, then asks for vehicle details." />
-  <Panel kind="piece" ratio="16 / 6" multiply src={quoteBundle} alt="Quote summary comparing auto, home and combined bundle prices" caption="The summary places the two individual prices beside the bundle price." />
-</Gallery>
+<ProseGroup>
+## What the evidence supports
 
-<Gallery title="The quote flow on a phone">
-  <Panel kind="screens" screens={[
-    { src: screenHome, alt: 'The homepage on a phone' },
-    { src: screenQuoteSummary, alt: 'The bundle quote on a phone' },
-  ]} caption="The homepage and quote summary use the same visual rules on a phone." />
-</Gallery>
+The project launched on October 2, 2026. Project documentation records a 615-page scope and nine templates across AEM and React. The dropdown notes record Amica’s approval; the component documentation shows the Product Bundle Hero at two screen sizes. The kickoff did not include primary research or A/B testing, and the available evidence does not establish post-launch customer or business effects. I report design outcomes, not performance gains.
+</ProseGroup>
+
+<ProseGroup>
+## Design outcomes
+
+<Metrics variant="summary" items={[
+  { value: '615 pages', label: 'Site rebuild scope' },
+  { value: '9 templates', label: 'Page structures supported' },
+  { value: 'AEM + React', label: 'Libraries and documentation organized for both stacks' },
+]}/>
+</ProseGroup>
+
+<ProseGroup>
+## Start with the system
+
+Next time, I would establish the shared rules, component structure, and handoff model at kickoff. Leading this work during delivery showed me how much depends on giving the team a common foundation before page work starts.
+</ProseGroup>

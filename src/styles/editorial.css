@@ -1550,6 +1550,11 @@ html.ek .case-study-body .panel-screen {
 }
 
 /* Page: the screenshot fills the panel's width from the top, cut off by its bottom edge */
+html.ek .case-study-body .panel--page .panel-field {
+  /* Focusing a tall zoom trigger must not scroll its cropped container to the image's center. */
+  overflow: clip;
+}
+
 html.ek .case-study-body .panel--page .panel-media {
   position: absolute;
   inset: 0 0 auto;
