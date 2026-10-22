@@ -13,6 +13,8 @@ Use `Story`, `Gallery`, `Panel`, and `ProseGroup`. Keep the coverage model consi
 
 ## Text and visual pairing
 
+Lead with the designer's decisions, reasoning, constraints, and contribution. Page counts, template counts, and deliverable volume do not establish design quality or seniority. Do not give them headline space or a standalone scope section.
+
 Every substantive narrative block needs relevant supporting imagery. Pair paragraphs with a screen, iteration, component view, or diagram that supports their claims. Do not end a study with multiple prose-only sections. Draft the point first, then choose the visual; use fresh Figma exports for Samsung. Keep captions with their images. The compact opening summary, outcomes bar, and single final statement are exceptions to this pairing rule.
 
 Make the supporting image visually legible at a glance. Prefer actual screens, enlarged components, state comparisons, and composed visual details over specification tables or screenshots of documentation. An image full of text still makes the reader read. Keep technical reference material out of the main visual narrative unless its content is the point.
