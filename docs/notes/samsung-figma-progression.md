@@ -1,5 +1,9 @@
 # Samsung page imagery and progression evidence
 
+## Outcome rule correction
+
+Sam clarified that outcomes must contain verified user or business KPIs only. Removed the Samsung Design outcomes bar and the equivalent Amica bar. Design decisions, deliverables, project scope, rollout scale, and milestones do not qualify. If sourced KPIs are unavailable, omit the outcomes section. This correction supersedes earlier notes permitting a Design outcomes fallback; AGENTS.md and the shared case-study template now state the stricter rule.
+
 ## 2026-10-22: native font and layout repair completed
 
 The current body now uses six fresh 2× PNGs. Native Figma export copies preserve the installed Samsung Sharp Sans and SamsungOne fonts. Repaired imported clipping and spacing in those copies, including header labels, links, badges, and PDP breadcrumbs. Original project files remain intact. The current asset table, source links, dimensions, and repair boundary are in `src/assets/work/samsung-redesign/figma/PROVENANCE-2X.md`.

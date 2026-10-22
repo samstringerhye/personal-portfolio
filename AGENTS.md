@@ -9,6 +9,7 @@ Never: AI tell phrases — "delve," "nuanced," "holistic," "at its core," "it's 
 
 Case study structure: Problem → constraint → decision → outcome. Lead with the outcome.
 Metrics: Include real ones or omit. Never fudge with "significantly improved."
+Outcomes: Only verified user or business KPIs belong in outcome sections or bars. Include the source, timeframe, baseline or comparator, and attribution limits. Scope, deliverable counts, launch dates, handoffs, rollout scale, component changes, and design features are not outcomes. Keep those facts in scope, process, or solution sections. If verified KPIs are unavailable, omit the outcomes section entirely. Do not substitute a "Design outcomes" bar.
 
 When writing copy, read it back as if you're a skeptical creative director who's seen 500 portfolios.
 

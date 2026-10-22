@@ -1,5 +1,9 @@
 # Samsung case-study review, 2026-10-22
 
+## Correction after Sam's outcome feedback
+
+The earlier editorial approval of the **Design outcomes** bar was incorrect. Category recognition cues, on-page configuration, and reusable patterns describe design decisions and deliverables, not measured KPIs. Removed that bar. No verified post-launch user or business KPI currently supports an outcomes section. The earlier review below records the previous state and does not establish outcome validity.
+
 ## Editorial review
 
 Reviewed the complete case-study copy against prior feedback. The summary identifies Sam's design contribution and wider team context. Navigation discusses recognition and hierarchy; templates explain the developer-identified backend constraint; components explain the shared pattern work. The outcome bar says **Design outcomes**, with no unsupported performance numbers. The closing now connects shared patterns with product and technical constraints instead of repeating the project scope.

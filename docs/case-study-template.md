@@ -17,7 +17,7 @@ Every substantive narrative block needs relevant supporting imagery. Pair paragr
 
 Make the supporting image visually legible at a glance. Prefer actual screens, enlarged components, state comparisons, and composed visual details over specification tables or screenshots of documentation. An image full of text still makes the reader read. Keep technical reference material out of the main visual narrative unless its content is the point.
 
-End with the last visual evidence section, an outcomes bar, and one final statement. Use verified numbers and results when available. If the record supports only visible design changes, label the bar **Design outcomes** and describe those changes precisely. Do not present deliverable counts, handoff dates, or rollout scale as performance metrics. Do not invent numbers to fill the bar.
+End with the last visual evidence section and one final statement. Include an outcomes bar only when verified user or business KPIs exist, with a source, timeframe, baseline or comparator, and attribution limits. Omit the outcomes section when that evidence is unavailable. Do not substitute a **Design outcomes** bar. Deliverable counts, page/template counts, launch dates, handoffs, rollout scale, component changes, and design features belong in scope, process, or solution sections; they are not outcomes.
 
 ## Shared spacing system
 

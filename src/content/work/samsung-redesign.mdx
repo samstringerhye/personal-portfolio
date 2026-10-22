@@ -27,7 +27,6 @@ import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
-import Metrics from '../../components/Metrics.astro'
 import buttonFamily from '../../assets/work/samsung-redesign/figma/button-family-visual-2x.png'
 import navDesktop from '../../assets/work/samsung-redesign/figma/nav-portfolio-desktop-2x.png'
 import navAppliances from '../../assets/work/samsung-redesign/figma/nav-variant-appliances-2x.png'
@@ -60,16 +59,6 @@ import productDetail from '../../assets/work/samsung-redesign/figma/pdp-portfoli
 <Gallery title="Building the components as well as the pages" note="I built reusable buttons, cards, navigation items, and controls alongside the page designs, and organized their shared type and color styles in the design-system file.">
   <Panel kind="page" ratio="1200 / 760" tint="#FFFFFF" format="png" src={buttonFamily} alt="Visual arrangement of six Samsung button variants: blue and black filled buttons, an outlined button, icon links, and an underlined text button" caption="Button variants from the shared Samsung library, arranged in Figma for this case study. My component work formed part of the wider team’s library." />
 </Gallery>
-
-<ProseGroup>
-## Design outcomes
-
-<Metrics variant="summary" items={[
-  { value: 'Category recognition', label: 'Product imagery paired with category labels in the navigation.' },
-  { value: 'On-page configuration', label: 'Buying options incorporated into the product page to meet the backend requirement.' },
-  { value: 'Reusable patterns', label: 'Page designs backed by shared components, type styles, and color styles.' },
-]} />
-</ProseGroup>
 
 <ProseGroup>
 ## Shared patterns, specific constraints
