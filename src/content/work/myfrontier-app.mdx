@@ -51,11 +51,11 @@ import addPaymentMethod from '../../assets/work/myfrontier-app/figma/add-payment
   <Panel kind="screens" format="png" span="full" className="panel--frontier panel--frontier-comparison" screens={[
     { src: oldDashboard, alt: 'Before: original Frontier app Home with network status and account tools' },
     { src: dashboard, alt: 'After: redesigned Frontier app Home with a personalized greeting and payment summary' },
-  ]} caption="Home before (left) and after (right): from network status to a balance and payment action." />
+  ]} caption="Original and redesigned Home: from network status to a balance and payment action." />
 </Gallery>
 
 <Gallery title="Billing, support, and appointment scheduling" note="The redesign launched in November 2022. Billing shows the balance, payment action and Auto Pay options. Support groups help topics and service orders, with date and time selection for appointments.">
-  <div class="gallery-row" style="--gallery-columns: 2; --gallery-item-min: 24rem" role="region" aria-label="Two screen comparisons, scroll horizontally on smaller screens" tabindex="0">
+  <div class="gallery-row" style="--gallery-columns: 2; --gallery-item-min: 24rem" role="region" aria-label="Two screen comparisons">
   <Panel kind="screens" format="png" className="panel--frontier" span="half" screens={[
     { src: dashboard, alt: 'MyFrontier home dashboard with service status, account overview and a bill summary' },
     { src: billingZero, alt: 'My billing: a $480.88 credit balance, Auto Pay enrollment and Make a payment action' },
@@ -63,7 +63,7 @@ import addPaymentMethod from '../../assets/work/myfrontier-app/figma/add-payment
   <Panel kind="screens" format="png" className="panel--frontier" span="half" screens={[
     { src: supportLanding, alt: 'Support landing page with help topics, service order status and contact options' },
     { src: scheduleAppointment, alt: 'Schedule appointment: choose a date and time range before continuing' },
-  ]} caption="Support topics and open tickets (left); appointment date and time selection (right)." />
+  ]} caption="Support topics and open tickets, followed by appointment date and time selection." />
   </div>
 </Gallery>
 <Gallery title="Account settings and payment methods" note={["Beta feedback exposed a missing path: adding a first payment method. These screens show account settings and the choice between a card and a bank account.", "We also explored moving all payment-method controls into Manage Billing. That change affected other payment paths; I don’t have confirmation that it shipped."]}>

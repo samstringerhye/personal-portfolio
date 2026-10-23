@@ -12,7 +12,7 @@ const steps = [
 ---
 
 <figure class="bespoke-flow">
-  <ol class="bf-steps" aria-label="Configuration steps, scroll horizontally on smaller screens" tabindex="0">
+  <ol class="bf-steps" aria-label="Configuration steps">
     {steps.map((step, i) => (
       <li class="bf-step">
         <div class="bf-heading"><span aria-hidden="true">0{i + 1}</span><h3>{step.name}</h3></div>
@@ -33,8 +33,8 @@ const steps = [
   /* Show the actual controls, cropping the placeholder kitchen above them. */
   .bf-screen { aspect-ratio: 360 / 426; overflow: hidden; border-radius: var(--cs-frame-radius); background: #fff; }
   .bf-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
-  @media (max-width: 40rem) {
-    .bf-steps { gap: 28px; }
+  @media (max-width: 48rem) {
+    .bf-steps { grid-template-columns: minmax(0, 1fr); overflow: visible; gap: 28px; }
     .bf-step p { min-height: 0; }
     .bf-screen { max-width: 360px; margin-inline: auto; }
   }

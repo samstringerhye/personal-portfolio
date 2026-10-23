@@ -1468,7 +1468,7 @@ html.ek .gallery-grid {
   gap: var(--cs-block-gap);
 }
 
-/* Related examples stay in one row; narrow viewports scroll within the group. */
+/* Related examples share a desktop row and stack at the mobile breakpoint. */
 html.ek .case-study-body .gallery-row {
   grid-column: 1 / -1;
   display: grid;
@@ -1941,22 +1941,57 @@ html.ek .case-study-body .wab-ingredient-panel img {
   margin-inline: auto;
 }
 
-/* Keep phone comparisons together, scrolling within their gallery on narrow screens. */
+/* Stack every comparison at phone widths, including nested pairs and Whataburger screens. */
 @media (max-width: 768px) {
+  html.ek .case-study-body .gallery-row,
   html.ek .gallery-grid:has(> .wab-unframed) {
-    grid-template-columns: repeat(2, minmax(14rem, 17.5rem));
-    justify-content: safe center;
-    overflow-x: auto;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
   }
 
   html.ek .case-study-body .gallery-grid > .wab-unframed {
-    grid-column: auto;
+    grid-column: 1 / -1;
+    width: min(100%, 20rem);
+    justify-self: center;
   }
 
+  html.ek .case-study-body .panel-screens,
   html.ek .case-study-body .wab-flow-panel .panel-screens {
-    grid-template-columns: repeat(var(--n), minmax(14rem, 17.5rem));
-    justify-content: safe center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    overflow: visible;
+    padding: 0;
+    gap: var(--cs-block-gap);
   }
+
+  html.ek .case-study-body .panel-screen,
+  html.ek .case-study-body .panel--frontier .panel-screen {
+    width: min(100%, 20rem);
+    min-width: 0;
+  }
+}
+
+/* Long menu exports need phone-sized crops, not a square field around a narrow strip. */
+html.ek .case-study-body .panel--navigation .panel-field {
+  aspect-ratio: auto;
+  background: transparent;
+}
+
+html.ek .case-study-body .panel--navigation .panel-field::after {
+  display: none;
+}
+
+html.ek .case-study-body .panel--navigation .panel-screens {
+  --pad: 0px;
+  --gap: var(--cs-block-gap);
+}
+
+html.ek .case-study-body .panel--navigation .panel-screen {
+  width: min(100%, 20rem);
+  min-width: 0;
+  aspect-ratio: 375 / 812;
+  object-fit: cover;
 }
 
 /* Keep ingredient artwork at a readable scale by showing three items per mobile row. */

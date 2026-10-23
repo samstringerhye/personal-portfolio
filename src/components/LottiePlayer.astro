@@ -58,14 +58,22 @@ try {
   let observer: IntersectionObserver | null = null
   let preloadObserver: IntersectionObserver | null = null
   const tweens = new Set<any>()
+  const instances = new Set<any>()
+  let generation = 0
 
   function destroyLottie() {
+    generation += 1
     observer?.disconnect()
     observer = null
     preloadObserver?.disconnect()
     preloadObserver = null
     tweens.forEach(tween => tween.kill())
     tweens.clear()
+    instances.forEach(anim => anim.destroy())
+    instances.clear()
+    document.querySelectorAll<HTMLElement>('.lottie-player[data-initialized]').forEach(el => {
+      delete el.dataset.initialized
+    })
   }
 
   // The player and gsap load only once an animation nears the viewport
@@ -82,6 +90,7 @@ try {
   }
 
   async function startPlayer(el: HTMLElement, prefersReduced: boolean) {
+    const currentGeneration = generation
     let lottie: any
     let gsap: any
     try {
@@ -92,6 +101,7 @@ try {
       delete el.dataset.initialized
       return
     }
+    if (currentGeneration !== generation || !el.isConnected) return
     try {
       const animData = JSON.parse(el.dataset.animation!)
       const nativeLoop = el.dataset.nativeLoop === 'true'
@@ -102,25 +112,34 @@ try {
         autoplay: false,
         animationData: animData,
       })
-      if (!prefersReduced && nativeLoop) {
-        anim.play()
-      } else if (!prefersReduced && el.dataset.loop === 'true') {
-        const obj = { frame: 0 }
-        const tween = gsap.to(obj, {
-          frame: anim.totalFrames - 1,
-          duration: animations.lottie.loopDuration,
-          ease: 'power2.inOut',
-          repeat: -1,
-          yoyo: true,
-          repeatDelay: animations.lottie.loopRepeatDelay,
-          onUpdate: () => anim.goToAndStop(obj.frame, true),
-        })
-        tweens.add(tween)
-      } else if (!prefersReduced) {
-        anim.play()
-      } else {
-        anim.goToAndStop(nativeLoop ? Math.floor(anim.totalFrames / 2) : anim.totalFrames - 1, true)
+      instances.add(anim)
+      // Lottie completes JSON setup asynchronously. totalFrames is still zero immediately
+      // after loadAnimation, so creating the frame tween there targets frame -1.
+      const ready = () => {
+        anim.removeEventListener('DOMLoaded', ready)
+        if (currentGeneration !== generation || !el.isConnected) return
+        if (prefersReduced || el.dataset.autoplay !== 'true') {
+          anim.goToAndStop(Math.floor(anim.totalFrames / 2), true)
+        } else if (nativeLoop) {
+          anim.play()
+        } else if (el.dataset.loop === 'true') {
+          const obj = { frame: 0 }
+          const tween = gsap.to(obj, {
+            frame: anim.totalFrames - 1,
+            duration: animations.lottie.loopDuration,
+            ease: 'power2.inOut',
+            repeat: -1,
+            yoyo: true,
+            repeatDelay: animations.lottie.loopRepeatDelay,
+            onUpdate: () => anim.goToAndStop(obj.frame, true),
+          })
+          tweens.add(tween)
+        } else {
+          anim.play()
+        }
       }
+      if (anim.isLoaded) ready()
+      else anim.addEventListener('DOMLoaded', ready)
     } catch (e) {
       console.warn('LottiePlayer: Failed to init animation', e)
     }

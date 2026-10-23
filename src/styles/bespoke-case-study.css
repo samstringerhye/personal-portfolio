@@ -30,8 +30,25 @@ html.ek .case-study-body .bespoke-panel .panel-screen {
 }
 
 @media (max-width: 48rem) {
-  html.ek .case-study-body .bespoke-panel.panel--screens:not(.panel--half) .panel-field {
-    aspect-ratio: 1 / 1;
+  /* A single full-width screen stays readable without extra space around a tiny device. */
+  html.ek .case-study-body .bespoke-panel.panel--screens .panel-field {
+    aspect-ratio: auto;
+    background: transparent;
+  }
+  html.ek .case-study-body .bespoke-panel.panel--screens .panel-field::after {
+    display: none;
+  }
+  html.ek .case-study-body .bespoke-panel .panel-screens {
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    padding: 0;
+  }
+  html.ek .case-study-body .bespoke-panel .panel-screen {
+    width: min(100%, 20rem);
+    height: auto;
+    max-width: 100%;
   }
 }
 

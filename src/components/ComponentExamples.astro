@@ -12,7 +12,7 @@ interface Props {
 const { examples, columns = 4, layout = 'equal' } = Astro.props
 ---
 
-<div role="region" aria-label="Component examples, scroll horizontally on smaller screens" tabindex="0" class:list={['component-examples', columns === 2 && 'component-examples--pair', layout === 'section' && 'component-examples--section']}>
+<div role="region" aria-label="Component examples" class:list={['component-examples', columns === 2 && 'component-examples--pair', layout === 'section' && 'component-examples--section']}>
   {examples.map(({ image, label, alt }) => (
     <figure class="component-example">
       <Image src={image} format="png" alt={alt} loading="lazy" style={`--source-width: ${image.width / 2}px`} />
@@ -73,9 +73,12 @@ const { examples, columns = 4, layout = 'equal' } = Astro.props
     }
   }
 
-  @container (max-width: 34rem) {
-    .component-examples--pair {
+  @media (max-width: 768px) {
+    .component-examples {
+      grid-template-columns: minmax(0, 1fr);
+      overflow: visible;
       gap: var(--space-5);
+      padding: var(--space-4);
     }
   }
 </style>
