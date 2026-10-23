@@ -1529,7 +1529,7 @@ html.ek .panel .panel-field::after {
 }
 
 /* Surface edges share one faint stroke. Inset outlines preserve layout and existing shadows. */
-html.ek :is(.case-study-cta-content, .home-contact, .off-hours-cell, .about-page .skill-cell),
+html.ek :is(.case-study-cta-content, .off-hours-cell, .about-page .skill-cell),
 html.ek .case-study-body :is(.stat-callout, .lottie-grid, .decision-stepper, .image-pair-media),
 html.ek .case-study-body .cs-figure > :not(figcaption, section, .device-phone, .hero-phone-scroll, .lottie-grid, .amica-buttons),
 html.ek .case-study-body .image-pair:not(.image-pair--captioned) > .image-pair-cell,
