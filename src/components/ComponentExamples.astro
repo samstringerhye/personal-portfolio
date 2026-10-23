@@ -12,7 +12,7 @@ interface Props {
 const { examples, columns = 4, layout = 'equal' } = Astro.props
 ---
 
-<div class:list={['component-examples', columns === 2 && 'component-examples--pair', layout === 'section' && 'component-examples--section']}>
+<div role="region" aria-label="Component examples, scroll horizontally on smaller screens" tabindex="0" class:list={['component-examples', columns === 2 && 'component-examples--pair', layout === 'section' && 'component-examples--section']}>
   {examples.map(({ image, label, alt }) => (
     <figure class="component-example">
       <Image src={image} format="png" alt={alt} loading="lazy" style={`--source-width: ${image.width / 2}px`} />
@@ -26,17 +26,18 @@ const { examples, columns = 4, layout = 'equal' } = Astro.props
     /* Export boards keep a light surface in both site themes. */
     --ek-ink-body: #34475C;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(10rem, 1fr));
+    overflow-x: auto;
     gap: var(--space-4);
     padding: var(--space-5);
   }
 
   .component-examples--pair {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(15rem, 1fr));
   }
 
   .component-examples--section {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    grid-template-columns: minmax(24rem, 3fr) minmax(10rem, 1fr);
     align-items: center;
   }
 
@@ -44,7 +45,7 @@ const { examples, columns = 4, layout = 'equal' } = Astro.props
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--cs-caption-gap);
     min-width: 0;
     margin: 0;
   }
@@ -54,18 +55,19 @@ const { examples, columns = 4, layout = 'equal' } = Astro.props
     width: min(100%, var(--source-width));
     height: auto;
     margin: 0;
+    border-radius: var(--cs-frame-radius);
   }
 
   .component-example figcaption {
     margin: 0;
-    font-size: var(--text-75);
+    font-size: 14px;
+    line-height: 1.5;
     color: var(--ek-ink-body);
     text-align: center;
   }
 
   @container (max-width: 40rem) {
     .component-examples {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--space-3);
       padding: var(--space-4);
     }
@@ -73,7 +75,6 @@ const { examples, columns = 4, layout = 'equal' } = Astro.props
 
   @container (max-width: 34rem) {
     .component-examples--pair {
-      grid-template-columns: minmax(0, 1fr);
       gap: var(--space-5);
     }
   }

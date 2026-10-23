@@ -2,7 +2,8 @@
 title: "Samsung Bespoke Appliance Configurator"
 client: "Samsung"
 year: 2024
-role: "Associate Design Director"
+yearLabel: "2021–2024"
+role: "Lead designer"
 agency: "Razorfish"
 tagline: "An appliance configurator for Bespoke kitchens and refrigerators."
 thumbnail: "../../assets/work/bespoke-design-studio/bespoke-design-studio-thumbnail-32.jpeg"
@@ -26,54 +27,92 @@ tags: ["Design System", "E-commerce", "Interactive", "Motion Design"]
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import yellowDesktop from '../../assets/work/bespoke-design-studio/figma/yellow-desktop.webp'
-import yellowMobile from '../../assets/work/bespoke-design-studio/figma/yellow-mobile.webp'
-import configMobile from '../../assets/work/bespoke-design-studio/figma/config-mobile.webp'
-import selections from '../../assets/work/bespoke-design-studio/figma/selections.webp'
-import fridgeCloseup from '../../assets/work/bespoke-design-studio/figma/fridge-closeup.webp'
-import kitchenRender from '../../assets/work/bespoke-design-studio/figma/kitchen-render.webp'
-import panelDesktop from '../../assets/work/bespoke-design-studio/figma/panel-desktop.webp'
-import panelMobile from '../../assets/work/bespoke-design-studio/figma/panel-mobile.webp'
-import builtDesktop from '../../assets/work/bespoke-design-studio/figma/built-desktop.webp'
-import builtSummaryMobile from '../../assets/work/bespoke-design-studio/figma/built-summary-mobile.webp'
-import kvMobile from '../../assets/work/bespoke-design-studio/figma/kv-mobile.webp'
+import ProseGroup from '../../components/ProseGroup.astro'
+import Metrics from '../../components/Metrics.astro'
+import '../../styles/bespoke-case-study.css'
+import yellowDesktop from '../../assets/work/bespoke-design-studio/figma-fresh/yellow-desktop-2x.png'
+import yellowMobile from '../../assets/work/bespoke-design-studio/figma-fresh/yellow-mobile-2x.png'
+import configMobile from '../../assets/work/bespoke-design-studio/figma-fresh/config-mobile-2x.png'
+import BespokeOptions from '../../components/BespokeOptions.astro'
+import BespokeOptionFlow from '../../components/BespokeOptionFlow.astro'
+import BespokeNavigation from '../../components/BespokeNavigation.astro'
+import fridgeCloseup from '../../assets/work/bespoke-design-studio/figma-fresh/fridge-closeup-2x.png'
+import kitchenRender from '../../assets/work/bespoke-design-studio/figma-fresh/kitchen-render-2x.png'
+import panelMobile from '../../assets/work/bespoke-design-studio/figma-fresh/panel-mobile-2x.png'
+import fridgeSummary from '../../assets/work/bespoke-design-studio/figma-fresh/fridge-summary-2024-2x.jpg'
 
 <Story
   client="Samsung"
-  role="Associate Design Director"
+  role="Lead designer"
   agency="Razorfish"
-  year={2024}
-  made={['Configurator UX and UI', 'Kitchen simulator', 'Motion']}
-  outcome="A shipped configurator that guides a complex appliance purchase through one manageable choice at a time."
-  problem="A Bespoke fridge means a model, a size and a color for each of four door panels. The challenge was to make those decisions clear without putting every option on one screen."
-  decision="Stage the purchase like a sales conversation: choose the product, then its model and depth, then finish each door panel."
-  did="I led the configurator's UX and UI. I ordered the decisions the way a salesperson would: products, model, depth, then colors, one door panel at a time."
+  year="2021–2024"
+  made={['Configurator UX and UI', 'Refrigerator and kitchen experiences', 'Navigation and interaction design']}
+  outcome="Bespoke Design Studio lets shoppers choose appliance models, mix door finishes, and see their choices together in a kitchen. I led the interface design as the experience grew from a refrigerator configurator into a full kitchen planning tool."
+  problem="The project began during COVID, when shoppers couldn’t easily visit stores. Bespoke refrigerators had interchangeable door panels, making color and finish central to the purchase. The simulator needed to help people judge those choices without standing in front of the product."
+  decision="Keep the product visible while people configure it. As the studio expanded to other appliances, combine a guided first pass with ways to revisit choices without starting over."
+  did="I was the primary designer and made the core interface decisions, with support from other designers and collaboration across UX, creative, project management, and development. I started as a Senior Designer and continued the work as an Associate Design Director."
 />
 
-<Gallery title="The configurator">
-  <Panel kind="page" ratio="5 / 3" src={yellowDesktop} alt="A sunrise-yellow Bespoke fridge in a white kitchen, the finish swatches beside it" caption="A kitchen scene shows each finish change in context." />
-  <Panel kind="screens" screens={[
-    { src: configMobile, alt: 'Choose your kitchen configuration: seven appliance tiles' },
-    { src: yellowMobile, alt: 'The same yellow fridge on a phone, with Save' },
-  ]} caption="The phone version keeps the kitchen and its choices in view." />
-</Gallery>
-<Gallery title="The choices" note="Seven appliances, each with its own steps, and twelve finishes for every door panel. Shown all at once, that is thousands of combinations on one screen.">
-  <Panel kind="piece" ratio="16 / 9" tint="#F7F7F7" src={selections} alt="Selections: refrigerator, range, cooktop, wall oven, dishwasher, microwave and range hood, each with its steps" caption="Seven appliance types each introduce their own decisions." />
-  <Panel kind="bleed" ratio="16 / 9" src={kitchenRender} alt="A charcoal kitchen render with a white Bespoke fridge" caption="The kitchen render makes a single appliance feel part of the whole room." />
-</Gallery>
-
-<Gallery title="One decision at a time" note="I staged the choices: model, then depth, then color, one door panel at a time. Each step opens only once the last is settled, and the steps stay in view so nobody gets lost.">
-  <Panel kind="page" ratio="5 / 3" src={panelDesktop} alt="Model, Depth and Color tabs, one door turned yellow, and a hint to click a panel" caption="The desktop flow stages model, depth and color in that order." />
-  <Panel kind="screens" span="half" screens={[
-    { src: panelMobile, alt: 'On a phone: one panel outlined, four swatches for it' },
-  ]} caption="On mobile, the selected panel stays obvious while its options remain close." />
-  <Panel kind="bleed" span="half" src={fridgeCloseup} alt="The yellow fridge with one door panel outlined" caption="The outline ties a swatch choice to the exact door it changes." />
+<Gallery title="Kitchen preview and mobile controls" note={["The refrigerator simulator launched in March 2021, followed by the kitchen simulator that September. During refrigerator development, I challenged a depth-selection step that offered no visual feedback and questioned whether its step indicators added useful guidance.", "When the staging implementation dimmed the kitchen behind the color popup, I requested that it remain visible so shoppers could judge finishes against their surroundings. The creative team raised the same concern. The kitchen designs below carry that priority into a larger configuration flow."]}>
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images, scroll horizontally on smaller screens" tabindex="0">
+  <Panel className="bespoke-panel" kind="screens" span="half" screens={[
+    { src: configMobile, alt: '2024 mobile kitchen setup with appliance-category icons and a Back button' },
+  ]} caption="Appliance selection." />
+  <Panel className="bespoke-panel" kind="screens" span="half" screens={[
+    { src: yellowMobile, alt: 'August 2023 mobile color selection with the kitchen above the option tabs and swatches' },
+  ]} caption="Color selection." />
+  </div>
 </Gallery>
 
-<Gallery title="As built" note="The fridge simulator running in 2021, and the summary that turns a design into a cart line.">
-  <Panel kind="page" ratio="5 / 3" src={builtDesktop} alt="The built simulator: a navy and rose fridge in a styled kitchen" caption="The shipped simulator keeps the visual promise of the design work." />
-  <Panel kind="screens" span="half" screens={[
-    { src: builtSummaryMobile, alt: 'Your Bespoke design, $1,798.99, with Add to cart' },
-  ]} caption="The summary turns a configured appliance into a cart-ready selection." />
-  <Panel kind="bleed" span="half" src={kvMobile} alt="The launch key visual: a sky blue and grey Bespoke fridge in a pale kitchen" caption="The launch visual brings the configurator's color choices into the campaign." />
+<Gallery title="Appliance categories and configuration controls" note={["Adding ranges, microwaves, dishwashers, and other appliances introduced different models, options, and compatibility rules. I fixed the configuration panel’s position so controls stayed in a predictable place when people switched appliances.", "I made the interior selector a text button to clarify its purpose, moved step navigation out of the menu, and chose Back instead of Reset so people could revise a choice without discarding their work. Category tabs supported movement between appliances while option tabs held each product’s decisions."]}>
+  <BespokeOptions />
 </Gallery>
+
+<Gallery title="Configuration steps and compatibility rules" note={["We considered an open flow that let people move freely between options. I chose a stepped first pass because we felt it would make each appliance easier to complete. That was a design judgment, not a tested result. After completing the relevant choices, shoppers could return to revise them.", "The sequence still allowed broader kitchen editing: switch appliance categories, retain choices for unchanged products, and review, edit, or remove saved appliances. Shoppers could check out saved items without completing every appliance. Compatibility rules also mattered: a range and cooktop, or a microwave and range hood, could not occupy the same space."]}>
+  <BespokeOptionFlow />
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images, scroll horizontally on smaller screens" tabindex="0">
+  <Panel className="bespoke-panel" kind="screens" span="half" ratio="4 / 5" screens={[
+    { src: panelMobile, alt: 'August 2023 mobile color step with one refrigerator door selected above the swatches' },
+  ]} caption="Mobile color selection with the active refrigerator door above the finish swatches." />
+  <Panel className="bespoke-panel" kind="bleed" span="half" ratio="4 / 5" src={fridgeCloseup} alt="Kitchen visualization with the upper-right refrigerator door outlined in blue" caption="A blue outline marks the refrigerator door selected for a finish change." />
+  </div>
+</Gallery>
+
+<Gallery title="Saved designs and purchase review" note="I separated saving an appliance from reviewing it for purchase, so shoppers could keep building their kitchen before checking availability and adding products to the cart.">
+  <Panel className="bespoke-panel" kind="page" ratio="1440 / 1024" src={yellowDesktop} alt="August 2023 kitchen iteration with all refrigerator panels selected in yellow and Save enabled" caption="All refrigerator panels in yellow; Save enabled." />
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images, scroll horizontally on smaller screens" tabindex="0">
+  <Panel className="bespoke-panel" kind="screens" span="half" ratio="1 / 1" screens={[
+    { src: fridgeSummary, alt: 'Q2 2024 mobile Your Bespoke design summary with availability, placeholder prices, and Add to cart' },
+  ]} />
+  <Panel className="bespoke-panel bespoke-kitchen-crop" kind="bleed" span="half" ratio="1 / 1" src={kitchenRender} alt="2023 kitchen environment with a refrigerator, wall oven, cooktop, and range hood" caption="Kitchen preview with a refrigerator, wall oven, cooktop, and range hood." />
+  </div>
+</Gallery>
+
+<Gallery title="Proposed navigation changes" note="I proposed opening up the sequence after shoppers chose a model: move directly between depth and color, switch appliances without Next, and make off-screen tabs easier to discover.">
+  <BespokeNavigation />
+</Gallery>
+
+<ProseGroup>
+## Refrigerator and kitchen order rates
+
+Both experiences exceeded their order-rate benchmarks.
+</ProseGroup>
+
+<Metrics items={[
+  { value: '2.51%', label: 'Refrigerator order rate, compared with a 0.87% target' },
+  { value: '3.72%', label: 'Kitchen order rate, compared with a 0.82% benchmark' },
+]} />
+
+<ProseGroup>
+Source: Samsung Digital Appliances, Adobe Analytics, March 2022–February 2023. Order rate measures qualifying appliance orders per visit; both benchmarks use the earlier refrigerator experience from 2021.
+
+These results reflect the combined work of product, design, engineering, and marketing. They predate the later redesign and do not isolate my contribution.
+</ProseGroup>
+
+<ProseGroup>
+## Lessons from guided configuration
+
+Bespoke grew from helping shoppers customize one refrigerator to helping them configure a kitchen. I led the interface decisions across that expansion, balancing a guided first pass with the ability to revisit choices without starting over.
+
+The central trade-off changed as the experience grew: a sequence could help someone complete an appliance, but it could also get in the way of revising it. My later proposals kept the model choice first and opened the remaining options sooner, carrying that tension into the next iteration.
+</ProseGroup>

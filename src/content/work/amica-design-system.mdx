@@ -4,7 +4,7 @@ client: "Amica"
 year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "Design leadership and component decisions for Amica.com across AEM and React."
+tagline: "Leading component structure, responsive decisions, and design handoff across AEM and React."
 thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
 thumbnailLayers:
   subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
@@ -25,41 +25,46 @@ import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
 import ProseGroup from '../../components/ProseGroup.astro'
 import ComponentExamples from '../../components/ComponentExamples.astro'
-import cardDefault from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-default-2x.png'
-import cardActive from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-active-2x.png'
-import cardDisabled from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-disabled-2x.png'
-import cardError from '../../assets/work/amica-design-system/figma-fresh/aem-bundle-card-error-2x.png'
-import quoteDesktop from '../../assets/work/amica-design-system/figma-fresh/aem-quote-dropdown-desktop-library-2x.png'
-import quoteMobile from '../../assets/work/amica-design-system/figma-fresh/aem-quote-dropdown-mobile-library-2x.png'
-import bundleDesktop from '../../assets/work/amica-design-system/figma-fresh/product-bundle-hero-desktop-2x.png'
-import bundleMobile from '../../assets/work/amica-design-system/figma-fresh/product-bundle-hero-mobile-2x.png'
+import SystemHierarchy from '../../components/SystemHierarchy.astro'
+import cardDefault from '../../assets/work/amica-design-system/figma-fresh/aem-auto-card-default-transparent-2x.png'
+import cardActive from '../../assets/work/amica-design-system/figma-fresh/aem-auto-card-active-transparent-2x.png'
+import cardDisabled from '../../assets/work/amica-design-system/figma-fresh/aem-auto-card-disabled-transparent-2x.png'
+import cardError from '../../assets/work/amica-design-system/figma-fresh/aem-auto-card-error-transparent-2x.png'
+import quoteA from '../../assets/work/amica-design-system/figma-fresh/quote-option-a-transparent-2x.png'
+import quoteB from '../../assets/work/amica-design-system/figma-fresh/quote-option-b-transparent-2x.png'
+import quoteC from '../../assets/work/amica-design-system/figma-fresh/quote-option-c-enlarged-transparent-2x.png'
+import bundleDesktop from '../../assets/work/amica-design-system/figma-fresh/product-bundle-hero-refined-desktop-2x.png'
+import bundleMobile from '../../assets/work/amica-design-system/figma-fresh/product-bundle-hero-refined-mobile-2x.png'
+import foundationsArt from '../../assets/work/amica-design-system/figma-fresh/hierarchy-foundations-art-2x.png'
+import componentsArt from '../../assets/work/amica-design-system/figma-fresh/hierarchy-components-art-2x.png'
+import sectionsArt from '../../assets/work/amica-design-system/figma-fresh/hierarchy-sections-art-2x.png'
+import controls from '../../assets/work/amica-design-system/figma-fresh/button-input-properties-unclipped-2x.png'
+import controlsMobile from '../../assets/work/amica-design-system/figma-fresh/button-input-properties-unclipped-mobile-2x.png'
+import accordion from '../../assets/work/amica-design-system/figma-fresh/accordion-properties-2x.png'
+import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/accordion-properties-mobile-2x.png'
 
 <Story
   client="Amica"
   role="Associate Design Director"
   agency="Razorfish"
   year={2026}
-  made={['Design leadership', 'AEM and React system organization', 'Component and documentation direction']}
-  outcome="I led the design team and shaped the components, library structure, and handoff for Amica.com across AEM and React."
-  problem="The rebuild already had a component library, but teams needed a clearer structure for finding, reusing, documenting, and handing off patterns across AEM and React while delivery continued."
-  decision="I organized the system into Foundations, Components, and Sections, with templates kept separate. I also distinguished internal working files from published libraries, reference documentation, and client-facing material so each audience could find the right source."
-  did="I joined during active delivery as design lead. I set priorities, delegated component refinement and documentation, reviewed the work, and organized the files and libraries. My role covered system structure, component decisions, documentation, and review across the project."
+  made={['Design-team direction and review', 'Component architecture across AEM and React', 'Responsive refinement and handoff']}
+  outcome="I set the structure for Amica.com’s design system and led the team’s component, documentation, and handoff decisions during the rebuild."
+  problem="Amica.com’s rebuild brought a new brand direction into interfaces across AEM and React. The team already had brand foundations and a component library, but needed clearer rules for what belonged in a component, how larger sections reused it, and which files development should follow."
+  decision="I organized the system around Foundations, Components, and Sections, used properties to contain variations within component families, and separated work in progress from the material we shared for implementation."
+  did="I joined mid-project as design lead. I shaped the system structure and component decisions, delegated refinement and documentation, set review priorities, and guided responsive fixes. Collaborating designers developed and documented components; I directed that work and reviewed it across the system."
 />
 
-<ProseGroup>
-## One system, organized for two build stacks
+<Gallery title="Design system structure" note={["I developed the system’s structure while the team continued designing pages. Amica’s brand foundations and an existing component library gave us a starting point. I challenged categories such as Utility and Media & Content because they blurred the distinction between an individual component and a larger page section. I organized the library around Foundations, Components, and Sections, with templates showing how those parts came together.", "I refined that structure through the page work. In the Topic Hub, I updated the header components and separated them into a stack so the team could update each part more easily. When a treatment appeared across templates, I asked the team to make the change in the shared component. That kept page-level decisions connected to the library we were developing.", "Extending the system into React also meant mapping colors by purpose. A green used for a link needed an action token, even when a success color looked closer. We documented the source color, its shared value, and its intended role together so the mapping explained the decision as well as the appearance."]}>
+  <SystemHierarchy examples={[
+    { image: foundationsArt, label: 'Foundations', caption: 'Rhymes typography and brand colors.', alt: 'Amica Rhymes type sample and three Amica brand color swatches' },
+    { image: componentsArt, label: 'Components', caption: 'Auto and Home selection cards.', alt: 'Auto and Home selection cards from the Amica system' },
+    { image: sectionsArt, label: 'Sections', caption: 'Selection cards, ZIP entry, and a quote button.', alt: 'Product Bundle Hero combining selection cards, ZIP entry, and a quote action' },
+  ]} />
+</Gallery>
 
-The existing library gave the project a foundation. I organized it into Foundations for shared rules, Components for reusable interface patterns, and Sections for patterns combined into larger page structures. Templates stayed distinct so teams could assemble pages without confusing page composition with source components.
-
-I kept component names simple and used properties for type, size, state, layout, and media. That gave variations a place within each component family instead of turning every combination into another name to find.
-
-I separated working files, published libraries, reference documentation, and client-share materials. I intended that structure to help design, implementation, and client review find the right source. I set the direction, delegated focused component and documentation work, and kept ownership of system structure and cross-file consistency.
-
-The existing library and parallel AEM and React tracks shaped the approach. I clarified what the project already had and guided the parts that needed refinement for launch. The work extended an existing system rather than replacing it wholesale.
-</ProseGroup>
-
-<Gallery title="From card states to a reusable section" note="The Product Bundle Hero makes the hierarchy concrete. Its selection cards carry state and breakpoint properties; the larger section combines those cards with ZIP entry and a quote action.">
-  <Panel kind="slot" tint="#E5E5E5" caption="Default, active, disabled, and error selection cards from the AEM Component Library. Presentation arrangement of four unmodified Figma exports.">
+<Gallery title="Component properties and states" note={["Within a component family, I kept the name simple and used properties for type, size, state, layout, and media. The quote-flow audit showed why this mattered: products reused many of the same forms, but the AEM and React libraries differed in focus, processing, validation, and responsive states. Matching the default appearance covered only part of the work.", "I also moved repeated decisions into shared rules. Buttons and links had different hand-entered values for disabled opacity. I tied them to the Core UI Kit’s disabled token so they inherited the same rule. Future changes could then start at that shared value."]}>
+  <Panel kind="slot">
     <ComponentExamples examples={[
       { image: cardDefault, label: 'Default', alt: 'Default insurance selection card with an empty checkbox' },
       { image: cardActive, label: 'Active', alt: 'Active insurance selection card with a filled green checkbox and check mark' },
@@ -67,35 +72,47 @@ The existing library and parallel AEM and React tracks shaped the approach. I cl
       { image: cardError, label: 'Error', alt: 'Insurance selection card with a red error outline' },
     ]} />
   </Panel>
-  <Panel kind="slot" tint="#E5E5E5" caption="Desktop and mobile Product Bundle Hero views from the AEM System Documentation. The same selection cards combine with ZIP entry and the quote action; placeholder copy remains in the source.">
+  <Panel kind="slot" caption="Buttons and ZIP inputs.">
+    <picture>
+      <source media="(max-width: 767px)" srcset={controlsMobile.src} width={controlsMobile.width} height={controlsMobile.height} />
+      <img class="case-study-image" src={controls.src} width={controls.width} height={controls.height} loading="lazy" decoding="async" alt="Amica primary and secondary buttons in default, focused, and disabled states, followed by ZIP inputs in default, filled, and error states" style={`display: block; width: min(100%, ${controls.width / 2}px); height: auto; margin-inline: auto;`} />
+    </picture>
+  </Panel>
+  <Panel kind="slot" caption="Collapsed and expanded accordion states.">
+    <picture>
+      <source media="(max-width: 767px)" srcset={accordionMobile.src} width={accordionMobile.width} height={accordionMobile.height} />
+      <img class="case-study-image" src={accordion.src} width={accordion.width} height={accordion.height} loading="lazy" decoding="async" alt="Amica accordion in collapsed and expanded states, with a home-insurance coverage question, plus and minus toggles, and the expanded content area" style={`display: block; width: min(100%, ${accordion.width / 2}px); height: auto; margin-inline: auto;`} />
+    </picture>
+  </Panel>
+</Gallery>
+
+<Gallery title="Documentation and developer handoff" note={["I separated published libraries, reference documentation, internal working files, and client-facing material. I directed the team to move finished work into the client share and made that the development reference. That distinction mattered while component refinement and page delivery continued together.", "I organized the work into component refinement, migration and connection, documentation, and review. Collaborating designers owned focused parts of that work; I set priorities and reviewed how the pieces came together.", "The documentation needed the same discipline as the components. Copied specification text could name a valid token that the component did not actually use. We generated those specifications from the component’s bindings, then checked the assembled page examples visually for clipped labels, missing content, and responsive behavior. The library, its documentation, and the pages all needed to agree."]}>
+  <Panel kind="slot" caption="Product Bundle Hero.">
     <ComponentExamples columns={2} layout="section" examples={[
-      { image: bundleDesktop, label: 'Desktop section', alt: 'Desktop Product Bundle Hero with five insurance choices, ZIP field, and inline quote action' },
-      { image: bundleMobile, label: 'Mobile section', alt: 'Mobile Product Bundle Hero with five insurance choices arranged in two rows above the ZIP field and quote action' },
+      { image: bundleDesktop, label: 'Desktop · Populated example', alt: 'Desktop Product Bundle Hero presentation with distinct Auto, Home, Renters, Condo, and Life illustrations and labels above ZIP entry and a quote action' },
+      { image: bundleMobile, label: 'Mobile · Populated example', alt: 'Mobile Product Bundle Hero presentation with Auto, Home, Renters, Condo, and Life selection cards arranged in two rows above ZIP entry and a quote action' },
     ]} />
   </Panel>
 </Gallery>
 
-<ProseGroup>
-## A quote-start choice shaped around the constraint
-
-In a separate product-dropdown exploration, the “Wedding & Event” label clipped in the menu. I presented three options. Amica selected the option that widened the dropdown and narrowed the ZIP field, keeping the quote action inline. The team also confirmed that this layout should hold through the 1024px breakpoint rather than introduce another breakpoint. Amica approved the direction, and this was the option that shipped.
-
-The choice balanced two visible needs in the same row: show the full product label and keep the quote action beside the ZIP field. I used the menu width to solve the clipped label, then gave up some width in the ZIP input to preserve that inline action. The documented breakpoint decision kept the team from solving the same layout with an extra responsive rule.
-
-Amica’s in-house team took ownership of the broader Quote Start redesign. Our agency scope covered the visual reskin, not a functional redesign of the quote flow. I led the visual refinement of quote entry; I did not redesign the larger flow.
-</ProseGroup>
-
-<Gallery title="Other quote-entry layouts in the library" note="Separate quote-entry variants show the other layout patterns in the AEM library: paired fields on desktop and stacked fields on mobile, both above a full-width CTA. These examples sit alongside the approved inline-action exploration described above.">
-  <Panel kind="slot" tint="#E5E5E5" caption="Quote-entry blocks from the AEM Component Library. Presentation arrangement of unmodified exports, with the original desktop and mobile variant labels preserved.">
+<Gallery title="Quote form layout options" note={["In the product-dropdown exploration, the Wedding & Event label clipped. I presented the existing layout as Option A, a wider-field layout with the action underneath as Option B, and a wider dropdown with a narrower ZIP field and inline action as Option C. Amica selected C. I traded space between the inputs so the full product name could fit while the quote action stayed beside them.", "The team confirmed that the arrangement should hold through 1024px. That kept the solution within the agreed responsive behavior instead of adding a breakpoint for this layout. Amica approved the direction, and the selected option shipped.", "I led this refinement within the agency’s visual-reskin scope. Amica’s in-house team owned the broader Quote Start redesign."]}>
+  <Panel kind="slot">
     <ComponentExamples columns={2} examples={[
-      { image: quoteDesktop, label: 'Desktop · Dropdown (Old)', alt: 'Desktop quote-entry library variant with insurance selection and ZIP fields side by side above a full-width quote button' },
-      { image: quoteMobile, label: 'Mobile · Dropdown (Updated)', alt: 'Mobile quote-entry library variant with product selection, ZIP entry, and quote button stacked vertically' },
+      { image: quoteA, label: 'A · Existing layout', alt: 'Original quote-start card with Wedding & Event truncated to Wedding & Ev... and the Get a quote action inline with ZIP entry' },
+      { image: quoteB, label: 'B · Wider fields, action below', alt: 'Quote-start alternative with Wedding & Event visible in full, a wider ZIP field, and a full-width Get a quote action underneath' },
     ]} />
+  </Panel>
+  <Panel kind="slot" caption="C · Selected layout.">
+    <div style="padding: clamp(16px, 3vw, 32px)">
+      <img class="case-study-image" src={quoteC.src} width={quoteC.width} height={quoteC.height} loading="lazy" decoding="async" alt="Approved Option C quote-start card with the full Wedding & Event label, narrower ZIP entry, and Get a quote action on the same row" style={`display: block; width: min(100%, ${quoteC.width / 2}px); height: auto; margin-inline: auto;`} />
+    </div>
   </Panel>
 </Gallery>
 
 <ProseGroup>
-## Start with the system
+## Lessons from component reuse and handoff
 
-Next time, I would establish the shared rules, component structure, and handoff model at kickoff. Leading this work during delivery showed me how much depends on giving the team a common foundation before page work starts.
+Amica launched on October 2, 2026.
+
+On the next project, I would agree the component structure, shared rules, and development reference at kickoff. I would also bring representative pages into review earlier, with realistic content, narrow layouts, and interaction states. Those examples expose what an isolated component can miss. Amica taught me to treat reuse and handoff as ongoing design work, with every shared change checked where the team actually uses it.
 </ProseGroup>

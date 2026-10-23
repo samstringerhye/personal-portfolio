@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets'
+import clementine from '../assets/work/bespoke-design-studio/figma-fresh/fridge-clementine.webp'
+import blue from '../assets/work/bespoke-design-studio/figma-fresh/fridge-blue.webp'
+import pink from '../assets/work/bespoke-design-studio/figma-fresh/fridge-pink.webp'
+import yellow from '../assets/work/bespoke-design-studio/figma-fresh/fridge-yellow.webp'
+import green from '../assets/work/bespoke-design-studio/figma-fresh/fridge-green.webp'
+import range from '../assets/work/bespoke-design-studio/figma-fresh/range-navy.webp'
+import cooktop from '../assets/work/bespoke-design-studio/figma-fresh/appliance-cooktop.webp'
+import oven from '../assets/work/bespoke-design-studio/figma-fresh/appliance-oven.webp'
+import dishwasher from '../assets/work/bespoke-design-studio/figma-fresh/dishwasher-navy.webp'
+import microwave from '../assets/work/bespoke-design-studio/figma-fresh/appliance-microwave.webp'
+import hood from '../assets/work/bespoke-design-studio/figma-fresh/appliance-hood.webp'
+
+// A portfolio arrangement of the source selection map and original product artwork.
+const finishes = [
+  { name: 'Clementine Glass', image: clementine, color: '#e68252' },
+  { name: 'Morning Blue Glass', image: blue, color: '#afc4c5' },
+  { name: 'Pink Glass', image: pink, color: '#f5dfe1' },
+  { name: 'Sunrise Yellow Glass', image: yellow, color: '#ffbe58' },
+  { name: 'Emerald Green Steel', image: green, color: '#1b4f45' },
+]
+const appliances = [
+  { name: 'Refrigerator', image: clementine, choices: ['Model', 'Depth', 'Colors'] },
+  { name: 'Range', image: range, choices: ['Fuel type', 'Model', 'Colors'] },
+  { name: 'Cooktop', image: cooktop, choices: ['Model', 'Size', 'Colors'] },
+  { name: 'Wall oven', image: oven, choices: ['Model', 'Colors'] },
+  { name: 'Dishwasher', image: dishwasher, choices: ['Model', 'Colors'] },
+  { name: 'Microwave', image: microwave, choices: ['Model', 'Colors'] },
+  { name: 'Range hood', image: hood, choices: ['Model', 'Size', 'Colors'] },
+]
+---
+
+<figure class="bespoke-options" data-bespoke-finishes>
+  <div class="bo-grid">
+    {appliances.map(({ name, image, choices }, i) => (
+      <div class:list={['bo-tile', i === 0 && 'bo-tile--fridge']}>
+        <div class="bo-heading">
+          <h3>{name}</h3>
+          <ul aria-label={`${name} options`}>
+            {choices.map(choice => <li>{choice}</li>)}
+          </ul>
+        </div>
+        <div class="bo-art">
+          {i === 0 ? finishes.map((finish, index) => (
+            <Image src={finish.image} alt={`Refrigerator in ${finish.name}`} width={264} loading="lazy" data-finish-image={index} hidden={index !== 0} />
+          )) : <Image src={image} alt={i === 1 || i === 4 ? `${name} in Navy Steel` : ''} width={450} loading="lazy" />}
+        </div>
+        {i === 0 && <div class="bo-finish-picker">
+          <div class="bo-swatches" role="group" aria-label="Refrigerator finishes">
+            {finishes.map((finish, index) => (
+              <button type="button" class="bo-swatch" style={`--finish: ${finish.color}`} aria-label={finish.name} aria-pressed={index === 0 ? 'true' : 'false'} data-finish={index} title={finish.name}><span></span></button>
+            ))}
+          </div>
+          <p class="bo-finish-name" aria-live="polite">Clementine Glass</p>
+        </div>}
+        {(i === 1 || i === 4) && <p class="bo-finish-label">Navy Steel</p>}
+      </div>
+    ))}
+  </div>
+</figure>
+
+<style>
+  .bespoke-options { grid-column: 1 / -1; margin: 0; min-width: 0; }
+  .bo-grid { display: grid; grid-template-columns: 1.25fr repeat(3, 1fr); gap: 12px; }
+  .bo-tile { display: flex; flex-direction: column; min-width: 0; padding: clamp(16px, 2.2vw, 32px); background: #fff; color: #102340; border-radius: var(--cs-frame-radius); }
+  .bo-tile--fridge { grid-row: span 2; background: #fff; }
+  .bo-tile:nth-child(2), .bo-tile:nth-child(7) { background: #fff; }
+  .bo-heading h3 { margin: 0 0 8px; font-family: var(--font-sans); font-size: clamp(16px, 1.65vw, 24px); font-weight: 500; line-height: 1.2; }
+  .bo-heading ul { display: flex; flex-wrap: wrap; gap: 2px 10px; list-style: none; padding: 0; margin: 0; font-size: 12px; line-height: 1.5; }
+  .bo-heading li + li::before { content: '·'; margin-right: 10px; }
+  .bo-art { display: grid; place-items: center; flex: 1; min-height: 0; padding-top: 24px; }
+  .bo-art img { display: block; width: 100%; height: clamp(110px, 13vw, 190px); object-fit: contain; mix-blend-mode: multiply; }
+  .bo-tile--fridge .bo-art img { height: clamp(290px, 32vw, 460px); }
+  .bo-art img[hidden] { display: none; }
+  .bo-finish-picker { padding-top: 24px; }
+  .bo-swatches { display: flex; flex-wrap: wrap; gap: 4px; }
+  .bo-swatch { display: grid; place-items: center; width: 40px; height: 40px; padding: 5px; border: 1px solid transparent; border-radius: 50%; background: transparent; cursor: pointer; }
+  .bo-swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--finish); box-shadow: inset 0 0 0 1px rgb(16 35 64 / 12%); }
+  .bo-swatch[aria-pressed='true'] { border-color: #102340; }
+  .bo-swatch:focus-visible { outline: 2px solid #1769d2; outline-offset: 3px; }
+  .bo-finish-name, .bo-finish-label { margin: 8px 0 0; font-size: 12px; line-height: 1.5; }
+  .bo-finish-label { text-align: center; color: #465267; }
+  @media (max-width: 40rem) {
+    .bo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .bo-tile--fridge { grid-column: 1 / -1; grid-row: auto; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 16px; }
+    .bo-tile--fridge .bo-heading { flex: 1; }
+    .bo-tile--fridge .bo-art { grid-column: 2; grid-row: 1 / 3; padding-top: 0; }
+    .bo-finish-picker { grid-column: 1; padding-top: 0; }
+    .bo-swatch { width: 36px; height: 36px; }
+    .bo-tile--fridge .bo-art img { height: 250px; }
+    .bo-art img { height: 140px; }
+    .bo-heading ul { gap: 2px 6px; }
+    .bo-heading li + li::before { margin-right: 6px; }
+  }
+</style>
+
+<script>
+  function initBespokeFinishes() {
+    document.querySelectorAll<HTMLElement>('[data-bespoke-finishes]').forEach(root => {
+      if (root.dataset.finishesBound) return
+      root.dataset.finishesBound = 'true'
+      const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-finish]')]
+      const images = [...root.querySelectorAll<HTMLImageElement>('[data-finish-image]')]
+      const label = root.querySelector<HTMLElement>('.bo-finish-name')
+      buttons.forEach((button, index) => button.addEventListener('click', () => {
+        buttons.forEach((item, i) => item.setAttribute('aria-pressed', String(i === index)))
+        images.forEach((image, i) => { image.hidden = i !== index })
+        if (label) label.textContent = button.getAttribute('aria-label')
+      }))
+    })
+  }
+  initBespokeFinishes()
+  document.addEventListener('astro:page-load', initBespokeFinishes)
+</script>

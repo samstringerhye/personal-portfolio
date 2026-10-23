@@ -1,0 +1,2290 @@
+{
+  "inspectedAt": "2026-10-22",
+  "fileKey": "D8XlndxehP6lc8BSrGQBY1",
+  "method": "Read-only text extraction. These are canvas annotations and long text, not discussion comments. Deduplicated per page by exact text; first matching node retained. Account and Menu filtered to annotation/feedback paths with >80 characters; other pages include long text and annotation paths.",
+  "pages": [
+    {
+      "id": "2567:9149",
+      "page": "👤 Epic 1: Sign In + Account",
+      "textCount": 12849,
+      "notes": [
+        {
+          "id": "I30543:38821;10151:751",
+          "text": "Countdown for 15 minute & 30 minute cool down period:\n'Resend code in [15/30] minutes\"\nCount down by the minute until 60s and then 60s countdown shown",
+          "path": "Sign In / Wires / Sign In/Phone OTP sent again / annote / annote"
+        },
+        {
+          "id": "I23054:42498;10151:760",
+          "text": "Resend link includes countdown, before you’re able to resend.  Countdown begins at [best practice]\nUser can resend [x] of times within [x time frame] before  they can no longer continue with that method",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I23107:42648;10151:768",
+          "text": "OTP sent to email connected to social account. If social was unverified, it will be the next time the user tries to sign in with their social method.",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I23671:42422;10151:760",
+          "text": "If social account is found, welcome back message is not displayed since account has email attached  to verify identity.",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I23670:42278;10151:768",
+          "text": "Error if incorrect input is added to field  or format requirement isn’t met and user taps out of input/keyboard \n‘PLEASE ENTER A VALID [FIELD NAME]’",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I23671:42289;10151:768",
+          "text": "Error if field left empty and user taps out of input/keyboard \n‘THIS FIELD IS REQUIRED’",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I23081:39412;10151:768",
+          "text": "If user taps out of input before entering a valid code or if the code is incorrect/expired, the in-line error displays “PLEASE ENTER VALID CODE”\n\nUse global error state for input.",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I5318:37519;10151:768",
+          "text": "Show for soft lockout of method if abusive behavior continues past the 1 hrs lockout.\nup to 24 hrs\nbase time on behavior/best practices",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I30540:36585;10151:768",
+          "text": "User is locked out of the sign up/in feature for [X] timeframe if abusive/suspicious behavior continues past the soft lockout escalation. (TBD by Product)",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I4578:16143;10151:760",
+          "text": "This screen shows if an email was found to have an account. \n\nThe sheet will automatically pop up",
+          "path": "Sign In / Wires / annote / annote"
+        },
+        {
+          "id": "I10280:15555;10151:768",
+          "text": "Unsaving a delivery address functions like it does in Epic 2 where the icon changes to unfilled.\n\nAND\n AFTER RELOAD, address card reverts to unsaved state in Recents list unless it was cashed\n\nNOTE!!\nRecent doesn’t show up in this screen.",
+          "path": "Account / Designs / Delivery Addresses / annote / annote"
+        },
+        {
+          "id": "I4642:12551;10151:768",
+          "text": "Max 3 options (OS Wallet plus two added methods). Whatawallet not included in max of 3.",
+          "path": "Account / Designs / Saved Payments / annote / annote"
+        },
+        {
+          "id": "I4642:12537;10151:760",
+          "text": "OS Wallet (Apple or Google) will always show and can’t be removed. It is default unless a user adds another method and makes that default.",
+          "path": "Account / Designs / Saved Payments / annote / annote"
+        },
+        {
+          "id": "I4431:63672;10151:768",
+          "text": "Pending order exists a visual confirmation for user. If it’s confirmed, it will look like any other successful order.",
+          "path": "Account / Designs / Add a Past Visit / annote / annote"
+        },
+        {
+          "id": "I4722:14418;10151:768",
+          "text": "If the pending past visit is rejected, an error state is shown for 48 hours (alongside an email). Text link triggers add past visit flow.",
+          "path": "Account / Designs / Add a Past Visit / annote / annote"
+        },
+        {
+          "id": "I11124:39343;10151:768",
+          "text": "Generic toast notification that appears over content. This will be a global component and should appear center screen 8 px below the header.",
+          "path": "Account / Designs / annote / annote"
+        },
+        {
+          "id": "I5762:23697;10151:760",
+          "text": "Whatawallet not available for GC purchases If Gift Card is a guest checkout, it wouldn’t appear in the list.",
+          "path": "Account / Designs / Send An Online Gift Card / annote / annote"
+        },
+        {
+          "id": "I10280:15984;10151:760",
+          "text": "If editing any of these fields, post change it will take you back to the summary page.",
+          "path": "Account / Designs / Send An Online Gift Card / annote / annote"
+        },
+        {
+          "id": "I6913:33571;10151:760",
+          "text": "Gift Cards can be scheduled up to 6 months in advance.\nThe date selected on the sheet by default should be the day the current day.  Please use native Date + Time selector.",
+          "path": "Account / Designs / Send An Online Gift Card / annote / annote"
+        },
+        {
+          "id": "I5325:18171;10151:760",
+          "text": "This page is for digital gift cards only. Users can only arrive here from email link. Back button returns to Account landing page.",
+          "path": "Account / Designs / Check Balance / annote / annote"
+        },
+        {
+          "id": "I5325:18394;10151:768",
+          "text": "If GC number is incorrect, show as inline error.\n\nFor error after user presses the check that need validation, reopen sheet with error pill",
+          "path": "Account / Designs / Check Balance / annote / annote"
+        },
+        {
+          "id": "I40999:70995;10151:756",
+          "text": "This sheet is only applicable for physical gift cards, since we do not display the number and pin for digital cards.",
+          "path": "Account / Designs / Check Balance / annote / annote"
+        },
+        {
+          "id": "I5325:18178;10151:760",
+          "text": "This screen only occurs for a physical gift card, which cannot be scanned in the store. The only difference is the CTA at the bottom.\n\nBack button returns to account landing.",
+          "path": "Account / Designs / Check Balance / annote / annote"
+        },
+        {
+          "id": "I5035:12417;10151:756",
+          "text": "Error occurs if attempted CG balance transfer causes Whatawallet balance to exceed $220.",
+          "path": "Account / Designs / Check Balance / annote / annote"
+        },
+        {
+          "id": "I4931:12530;10151:756",
+          "text": "After user presses “Add $X” CTA they’re returned to Payment Methods screen and a confirmation toast appears at top of screen. ",
+          "path": "Account / Designs / Whatawallet Add Funds / annote / annote"
+        },
+        {
+          "id": "I11404:10617;10151:768",
+          "text": "Opens camera to scan gift card, similar to scanning a credit card. Will ask OS permissions for camera if they haven’t been granted",
+          "path": "Account / Designs / Whatawallet Load Gift Card / annote / annote"
+        },
+        {
+          "id": "I36877:133644;10151:768",
+          "text": "This is absolute positioned. Content below is scrolling beneath it. Because, this will house up to 6 months of yumstory.",
+          "path": "WEB - Account / Desktop / annote / annote"
+        },
+        {
+          "id": "I37292:52029;15435:330",
+          "text": "Is this too hard? It IS possible... \n\nPopeyes has this modal map thing happening\n\nIn their app it’s a sheet.",
+          "path": "WEB - Account / Desktop_V8 / annote / annote"
+        },
+        {
+          "id": "I36505:47148;15435:344",
+          "text": "Desktop doesn’t support taking a picture/scanning your card.\n\nLET’S KEEP IT OUT FOR WEB!!",
+          "path": "WEB - Account / Desktop / annote / annote"
+        },
+        {
+          "id": "I38493:471977;15435:361",
+          "text": "Since the Schedule Delivery action needs a calendar and time functionalities and for devices we “outsourced” the solutions to use native device functions, we’ll utilize a a date and time picker native to web. \n\nIdeally, in the future we’d redesign the CSS to be a bit more on-brand.",
+          "path": "WEB - Account / annote / annote"
+        },
+        {
+          "id": "I38698:69032;10151:760",
+          "text": "In the App it’s a sheet with only a grabber. For web, I’m adding the  “_Sheet Header” component so users can click the X.\n\nThey can also tap outside of the sheet area to close it, but this feels more like a web pattern. They’d also be able to press ESC button to close any sheet or modals.",
+          "path": "WEB - Account / annote / annote"
+        },
+        {
+          "id": "I38698:69052;10151:751",
+          "text": "Since this’ll be absolutely positioned, I added a fill to the secondary CTA.\n\nIt is BG/Primary Token",
+          "path": "WEB - Account / annote / annote"
+        },
+        {
+          "id": "I39431:78495;10151:768",
+          "text": "For web, at this screen/modal if user were to click “Terms & Services” it would open a new tab to Terms and Conditions page.",
+          "path": "WEB - Sign In / Desktop / annote / annote"
+        },
+        {
+          "id": "I41023:70474;10151:768",
+          "text": "In app, this is a page, but here it is contained within the sheet-turned-modal to keep experience of this flow the same.",
+          "path": "WEB - Sign In / Desktop / annote / annote"
+        },
+        {
+          "id": "I39678:74731;15435:361",
+          "text": "After account is created, modal changes to Terms and Conditions.\nNotice:\nyou cannot exit out of this. You must agree or decline.",
+          "path": "WEB - Sign In / annote / annote"
+        },
+        {
+          "id": "I39739:210755;15435:361",
+          "text": "The “Bottom Sheet” component is the base design used for the web modals. \n\nNot all the modals!! Just this sheet-turned-modal design.   Much like Popeyes.",
+          "path": "WEB - Sign In / annote / annote"
+        },
+        {
+          "id": "I39739:210764;15435:361",
+          "text": "Tablet and Desktop have the same width. \n\nTablet uses Design typescale (same as mobile/app). Typescale increases on Desktop. (See typescale here)\n\nAll corners are rounded.",
+          "path": "WEB - Sign In / annote / annote"
+        },
+        {
+          "id": "I39739:212404;10151:746",
+          "text": "Height is set to hug. \n\nThe weird margins are because its max height is 100% viewport height, but I’d like there to be “padding” for the bottom of the screen, and “padding” for the top of the screen.   BUT the navbar lives up top, so the 112px is the navheight (72px) + 40px for there to be a 40px gap to the bottom of the nav...\n\nPopeye’s website has this height treatment.   Note that theirs goes over the Nav bar, and we’d like to avoid that.",
+          "path": "WEB - Sign In / annote / annote"
+        },
+        {
+          "id": "I39686:75000;10151:751",
+          "text": "Clicking to sign in/ sign up via social will open up a new tab which redirect you to their sign up pages, then redirects you back to our flow.",
+          "path": "WEB - Sign In / annote / annote"
+        },
+        {
+          "id": "I39686:78298;15435:361",
+          "text": "Keep mobile experience the same as the app.\n\nThe pop up modals become bottom sheets. \n\nJust like Popeyes.",
+          "path": "WEB - Sign In / annote / annote"
+        }
+      ]
+    },
+    {
+      "page": "📍 Epic 2: Locations",
+      "id": "2567:9155",
+      "textCount": 5862,
+      "sections": [
+        {
+          "id": "3389:37818",
+          "name": "Locations"
+        },
+        {
+          "id": "24576:85775",
+          "name": "Prototype"
+        },
+        {
+          "id": "33541:301426",
+          "name": "Web"
+        },
+        {
+          "id": "40000054:403673",
+          "name": "EXPORTED SCREENS FOR DECK"
+        }
+      ],
+      "notes": [
+        {
+          "id": "I3525:15253;10151:733;10151:684",
+          "text": "To-do",
+          "path": "Locations / annote / annote / tag"
+        },
+        {
+          "id": "I3525:15253;10151:734",
+          "text": "Red and blue colors are 25% opacity of those in our DS",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I4208:25111;10151:771;10151:688",
+          "text": "Question",
+          "path": "Locations / Future Considerations / annote / annote / tag"
+        },
+        {
+          "id": "I3400:10651;10151:794",
+          "text": "How many states do we need, how will this be handled logistically, is this worth it etc.",
+          "path": "Locations / Future Considerations / annote / annote"
+        },
+        {
+          "id": "I4208:25111;10151:772",
+          "text": "Where should we show estimated wait times to receive an order for units, and how can we convey this in a way that doesn’t discourage ordering?",
+          "path": "Locations / Future Considerations / annote / annote"
+        },
+        {
+          "id": "I3480:14067;10151:694;10151:682",
+          "text": "UX Feedback",
+          "path": "Locations / Future Considerations / annote / annote / tag"
+        },
+        {
+          "id": "I3480:14067;10151:695",
+          "text": "Qs resolved, but some additional considerations:\n what is the purpose fo the day selectors? A: Day selector is for edge cases where location needs to update hours temporarily or rev port times vary.\ndo we ever have store-specific promotions/offers that could be shown here? A: No, but on the .com yext page for specific location and might be worth adding a dynamic section to Details screen.\nis there other metadata could be shown? “new store”, breakfast hours, #times the user has ordered from this location, drive-thru wait time ... A: Yes, something we should look at for future outside of current design\nis there a different label we could use for “operating partner” that is more customer friendly? A: Maybe, lol",
+          "path": "Locations / Future Considerations / annote / annote"
+        },
+        {
+          "id": "I4517:25564;10151:818;10151:690",
+          "text": "Component",
+          "path": "Locations / annote / annote / tag"
+        },
+        {
+          "id": "I4517:25564;10151:819",
+          "text": "Location Card States",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I37514:28020;10151:767;10151:686",
+          "text": "Functional Spec",
+          "path": "Web / annote / annote / tag"
+        },
+        {
+          "id": "I3399:13098;10151:760",
+          "text": "“Search This Area” appears if map is scrolled outside of area.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3399:13119;10151:760",
+          "text": "Sheet expands to large size on swiping up tabs and above.\nSwiping down shrinks sheet to medium size.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3525:15283;10151:768",
+          "text": "This section is replaced with recent search after initial. If all 5 recent searches time out, it’ll go back to this state.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I17615:69213;10151:768",
+          "text": "Tapping the “X” clears and focuses text field. Search results remain until another search is performed.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I18559:18145;10151:768",
+          "text": "Message if no results can be found.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3554:14135;10151:768",
+          "text": "This is the only instance in which a deselected card will show the saved icon. It lets the users know why these locations are within this tab.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I8085:46850;10151:768",
+          "text": "Saved units are populated on the map when transitioning to this tab if they happen to exist within the current viewport. \n\nNearby locations will only appear if they’re also a saved/recent location. So, there may be an instance where no pins populate.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I19111:27098;10151:768",
+          "text": "When transitioning to this screen, no map shifting occurs since no location is preselected. Map will shift and zoom once a location is selected.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3451:33100;10151:768",
+          "text": "This is an optional field that if left blank will autofill as “None” to account for partners that require it.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3602:11667;10151:768",
+          "text": "Phone number pre-populates based on user’s account phone number",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3524:7288;10151:760",
+          "text": "Saving a location is only available for Signed In Users",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I7766:35085;10151:768",
+          "text": "Save is disabled until name is selected/entered",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I7766:35092;10151:768",
+          "text": "Save is enabled when name is selected/entered",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3598:10448;10151:768",
+          "text": "If a user decides to change their delivery address during the ordering flow, they will return to this screen.   Their current choice will be displayed in the header and as the most recent search. Selecting either will bring them back to the additional details screen with their prefilled information.   Selecting a new location will also take them to the additional details page.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I8075:35069;10151:768",
+          "text": "Tap unfilled heart to save address and open the save location sheet.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I24567:41251;10151:760",
+          "text": "Current day of the week is selected",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I24567:40736;10151:768",
+          "text": "Recents saved on device if guest user",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I32518:266418;10151:768",
+          "text": "To unsave address, tap heart. Icon changes to unfilled.\n After reload, address card reverts to unsaved state in Recents list unless it was cashed",
+          "path": "Web / Desktop / annote / annote"
+        },
+        {
+          "id": "I32518:266465;10151:768",
+          "text": "Unsaved address will clear this section once user reloads page.",
+          "path": "Web / Desktop / annote / annote"
+        },
+        {
+          "id": "I32518:266466;10151:768",
+          "text": "After reload, address card reverts to unsaved state in Recents list unless it was cashed",
+          "path": "Web / Desktop / annote / annote"
+        },
+        {
+          "id": "I4069:5800;10151:768",
+          "text": "Shares location as plain text:\nWhataburger at Roosevelt & Steves\n1118 Roosevelt Ave. San Antonio, TX 78210\n\nWhataburger at [short name]\n[address] [city], [state] [ZIP]",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3498:12278;10151:768",
+          "text": "Location saved state",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I7766:34910;10151:768",
+          "text": "Tapping “Custom” day dot reveals focused text field",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3482:65577;10151:768",
+          "text": "Goes to OS settings",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3525:15296;10151:768",
+          "text": "This sheet won’t appear again for users. Must turn on manually in OS settings.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3599:33195;10151:760",
+          "text": "Icon and text (whole row) is a tap target",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I17615:18037;10151:760",
+          "text": "Tapping outside of sheet closes the sheet",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I8085:46837;10151:760",
+          "text": "When map is zoomed out or multiple stores populate within a condensed area, one the borders of the default overlap, they collaps into 1 pin and show the number of stores within that area.  Pins also separate when zoomed in or if one pin coverts to active state due to the card in the list for that pin being selected.\n\nWhen the clustered pin is tapped the list scrolls to the section of the list that includes the first location in the cluster and it should be pinned to the top Additionally the map should zoom in close enough to separate the cluster.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3414:35047;10151:760",
+          "text": "Recent searches saved on device.\nLimit 5.\nTapping fills text field and searches.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3475:14209;10151:768",
+          "text": "Sheet expands to large size.\nSearch field is focused by default.",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I3598:11595;10151:768",
+          "text": "CTA copywriting acknowledges that this is their current selection",
+          "path": "Locations / annote / annote"
+        },
+        {
+          "id": "I32518:266758;15435:348;15435:300",
+          "text": "Note",
+          "path": "Web / annote / annote / tag"
+        },
+        {
+          "id": "I33254:245402;15435:361",
+          "text": "For the website, the header part of the locations component is very different!\n\nThis design’s functions/features are inspired by Sonic’s design which you can see here.\n\nWe pulled out the “find” tab and made it a search tab which is always accessible.\n\nWe added a hyperlink text treatment with the function of being able to switch between Pickup and Delivery.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:294573;15435:361",
+          "text": "BG color is changed to: color/bg/secondary\n\nNo map container.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33416:295323;15435:361",
+          "text": "Header treatment is different / reflects Web’s component layout and style.\n\nAddress text style is different for better hierarchy.\n\n[Call Restaurant] is replaced with hyperlink text (a href:) with location’s phone number.\n\nPatty Pal lockup is different.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:294578;10151:746",
+          "text": "The component’s min-height is 706px.\nThis includes it’s top and bottom margin/padding of 40px",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33254:245150;10151:751",
+          "text": "Switches between Pickup and Delivery",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:293718;10151:751",
+          "text": "These two tabs functions the same as the app.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:293903;10151:751",
+          "text": "On mobile, the grabber shows up. Functions just like the app.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:293851;15435:361",
+          "text": "The header of the locations component is where primary actions and/or context will be given to the user. ",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:293916;10151:746",
+          "text": "The header is fixed, so any content below it with overflow would scroll behind it.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:296741;10151:746",
+          "text": "Nearly all screens/functions from the app design will be contained on the Locations Window Component. ",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33416:295415;15435:335",
+          "text": "Side margin is:\n48 on Desktop\n24 on Tablet\nMuch like the side-padding token controlled through modes.\n\nOn Mobile, this turns into a sheet.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:295944;15435:361",
+          "text": "These turn into sheets for mobile.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:295955;15435:344",
+          "text": "Notice! \n\nNo grabber. These become fixed height set to 706 (just like app’s fully opened sheet) and any content that overflows is scrollable.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:295966;15435:344",
+          "text": "Notice! \n\nNo grabber. These become fixed height set to 702 (just like app’s fully opened sheet) and any content that overflows is scrollable.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:295434;10151:760",
+          "text": "Component height is 100% of Map’s height. \n\nMap’s height is 100% view port height with min-height of 706px.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:296792;10151:760",
+          "text": "For Tablet, the component WITH the 40px margins max height is 712px",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:294281;10151:751",
+          "text": "For Desktop break point, the Address Details and Store Details variant’s content here is set to space between.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:294312;10151:751",
+          "text": "For Tablet and Mobile,  no more space between. Spacing is set to value in the design.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:296753;15435:349",
+          "text": "Fixed width for Desktop and Tablet (390px)",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:296805;15435:344",
+          "text": "10px from bottom of search bar, just like the app design.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:296816;10151:768",
+          "text": "Max Height is 236px to show 3 and a half locations, to encourage user to scroll.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:297057;10151:768",
+          "text": "On Mobile and Tablet, when an input field would be interrupted or fall behind the device’s keyboard, what happens is the whole website shifts up!   Much like it does in mixpanel.com. Try clicking the chat bot and see the interaction.\n\nAlso the login screen and the sign up screens function similarly.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:266746;10151:746",
+          "text": "This is default view. Then browser prompt to allow location. If denied, you stay here, and this is your default view.\n\nIf location enabled, then redirect to Nearby and populate content with nearby whatastores.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I34105:68615;10151:746",
+          "text": "Page scrolls like Sonic",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I35961:27861;10151:746",
+          "text": "You navigate here by clicking Locations or by choosing Pickup when prompted.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32737:46635;10151:746",
+          "text": "This is the default view if Locations are enabled 👍",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:266747;10151:760",
+          "text": "Map would be View Port height.\n\nMin height of 706px",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:266748;10151:756",
+          "text": "When you click to type, then a drop down of recent searches drops down.\n\nMuch like the Delivery Location Search screen.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32786:46770;10151:751",
+          "text": "When [Search This Area] shows, a slight gradient appears spanning the whole width of the map.\n\nThe [Search This Area] is still horizontally centered within the map’s target area as annotated here.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32886:46636;10151:756",
+          "text": "Once location is selected and you click [Order Here], you will get re-directed to the Categories Page (Menu Page)",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32737:46675;10151:756",
+          "text": "Just like Apple Maps, when you click to search, the map dims.\n\nDim is set to 25% transparency.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:266749;15435:361",
+          "text": "Added Medium Shadow to the pins and to the “Search Modal Sheet/Map CTA Bar” components to they stand out more.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:267131;15435:361",
+          "text": "This is current footer. I just wanted to capture full page wireframe.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32737:46573;10151:768",
+          "text": "Sheet expanded height is 24px offset from the bottom of the nav component, with location banner or without location banner.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32737:46626;10151:768",
+          "text": "Sheet collapsed height same as app:\n420px",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32737:46582;15435:344",
+          "text": "24px gap",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:267431;10151:760",
+          "text": "Selections are centered within this target area.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I32518:266758;15435:349",
+          "text": "Increased picker to 52px\nFont-size is the same on all screens. (8px)",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:301381;10151:751",
+          "text": "In the app, these are sheets. For web, they’ll become Modals.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33496:301361;10151:760",
+          "text": "New tab, google maps.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33541:301402;10151:746",
+          "text": "First time landing on locations through selecting Delivery, whether signed in or signed out, or if cache is cleared, Browser Prompt to enable locations pops up.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I33351:293845;10151:751",
+          "text": "In app, this is a secondary button. For web, it’ll change to hyperlink text showcasing the store’s phone number.\n\nex:\n<a href=\"tel:210-123-4567\">(210)-123-4567</a>",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I34218:319950;10151:760",
+          "text": "Hyperlink text showcasing the store’s phone number.\n\nex:\n<a href=\"tel:210-123-4567\">(210)-123-4567</a>",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I35961:27827;10151:768",
+          "text": "Default State",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I35961:27847;10151:768",
+          "text": "Hover State",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I35961:27854;10151:768",
+          "text": "Pressed State\n\nAlso Tablet and Mobile would have the Pressed State.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I36040:88356;10151:760",
+          "text": "Height is 24px offset from the bottom of the nav component, with location banner or without location banner.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I37514:28004;10151:768",
+          "text": "Open Hours",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I37514:28027;10151:768",
+          "text": "Communicating here that at this hour of inquiry, this location is closed.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I37514:28051;10151:768",
+          "text": "Though it is currently closed, it’s still possible to place a scheduled order.",
+          "path": "Web / annote / annote"
+        },
+        {
+          "id": "I37514:28020;10151:768",
+          "text": "Unit Message\n\nLink to Component",
+          "path": "Web / annote / annote"
+        }
+      ]
+    },
+    {
+      "id": "2567:9156",
+      "page": "🍔 Epic 3: Menu + Customization",
+      "textCount": 6859,
+      "notes": [
+        {
+          "id": "I10598:35657;10151:768",
+          "text": "This is a temporary popup that appears every time a new item is added to your cart. \n\nIt appears on whichever screen you added the item to your cart (categories, rewards, home page) UNLESS you customized an item, in which case you’ll complete the customization flow and return to the main categories page with this popup.",
+          "path": "Menu / Designs / 1 Menu + Customization / Add to Cart Message / annote / annote"
+        },
+        {
+          "id": "I11657:25466;10151:725",
+          "text": "Look naming conventions for this copy & talk with Ed about what might be consistent naming conventions",
+          "path": "Menu / Designs / 1 Menu + Customization / Add to Cart Message / annote / annote"
+        },
+        {
+          "id": "I10598:36437;10151:760",
+          "text": "Sticky to top on scroll\n\nTapping item will scroll  and anchor category selection to the top.  Items are added to this carousel as they’re selected.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13291:30405;10151:768",
+          "text": "For meals, stickers fill in as user progresses through flow See Interaction Story Board",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:31760;10151:760",
+          "text": "Modifiers within each customization section will have the same controls if available.:\n\nToggles\nSteppers\nstickers",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13263:44905;10151:768",
+          "text": "Selected state of modifier shows item in orange circle with ‘✓’  and shows additional customizations/quantity/amount selections.  Default modifiers selected based on recipe",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:30383;10151:760",
+          "text": "Example of item in meal that is selected by default and can’t be removed, but can be increased. The minus is disabled.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I11760:13062;10151:751",
+          "text": "Placeholder appears when all items from the base recipe are removed. It also applies to categories that have no items preselected, like cheese. This gives user an anchor point to that section.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I11657:25437;10151:760",
+          "text": "These are only the sauces that would come on the sandwich.  Sauces that will incur a charge appear elsewhere.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I12632:18396;10151:760",
+          "text": "Toppings are optional but preselected based on recipe. Users can select any number of these.   User taps remove icon to deselect, which also removes item from sticky carousel.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:30356;10151:768",
+          "text": "Changes to the base recipe are  reflected in in the sticky carousel (What’s Included section) ",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:31698;10151:768",
+          "text": "Example of change to base recipe reflected in customization section here and in What’s Included section below the hero",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:30369;10151:768",
+          "text": "Example of added customization: Image in selected state Extra cost shows Stepper shows Calories dynamically updated as modifier is increased",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:29999;10151:768",
+          "text": "Nutrition and allergen information accordion shown on item screen and sheets. Only show information for the item being customized, even if part of a meal. \nSection hidden for other menu screens. Update dynamically based on customization. See Expanded View",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I12366:17780;10151:768",
+          "text": "Location hidden on all customization screens and will appear again on summary page.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13310:30386;10151:768",
+          "text": "This section is sticky. These pills act as anchors. When tapped, the content scrolls to the associated section below.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I10904:21875;10151:756",
+          "text": "Reorder - Pressing these CTAs adds item to order and keeps you on this screen, showing a version of this toast as confirmation.  Bag icon (top right) will also update.  Limit 5 past orders on each category page",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I14400:42634;10151:760",
+          "text": "Check for item/location availability will run on customization screen and user will be notified with error modal",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I11759:13480;10151:756",
+          "text": "Customizations are saved as user progresses through or reverses through customization flow.   Customizations are lost if user leaves flow before item is added to the cart. See warning modal.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I10598:36306;10151:760",
+          "text": "All drinks will trigger sheet to accommodate allergens/nutrition, even if it has no customizations",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I12632:18409;10151:768",
+          "text": "These cards always show calories, but only show additional price since drink is included in meal",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I11657:24766;10151:760",
+          "text": "Only show previous selections in meal (reverse chronological up to 5) , not ones you added a la carte\n\nPrice will only show if it’s an upcharge for customizations\n\nIf user returns to this screen, the recent item they added will still appear",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I11760:12869;10151:768",
+          "text": "This modal will only appear if a user has actually made a customization to their item.  Pops up if they press back or any bottom nav elements on entree customization screen.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I11657:24792;10151:751",
+          "text": "These sections are not in the original recipe. They serve as anchor points to encourage additional customization. They are replaced by any item added from that respective category.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:31404;10151:756",
+          "text": "Example of base customizations change and Extra label added to What’s On It scroller",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:31419;10151:756",
+          "text": "Example of base customizations change and Lite label added to What’s On It scroller",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13302:31676;10151:751",
+          "text": "Example of added customizations and quantity label added to What’s On It scroller",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I10920:26383;10151:768",
+          "text": "When adding additional customizations, a count appears in the top right of the item added to display increased quantity like shown on the beef patty.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I13313:36227;10151:768",
+          "text": "Pressing edit will take you to respective page. For sides and drinks, it will open the sheet.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I10598:36319;10151:768",
+          "text": "Text is dynamic based on what is already in cart\n\nPrice shown is dynamic based on location/region",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Order Flow / annote / annote"
+        },
+        {
+          "id": "I14373:42943;10151:760",
+          "text": "If a user orders the same item multiple times with the same customizations, an “ordered X times” pill appears  If an item is ordered but each one has unique customizations, multiple cards will appear. The user will need to see what customizations are attached to that card/item on the cart screen",
+          "path": "Menu / Designs / 1 Menu + Customization / annote / annote"
+        },
+        {
+          "id": "I13123:30159;10151:768",
+          "text": "Guest landing-  For signed out user/non-loyalty \n\nUser will not have access to or see Quick order recents carousel and Favorites Category",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I13123:30266;10151:768",
+          "text": "List order dictated by business Daypart should surface to the top of list directly below LTOs",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I11657:22805;10151:756",
+          "text": "Displays Favorited item User can also favorite from here  Tapping heart will being up naming sheet.",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I13219:54464;10151:756",
+          "text": "If a user places a multi-item order that order will be broken up into items and those items will shown on this carousel.",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I13123:33274;10151:760",
+          "text": "Shows amount of times ordered if > 1\nIf amount of times = 1 then show the date it was ordered. If date ordered is current or previous day show “Ordered Today” or “Ordered Yesterday.”  If user ordered the same item with the same customizations multiple times, only show 1 card.",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I11657:22789;10151:760",
+          "text": "Quickly Order - Recently order items and meals user has preciously placed. This can include favorite if it falls within the reverse chronological set. \n\nOrders cap at 5 items the last card that says \"See All Recents.\"\n\nColor styling would be assigned to the card order, like card 1 = Orange, 2 = Blue, etc.",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I10914:38387;10151:760",
+          "text": "Categories need to surface based on daypart  Priority order:\nLTOs\nFavorites (if they have)\nDaypart exclusives (breakfast)\nBig Three Deals\nOther categories",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I11657:22813;10151:751",
+          "text": "Favorite item, which can have a custom name, will show here. Emoji can be included",
+          "path": "Menu / Designs / 1 Menu + Customization / Menu Landing Screens / annote / annote"
+        },
+        {
+          "id": "I10598:35198;10151:768",
+          "text": "This is collapsed when main section is initially opened since it can include everything a user added to their meal.",
+          "path": "Menu / Designs / 1 Menu + Customization / Meal Nutrition / annote / annote"
+        },
+        {
+          "id": "I10598:35057;10151:768",
+          "text": "Grays out as a warning. Leaving screen will remove it from this list, pressing heart will restore the item",
+          "path": "Menu / Designs / 1 Menu + Customization / Favorited Orders & Items / annote / annote"
+        },
+        {
+          "id": "I15484:67425;10151:760",
+          "text": "Favorite item are the first section of the screen, followed by favorite orders.  Each list includes up to 25 saved faves\nIf one category is empty, that section should be hidden.",
+          "path": "Menu / Designs / 1 Menu + Customization / Favorited Orders & Items / annote / annote"
+        },
+        {
+          "id": "I14373:42635;10151:768",
+          "text": "Items within a favorite order do not have to be favorited and are not auto-favorited",
+          "path": "Menu / Designs / 1 Menu + Customization / Favorited Orders & Items / annote / annote"
+        },
+        {
+          "id": "I15484:71067;10151:760",
+          "text": "Add to order CTA triggers bottom sticky toast message and the item added to the cart.",
+          "path": "Menu / Designs / 1 Menu + Customization / Favorited Orders & Items / annote / annote"
+        },
+        {
+          "id": "I15362:50433;10151:756",
+          "text": "If user is updating the location/order method, the previous selection will show in a selected state",
+          "path": "Menu / Designs / 1 Menu + Customization / Recent Orders / annote / annote"
+        },
+        {
+          "id": "I14727:71604;10151:768",
+          "text": "When a user finishes customizing a component of their meal, they’ll return to the summary page instead of going through the rest of the customization flow",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I14682:58128;10151:768",
+          "text": "If you wen to edit an a la carte item in your cart, you’ll just go straight to its customization page",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I14682:62491;10151:768",
+          "text": "Items will appear over the cart for quick customizations or to view nutrition info. \n\nIf a user wants to switch the item, they’ll need to delete from cart and add a new item.",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I14682:57549;10151:768",
+          "text": "Items you initially added onto your meal, such as desserts, are now individual items in your cart and will no longer be here.",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I14682:62433;10151:751",
+          "text": "Pressing edit for an a la carte entree takes you straight to its customization page.",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I14743:103267;10151:751",
+          "text": "For a la carte items that have customizations or add-ons, like sides, its customization sheet will open over the cart page.",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I14787:50352;10151:751",
+          "text": "For a la carte items that have NO customizations or add-ons, like desserts or bottled drinks, no editing can happen",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Meal Editing / annote / annote"
+        },
+        {
+          "id": "I11972:16003;10151:760",
+          "text": "If the user presses anything on this page without a selected location, they will first select an order method, confirm a location to start the order and then can begin customizing.\n\nNote that a nearest location is just a suggestion. A selected location would say “pickup at” or “deliver at” in the header.",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Updating Location / annote / annote"
+        },
+        {
+          "id": "I12713:26705;10151:768",
+          "text": "In the rare case user hasn’t shared location info and the item isn’t present at their selected location \nSecondary: OK, Got It\nkeep them on this page but disables bottom CTA to proceed\nPrimary CTA: New Location\ntakes them back to location page",
+          "path": "Menu / Designs / 2 Additional Menu Flows / Updating Location / annote / annote"
+        },
+        {
+          "id": "I29404:106168;10151:751",
+          "text": "Scrolls horizontally. Tapping a sub-category makes the sub-category active and scrolls the main content to that sub-category title.",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I28874:44163;10151:760",
+          "text": "During content scroll, once sub-category title reaches 16px from Quick Nav the sub-category becomes active in the Quick Nav",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I29404:106230;10151:768",
+          "text": "Scrolling the main content will scroll the Quick Nav horizontally. The right edge of the sub-category scrolls to 32px from the right viewport edge.",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I29520:72688;10151:768",
+          "text": "Modifier group state when no modifiers from that group are selected. Tapping modifier group scrolls to that modifier group title.",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I29862:76283;10151:760",
+          "text": "Modifier order follows the same order as the main list. Only selected modifiers are shown.",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I38468:114181;10151:760",
+          "text": "If there is an upcharge cost associated with added an item, the cost shows on selected state only",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I30492:81267;10151:768",
+          "text": "Default footer for all entrées contains:\n2,000 calories sentence\nCollapsed Nutrition\n Collapsed Allergens",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I38728:136266;10151:760",
+          "text": "For no size or sauce choices: don’t show the sheet, add item to order, and show the item added popup.",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        },
+        {
+          "id": "I38738:154683;10151:760",
+          "text": "Shows all available sizes (icon source). Cards dynamically adjust size width to fill space.",
+          "path": "Design Templates USE THIS FOR FRONT END / annote / annote"
+        }
+      ]
+    },
+    {
+      "page": "🛒 Epic 4: Cart + Checkout",
+      "id": "2682:21344",
+      "textCount": 2078,
+      "sections": [
+        {
+          "id": "2712:21346",
+          "name": "Item"
+        },
+        {
+          "id": "2712:21421",
+          "name": "Cart"
+        },
+        {
+          "id": "2724:16499",
+          "name": "Checkout"
+        },
+        {
+          "id": "27715:13127",
+          "name": "Cart + Checkout"
+        },
+        {
+          "id": "40000058:476597",
+          "name": "EXPORTED SCREENS FOR DECK"
+        }
+      ],
+      "notes": [
+        {
+          "id": "I27715:13938;10151:759;10151:686",
+          "text": "Functional Spec",
+          "path": "Cart + Checkout / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I27715:13208;10151:768",
+          "text": "This state occurs if user adds another item that brings their point total below an item’s requirement.\n",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13216;10151:768",
+          "text": "Once the user presses the input field, the keyboard reappears. As soon as they start typing, the error helper text disappears and the CTA returns to default state.",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13365;10151:768",
+          "text": "Show additional messaging encouraging users. Number of points before first rewards tier is calculated. Show locked items just within their reach.\n",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13537;10151:751",
+          "text": "“(extra)” or “(lite)” show if amount was modified.",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13536;10151:760",
+          "text": "Feature: Who is this for?  Character Limit: TBD\nNeeds anti-profanity filter\n",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13538;10151:768",
+          "text": "List shows price markup for modifications\n",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13549;10151:751",
+          "text": "Pressing this icon or swiping left triggers this view. User must then press remove to delete from cart.\n\nTapping again changes to default state",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13550;10151:768",
+          "text": "Special messaging for reward. Will delete item from cart and refund points",
+          "path": "Cart + Checkout / Components / annote / annote"
+        },
+        {
+          "id": "I27715:13602;10151:715;10151:682",
+          "text": "UX Feedback",
+          "path": "Cart + Checkout / Future Considerations / annote / annote / tag"
+        },
+        {
+          "id": "I27715:13583;10151:716",
+          "text": "Considered for picker based on OS - decided on simple experience of bottom sheet.",
+          "path": "Cart + Checkout / Future Considerations / annote / annote"
+        },
+        {
+          "id": "I27715:13602;10151:716",
+          "text": "it’s not necessary to repeat the order summary at this stage",
+          "path": "Cart + Checkout / Future Considerations / annote / annote"
+        },
+        {
+          "id": "I27715:13822;10151:768",
+          "text": "Disabled if method is not available at selected time (ASAP or Scheduled)",
+          "path": "Cart + Checkout / Designs / Select Time + Method / annote / annote"
+        },
+        {
+          "id": "I27715:13823;10151:768",
+          "text": "Disabled until required selection is made",
+          "path": "Cart + Checkout / Designs / Select Time + Method / annote / annote"
+        },
+        {
+          "id": "I27715:13824;10151:768",
+          "text": "ASAP selected by default",
+          "path": "Cart + Checkout / Designs / Select Time + Method / annote / annote"
+        },
+        {
+          "id": "I27715:13832;10151:768",
+          "text": "Occurs if user does not progress past this screen until after their selected time.",
+          "path": "Cart + Checkout / Designs / Select Time + Method / annote / annote"
+        },
+        {
+          "id": "I27715:13833;10151:768",
+          "text": "Selecting “Schedule Pickup” opens up native OS time picker. Default time selection is minimum 15 ahead or ASAP + 5 depending ticket size ($ amount).",
+          "path": "Cart + Checkout / Designs / Select Time + Method / annote / annote"
+        },
+        {
+          "id": "I27715:13834;10151:768",
+          "text": "Selecting “Schedule Pickup” updates the Pickup Methods to available methods at the pickup time",
+          "path": "Cart + Checkout / Designs / Select Time + Method / annote / annote"
+        },
+        {
+          "id": "I27715:13742;10151:768",
+          "text": "Required per legal during V6",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13743;10151:768",
+          "text": "Discount only shows when promo/reward was added to cart",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13753;10151:811;10151:690",
+          "text": "Component",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote / tag"
+        },
+        {
+          "id": "I27715:13744;10151:819",
+          "text": "Delete confirmation if delete icon is tapped. User can also swipe left to show delete confirmation - details",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13745;10151:768",
+          "text": "User can only favorite or delete an unavailable item",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13746;10151:756",
+          "text": "Goes to order flow for item",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13747;10151:768",
+          "text": "Duplicates the item below",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13748;10151:819",
+          "text": "Rewards Section",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13749;10151:812",
+          "text": "Add Promo Flow",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13750;10151:760",
+          "text": "This returns to previous screen. If coming from Customization brings user to Categories page",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13751;10151:760",
+          "text": "Expands details (see below)",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13752;10151:760",
+          "text": "Collapses details",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13753;10151:812",
+          "text": "Send name to KDS - details",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I28795:13322;10151:768",
+          "text": "Original price shows with strikethrough",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I27715:13837;10151:768",
+          "text": "Change from base price will be shown here for entree add-ons or for side/drink upgrade  Change from base quantity (2x, lite sauce etc) will be shown next to item",
+          "path": "Cart + Checkout / Designs / Cart / annote / annote"
+        },
+        {
+          "id": "I28795:13329;10151:760",
+          "text": "Modifiers can be removed in line",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28852:80478;10151:760",
+          "text": "Modifiers for entree - “ingredient unavailable” Side/drink issue - “edit side” or “edit drink”  If both, just show one error, then the other once the first is addressed.",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:64535;10151:760",
+          "text": "Alternatively, user can press edit to return to summary screen, then edit the entree, and then the problem will resolve itself when they press “Update” because unavailable items won’t appear on the customization screen, thereby removing them.",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:13336;10151:768",
+          "text": "This can occur if a large is unavailable but a medium is  Or if a modifier is not available  Due to the complexity of this swap, edit will take you to the respective sheet for this item",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:64554;14130:252;14130:78",
+          "text": "Animation Notes",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote / tag"
+        },
+        {
+          "id": "I28795:64554;14130:253",
+          "text": "To show a user what’s wrong, the first item card with an issue will be center screen (scroll to animation) and will open to expanded state",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:64511;10151:751",
+          "text": "This CTA will always be enabled, even if an item is unavailable. The user will just continue in an error modal loop until they resolve the issue.",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:64523;10151:768",
+          "text": "Copywriting highlights what the issue is unless there are multiple",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:64502;10151:768",
+          "text": "Sizes or modifiers that are unavailable will not be possible to select. Thus, pressing Update should resolve the issue in all scenarios.",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I28795:64542;10151:751",
+          "text": "The price will need to reflect the change",
+          "path": "Cart + Checkout / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I27715:13860;10151:768",
+          "text": "This screen only shows if a signed in user hasn’t placed an order before",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13861;10151:768",
+          "text": "Either select OS Wallet (Apple Pay) or add another method to continue",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13886;10151:768",
+          "text": "Allow camera permissions OS modal trigger on first ever press",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13887;10151:768",
+          "text": "Name is prefilled from profile",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13888;10151:768",
+          "text": "Inactive until user fills out all info",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13889;10151:760",
+          "text": "Header buttons are removed",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13890;10151:751",
+          "text": "Editing existing payment during ordering flow has more limited functionality than in account",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13891;10151:768",
+          "text": "Newly added method is selected after adding",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13892;10151:760",
+          "text": "Cancels and closes sheet",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13893;10151:768",
+          "text": "Phone is optional unless order is delivery. If order is delivery phone number pre-populates from number entered during delivery address",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13894;10151:768",
+          "text": "Opens CC sheet",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13895;10151:768",
+          "text": "“Default Payment” option doesn’t show for guests",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13896;10151:768",
+          "text": "Credit card info swaps out the “Credit Card” tile. Tapping will open up the credit card sheet to edit",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13897;10151:768",
+          "text": "Opens PayPal auth sheet",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13898;10151:768",
+          "text": "Disabled until all required fields are satisfied",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13899;10151:768",
+          "text": "Opens up Sign In/Sign Up sheet, if successful sign in/up redirects to signed in experience",
+          "path": "Cart + Checkout / Designs / Payment / annote / annote"
+        },
+        {
+          "id": "I27715:13918;10151:771;10151:688",
+          "text": "Question",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote / tag"
+        },
+        {
+          "id": "I27715:13906;10151:772",
+          "text": "for delivery, should we indicate that the service may be provided by 3rd party? ",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13907;10151:768",
+          "text": "Opens Payment sheet",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13908;10151:768",
+          "text": "Goes to Select Time + Method",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13909;10151:760",
+          "text": "Name block only shows for guest checkout",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13911;10151:751",
+          "text": "Occurs if user does not progress past this screen until after their scheduled time.",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13915;10151:768",
+          "text": "Only shows Discount line if a discount was applied",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13916;10151:768",
+          "text": "Shows delivery fee and tip if delivery. Tapping “Delivery Tip” will redirect the user to the tip screen.",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13917;10151:768",
+          "text": "Points earned from order",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13918;10151:772",
+          "text": "Do we need to add a step in here where the user must verify the pickup location? ",
+          "path": "Cart + Checkout / Designs / Checkout / annote / annote"
+        },
+        {
+          "id": "I27715:13924;10151:760",
+          "text": "Shows favorite name of location if favorited",
+          "path": "Cart + Checkout / Designs / annote / annote"
+        },
+        {
+          "id": "I27715:13936;10151:768",
+          "text": "This screen only shows if order is delivery",
+          "path": "Cart + Checkout / Designs / Add Delivery Tip / annote / annote"
+        },
+        {
+          "id": "I27715:13937;10151:760",
+          "text": "Custom Tip field appears if user selects “Other” from above. The field is focused on show with a numerical keyboard.",
+          "path": "Cart + Checkout / Designs / Add Delivery Tip / annote / annote"
+        },
+        {
+          "id": "I27715:13938;10151:760",
+          "text": "Suggested tip selected by default",
+          "path": "Cart + Checkout / Designs / annote / annote"
+        }
+      ]
+    },
+    {
+      "page": "🛤️ Epic 6: Order Tracking",
+      "id": "2980:10422",
+      "textCount": 716,
+      "sections": [
+        {
+          "id": "27855:3932",
+          "name": "Order Tracking"
+        },
+        {
+          "id": "40000067:487124",
+          "name": "EXPORTED SCREENS FOR DECK"
+        }
+      ],
+      "notes": [
+        {
+          "id": "I42079:76868;10151:741;10151:684",
+          "text": "To-do",
+          "path": "Order Tracking / Designs / Order Status Notification / annote / annote / tag"
+        },
+        {
+          "id": "I42079:76868;10151:742",
+          "text": "iOS layouts are pretty flexible but android are fixed. Confirm formats with with dev",
+          "path": "Order Tracking / Designs / Order Status Notification / annote / annote"
+        },
+        {
+          "id": "I27855:4971;10151:686",
+          "text": "Functional Spec",
+          "path": "Order Tracking / Designs / annote / tag"
+        },
+        {
+          "id": "I42079:77208;10151:756",
+          "text": "Push notification sent for each step in pickup and delivery",
+          "path": "Order Tracking / Designs / Order Status Notification / annote / annote"
+        },
+        {
+          "id": "I40000076:4673;27855:4948",
+          "text": "Proceed to the Center lane marked \"Mobile Pick Up\" at the drive thru then give your name at the speaker box.",
+          "path": "EXPORTED SCREENS FOR DECK / order tracking 2 / Cancel Order Modal / Frame 1437255117 / Frame 1437255118 / Status Card / Content Row / Text Block"
+        },
+        {
+          "id": "I27855:4473;10151:751",
+          "text": "OS notifications show on first order only.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I40000076:5777;27855:4948",
+          "text": "Park as close as possible to a curbside parking spot and turn on your hazard lights.\n\nPlease enter your vehicle details below.",
+          "path": "EXPORTED SCREENS FOR DECK / order tracking 4 / Curbside - No Number / Content Row / Text Block"
+        },
+        {
+          "id": "I40000076:5778;27855:4948",
+          "text": "Got it. We'll be out with your order shortly.\n\nRemember to keep your hazard lights on until your order arrives.",
+          "path": "EXPORTED SCREENS FOR DECK / order tracking 4 / Curbside - No Number Confirmation / Content Row / Text Block"
+        },
+        {
+          "id": "I27855:4768;10151:760",
+          "text": "Returns to Landing Screen and opens Order Tracking sheet. “X” closes sheet.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4769;10151:760",
+          "text": "Opens OS directions",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4770;10151:760",
+          "text": "Image is dynamic based on the unit’s drivethru configuration",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4771;10151:768",
+          "text": "This section  is replaced with pickup method content.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4772;10151:768",
+          "text": "Content scrolls within white frame",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I28008:77303;10151:768",
+          "text": "Sheet typically opens over landing screen, except when viewing an active order in account history. But if the order is completed, the same press or email link will take you to receipt view.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I28635:54349;10151:768",
+          "text": "Steps and header updates dynamically",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4776;10151:768",
+          "text": "Section appears even if order is still being prepared",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:34531;10151:818;10151:690",
+          "text": "Component",
+          "path": "Order Tracking / Designs / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I27855:34531;10151:819",
+          "text": "View Receipt screen. Back button returns to landing page with this sheet open.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4777;10151:768",
+          "text": "Display logic: Data pulled from backend if unit has digital lane or not",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I28656:54377;10151:751",
+          "text": "Only shows if scheduled order and order hasn’t dropped yet.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I28008:77310;10151:768",
+          "text": "Different copywriting and tracker is inactive. This converts to ASAP screen when order is dropped to KDS.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4779;10151:751",
+          "text": "Opens Customer Care Chat Sheet",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4780;10151:751",
+          "text": "Opens Car Info Modal",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4781;10151:751",
+          "text": "ASAP order: placebo button (for  now). Proceeds to next screen ^  However if Scheduled, this will drop order to KDS",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4782;10151:751",
+          "text": "Same spec as Drivethru",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4783;10151:751",
+          "text": "Type and Color options TBD. Will be CMS controlled.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4784;10151:751",
+          "text": "Phones driver. Standard OS functionality.",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I28656:54365;10151:768",
+          "text": "These four steps will update alongside the 4 order tracker steps",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I27855:4785;10151:760",
+          "text": "Map of delivery location “Work”",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I28635:54358;10151:760",
+          "text": "Mapping this with current state delivery order status:  Step 1 = Pending Step 2 = PickupInProgress Step 3 = DeliveryInProgress Step 4 = Delivered",
+          "path": "Order Tracking / Designs / Designs / annote / annote"
+        },
+        {
+          "id": "I40000076:4662;27855:4948",
+          "text": "Proceed to the Center lane marked \"Mobile Pick Up\" at the drive-thru then give your name at the speaker box.",
+          "path": "EXPORTED SCREENS FOR DECK / order tracking 2 / Order Confirmation - Pickup / Frame 1437255117 / Frame 1437255118 / Status Card / Content Row / Text Block"
+        },
+        {
+          "id": "I28084:83822;10151:768",
+          "text": "Primary CTA closes modal and sheet. You’ll get a toast on whatever screen is behind sheet and landing page should refresh to clear order tracker",
+          "path": "Order Tracking / Designs / Flows / annote / annote"
+        },
+        {
+          "id": "I27855:4969;10151:760",
+          "text": "Uses Dynamic Island kit in iOS",
+          "path": "Order Tracking / Designs / annote / annote"
+        },
+        {
+          "id": "27855:4972",
+          "text": "Delivery times will be provided by 3PD partner",
+          "path": "Order Tracking / Designs / annote"
+        }
+      ]
+    },
+    {
+      "page": "⭐ Epic 7: Rewards + Offers",
+      "id": "4595:14700",
+      "textCount": 1585,
+      "sections": [
+        {
+          "id": "27709:13709",
+          "name": "Rewards & Offers"
+        },
+        {
+          "id": "30432:124072",
+          "name": "attempt to add multiple offers to cart"
+        },
+        {
+          "id": "32075:162046",
+          "name": "Prototype"
+        },
+        {
+          "id": "40000040:293384",
+          "name": "Ellipse 28"
+        },
+        {
+          "id": "40000076:151330",
+          "name": "EXPORTED SCREENS FOR DECK"
+        }
+      ],
+      "notes": [
+        {
+          "id": "I40000078:170263;12208:523;29506:155955",
+          "text": "Terms & Conditions: This offer can only be redeemed with your Online Order purchase. Order must include two Honey Butter Chicken Bisquit. Add-ons can be applied but will not be discounted. This offer is not a coupon, does not include add-ons, and is not valid with any other offer. Void where prohibited. No substitutions. Limit one offer per customer. Menu pricing and operating hours vary by location. No reproductions allowed. VALID AT PARTICIPATING LOCATIONS ONLY.",
+          "path": "EXPORTED SCREENS FOR DECK / rewards 3 / Frame 1437255163 / Bottom Sheet / Side Padding / Terms and Conditions"
+        },
+        {
+          "id": "I27709:15208;10151:729;10151:684",
+          "text": "To-do",
+          "path": "Rewards & Offers / Wireframes / Refer a Friend / annote / annote / tag"
+        },
+        {
+          "id": "I27709:14007;10151:742",
+          "text": "content is FPO. need to define content for this page",
+          "path": "Rewards & Offers / Wireframes / Rewards / annote / annote"
+        },
+        {
+          "id": "I27709:15149;10151:759;10151:686",
+          "text": "Functional Spec",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote / tag"
+        },
+        {
+          "id": "I27709:14009;10151:768",
+          "text": "If the user has an offer in their cart already, show this view for any other offer they press. Pressing the CTA will swap the offer in their cart with the offer they’re viewing.",
+          "path": "Rewards & Offers / Wireframes / Rewards / annote / annote"
+        },
+        {
+          "id": "I27709:14008;10151:742",
+          "text": "define content",
+          "path": "Rewards & Offers / Wireframes / Rewards / annote / annote"
+        },
+        {
+          "id": "I30445:184420;10151:760",
+          "text": "Goes to Add a Past Visit",
+          "path": "Rewards & Offers / Wireframes / annote / annote"
+        },
+        {
+          "id": "I27709:15142;10151:760",
+          "text": "This is a visual indicator of all the rewards a user has added if they pressed “Scan.” This section does not exist if the user has not redeemed points and pressed “Scan”",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15143;10151:760",
+          "text": "Disappears once card is added to wallet. Reappears if removed from wallet.",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15144;10151:768",
+          "text": "Content scrolls beneath scan frame",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I30416:161620;10151:768",
+          "text": "Brightness on device should go to 100%",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15145;10151:760",
+          "text": "Dynamically updates if reward is refunded",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15146;10151:760",
+          "text": "To remove an item and refund their points, they’ll double confirm through the icon and CTA",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15147;10151:751",
+          "text": "Shows upon next opening app",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15148;10151:768",
+          "text": "Pressing this takes user to load funds flow, except after user presses “Add $X CTA” they return to scan screen with toast",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I27709:15149;10151:760",
+          "text": "Available offers will always appear on this screen until they’re redeemed or expire",
+          "path": "Rewards & Offers / Wireframes / Scan / annote / annote"
+        },
+        {
+          "id": "I40000078:198419;12208:523;30217:121382",
+          "text": "Earn 500 points for each friend who signs up for a Whataburger account using your link and spends $10 on an online order.",
+          "path": "EXPORTED SCREENS FOR DECK / rewards 2 / Refer a Friend / Bottom Sheet / Side Padding / Refer a Friend Sheet / Frame 1437255127"
+        },
+        {
+          "id": "I27709:15208;10151:730",
+          "text": "determine how this looks on the landing screen (could be a messaging section instead of a modal)",
+          "path": "Rewards & Offers / Wireframes / Refer a Friend / annote / annote"
+        },
+        {
+          "id": "I27709:15210;10151:781;10151:688",
+          "text": "Question",
+          "path": "Rewards & Offers / Wireframes / Refer a Friend / annote / annote / tag"
+        },
+        {
+          "id": "I27709:15209;10151:782",
+          "text": "animation when rewards are received? ",
+          "path": "Rewards & Offers / Wireframes / Refer a Friend / annote / annote"
+        },
+        {
+          "id": "I27709:15210;10151:782",
+          "text": "Is there a time limit to place this order?",
+          "path": "Rewards & Offers / Wireframes / Refer a Friend / annote / annote"
+        },
+        {
+          "id": "I27709:15356;3116:11132;3604:31734",
+          "text": "Entree: \nLarge Bun\nLarge Beef Patty (5”)(2) +$1.99\nTomato\nLettuce\nPickles (Lite)\nDiced Onions (Extra)\nMustard",
+          "path": "Rewards & Offers / Wireframes / Additional Flows / Cart/SignedIn / content / Item List / Item / content / meal-description"
+        },
+        {
+          "id": "I27709:15379;14130:252;14130:78",
+          "text": "Animation Notes",
+          "path": "Rewards & Offers / Wireframes / Additional Flows / annote / annote / tag"
+        },
+        {
+          "id": "I27709:15379;14130:253",
+          "text": "Reward sheet closes down, location sheet opens up",
+          "path": "Rewards & Offers / Wireframes / Additional Flows / annote / annote"
+        }
+      ]
+    },
+    {
+      "page": "🏠 Epic 9: Landing + Customer Care",
+      "id": "4301:8207",
+      "textCount": 1922,
+      "sections": [
+        {
+          "id": "41757:29260",
+          "name": "Interactions"
+        },
+        {
+          "id": "40197:240766",
+          "name": "3.0 Customer Care"
+        },
+        {
+          "id": "40197:251911",
+          "name": "2.0 Two Touch Ordering"
+        },
+        {
+          "id": "36900:2593",
+          "name": "1.0 Landing Page"
+        },
+        {
+          "id": "43121:90753",
+          "name": "Scrim"
+        },
+        {
+          "id": "43121:90737",
+          "name": "Modal"
+        },
+        {
+          "id": "40000081:273437",
+          "name": "EXPORTED SCREENS FOR DECK"
+        }
+      ],
+      "notes": [
+        {
+          "id": "I41978:30600;41978:30566",
+          "text": "Holler at Us",
+          "path": "3.0 Customer Care / Designs / Customer Care Landing / content / Feedback / Invite Section / Invite Text Container"
+        },
+        {
+          "id": "I41978:30600;41978:30567",
+          "text": "Was your experience great or not-so-great?",
+          "path": "3.0 Customer Care / Designs / Customer Care Landing / content / Feedback / Invite Section / Invite Text Container"
+        },
+        {
+          "id": "I40197:250754;36900:4534;10091:659",
+          "text": "Give Us Feedback",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Header / Header"
+        },
+        {
+          "id": "I41978:30622;41978:30566",
+          "text": "Chat",
+          "path": "3.0 Customer Care / Designs / Customer Care Landing / content / Feedback / Invite Section / Invite Text Container"
+        },
+        {
+          "id": "I41978:30622;41978:30567",
+          "text": "Want to message one of our team members?",
+          "path": "3.0 Customer Care / Designs / Customer Care Landing / content / Feedback / Invite Section / Invite Text Container"
+        },
+        {
+          "id": "I41978:30622;41978:30568;14929:762",
+          "text": "CHAT WITH US",
+          "path": "3.0 Customer Care / Designs / Customer Care Landing / content / Feedback / Invite Section / Button"
+        },
+        {
+          "id": "41978:30566",
+          "text": "Headline",
+          "path": "3.0 Customer Care / Designs / Feedback / Invite Section / Invite Text Container"
+        },
+        {
+          "id": "41978:30567",
+          "text": "Body",
+          "path": "3.0 Customer Care / Designs / Feedback / Invite Section / Invite Text Container"
+        },
+        {
+          "id": "I40197:250695;36900:4512",
+          "text": "Radios",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250695;36900:4513",
+          "text": "One line radios:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250695;36900:4517;5530:13955",
+          "text": "Label",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250696;36900:4513",
+          "text": "Two line radios:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4515;5530:19067",
+          "text": "Today at 11:40am",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4515;5530:19069",
+          "text": "Delivery",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4516;5528:18005",
+          "text": "Yesterday at 7:22pm",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250753;36900:4532;36900:4516;5530:19069",
+          "text": "Drive-thru from 3500 S New Braunfels Ave",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4517;5530:19067",
+          "text": "November 24",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4517;5530:19069",
+          "text": "Curbside from 126 Reallylongstreetnamehere Example",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4518;5530:13955",
+          "text": "Not Listed",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250697;36900:4512",
+          "text": "Dropdown",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250697;36900:4513",
+          "text": "Default (blank):",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250700;36900:4520;15771:905",
+          "text": "Select",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Dropdown"
+        },
+        {
+          "id": "I40197:250698;36900:4513",
+          "text": "Selected:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250699;36900:4520;15771:909",
+          "text": "Option 1",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Dropdown / Dropdown Selector / Option"
+        },
+        {
+          "id": "I40197:250699;36900:4513",
+          "text": "Active:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250699;36900:4520;15771:911",
+          "text": "Option 2",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Dropdown / Dropdown Selector / Option"
+        },
+        {
+          "id": "I40197:250699;36900:4520;15771:913",
+          "text": "Option 3",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Dropdown / Dropdown Selector / Option"
+        },
+        {
+          "id": "I40197:250700;36900:4512",
+          "text": "Blank Block",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250700;36900:4513",
+          "text": "Above dropdown goes over content.",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250701;36900:4512",
+          "text": "Upload",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250701;36900:4513",
+          "text": "Default state:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250701;36900:4522;14929:738",
+          "text": "Upload recEIpt",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Upload"
+        },
+        {
+          "id": "I40197:250702;36900:4513",
+          "text": "Image uploaded state:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250703;36900:4512",
+          "text": "Text Area",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250703;36900:4513",
+          "text": "Standard text area:",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250703;36900:4521;15775:999",
+          "text": "Placeholder text.",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Text Area / input + error padding / input"
+        },
+        {
+          "id": "I40197:250754;36900:4533;5540:1082;5540:979;14163:4818",
+          "text": "Continue",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Bottom Nav / Bottom Nav CTAs / Button"
+        },
+        {
+          "id": "I40197:250754;36900:4533;12348:1314;12348:967",
+          "text": "Home",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Bottom Nav / Nav / _Nav Item"
+        },
+        {
+          "id": "I40197:250754;36900:4533;12348:1315;12348:967",
+          "text": "Rewards",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Bottom Nav / Nav / _Nav Item"
+        },
+        {
+          "id": "I40197:250754;36900:4533;12348:1316;12348:967",
+          "text": "Menu",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Bottom Nav / Nav / _Nav Item"
+        },
+        {
+          "id": "I40197:250754;36900:4533;12348:1317;12348:967",
+          "text": "Scan",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Bottom Nav / Nav / _Nav Item"
+        },
+        {
+          "id": "I40197:250754;36900:4533;12348:1318;12348:967",
+          "text": "Account",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / Bottom Nav / Nav / _Nav Item"
+        },
+        {
+          "id": "I40197:250754;36900:4530;36900:4512",
+          "text": "Thanks for reaching out.",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250754;36900:4530;36900:4513",
+          "text": "First, how may we help you?",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250754;36900:4530;36900:4515;5530:18503",
+          "text": "I have a problem",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250754;36900:4530;36900:4516;5530:13955",
+          "text": "I have a suggestion",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250754;36900:4530;36900:4517;5530:13955",
+          "text": "I have something nice to say",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250754;36900:4531;36900:4512",
+          "text": "We're sorry something was wrong.",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250754;36900:4531;36900:4513",
+          "text": "Was this an online order?",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250754;36900:4531;36900:4515;5530:18503",
+          "text": "Yes",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250754;36900:4531;36900:4516;5530:13955",
+          "text": "No",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4513",
+          "text": "What order had a problem?",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block"
+        },
+        {
+          "id": "I40197:250754;36900:4532;36900:4516;5530:19055",
+          "text": "Description Text",
+          "path": "3.0 Customer Care / Designs / Customer Care Feedback / content / Question Block / Radio Block / Content Cards / content / heading"
+        },
+        {
+          "id": "I40197:250756;10151:733;10151:684",
+          "text": "To-do",
+          "path": "3.0 Customer Care / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I40197:250756;10151:734",
+          "text": "@Sam - we’ll need a treatment for nested checkboxes. This is what’s in the current Customer Care website",
+          "path": "3.0 Customer Care / Designs / annote / annote"
+        },
+        {
+          "id": "I40137:216685;10151:759;10151:686",
+          "text": "Functional Spec",
+          "path": "1.0 Landing Page / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I40197:253724;10151:756",
+          "text": "If there are items in the cart, they are brought into this screen as well",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253725;10151:746",
+          "text": "Hierarchy for what location is suggested for pickup order:\n\nuser’s chosen location\nlocation attached to item/order when it was last ordered\nIf 2 is >15 mi away, nearest favorite\nIf 3 is >15 mi away, nearest recent\nIf 4 is >15 mi away, nearest",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253726;15435:329;15435:298",
+          "text": "Thought",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I40197:253726;15435:330",
+          "text": "This feature is a great example that we need to guide/teach the user that Orange = Action Elevation = Tappable since these screens deviate slightly from what we've told the user is the primary mental modal of ordering. I want to be very cautious that our simplification don't introduce friction and are truly intuitive.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253727;10151:746",
+          "text": "Hierarchy for what location is suggested for pickup order:\n\nuser’s chosen location\nIf non chosen, saved address they order from most frequently\nIf no saved addresses, recent address they order from most frequently",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253728;10151:756",
+          "text": "Only show name if favorite. No ability to add/remove fave here.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253730;10151:818;10151:690",
+          "text": "Component",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I40197:253729;10151:819",
+          "text": "Swaps to delivery view. If user has no favorite or recent delivery addresses, do not show cta.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253730;10151:819",
+          "text": "Swaps to pickup view. If user has no favorite or recent pickup addresses, do not show cta.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253731;10151:760",
+          "text": "Only show timing and selected payment method here. Default to ASAP and the default payment method.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253733;10151:746",
+          "text": "Check for issues done upon entry (same as cart). If there is a food item availability issue, show an error modal that kicks them to cart screen.  If there is a payment issue, inline error in payment section to open sheet and choose new modal.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253734;10151:768",
+          "text": "Adds items to cart and goes to that screen",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253735;10151:768",
+          "text": "Opens sheet",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253736;10151:760",
+          "text": "Returns to landing",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253737;10151:746",
+          "text": "Check user’s order history for preferred method - pickup or delivery. Highest frequency determines page default.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253738;10151:760",
+          "text": "Delivery tip text not underlined since functionality is right above",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253739;10151:768",
+          "text": "Item cards retain functionality in cart.  \nEditing meal takes you to meal summary first. Editing side/drink opens sheet.\n\nDeleting all items triggers modal and then returns you to landing.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253740;10151:768",
+          "text": "No suggested items or add-on rewards. Reward items may get brought into this page if they were in your cart already.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:253741;10151:768",
+          "text": "CTA enabled/disabled follows logic for regular checkout.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:254529;10151:768",
+          "text": "Pressing location opens a modified location selection sheet. This sheet will show saved and recent locations (same view as My Locations tab).\n\nSheet height is not adjustable, but user can scroll. The selected location receives a “selected” treatment.   Locations have limited functionality and information (NO location info, icons, CTA, etc).  Pressing a different location will select it and automatically close the sheet. No selected state to confirm.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:254530;10151:768",
+          "text": "Selecting payment edit opens sheet with reused payment method component. Functionality is limited to just selecting another method.   Filled radio represents current active selection. Selecting a new method will automatically close the sheet.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:254531;10151:768",
+          "text": "Show add card unless max number of payments is added. If pressed, items are added to cart and user is taken to regular order flow, specifically to payments page with the add card sheet opened. They’ll proceed with regular checkout flow from there.",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:254532;10151:771;10151:688",
+          "text": "Question",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote / tag"
+        },
+        {
+          "id": "I40197:254532;10151:772",
+          "text": "Alternatively...  Will sheet on sheet be a problem? Or can the functionality be:\n1st sheet opens\ntap add CC\n1st sheet closes\n2nd sheet open/add card\nsave/sheet close\nreturn to Quick Order screen",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:254533;10151:768",
+          "text": "Check CTA on this sheet to confirm new selections",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "I40197:254534;10151:768",
+          "text": "There should always be a recent address here, so user cannot add a new one",
+          "path": "2.0 Two Touch Ordering / Designs / annote / annote"
+        },
+        {
+          "id": "36900:2633",
+          "text": "The landing page is the front door to the experience and is the first page shown every time the app is launched.\n",
+          "path": "1.0 Landing Page"
+        },
+        {
+          "id": "36900:2610",
+          "text": "Happy paths\nUser opens the app\nUser returns to the home page using tab bar navigation\n\n\nStates\nlogged in/not logged in\nlocation selected/not selected location\nactive order/no active order\npersonalized data available/not available\n\n",
+          "path": "1.0 Landing Page"
+        },
+        {
+          "id": "36900:2636",
+          "text": "Bottom Nav w/ 4-5 items\nPersistent Header w/ Location & Icon/Link to Cart\nScan QR code for pay in store/earning points\nUse of sheets in Location Selection, Customizations (user choices)\nRecents/Faves section that lived on Landing with one touch ordering",
+          "path": "1.0 Landing Page"
+        },
+        {
+          "id": "36900:2613",
+          "text": "WAB research\nTop Reasons for visiting WAB:\nConvenience (quick meal on the go): 54%\nFulfilling cravings: 49%\nFamily meals/gatherings, social outings, and celebrations also play notable roles.\n\n\nBest practices\nadd data about scrolling",
+          "path": "1.0 Landing Page"
+        },
+        {
+          "id": "36900:2634",
+          "text": "Happy paths\nUser opens the app\nUser returns to the home page using tab bar navigation\nUser is logged in\n\n\nStates\nlogged in/not logged in\npersonalized data available/not available\n\n",
+          "path": "1.0 Landing Page"
+        },
+        {
+          "id": "36900:2637",
+          "text": "WAB research\nTop Reasons for visiting WAB:\nConvenience (quick meal on the go): 54%\nFulfilling cravings: 49%\nFamily meals/gatherings, social outings, and celebrations also play notable roles.\n\n\nBest practices\n80% of users never scroll past the fold, according to Jakob Nielsen, unless given a strong cue to do so.\nusers spend about 57% of their page-viewing time above the fold. 74% of the viewing time was spent in the first two screenfuls",
+          "path": "1.0 Landing Page"
+        },
+        {
+          "id": "I40000083:303994;41173:19178",
+          "text": "Banana pudding is such a BBQ restaurant staple in Texas that we decided to glow it up into a milkshake.",
+          "path": "EXPORTED SCREENS FOR DECK / landing 5 / Mobile Frame 52 / Content / Chef Card / Quote / Quote Section"
+        },
+        {
+          "id": "I40000083:306642;27855:4948",
+          "text": "Proceed to the Center lane marked \"Mobile Pick Up\" at the drive thru then give your name at the speaker box.",
+          "path": "EXPORTED SCREENS FOR DECK / landing 5 / Mobile Frame 54 / Hero / Frame 1437255118 / Frame 1437255118 / Status Card / Content Row / Text Block"
+        },
+        {
+          "id": "I40137:216684;10151:768",
+          "text": "Content will scroll until this section is at the top for visibility",
+          "path": "1.0 Landing Page / Designs / annote / annote"
+        },
+        {
+          "id": "I40137:216685;10151:760",
+          "text": "Pressing anywhere in the card will open sheet.\n\nIf user presses the CTA, the content will scroll with the check in section at the top",
+          "path": "1.0 Landing Page / Designs / annote / annote"
+        },
+        {
+          "id": "40000083:307566",
+          "text": "Add, remove, or swap ingredients. Extra cheese? No pickles? Light sauce? The possibilities are endless. Then favorite to reorder next time.",
+          "path": "EXPORTED SCREENS FOR DECK / landing 1 / Onboarding 10 / Onboarding Modal 02 / Onboarding Modal 02 / Content / Text"
+        },
+        {
+          "id": "40000083:308680",
+          "text": "Add, remove, or swap ingredients. Extra cheese? No pickles? Light sauce? The possibilities are endless. Then favorite to reorder next time.\n",
+          "path": "EXPORTED SCREENS FOR DECK / landing 1 / Onboarding 12 / 5 / Content"
+        }
+      ]
+    },
+    {
+      "page": "📢 Presentations",
+      "id": "2177:6668",
+      "textCount": 224,
+      "sections": [
+        {
+          "id": "2449:8427",
+          "name": "Design Critique"
+        },
+        {
+          "id": "2449:8428",
+          "name": "Board Presentation"
+        }
+      ],
+      "notes": [
+        {
+          "id": "2157:4908",
+          "text": "Allow a connected app experience for personalized offers, rewards, and messages tailored just for you.",
+          "path": "Design Critique / iOS Tracking / text block"
+        },
+        {
+          "id": "I2078:27222;10:1956",
+          "text": "Allow Whataburger to track your location in the background (including while the app is closed) to provide local offers and rewards reminders.",
+          "path": "Design Critique / SecondaryLocationsPermission / Alert / Content"
+        }
+      ]
+    }
+  ]
+}

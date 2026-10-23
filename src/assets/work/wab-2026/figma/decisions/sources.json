@@ -1,0 +1,54 @@
+{
+  "exportedOn": "2026-10-22",
+  "processing": "Direct Figma exports. No resizing, cropping, recoloring, or Figma source changes. Location screens and customization strips are 2x. These are exploration and specification examples, not a claim of shipped behavior.",
+  "assets": [
+    {
+      "asset": "location-fill-exploration.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "3150:7545",
+      "width": 804,
+      "height": 1748,
+      "bytes": 181924
+    },
+    {
+      "asset": "location-outline-exploration.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "3326:11162",
+      "width": 804,
+      "height": 1748,
+      "bytes": 181716
+    },
+    {
+      "asset": "location-type-color.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "3157:7873",
+      "width": 804,
+      "height": 1748,
+      "bytes": 138504
+    },
+    {
+      "asset": "location-type-weight.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "3326:11778",
+      "width": 804,
+      "height": 1748,
+      "bytes": 133830
+    },
+    {
+      "asset": "customization-selected-2x.png",
+      "fileKey": "D8XlndxehP6lc8BSrGQBY1",
+      "nodeId": "12709:32081",
+      "width": 1328,
+      "height": 300,
+      "bytes": 108956
+    },
+    {
+      "asset": "customization-empty-groups-2x.png",
+      "fileKey": "D8XlndxehP6lc8BSrGQBY1",
+      "nodeId": "12709:32238",
+      "width": 864,
+      "height": 292,
+      "bytes": 56235
+    }
+  ]
+}

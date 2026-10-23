@@ -142,7 +142,7 @@ function freezeScene(scene: HTMLElement) {
   if (frozen) resumeScene(frozen)
   frozen = scene
   scene.dataset.deviceFreeze = ''
-  pausedAnimations = scene.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running' || animation.playState === 'pending')
+  pausedAnimations = scene.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running' || animation.pending)
   pausedAnimations.forEach(animation => animation.pause())
   playingVideos = [...scene.querySelectorAll('video')].filter(video => !video.paused)
   playingVideos.forEach(video => video.pause())
@@ -179,7 +179,7 @@ function markNav(root: HTMLElement) {
 function heroStageTop(): number {
   const desktop = window.matchMedia('(min-width: 64.0625rem)').matches
   const probe = document.createElement('div')
-  probe.style.cssText = `position:absolute;visibility:hidden;height:calc(var(--nav-height) + ${desktop ? 'var(--page-margin)' : 'var(--touch-target) + var(--space-4) + var(--space-2)'})`
+  probe.style.cssText = `position:absolute;visibility:hidden;height:calc(var(--nav-height) + ${desktop ? 'var(--page-margin)' : 'var(--touch-target) + var(--cs-heading-gap) + var(--cs-caption-gap)'})`
   document.body.append(probe)
   const top = probe.getBoundingClientRect().height
   probe.remove()

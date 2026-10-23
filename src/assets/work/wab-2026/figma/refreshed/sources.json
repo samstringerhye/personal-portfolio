@@ -1,0 +1,144 @@
+{
+  "exportedOn": "2026-10-22",
+  "processing": "Direct Figma exports; WebP quality 95, direction boards resized proportionally to 3280px wide. SVG food icons retain source vector artwork. Portfolio icon composition lives in IconBoard.astro. No source Figma nodes modified.",
+  "assets": [
+    {
+      "asset": "direction-vibrant-clean.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "1642:9823"
+    },
+    {
+      "asset": "direction-modern-clean.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "1286:5102"
+    },
+    {
+      "asset": "direction-dark-clean.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "1269:2974"
+    },
+    {
+      "asset": "typography-current.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6244:79007"
+    },
+    {
+      "asset": "stickers-current.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6329:43997"
+    },
+    {
+      "asset": "order-icons-current.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6412:100623"
+    },
+    {
+      "asset": "navigation-current.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6405:253833"
+    },
+    {
+      "asset": "customization-current.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "4065:7373"
+    },
+    {
+      "asset": "confirmation-current.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "4877:13848"
+    },
+    {
+      "asset": "rewards-refresh.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6125:328853"
+    },
+    {
+      "asset": "scan-refresh.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6125:357467"
+    },
+    {
+      "asset": "account-refresh.webp",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6449:93012"
+    },
+    {
+      "asset": "menu-burger.svg",
+      "fileKey": "ehC1f4z23akDvWDQIXPRoo",
+      "nodeId": "12121:2456"
+    },
+    {
+      "asset": "menu-fries.svg",
+      "fileKey": "ehC1f4z23akDvWDQIXPRoo",
+      "nodeId": "12121:2634"
+    },
+    {
+      "asset": "menu-drink.svg",
+      "fileKey": "ehC1f4z23akDvWDQIXPRoo",
+      "nodeId": "12121:2565"
+    },
+    {
+      "asset": "/motion/whataburger/home-pele-current.webp",
+      "fileKey": "D8XlndxehP6lc8BSrGQBY1",
+      "nodeId": "39548:68853",
+      "processing": "Cropped only exterior Figma frame shadow: x11 y2 width390 height2640. Displayed at phone width with its source button and navigation fixed over the viewport."
+    },
+    {
+      "asset": "/motion/whataburger/home-pele-order.webp",
+      "fileKey": "D8XlndxehP6lc8BSrGQBY1",
+      "nodeId": "39548:69167",
+      "processing": "Direct export including shadow. Source wording remains START ORDER."
+    },
+    {
+      "asset": "/motion/whataburger/home-pele-nav.webp",
+      "fileKey": "D8XlndxehP6lc8BSrGQBY1",
+      "nodeId": "39548:69168",
+      "processing": "Direct export including 50px top shadow."
+    },
+    {
+      "asset": "confirmation-2x.png",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "4877:13848",
+      "scale": 2,
+      "width": 780,
+      "height": 2026,
+      "processing": "Direct Figma MCP 2x PNG export; retained as PNG in the portfolio screen panel."
+    },
+    {
+      "asset": "customization-2x.png",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "4065:7373",
+      "scale": 2,
+      "width": 780,
+      "height": 5974,
+      "processing": "Direct Figma MCP 2x PNG export; retained as PNG in the portfolio screen panel."
+    },
+    {
+      "asset": "rewards-2x.png",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6125:328853",
+      "scale": 2,
+      "width": 780,
+      "height": 3094,
+      "processing": "Direct Figma MCP 2x PNG export; retained as PNG in the portfolio screen panel."
+    },
+    {
+      "asset": "scan-2x.png",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6125:357467",
+      "scale": 2,
+      "width": 780,
+      "height": 1696,
+      "processing": "Direct Figma MCP 2x PNG export; retained as PNG in the portfolio screen panel."
+    },
+    {
+      "asset": "account-2x.png",
+      "fileKey": "HpEkOIc93gioRRzop5luw0",
+      "nodeId": "6449:93012",
+      "scale": 2,
+      "width": 780,
+      "height": 1696,
+      "processing": "Direct Figma MCP 2x PNG export; retained as PNG in the portfolio screen panel."
+    }
+  ]
+}

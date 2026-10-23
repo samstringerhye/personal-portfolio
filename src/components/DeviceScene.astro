@@ -15,7 +15,7 @@ const { scene, label } = Astro.props
 const arrangement = arrangementOf(scene)
 ---
 
-<div class="device-scene" data-device-scene={scene} role="img" aria-label={arrangement.label ?? label} transition:persist={`device-${scene}`}>
+<div class="device-scene" data-device-scene={scene} role={scene === 'whataburger' ? 'group' : 'img'} aria-label={arrangement.label ?? label} transition:persist={`device-${scene}`}>
   {arrangement.placements.map((p, i) => <div class="device-scene-host" data-index={i} data-device={p.device}></div>)}
 </div>
 
@@ -102,6 +102,16 @@ const arrangement = arrangementOf(scene)
   /* Whataburger (homescreen.ts): screens flattened from Apple's iOS kit */
   .device-scene .home .screen { background: #000; }
   .device-scene .home .screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .device-scene .home .screen .home-app-image { position: absolute; inset: 0; z-index: 2; overflow: clip; clip-path: circle(0 at 16% 60%); transition: clip-path 680ms cubic-bezier(.2,.75,.2,1); }
+  /* The supplied frame is a full scroll. Preserve its scale and pin its original controls.
+     Export shadows extend the nav 50px above its 66px body and the button 4px sideways. */
+  .device-scene .home .screen .home-app-content { height: auto; }
+  .device-scene .home .screen .home-app-nav { position: absolute; bottom: 0; height: auto; }
+  .device-scene .home .screen .home-app-order { position: absolute; left: 3.076923%; bottom: 19.74359cqw; width: 93.846154%; height: auto; }
+  .device-scene[data-app-open] .home .screen .home-app-image { clip-path: circle(150% at 16% 60%); }
+  .device-scene .home .screen .app-launch { position: absolute; z-index: 3; left: 6.5%; top: 55%; width: 20%; height: 11%; border: 0; border-radius: 12%; background: transparent; pointer-events: none; }
+  .device-scene .home .screen .app-launch:focus-visible { outline: 2px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 4px #fe7800; }
+  @media (prefers-reduced-motion: reduce) { .device-scene .home .screen .home-app-image { transition: none; } }
   .device-scene:not(.is-3d) .home { width: auto; height: 80%; border-radius: 13cqw; box-shadow: 0 0 0 2.4cqw #111; overflow: hidden; }
   /* The case study's image rule (max-height 100vh, a page background) would cut the tours' long pages
      short and fill the status bars' transparent overlays: not for the screens */

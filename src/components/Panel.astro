@@ -21,6 +21,7 @@ interface Props {
   /** Preserve PNG delivery for Figma exports when requested. */
   format?: 'png' | 'webp' | 'avif'
   alt?: string
+  className?: string
   screens?: { src: Src; alt: string }[]
   span?: 'full' | 'half'
   /** Panel color, when the visual needs its own (a video's background)*/
@@ -35,7 +36,7 @@ interface Props {
   cover?: boolean
 }
 
-const { kind, src, srcDark, format, alt = '', screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
+const { kind, src, srcDark, format, alt = '', className, screens = [], span = 'full', tint, ratio, poster, caption, multiply, cover } = Astro.props
 const half = span === 'half'
 const aspect = ratio ?? (kind === 'screens' || kind === 'slot' ? undefined : half ? '4 / 5' : '16 / 10')
 const style = [tint && `--panel-tint: ${tint}`, aspect && `--panel-ratio: ${aspect}`, kind === 'screens' && `--n: ${screens.length}`]
@@ -50,10 +51,10 @@ const pngWidths = (s: ImageMetadata, widths: number[]) => format === 'png'
   : widths
 ---
 
-<figure class:list={['panel', `panel--${kind}`, half && 'panel--half', multiply && 'panel--multiply', cover && 'panel--cover']} style={style || undefined}>
+<figure class:list={['panel', `panel--${kind}`, half && 'panel--half', multiply && 'panel--multiply', cover && 'panel--cover', className]} style={style || undefined}>
   <div class="panel-field">
     {kind === 'screens' ? (
-      <div class="panel-screens">
+      <div class="panel-screens" role={screens.length > 1 ? "region" : undefined} aria-label={screens.length > 1 ? "Screen comparison, scroll horizontally on smaller screens" : undefined} tabindex={screens.length > 1 ? 0 : undefined}>
         {screens.map((s) => (
           isLocal(s.src)
             ? <Image src={s.src} format={format} alt={s.alt} widths={pngWidths(s.src, [400, 750, 1080])} sizes={screenSizes} class="panel-screen" />

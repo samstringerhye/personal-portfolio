@@ -313,6 +313,8 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
   grab.className = 'device-scene-grab'
   art.append(grab)
   let drag: { id: number; x: number; y: number; rx: number; ry: number } | null = null
+  let launchPointer: { id: number; x: number; y: number } | null = null
+  const launchButton = scene === 'whataburger' ? faces[0].querySelector<HTMLButtonElement>('[data-app-launch]') : null
   let dragTo: [number, number] | null = null
   // After a drag the arrangement eases back to rest at dragReturn, then follows the scroll again
   let returning = false
@@ -321,12 +323,23 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     if (e.button !== 0) return
     // Keep the drag when the pointer leaves the box (throws for a pointer that's already gone)
     try { grab.setPointerCapture(e.pointerId) } catch {}
+    if (launchButton && !art.hasAttribute('data-app-open')) {
+      const bounds = faces[0].getBoundingClientRect()
+      const x = (e.clientX - bounds.left) / bounds.width
+      const y = (e.clientY - bounds.top) / bounds.height
+      if (x >= 0.065 && x <= 0.265 && y >= 0.55 && y <= 0.66) {
+        launchPointer = { id: e.pointerId, x: e.clientX, y: e.clientY }
+        lastInput = performance.now()
+        return
+      }
+    }
     drag = { id: e.pointerId, x: e.clientX, y: e.clientY, rx, ry }
     dragTo = [rx, ry]
     grab.classList.add('is-dragging')
     lastInput = performance.now()
   })
   grab.addEventListener('pointermove', e => {
+    if (launchPointer?.id === e.pointerId && Math.hypot(e.clientX - launchPointer.x, e.clientY - launchPointer.y) > 10) launchPointer = null
     if (!drag || e.pointerId !== drag.id) return
     const b = grab.getBoundingClientRect()
     const pitch = drag.rx + (e.clientY - drag.y) / b.height * tilt.dragPitch
@@ -334,6 +347,12 @@ export async function mountArrangement(art: HTMLElement, faces: HTMLElement[], s
     lastInput = performance.now()
   })
   const release = (e: PointerEvent) => {
+    if (launchPointer?.id === e.pointerId) {
+      const tap = Math.hypot(e.clientX - launchPointer.x, e.clientY - launchPointer.y) <= 10
+      launchPointer = null
+      if (tap) launchButton?.click()
+      return
+    }
     if (!drag || e.pointerId !== drag.id) return
     drag = null
     dragTo = null

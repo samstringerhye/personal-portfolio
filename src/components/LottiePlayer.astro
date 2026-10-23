@@ -12,11 +12,13 @@ interface Props {
   loop?: boolean
   /** Whether to autoplay on viewport entry (default: true) */
   autoplay?: boolean
+  /** Play at the asset’s authored timing instead of the decorative reverse loop. */
+  nativeLoop?: boolean
   /** Max width constraint */
   maxWidth?: string
 }
 
-const { src, label, loop = true, autoplay = true, maxWidth = '200px' } = Astro.props
+const { src, label, loop = true, autoplay = true, nativeLoop = false, maxWidth = '200px' } = Astro.props
 
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -36,6 +38,7 @@ try {
     data-animation={animationData}
     data-loop={String(loop)}
     data-autoplay={String(autoplay)}
+    data-native-loop={String(nativeLoop)}
     role="img"
     aria-label={label}
     style={`max-width: ${maxWidth}; margin: 0 auto;`}
@@ -91,14 +94,17 @@ try {
     }
     try {
       const animData = JSON.parse(el.dataset.animation!)
+      const nativeLoop = el.dataset.nativeLoop === 'true'
       const anim = lottie.loadAnimation({
         container: el,
         renderer: 'svg',
-        loop: false,
+        loop: nativeLoop && !prefersReduced,
         autoplay: false,
         animationData: animData,
       })
-      if (!prefersReduced && el.dataset.loop === 'true') {
+      if (!prefersReduced && nativeLoop) {
+        anim.play()
+      } else if (!prefersReduced && el.dataset.loop === 'true') {
         const obj = { frame: 0 }
         const tween = gsap.to(obj, {
           frame: anim.totalFrames - 1,
@@ -112,6 +118,8 @@ try {
         tweens.add(tween)
       } else if (!prefersReduced) {
         anim.play()
+      } else {
+        anim.goToAndStop(nativeLoop ? Math.floor(anim.totalFrames / 2) : anim.totalFrames - 1, true)
       }
     } catch (e) {
       console.warn('LottiePlayer: Failed to init animation', e)

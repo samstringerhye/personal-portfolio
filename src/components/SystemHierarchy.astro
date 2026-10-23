@@ -1,0 +1,72 @@
+---
+import type { ImageMetadata } from 'astro'
+
+interface Props {
+  examples: { image: ImageMetadata; label: string; caption: string; alt: string }[]
+}
+const { examples } = Astro.props
+---
+
+<div class="system-hierarchy" role="region" aria-label="Design system structure, scroll horizontally on smaller screens" tabindex="0">
+  {examples.map(({ image, label, caption, alt }) => (
+    <figure class="panel hierarchy-example">
+      <div class="panel-field hierarchy-field">
+        <span class="hierarchy-label">{label}</span>
+        <img src={image.src} width={image.width} height={image.height} alt={alt} loading="lazy" decoding="async" />
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .system-hierarchy {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(15rem, 1fr));
+    min-width: 0;
+    overflow-x: auto;
+    gap: 20px;
+  }
+
+  :global(html.ek) .system-hierarchy .hierarchy-example {
+    grid-column: auto;
+  }
+
+  :global(html.ek) .system-hierarchy .hierarchy-field {
+    /* Keep the frames equal when a caption wraps onto a second line. */
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: clamp(16px, 2vw, 28px);
+  }
+
+  .hierarchy-label {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 500;
+    color: #34475c;
+  }
+
+  :global(html.ek .case-study-body) .hierarchy-field img {
+    display: block;
+    width: min(100%, 392px);
+    height: auto;
+    aspect-ratio: 392 / 246;
+    object-fit: contain;
+    margin: auto;
+    padding: 0;
+  }
+
+  @media (max-width: 640px) {
+    .system-hierarchy {
+      gap: 28px;
+    }
+
+    :global(html.ek) .system-hierarchy .hierarchy-field {
+      padding: 24px;
+    }
+  }
+</style>

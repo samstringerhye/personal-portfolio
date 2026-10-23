@@ -1,8 +1,7 @@
 ---
 /**
- * The whole story in one block under the hero: the facts in the left columns, then the outcome as
- * the lead, problem, decision, and leadership contribution, a sentence or two each. The visuals after it carry the
- * rest (Gallery, Panel).
+ * The whole story in one block under the hero: the facts in the left columns, then an optional
+ * lead, problem, decision, and leadership contribution. The visuals after it carry the rest.
  */
 interface Props {
   client: string
@@ -11,7 +10,8 @@ interface Props {
   year: number | string
   /** What I made, one line each */
   made: string[]
-  outcome: string
+  /** Verified result when available; omit when the project has no reportable outcome. */
+  outcome?: string
   problem: string
   decision: string
   did: string
@@ -32,12 +32,16 @@ const facts: [string, string | string[]][] = [
     {facts.map(([label, value]) => (
       <div class="story-fact">
         <dt class="typo-ui-caps">{label}</dt>
-        {(Array.isArray(value) ? value : [value]).map((v) => <dd>{v}</dd>)}
+        <dd>
+          {Array.isArray(value) ? (
+            <ul class="story-scope">{value.map((v) => <li>{v}</li>)}</ul>
+          ) : value}
+        </dd>
       </div>
     ))}
   </dl>
   <div class="story-text">
-    <p class="story-lead">{outcome}</p>
+    {outcome && <p class="story-lead">{outcome}</p>}
     <div class="story-part">
       <h2 class="typo-ui-caps">The problem</h2>
       <p>{problem}</p>
@@ -52,3 +56,15 @@ const facts: [string, string | string[]][] = [
     </div>
   </div>
 </section>
+
+<style>
+  .story-scope {
+    margin: 0;
+    padding-left: 1.1em;
+    list-style: disc;
+  }
+
+  .story-scope li + li {
+    margin-top: 0.35em;
+  }
+</style>

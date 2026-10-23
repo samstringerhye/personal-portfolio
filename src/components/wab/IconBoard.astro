@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets'
+import Panel from '../Panel.astro'
+import stickers from '../../assets/work/wab-2026/figma/refreshed/stickers-current.webp'
+import order from '../../assets/work/wab-2026/figma/refreshed/order-icons-current.webp'
+import navigation from '../../assets/work/wab-2026/figma/refreshed/navigation-current.webp'
+import burger from '../../assets/work/wab-2026/figma/refreshed/menu-burger.svg'
+import fries from '../../assets/work/wab-2026/figma/refreshed/menu-fries.svg'
+import drink from '../../assets/work/wab-2026/figma/refreshed/menu-drink.svg'
+---
+<div class="wab-icon-bento">
+  <Panel kind="slot" tint="#FFFFFF" className="wab-icon-panel wab-sticker-tile" caption="Brand stickers">
+    <Image src={stickers} alt="Whataburger food, bag, phone, and restaurant stickers" />
+  </Panel>
+  <Panel kind="slot" tint="#FFFFFF" className="wab-icon-panel wab-order-tile" caption="Ordering illustrations">
+    <Image src={order} alt="Burger, fries, and drink illustrations form a meal" />
+  </Panel>
+  <Panel kind="slot" tint="#FFFFFF" className="wab-icon-panel wab-menu-tile" caption="Menu icons">
+    <div class="wab-menu-icons">
+      <img src={burger.src} width="48" height="48" alt="Burger" loading="lazy" />
+      <img src={fries.src} width="48" height="48" alt="Fries" loading="lazy" />
+      <img src={drink.src} width="48" height="48" alt="Drink" loading="lazy" />
+    </div>
+  </Panel>
+  <Panel kind="slot" tint="#FFFFFF" className="wab-icon-panel wab-navigation-tile" caption="Navigation">
+    <Image src={navigation} alt="Home, Rewards, Menu, Scan, and Account navigation with the active Rewards icon" />
+  </Panel>
+</div>
+<style>
+  .wab-icon-bento { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: var(--cs-block-gap); }
+  .wab-icon-bento :global(.wab-icon-panel) { grid-column: auto; }
+  .wab-icon-bento :global(.panel-field) { display: flex; align-items: center; justify-content: center; min-height: 180px; padding: clamp(16px, 3vw, 32px); }
+  .wab-icon-bento :global(.wab-sticker-tile .panel-field) { aspect-ratio: 1005 / 880; padding: 0; }
+  .wab-icon-bento :global(img) { display: block; width: 100%; height: auto; max-height: 280px; object-fit: contain; }
+  .wab-icon-bento :global(.wab-sticker-tile img) { width: 100%; height: 100%; max-height: none; object-fit: cover; }
+  .wab-menu-icons { display: flex; align-items: center; justify-content: space-around; gap: 16px; width: 100%; }
+  .wab-menu-icons img { width: 48px; height: 48px; }
+  @media (max-width: 768px) { .wab-icon-bento { grid-template-columns: 1fr; } }
+</style>

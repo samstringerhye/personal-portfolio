@@ -2,96 +2,121 @@
 title: "Whataburger App and Design System"
 client: "Whataburger"
 year: 2026
-role: "Associate Design Director"
+role: "Lead UI Designer"
 agency: "Razorfish"
-tagline: "Design system and production screens for Whataburger's mobile app."
+tagline: "Giving Whataburger's brand character room while keeping ordering actions clear."
 thumbnail: "../../assets/work/wab-2026/wab-thumbnail-32.jpeg"
+thumbnailScene: "whataburger"
 thumbnailLayers:
-  subject: "../../assets/work/wab-2026/wab-subject-32.png"
-  background: "var(--ek-card)"
-  subjectBox: { top: 0.03, right: 0.75, bottom: 0.78, left: 0.42 }
-  subjectBounds: { top: 0.054, right: 1, bottom: 1, left: 0.586 }
-heroImage: "../../assets/work/wab-2026/hero.png"
-heroImageAlt: "Whataburger mobile app redesign: home screen shown in a device mockup"
+  subject: "../../assets/work/wab-2026/wab-thumbnail-32.jpeg"
+  background: "#FE7800"
+heroImage: "../../assets/work/wab-2026/wab-thumbnail-32.jpeg"
+heroImageAlt: "The Whataburger app icon on an iPhone home screen"
 featured: true
 sortOrder: 1
 unlisted: false
 passwordProtected: true
-thumbnailAlt: "The Whataburger app icon on an iPhone home screen"
-thumbnailScene: "whataburger"
+thumbnailAlt: "A 3D iPhone showing the Whataburger app icon, with a second iPhone behind it"
 thumbnailText: "dark"
 tags: ["Design System", "Design Tokens", "Mobile App", "Visual Design", "Component Architecture"]
 ---
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
-import ChaosToOrder from '../../components/wab/ChaosToOrder.astro'
-import DiagramAnimations from '../../components/wab/DiagramAnimations.astro'
+import ProseGroup from '../../components/ProseGroup.astro'
+import IconBoard from '../../components/wab/IconBoard.astro'
 import lifestyleHome from '../../assets/work/wab-2026/figma/lifestyle-home.webp'
-import home from '../../assets/work/wab-2026/figma/home.webp'
-import menuReorder from '../../assets/work/wab-2026/figma/menu-reorder.webp'
-import menuItem from '../../assets/work/wab-2026/figma/menu-item.webp'
-import rewards from '../../assets/work/wab-2026/figma/rewards.webp'
-import scan from '../../assets/work/wab-2026/figma/scan.webp'
-import account from '../../assets/work/wab-2026/figma/account.webp'
-import directionTesting from '../../assets/work/wab-2026/direction-testing.png'
-import moodboard from '../../assets/work/wab-2026/direction-vibrant-moodboard.png'
-import lifestyleMenu from '../../assets/work/wab-2026/lifestyle-menu.jpeg'
-import menuCustomization from '../../assets/work/wab-2026/menu-customization.png'
-import orderSummary from '../../assets/work/wab-2026/order-summary.png'
-import screensGrid from '../../assets/work/wab-2026/screens-grid.jpeg'
-import typographyVideo from '../../assets/work/wab-2026/motion/typography.mp4'
-import typographyPoster from '../../assets/work/wab-2026/motion/typography-poster.webp'
-import illustrationVideo from '../../assets/work/wab-2026/motion/illustration.mp4'
-import illustrationPoster from '../../assets/work/wab-2026/motion/illustration-poster.webp'
+import menuCustomizationFinal from '../../assets/work/wab-2026/figma/refreshed/customization-2x.png'
+import orderConfirmationFinal from '../../assets/work/wab-2026/figma/refreshed/confirmation-2x.png'
+import rewards from '../../assets/work/wab-2026/figma/refreshed/rewards-2x.png'
+import scan from '../../assets/work/wab-2026/figma/refreshed/scan-2x.png'
+import account from '../../assets/work/wab-2026/figma/refreshed/account-2x.png'
+import directionVibrant from '../../assets/work/wab-2026/figma/refreshed/direction-vibrant-clean.webp'
+import directionModern from '../../assets/work/wab-2026/figma/refreshed/direction-modern-clean.webp'
+import directionDark from '../../assets/work/wab-2026/figma/refreshed/direction-dark-clean.webp'
+import typographyBoard from '../../assets/work/wab-2026/figma/refreshed/typography-cropped.webp'
+import locationFill from '../../assets/work/wab-2026/figma/decisions/location-fill-exploration.webp'
+import locationOutline from '../../assets/work/wab-2026/figma/decisions/location-outline-exploration.webp'
+import typeColor from '../../assets/work/wab-2026/figma/decisions/location-type-color.webp'
+import typeWeight from '../../assets/work/wab-2026/figma/decisions/location-type-weight.webp'
+import customizationSelected from '../../assets/work/wab-2026/figma/decisions/customization-selected-2x.png'
+import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/customization-empty-groups-2x.png'
 
 <Story
   client="Whataburger"
-  role="Associate Design Director"
+  role="Lead UI Designer"
   agency="Razorfish"
   year={2026}
-  made={['Visual direction', 'Design system', 'Production screens']}
-  outcome="A new order flow, rebuilt design system and production screen set handed off in May 2026."
-  problem="The old app worked, but ordering, rewards and locations did not feel like one product or a clear expression of Whataburger."
-  decision="Use reorders as the first path from home, limit customization to the choice in front of the guest, and carry one visual system through every utility screen."
-  did="I set the visual direction, rebuilt the system, and took the production screens through handoff. I merged the two strongest directions, led with reorders on home, and showed only the choice that matters at each customization step."
+  made={['UI direction', 'App design system', 'Mobile app interfaces']}
+  problem="Whataburger's app needed to carry the brand's personality through ordering. Early reviews exposed a tension: orange headlines, cards, and controls competed for attention. Customers still needed to recognize what they could tap, what they had selected, and what came next."
+  decision="The team chose orange and cream as the base, keeping iconography and darker menu and card tones from the dark-brown direction. I refined how color, type weight, and icons communicated selection and action, then carried those rules into the app screens and Project Pele design system."
+  did="I led the UI design in partnership with an experience director. I designed the visual directions, used client feedback and customer testing to develop the selected direction, and built the interface screens and design system. The experience team defined the ordering requirements; I translated them into the UI."
 />
 
-<Gallery title="Homepage and menu">
-  <Panel kind="bleed" ratio="16 / 9" src={lifestyleHome} alt="A hand holding a phone on a mustard blanket: the home screen says Howdy" caption="The home screen uses Whataburger's voice before it asks for an order." />
-  <Panel kind="screens" screens={[
-    { src: home, alt: 'Home: the Whatafresher hero and a welcome' },
-    { src: menuReorder, alt: 'Menu: reorder a past meal, then explore the menu' },
-  ]} caption="Reorders and the full menu share one entry point." />
+<Gallery title="Home screen exploration" note="The home exploration brought ordering, quick reorders, and menu discovery together. This in-hand mockup shows an earlier stage of that work.">
+  <Panel kind="bleed" className="wab-home-panel" ratio="16 / 9" src={lifestyleHome} alt="Earlier Whataburger home concept shown in hand with a Howdy greeting and bottom navigation" />
 </Gallery>
 
-<Gallery title="Where it started" note="I tested three visual directions on the same home screen, then merged the two strongest. The old palette had one orange and no states, so I built the color system from scratch.">
-  <Panel kind="piece" ratio="16 / 8" src={directionTesting} alt="Three visual directions tested on the same home screen" caption="Three directions tested against the same home screen." />
-  <Panel kind="piece" span="half" ratio="4 / 5" src={moodboard} alt="Moodboard for the vibrant direction" caption="The visual reference for the direction that set the tone." />
-  <Panel kind="slot" span="half" caption="The system expands one orange into a working palette of roles and states."><ChaosToOrder /></Panel>
+<Gallery title="Visual directions and customer testing" note="Customer testing ranked dark brown first, orange and cream second, and light neutrals third. Preference for dark brown rose after customers saw its menu. The team chose orange and cream as the base, keeping the iconography and darker menu and card tones from dark brown. The full dark palette felt too Halloween-like to the team.">
+  <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionDark} alt="Dark-brown Whataburger direction with orange accents, burger photography, and menu examples" caption="Dark brown." />
+  <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionVibrant} alt="Orange-and-cream Whataburger direction with product photography, display type, and app examples" caption="Orange and cream." />
+  <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionModern} alt="Light-neutral Whataburger direction with orange accents and burger imagery" caption="Light neutrals." />
 </Gallery>
 
-<Gallery title="Ordering" note="I put reorders first on home, then split customization into one step per ingredient group so each screen asks one question.">
-  <Panel kind="bleed" ratio="16 / 9" src={lifestyleMenu} alt="A hand holding a phone, customizing a burger" caption="Customization stays focused on the decision in front of the guest." />
-  <Panel kind="screens" screens={[
-    { src: menuItem, alt: 'A Whataburger with its ingredients as chips' },
-    { src: menuCustomization, alt: 'Customize your burger, one ingredient at a time' },
-    { src: orderSummary, alt: 'Confirm your meal: every change summed up' },
-  ]} caption="The order moves from item to ingredients to a final check without repeating choices." />
+<Gallery title="Location selection and order controls" note={["Choosing a palette did not settle how to use it. I explored removing the orange fill from selected location cards, using an orange outline and shadow instead, and giving the order action more room. I also explored darker pill tabs to reduce the amount of orange on screen.", "The review surfaced a tradeoff: I wanted less competing color, while the experience director wanted to retain more orange in the selected card. We considered how the outline and shadow could carry that signal. These explorations show the distinction between a selected location, an active tab, and the action to order."]}>
+  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={locationFill} alt="Location exploration with a peach-filled selected card, orange underlined Nearby tab, and orange Order Here button" caption="Tinted selection card." span="half" />
+  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={locationOutline} alt="Location exploration with a white selected card, orange outline and shadow, brown Nearby pill, and outlined Order Here button" caption="Outlined selection card." span="half" />
 </Gallery>
 
-<Gallery title="Brand system" note="I gave the app Whataburger's voice: a script for hellos, a wide face for headlines, and a sticker set for the moments in between.">
-  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={typographyVideo} poster={typographyPoster.src} alt="Type: Howdy in the script face, the Unbounded alphabet and the Frosted Berry lettering" caption="Type gives greetings and headings their own jobs." />
-  <Panel kind="video" ratio="16 / 9" tint="#FFFDFD" src={illustrationVideo} poster={illustrationPoster.src} alt="Stickers, order icons and the navigation bar" caption="Stickers and icons carry the brand through the utility screens." />
+<Gallery title="Location details and type hierarchy" note="I revised the location details to rely on type size and weight instead of light-brown text for hierarchy. The service labels became heavier, while addresses and hours used the same dark text color. The comparison also captures an open question from the review: the team still debated the color of the selected day.">
+  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={typeColor} alt="Location detail with a light-brown address and hours, regular-weight service labels, and an orange selected day" caption="Hierarchy through color." span="half" />
+  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={typeWeight} alt="Revised location detail with dark address and hours, bold service labels, and a green selected day under review" caption="Hierarchy through type weight." span="half" />
 </Gallery>
 
-<Gallery title="Rewards, scan and account" note="Scan puts the QR code, the wallet and your points on one screen, so earning, redeeming and paying at the register take one step.">
-  <Panel kind="screens" screens={[
-    { src: rewards, alt: 'Rewards: 475 points and the offers' },
-    { src: scan, alt: 'Scan in store: a QR code, the wallet and points' },
-    { src: account, alt: 'Account hub with condiment badges' },
-  ]} caption="Rewards, payment and account details meet at the register in one scan." />
-  <Panel kind="bleed" ratio="16 / 9" src={screensGrid} alt="Every production screen, shown together" caption="The production set applies the same system across the app." />
+<Gallery title="Ingredient customization and order confirmation" note={["The ordering requirements gave those visual distinctions a purpose. Customization needed to show the base recipe, the customer's changes, and additions that affected price. The ingredient strip kept selected items visible, using labels for extra, light, and quantity changes. Empty categories retained an anchor so customers could return to them.", "I carried the type and card rules into customization and confirmation. The team's quick-order notes raised the same concern: fewer steps still needed recognizable actions, selected states, and a path to handle unavailable food or payment issues."]}>
+  <Panel kind="slot" tint="#FFFFFF" className="wab-ingredient-panel" caption="Changed portions stay visible: EX marks extra pickles, X3 marks three bacon portions, and LT marks light mustard.">
+    <img class="case-study-image wab-ingredient-desktop" src={customizationSelected.src} width={customizationSelected.width} height={customizationSelected.height} style="width: 664px;" alt="Ingredient strip showing extra pickles, three bacon portions, light mustard, and an empty cheese category" loading="lazy" />
+    <div class="wab-ingredient-mobile" role="img" aria-label="Ingredient strip showing extra pickles, three bacon portions, light mustard, and an empty cheese category" style="--ingredient-columns: 3; --ingredient-ratio: 442.6666666666667 / 252; --ingredient-header: 16%;">
+      <p class="wab-ingredient-title" aria-hidden="true">What’s On Your Whataburger®</p>
+      {[0, 1, 2].map((slice) => (
+        <div class="wab-ingredient-slice" aria-hidden="true">
+          <img src={customizationSelected.src} width={customizationSelected.width} height={customizationSelected.height} alt="" loading="lazy" style={`--ingredient-offset: ${slice * -100}%`} />
+        </div>
+      ))}
+    </div>
+  </Panel>
+  <Panel kind="slot" tint="#FFFFFF" className="wab-ingredient-panel" caption="Empty categories keep an add control: customers can add cheese, toppings, or popular add-ons from the same strip.">
+    <img class="case-study-image wab-ingredient-desktop" src={customizationEmpty.src} width={customizationEmpty.width} height={customizationEmpty.height} style="width: 432px;" alt="Ingredient strip with bread, beef, and mustard selected and empty anchors for cheese, toppings, and popular add-ons" loading="lazy" />
+    <div class="wab-ingredient-mobile" role="img" aria-label="Ingredient strip with bread, beef, and mustard selected and empty anchors for cheese, toppings, and popular add-ons" style="--ingredient-columns: 2; --ingredient-ratio: 432.0 / 244; --ingredient-header: 16.43835616438356%;">
+      <p class="wab-ingredient-title" aria-hidden="true">What’s On Your Whataburger®</p>
+      {[0, 1].map((slice) => (
+        <div class="wab-ingredient-slice" aria-hidden="true">
+          <img src={customizationEmpty.src} width={customizationEmpty.width} height={customizationEmpty.height} alt="" loading="lazy" style={`--ingredient-offset: ${slice * -100}%`} />
+        </div>
+      ))}
+    </div>
+  </Panel>
+  <Panel kind="screens" format="png" tint="transparent" className="wab-flow-panel" screens={[
+    { src: menuCustomizationFinal, alt: 'Whataburger customization screen showing ingredient groups and topping choices' },
+    { src: orderConfirmationFinal, alt: 'Whataburger pickup confirmation with location, order status, and customer support' },
+  ]} caption="Customization and pickup confirmation, shown at phone height." />
 </Gallery>
 
-<DiagramAnimations />
+<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. After exploring a filled bag, I proposed simplifying the icon for legibility; the experience director supported the simpler brown bag with an orange dot. That distinction shaped how I treated expressive artwork and functional icons within the same system.">
+  <Panel kind="piece" ratio="1920 / 935" tint="#FFFFFF" className="wab-type-board" src={typographyBoard} alt="Typography board showing Alkaline Heavy, Unbounded, rewards messaging, and Frosted Berry lettering" />
+  <IconBoard />
+</Gallery>
+
+<Gallery title="Component library and app screens" note="I turned the selected direction into a component library with button variants, inputs, navigation, and icon families. The library separates reusable controls from the screens that combine them. Designers can select an icon size or navigation state within its family instead of recreating it for each flow. I used those rules across the app while keeping the task hierarchy specific: points and offers in rewards, the QR code in scan, and settings in account.">
+  <Panel kind="screens" format="png" tint="transparent" className="wab-flow-panel" screens={[
+    { src: rewards, alt: 'Whataburger rewards screen with points, offers, and reward items' },
+    { src: scan, alt: 'Whataburger in-store scan screen with QR code and wallet' },
+    { src: account, alt: 'Whataburger account screen with account settings and shared navigation' },
+  ]} />
+</Gallery>
+
+<ProseGroup>
+## Lessons from color, type, and selection states
+
+The project sharpened how I use brand elements in an interface. A color or shadow needed to communicate an action or a selection. A type change needed to establish hierarchy. I would bring those questions into the first round of exploration, before extending a direction across the app.
+</ProseGroup>

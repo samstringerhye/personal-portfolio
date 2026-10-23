@@ -1,0 +1,71 @@
+/* Keep paired fields equal even when their captions wrap to different lengths. */
+html.ek .case-study-body .bespoke-panel .panel-field {
+  flex: none;
+  /* Screen panels omit a ratio by default; absolute artwork still needs a sized field. */
+  aspect-ratio: var(--panel-ratio, 4 / 5);
+}
+
+/* Fit complete source screens inside the field without imposing a device ratio. */
+html.ek .case-study-body .bespoke-panel .panel-screens {
+  position: absolute;
+  inset: 0;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 8%;
+  gap: 8%;
+}
+
+html.ek .case-study-body .bespoke-panel .panel-screen {
+  width: auto;
+  min-width: 0;
+  height: 100%;
+  max-width: calc((100% - (var(--n) - 1) * 8%) / var(--n));
+  max-height: 100%;
+  /* Reserve a width before lazy images load, then use each source's intrinsic ratio. */
+  aspect-ratio: auto 9 / 19.5;
+  object-fit: contain;
+  object-position: center;
+  border-radius: var(--cs-frame-radius);
+  clip-path: none;
+}
+
+@media (max-width: 48rem) {
+  html.ek .case-study-body .bespoke-panel.panel--screens:not(.panel--half) .panel-field {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* Frame the appliances, trimming the empty ceiling and foreground floor. */
+html.ek .case-study-body .bespoke-kitchen-crop .panel-media {
+  transform: scale(1.8);
+  transform-origin: 50% 35%;
+}
+
+/* These product tiles supply their own spacing; bypass the generic alpha-image inset. */
+html.ek .case-study-body .bespoke-options .bo-art img {
+  padding: 0;
+  margin: 0;
+  background: none;
+  max-height: none;
+}
+
+html.ek .case-study-body .bespoke-options .bo-heading li {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Navigation details own their sizing, including transparent tab exports. */
+html.ek .case-study-body .bespoke-navigation img {
+  padding: 0;
+  background: none;
+}
+html.ek .case-study-body .bespoke-navigation .bn-screen img {
+  width: auto;
+  max-height: 660px;
+}
+@media (max-width: 40rem) {
+  html.ek .case-study-body .bespoke-navigation .bn-screen img {
+    max-height: 580px;
+  }
+}

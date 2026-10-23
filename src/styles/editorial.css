@@ -34,10 +34,14 @@ html.ek {
   --ek-image-radius: 16px;
   --ek-surface-stroke: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
   --ek-image-stroke: var(--ek-surface-stroke);
+  /* One presentation surface across case-study imagery, independent of client palettes. */
+  --cs-image-surface: #FFFFFF;
+  --cs-frame-radius: 6px;
   /* Color around the framed project art on cards and heroes (global.css default is 2x) */
   --narrow-art-pad: calc(3 * var(--narrow-pad));
   --ek-shadow: 0 24px 60px -28px rgba(11, 33, 64, 0.22);
   --ek-prose: 40rem;
+  --cs-caption-gap: 1rem;
   --cs-scroll-cue-reserve: calc(2.75rem + var(--space-3) + var(--space-2) + env(safe-area-inset-bottom));
   /* 1600px: the studio-portfolio range, where the work is the page */
   --ek-figure: 100rem;
@@ -637,11 +641,25 @@ html.ek .work-list-item .work-list-card .work-list-media[data-scene] {
   overflow: visible;
 }
 
-/* Stacked layout: landscape devices get a row about as tall as they are, not a full screen */
+/* Match card and hero framing so a persisted device keeps its size through navigation. */
 @media (max-width: 64rem) {
-  html.ek .work-list-item .work-list-card .work-list-media[data-scene]:has(.device-scene:not([data-device="iphone-17-pro"])) {
+  html.ek .work-list-item .work-list-card .work-list-media[data-scene] {
     height: auto;
+  }
+
+  html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage) {
     aspect-ratio: 1.1;
+  }
+
+  html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage):where(:has(.device-scene-host):not(:has(.device-scene-host:not([data-device="iphone-17-pro"])))) {
+    aspect-ratio: 0.95;
+  }
+}
+
+/* Keep the tighter three-phone composition on both ends of the tablet transition. */
+@media (min-width: 48.0625rem) and (max-width: 64rem) {
+  html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage):has(.device-scene[data-device-scene="myfrontier"]) {
+    aspect-ratio: 1.15;
   }
 }
 
@@ -821,7 +839,7 @@ html.ek .case-study-body .prose-body {
 /* Captions: the body step below the copy, left on the image's edge */
 html.ek .case-study-body figcaption {
   font-family: var(--font-sans);
-  font-size: var(--text-100);
+  font-size: 14px;
   line-height: 1.5;
   color: var(--ek-ink-body);
   text-align: left;
@@ -842,7 +860,7 @@ html.ek .case-study-body .zigzag-media:not(:has(figcaption)) {
   border: 0;
   border-radius: var(--ek-window-radius);
   box-shadow: none;
-  background: var(--ek-card);
+  background: var(--cs-image-surface);
   overflow: hidden;
 }
 
@@ -853,7 +871,7 @@ html.ek .case-study-body :is(.cs-figure, .image-grid, .carousel, .image-pair-cel
   background: none;
 }
 
-html.ek .case-study-body .cs-figure {
+html.ek .case-study-body :is(.cs-figure, .component-example, .bespoke-options, .bespoke-flow, .bespoke-navigation) {
   display: flex;
   flex-direction: column;
   gap: var(--cs-caption-gap);
@@ -1450,6 +1468,20 @@ html.ek .gallery-grid {
   gap: var(--cs-block-gap);
 }
 
+/* Related examples stay in one row; narrow viewports scroll within the group. */
+html.ek .case-study-body .gallery-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(var(--gallery-columns, 2), minmax(var(--gallery-item-min, 10rem), 1fr));
+  gap: var(--cs-block-gap);
+  min-width: 0;
+  overflow-x: auto;
+}
+
+html.ek .case-study-body .gallery-row > .panel {
+  grid-column: auto;
+}
+
 /* Panel */
 html.ek .panel {
   grid-column: 1 / -1;
@@ -1473,14 +1505,16 @@ html.ek .panel--screens .panel-field {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: none;
+  aspect-ratio: var(--panel-ratio, 1 / 1);
 }
 
 html.ek .panel-field {
   position: relative;
   overflow: hidden;
   aspect-ratio: var(--panel-ratio, auto);
-  border-radius: 6px;
-  background: var(--panel-tint, var(--ek-panel));
+  border-radius: var(--cs-frame-radius);
+  background: var(--panel-tint, var(--cs-image-surface));
   container-type: inline-size;
 }
 
@@ -1510,8 +1544,21 @@ html.ek .case-study-body .cs-figure > :focus-visible {
 }
 
 html.ek .panel figcaption {
-  font-size: var(--text-75);
+  font-size: 14px;
+  line-height: 1.5;
   color: var(--ek-ink-body);
+}
+
+/* Inset screenshots need their own edge when the panel does not touch the image. */
+html.ek .case-study-body .case-study-image {
+  border-radius: var(--cs-frame-radius);
+}
+
+/* Panels already provide presentation spacing; alpha detection must not shrink their artwork. */
+html.ek .case-study-body .panel img.has-transparency {
+  padding: 0;
+  background: none;
+  max-height: none;
 }
 
 html.ek .case-study-body .panel :is(.panel-media, .panel-screen) {
@@ -1526,20 +1573,93 @@ html.ek .panel-screens {
   --pad: clamp(2.5rem, 11cqw, 9rem);
   --gap: clamp(1.25rem, 5cqw, 4.5rem);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: safe center;
+  width: 100%;
+  overflow-x: auto;
   gap: var(--gap);
   padding: var(--pad);
+}
+
+html.ek .panel--original .panel-screens {
+  --pad: clamp(1.5rem, 4cqw, 3.5rem);
+  --gap: clamp(1rem, 3cqw, 2rem);
 }
 
 html.ek .case-study-body .panel-screen {
   width: min(calc((100cqw - 2 * var(--pad) - (var(--n) - 1) * var(--gap)) / var(--n)), 17.5rem);
   height: auto;
   aspect-ratio: 9 / 19.5;
+  object-fit: contain;
+  object-position: top;
+  flex: 0 0 auto;
+  min-width: 10rem;
+  border-radius: var(--cs-frame-radius);
+  clip-path: inset(1px round var(--cs-frame-radius));
+  box-shadow: 0 1px 2px rgb(11 33 64 / 0.06), 0 30px 60px -30px rgb(11 33 64 / 0.35);
+}
+
+/* Crop long Frontier exports to a phone viewport and keep adjacent gallery fields level. */
+html.ek .panel--frontier .panel-field {
+  aspect-ratio: auto;
+  flex: none;
+  background: transparent;
+}
+
+html.ek .panel--frontier .panel-field::after {
+  display: none;
+}
+
+html.ek .panel--frontier .panel-screens {
+  --pad: clamp(1rem, 3cqw, 2rem);
+  --gap: clamp(1rem, 3cqw, 2rem);
+  width: 100%;
+  align-items: flex-start;
+}
+
+html.ek .case-study-body .panel--frontier .panel-screen {
+  width: min(calc((100cqw - 2 * var(--pad) - var(--gap)) / 2), 15rem);
+  height: auto;
+  aspect-ratio: 375 / 812;
   object-fit: cover;
   object-position: top;
-  border-radius: clamp(14px, 2.4cqw, 28px);
-  box-shadow: 0 1px 2px rgb(11 33 64 / 0.06), 0 30px 60px -30px rgb(11 33 64 / 0.35);
+  border-radius: var(--cs-frame-radius);
+  clip-path: inset(1px round var(--cs-frame-radius));
+  box-shadow: none;
+}
+
+html.ek .panel--frontier-loading .panel-field {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+html.ek .panel--frontier-motion .panel-field,
+html.ek .panel--frontier-loading .panel-field {
+  background: var(--cs-image-surface);
+}
+
+@media (prefers-color-scheme: dark) {
+  html.ek .panel--frontier-motion .panel-field,
+  html.ek .panel--frontier-loading .panel-field {
+    background: var(--ek-panel);
+  }
+}
+
+html.ek .panel--frontier-loading .lottie-player {
+  aspect-ratio: 1125 / 300;
+}
+
+html.ek .gallery:has(.frontier-context) .cs-metrics,
+html.ek .case-study-body .frontier-context {
+  grid-column: 1 / -1;
+}
+
+html.ek .case-study-body .frontier-context {
+  margin: 0;
+  font-size: var(--text-75);
+  line-height: 1.6;
+  color: var(--ek-ink-body);
 }
 
 /* Narrow panels: two across */
@@ -1551,7 +1671,7 @@ html.ek .case-study-body .panel-screen {
 
 /* Page: the screenshot fills the panel's width from the top, cut off by its bottom edge */
 html.ek .case-study-body .panel--page .panel-field {
-  /* Focusing a tall zoom trigger must not scroll its cropped container to the image's center. */
+  /* Keep tall page screenshots clipped to their deliberate frame. */
   overflow: clip;
 }
 
@@ -1571,6 +1691,96 @@ html.ek .case-study-body .panel--piece .panel-media {
   height: 100%;
   padding: clamp(2rem, 8%, 6rem) 12%;
   object-fit: contain;
+}
+
+/* Figma boards already include their internal spacing. Show the full export at one scale. */
+html.ek .case-study-body .panel--piece:is(.wab-direction-board, .wab-type-board) .panel-media {
+  padding: 0;
+}
+
+/* Keep location comparisons at phone width, centered within the gallery columns. */
+html.ek .gallery-grid:has(> .wab-unframed) {
+  grid-template-columns: repeat(2, minmax(0, 17.5rem));
+  justify-content: center;
+}
+
+/* Preserve the location artwork while keeping its presentation frame consistent. */
+html.ek .case-study-body .panel--piece.wab-unframed .panel-field {
+  /* Keep the source phone proportions when shared half-panels become landscape on mobile. */
+  aspect-ratio: var(--panel-ratio);
+  background: transparent;
+  border-radius: var(--cs-frame-radius);
+}
+
+html.ek .case-study-body .panel--piece.wab-unframed .panel-field::after {
+  border: 0;
+}
+
+html.ek .case-study-body .panel--piece.wab-unframed .panel-media {
+  padding: 0;
+  filter: drop-shadow(0 0 1px rgba(73, 45, 26, 0.14)) drop-shadow(0 8px 12px rgba(34, 38, 48, 0.12));
+}
+
+/* The export has 7px above the tiles and 48px below; add the difference at its native scale. */
+html.ek .case-study-body .panel--piece.wab-type-board .panel-field {
+  aspect-ratio: auto;
+  padding-top: calc(100% * 41 / 1920);
+}
+
+html.ek .case-study-body .panel--piece.wab-type-board .panel-media {
+  position: static;
+  display: block;
+  height: auto;
+}
+
+/* Crop long app exports to phone viewports and compare each group in one row. */
+html.ek .case-study-body .wab-flow-panel .panel-field {
+  aspect-ratio: auto;
+  background: transparent;
+}
+
+html.ek .case-study-body .wab-flow-panel .panel-field::after {
+  border: 0;
+}
+
+html.ek .case-study-body .wab-flow-panel .panel-screens {
+  --pad: 0px;
+  --gap: clamp(0.75rem, 3cqw, 2rem);
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 17.5rem));
+  width: 100%;
+  align-items: start;
+}
+
+html.ek .case-study-body .wab-flow-panel .panel-screen {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 390 / 844;
+  object-fit: cover;
+  object-position: center top;
+  clip-path: none;
+  border-radius: var(--cs-frame-radius);
+}
+
+html.ek .case-study-body .panel--product-row .panel-field::after {
+  border: 0;
+}
+
+html.ek .case-study-body .panel--product-row .panel-media {
+  padding: clamp(2rem, 6%, 4.5rem) 10%;
+  object-fit: contain;
+}
+
+html.ek .case-study-body .panel--spark-family .panel-media {
+  padding: 0;
+  object-fit: contain;
+}
+
+/* Invert the dark source board to show its complete construction guides on white. */
+html.ek .case-study-body .panel--spark-construction .panel-media {
+  padding: 0;
+  object-fit: contain;
+  filter: hue-rotate(180deg) invert(1) saturate(4) hue-rotate(-20deg);
 }
 
 /* Bleed fills the field; a video keeps its whole frame, its background matched by the tint */
@@ -1616,6 +1826,10 @@ html.ek .case-study-body .panel--slot .lottie-grid {
 }
 
 @media (max-width: 48rem) {
+  html.ek .panel--screens .panel-field {
+    aspect-ratio: auto;
+  }
+
   html.ek .story-facts {
     grid-column: 1 / -1;
     display: grid;
@@ -1703,5 +1917,73 @@ html.ek .footer {
   /* Client marks are black SVGs: shown white on the dark page */
   html.ek .client-logo {
     filter: brightness(0) invert(1);
+  }
+}
+
+html.ek .case-study-body .wab-flow-panel .panel-screen {
+  min-width: 0;
+  clip-path: inset(0 round var(--cs-frame-radius));
+}
+
+html.ek .case-study-body .wab-flow-panel .panel-screens {
+  overflow-x: auto;
+}
+
+html.ek .case-study-body .wab-ingredient-panel .panel-field {
+  padding: clamp(16px, 4vw, 48px);
+}
+
+html.ek .case-study-body .wab-ingredient-panel img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* Keep phone comparisons together, scrolling within their gallery on narrow screens. */
+@media (max-width: 768px) {
+  html.ek .gallery-grid:has(> .wab-unframed) {
+    grid-template-columns: repeat(2, minmax(14rem, 17.5rem));
+    justify-content: safe center;
+    overflow-x: auto;
+  }
+
+  html.ek .case-study-body .gallery-grid > .wab-unframed {
+    grid-column: auto;
+  }
+
+  html.ek .case-study-body .wab-flow-panel .panel-screens {
+    grid-template-columns: repeat(var(--n), minmax(14rem, 17.5rem));
+    justify-content: safe center;
+  }
+}
+
+/* Keep ingredient artwork at a readable scale by showing three items per mobile row. */
+html.ek .case-study-body .wab-ingredient-mobile { display: none; }
+
+@media (max-width: 768px) {
+  html.ek .case-study-body .wab-ingredient-panel .wab-ingredient-desktop { display: none; }
+  html.ek .case-study-body .wab-ingredient-mobile { display: grid; gap: 12px; }
+  html.ek .case-study-body .wab-ingredient-title {
+    margin: 0 0 4px;
+    color: #492d1a;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  html.ek .case-study-body .wab-ingredient-slice {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: var(--ingredient-ratio);
+  }
+  html.ek .case-study-body .wab-ingredient-slice img {
+    position: absolute;
+    width: calc(100% * var(--ingredient-columns));
+    max-width: none;
+    height: auto;
+    left: var(--ingredient-offset);
+    top: 0;
+    transform: translateY(calc(-1 * var(--ingredient-header)));
+    border-radius: 0;
   }
 }

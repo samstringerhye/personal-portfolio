@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets'
+import model from '../assets/work/bespoke-design-studio/figma-fresh/flow-model.png'
+import depth from '../assets/work/bespoke-design-studio/figma-fresh/flow-depth.png'
+import color from '../assets/work/bespoke-design-studio/figma-fresh/flow-color.png'
+
+const steps = [
+  { name: 'Choose a model', image: model, detail: 'Start with the door layout and features.', alt: 'Model options including 4-Door Flex and Family Hub refrigerators' },
+  { name: 'Set the depth', image: depth, detail: 'Compare dimensions and storage capacity.', alt: 'Full Depth and Counter Depth options with dimensions and capacity' },
+  { name: 'Pick the finishes', image: color, detail: 'Choose a color for each door panel.', alt: 'Color swatches below individual refrigerator door tabs' },
+]
+---
+
+<figure class="bespoke-flow">
+  <ol class="bf-steps" aria-label="Configuration steps, scroll horizontally on smaller screens" tabindex="0">
+    {steps.map((step, i) => (
+      <li class="bf-step">
+        <div class="bf-heading"><span aria-hidden="true">0{i + 1}</span><h3>{step.name}</h3></div>
+        <p>{step.detail}</p>
+        <div class="bf-screen"><Image src={step.image} alt={step.alt} loading="lazy" /></div>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .bespoke-flow { grid-column: 1 / -1; margin: 0; min-width: 0; }
+  .bf-steps { display: grid; grid-template-columns: repeat(3, minmax(15rem, 1fr)); overflow-x: auto; gap: clamp(12px, 2vw, 28px); list-style: none; padding: 0; margin: 0; }
+  .bf-heading { display: flex; align-items: baseline; gap: 10px; padding-top: 16px; border-top: 1px solid var(--color-rule); }
+  .bf-heading span { color: var(--ek-ink-body); font-size: 12px; }
+  .bf-heading h3 { font-family: var(--font-sans); font-size: clamp(16px, 1.65vw, 23px); font-weight: 500; line-height: 1.3; margin: 0; }
+  .bf-step p { margin: 10px 0 20px; font-size: 14px; line-height: 1.5; color: var(--ek-ink-body); min-height: 3em; }
+  /* Show the actual controls, cropping the placeholder kitchen above them. */
+  .bf-screen { aspect-ratio: 360 / 426; overflow: hidden; border-radius: var(--cs-frame-radius); background: #fff; }
+  .bf-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
+  @media (max-width: 40rem) {
+    .bf-steps { gap: 28px; }
+    .bf-step p { min-height: 0; }
+    .bf-screen { max-width: 360px; margin-inline: auto; }
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets'
+import screen from '../assets/work/bespoke-design-studio/figma-fresh/navigation-mobile.png'
+---
+
+<figure class="bespoke-navigation">
+  <div class="bn-layout">
+    <div class="bn-screen">
+      <Image src={screen} alt="Kitchen configuration with appliance categories above Model, Depth, and Color tabs" loading="lazy" />
+      <span class="bn-marker bn-marker--categories" aria-hidden="true">1</span>
+      <span class="bn-marker bn-marker--options" aria-hidden="true">2</span>
+    </div>
+    <div class="bn-details">
+      <div class="bn-detail">
+        <h3><span>1</span> Switch appliances directly</h3>
+        <p>I proposed making the category tabs available without clicking Next, so shoppers could move between appliances as they built their kitchen.</p>
+      </div>
+      <div class="bn-detail">
+        <h3><span>2</span> Revisit options after the model</h3>
+        <p>Keep the model choice first, then let shoppers jump between depth and finishes without repeating the sequence.</p>
+      </div>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .bespoke-navigation { grid-column: 1 / -1; margin: 0; min-width: 0; }
+  .bn-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(32px, 6vw, 88px); }
+  .bn-screen { position: relative; display: flex; justify-content: center; width: fit-content; max-width: 100%; margin: auto; }
+  .bn-screen img { width: auto; height: auto; max-width: 100%; max-height: 660px; object-fit: contain; border-radius: var(--cs-frame-radius); }
+  .bn-details { display: grid; gap: clamp(36px, 5vw, 64px); }
+  .bn-detail h3 { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-sans); font-size: clamp(18px, 1.8vw, 24px); font-weight: 500; line-height: 1.3; margin: 0 0 16px; }
+  .bn-detail h3 span, .bn-marker { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #fff; background: #1769d2; font: 600 14px/1 var(--font-sans); }
+  .bn-marker { position: absolute; width: 28px; height: 28px; outline: 2px solid #fff; }
+  .bn-marker--categories { top: 40%; left: 25%; }
+  .bn-marker--options { top: 46%; left: 50%; }
+  .bn-detail p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ek-ink-body); }
+  @media (max-width: 40rem) {
+    .bn-layout { grid-template-columns: 1fr; }
+    .bn-screen img { max-height: 580px; }
+    .bn-details { gap: 40px; }
+  }
+</style>
