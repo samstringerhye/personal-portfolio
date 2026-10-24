@@ -144,6 +144,9 @@ function freezeScene(scene: HTMLElement, pose = true) {
   if (frozen === scene) return
   if (frozen) resumeScene(frozen)
   frozen = scene
+  // Screen tours wait on this before their next change (shared.ts whenUnheld)
+  scene.dataset.deviceHold = ''
+  scene.dispatchEvent(new Event('device-hold'))
   pausedAnimations = scene.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running' || animation.pending)
   pausedAnimations.forEach(animation => animation.pause())
   playingVideos = [...scene.querySelectorAll('video')].filter(video => !video.paused)
@@ -153,6 +156,7 @@ function freezeScene(scene: HTMLElement, pose = true) {
 function resumeScene(scene: HTMLElement) {
   if (frozen !== scene) return
   delete scene.dataset.deviceFreeze
+  delete scene.dataset.deviceHold
   pausedAnimations.forEach(animation => animation.play())
   pausedAnimations = []
   playingVideos.forEach(video => { void video.play().catch(() => {}) })

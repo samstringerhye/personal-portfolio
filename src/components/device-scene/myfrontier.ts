@@ -4,12 +4,13 @@
 import lottie, { type AnimationItem } from 'lottie-web/build/player/lottie_light'
 import { animations } from '../../data/tokens'
 import { statusIcons } from './status-icons'
+import { whenUnheld } from './shared'
 
 const BASE = '/motion/myfrontier/'
 const { moves, holds } = animations.workCards.myfrontier
 const ms = (s: number) => s * 1000
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-const wait = (s: number) => new Promise(r => setTimeout(r, ms(s)))
+const sleep = (s: number) => new Promise(r => setTimeout(r, ms(s)))
 const pullDown = 'cubic-bezier(.25,.8,.3,1)', inOut = 'cubic-bezier(.7,0,.2,1)', push = 'cubic-bezier(.32,.72,0,1)'
 const spring = 'cubic-bezier(.34,1.56,.64,1)', drop = 'cubic-bezier(.5,0,.75,0)'
 
@@ -99,8 +100,21 @@ export function mountMyFrontier(art: HTMLElement): () => void {
   const destroy = () => Object.values(lot).forEach((a: AnimationItem) => a.destroy())
   if (reduced()) return destroy
 
-  const anim = (el: HTMLElement, kf: Keyframe[], s: number, easing = 'ease', delay = 0) =>
-    el.animate(kf, { duration: ms(s), easing, delay: ms(delay), fill: 'forwards' }).finished
+  // While the scene is carried to or from its hero the screen holds still: no move starts and no hold
+  // ends until it resumes, and the Lottie animations (not web animations, so mount.ts can't pause
+  // them) pause with it
+  const wait = async (s: number) => { await whenUnheld(art); await sleep(s); await whenUnheld(art) }
+  const anim = async (el: HTMLElement, kf: Keyframe[], s: number, easing = 'ease', delay = 0) => {
+    await whenUnheld(art)
+    return el.animate(kf, { duration: ms(s), easing, delay: ms(delay), fill: 'forwards' }).finished
+  }
+  const scene = art.closest<HTMLElement>('.device-scene')
+  let heldLottie: AnimationItem[] = []
+  scene?.addEventListener('device-hold', () => {
+    heldLottie = Object.values(lot).filter(a => !a.isPaused)
+    heldLottie.forEach(a => a.pause())
+  })
+  scene?.addEventListener('device-resume', () => { heldLottie.forEach(a => a.play()); heldLottie = [] })
   const cancel = (el: HTMLElement) => el.getAnimations().forEach(a => a.cancel())
   const tapEl = $('.tap'), dim = $('.dim'), wash = $('.wash'), spin = $('.spin'), isl = $('.island')
   let current: Screen = 'dashboard-1'

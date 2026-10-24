@@ -1,5 +1,13 @@
 // Shared by the main thread and the renderer, kept apart so importing it doesn't pull in three.js
 
+// A scene carried between its card and its case study hero holds its screens still (mount.ts sets
+// data-device-hold, then fires device-resume). Screen tours await this before each change they make
+export function whenUnheld(el: HTMLElement): Promise<void> {
+  const scene = el.closest<HTMLElement>('.device-scene')
+  if (!scene?.hasAttribute('data-device-hold')) return Promise.resolve()
+  return new Promise(resolve => scene.addEventListener('device-resume', () => resolve(), { once: true }))
+}
+
 export type DeviceName = 'iphone-17-pro' | 'macbook-air-m2' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8' | 'galaxy-s22-ultra' | 'galaxy-tab-s8-ultra'
 
 export interface DeviceSpec {
