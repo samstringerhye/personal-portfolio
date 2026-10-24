@@ -5,7 +5,8 @@ const host = ['samstringerhye', 'com'].join('.')
 
 function fill() {
   document.querySelectorAll<HTMLAnchorElement>('a[data-contact-email]').forEach((link) => {
-    link.href = `mailto:${user}@${host}`
+    const subject = link.dataset.contactSubject
+    link.href = `mailto:${user}@${host}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`
     if ('showAddress' in link.dataset) link.textContent = `${user}@${host}`
   })
 }

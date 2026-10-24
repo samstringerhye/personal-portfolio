@@ -1,6 +1,7 @@
 ---
 import type { HeadingTag, TypographyRole } from '../types/typography'
 import { animations } from '../data/tokens'
+import ContactEmail from './ContactEmail.astro'
 
 interface Props {
   headline: string
@@ -9,9 +10,11 @@ interface Props {
   body?: string
   bodyHighlights?: string[]
   bodyRole?: TypographyRole
+  /** Work and email actions under the bio */
+  actions?: boolean
 }
 
-const { headline, tag = 'h1', role = 'display-lg', body, bodyHighlights = [], bodyRole = 'title-lg' } = Astro.props as Props
+const { headline, tag = 'h1', role = 'display-lg', body, bodyHighlights = [], bodyRole = 'title-lg', actions = false } = Astro.props as Props
 
 // Break the bio into plain runs and kept-together phrases, taking whichever phrase appears next
 const bodySegments: { text: string; highlight: boolean }[] = []
@@ -61,6 +64,12 @@ const heroWordEase = revealCfg.cssEase
         <p class:list={["hero-bio", "hero-sub", `typo-${bodyRole}`]} data-hero-sub>
           {bodySegments.map(seg => seg.highlight ? <span class="hero-highlight">{seg.text}</span> : seg.text)}
         </p>
+      )}
+      {actions && (
+        <div class="hero-actions">
+          <a href="#work" class="ek-pill">View selected work</a>
+          <ContactEmail class="ek-link hero-email typo-body-lg" />
+        </div>
       )}
     </div>
   </div>
@@ -216,9 +225,34 @@ const heroWordEase = revealCfg.cssEase
     color: var(--color-text-primary);
   }
 
+  /* Fades in once the headline has landed; the bio's line split would break the links apart */
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2) var(--space-4);
+    animation: hero-actions-in var(--heroWordDuration) var(--heroWordEase) both;
+    animation-delay: calc(var(--heroWordStart) + var(--heroWordDuration));
+  }
+
+  .hero-email {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    color: var(--color-text-primary);
+  }
+
+  @keyframes hero-actions-in {
+    from { opacity: 0; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-sub {
       opacity: 1;
+      animation: none;
+    }
+    .hero-actions {
       animation: none;
     }
     .hero-word {

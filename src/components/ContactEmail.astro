@@ -5,11 +5,15 @@ interface Props {
   class?: string
   // Show the address as the link text once it is filled in (still absent from the HTML)
   showAddress?: boolean
+  // Prefills the draft's subject line
+  subject?: string
+  // Link text other than "Email me"
+  label?: string
 }
-const { class: className, showAddress } = Astro.props
+const { class: className, showAddress, subject, label = 'Email me' } = Astro.props
 ---
 
-<a data-contact-email data-show-address={showAddress ? '' : undefined} class={className}>Email me</a>
+<a data-contact-email data-show-address={showAddress ? '' : undefined} data-contact-subject={subject} class={className}>{label}</a>
 
 <script>
   import './contact-email'

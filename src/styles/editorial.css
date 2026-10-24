@@ -425,6 +425,11 @@ html.ek .nav {
   background: transparent;
 }
 
+/* Solid once the page scrolls, so text and artwork don't run under the name and links */
+html.ek.nav-scrolled .nav {
+  background: var(--color-bg-primary);
+}
+
 /* The phone menu is a page of its own: a solid bar over it while it's open */
 html.ek.nav-open .nav {
   background: var(--color-bg-primary);
@@ -696,6 +701,13 @@ html.ek .work-list-item .work-list-card .work-list-lock {
   align-items: center;
   gap: 0.4em;
   color: var(--ek-ink-body);
+}
+
+html.ek .work-list-item .work-list-card .work-list-request {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--color-text-primary);
 }
 
 /* ── Contact and footer: hairlines, sans links ── */

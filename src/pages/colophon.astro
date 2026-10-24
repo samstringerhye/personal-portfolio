@@ -33,7 +33,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
       <h2 class="typo-headline-lg">Credits</h2>
       <p>
-        The devices on the work cards are 3D models from Sketchfab. The screens playing on them are the shipped work, as published in each case study.
+        The devices on the work cards are 3D models from Sketchfab. The screens playing on them come from the project work in each case study, which notes where a screen is an exploration or a later iteration.
       </p>
       <p>
         <a href="https://sketchfab.com/3d-models/iphone-17-pro-4541aa8a28324b33a2baaf81d263aaec"><strong>iPhone 17 Pro</strong></a> by <a href="https://sketchfab.com/Ranguel">Ranguel</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.<br />
@@ -55,8 +55,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
       <h2 class="typo-headline-lg">Accessibility</h2>
       <p>
-        This site respects <code>prefers-reduced-motion</code>: all animations are disabled or minimized when the user has requested reduced motion.
-        Navigation is fully keyboard-accessible with focus trapping on mobile, and all images include alt text.
+        With <code>prefers-reduced-motion</code> set, animations stop or reduce to a static state. The MyFrontier motion examples also have a play/pause control.
+        The mobile menu works from the keyboard, holds focus while open and closes with Escape. Content images carry alt text.
+        These are behaviors I build and check for; the site hasn't had a formal accessibility audit.
       </p>
 
       <p style="margin-top: var(--space-5);">

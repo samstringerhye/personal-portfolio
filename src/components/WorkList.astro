@@ -4,6 +4,7 @@ import { Image } from 'astro:assets'
 import { Icon } from 'astro-icon/components'
 import { boundsAttr, narrowArtStyle } from './narrow-art'
 import DeviceScene from './DeviceScene.astro'
+import ContactEmail from './ContactEmail.astro'
 import type { HeadingTag, TypographyRole } from '../types/typography'
 
 interface Props {
@@ -102,8 +103,8 @@ const featured = (await getCollection('work'))
               <p class="work-list-tagline typo-body-lg">{entry.data.tagline}</p>
             </div>
             <div class="work-list-actions">
-            <a href={`/work/${entry.id}`} class="ek-pill work-list-cta" aria-label={`View case study: ${entry.data.title}`} data-astro-prefetch="hover">
-              View case study
+            <a href={`/work/${entry.id}`} class="ek-pill work-list-cta" aria-label={`${entry.data.passwordProtected ? 'Open with password' : 'View case study'}: ${entry.data.title}`} data-astro-prefetch="hover">
+              {entry.data.passwordProtected ? 'Open with password' : 'View case study'}
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M3.5 10h13M11.5 5l5 5-5 5" />
               </svg>
@@ -111,8 +112,11 @@ const featured = (await getCollection('work'))
             {entry.data.passwordProtected && (
               <span class="work-list-lock typo-ui-caps">
                 <Icon name="material-symbols:lock-outline" aria-hidden="true" />
-                Under NDA, walkthrough on request
+                Under NDA
               </span>
+            )}
+            {entry.data.passwordProtected && (
+              <ContactEmail class="ek-link work-list-request typo-body-md" label="Request a private walkthrough" subject={`Walkthrough request: ${entry.data.title}`} />
             )}
             </div>
           </div>

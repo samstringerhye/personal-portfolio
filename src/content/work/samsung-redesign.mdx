@@ -23,6 +23,7 @@ featured: true
 sortOrder: 5
 tags: ["Navigation", "Commerce", "Visual Design", "Shared Components"]
 ---
+import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -53,6 +54,9 @@ import productDetail from '../../assets/work/samsung-redesign/figma/pdp-portfoli
 <Gallery title="Category and product page layouts" note={["I designed the homepage, Product Family, category, and product detail layouts with the wider team. Approved wireframes and existing content gave us a starting point for the visual design.", "The product detail design changed when developers told us the backend required configuration on the product page. Earlier mobile designs put carrier, capacity, and color choices in a separate flow with a Next action. The later design brought those choices onto the product page, setting a technical constraint we had to account for in the design."]}>
   <Panel kind="page" ratio="1 / 1" format="png" src={productCategory} alt="Samsung washers and dryers category page with a QuickDrive product hero, appliance category links, and a Best Sellers section" caption="QuickDrive hero and Best Sellers on the washers and dryers page." />
   <Panel kind="page" ratio="1 / 1" format="png" src={productDetail} alt="Galaxy A50 product detail design exported from Figma, with product media beside trade-in, color, carrier, and capacity options" caption="Desktop Galaxy A50 design: buying options sit beside product media." />
+  <Panel kind="slot" caption="Detail: the trade-in, color, carrier, and capacity options.">
+    <EvidenceCrop src={productDetail} x={1500} y={1000} width={1300} height={1700} maxWidth="28rem" alt="Detail of the Galaxy A50 buying options: trade-in, color, carrier, and capacity" />
+  </Panel>
 </Gallery>
 
 <Gallery title="Use shared patterns across different page tasks" note="I built reusable buttons, cards, navigation items, and controls alongside the page designs, and organized their shared type and color styles in the design-system file.">

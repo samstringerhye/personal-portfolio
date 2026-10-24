@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import ClientLogos from '../components/ClientLogos.astro'
 import { Image } from 'astro:assets'
 import portrait from '../assets/about/sam-portrait.jpg'
+import ContactEmail from '../components/ContactEmail.astro'
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -19,11 +20,14 @@ const aboutJsonLd = {
   },
 }
 
+// Project names link to the case study that supports the claim
+const amica = '<a href="/work/amica-design-system">Amica.com</a>'
+const wab = '<a href="/work/wab-2026">Whataburger</a>'
 const skills = [
-  { title: 'Design Leadership', desc: 'Leading teams of three to six designers, including six on Amica.com' },
-  { title: 'Brand & Content Platforms', desc: 'Brand direction for Whataburger and Mashable, and the content authoring model behind Amica.com' },
-  { title: 'Design Systems', desc: 'Systems for Amica, MyFrontier, CVS, Samsung.com, and Whataburger' },
-  { title: 'Product Design', desc: 'Flows, prototypes, and motion for Bespoke, Whataburger, and Frontier' },
+  { title: 'Design Leadership', desc: `Leading teams of three to six designers, including six on ${amica}` },
+  { title: 'Brand & Content Platforms', desc: `Brand direction for ${wab} and Mashable, and the content authoring model behind ${amica}` },
+  { title: 'Design Systems', desc: `Systems for ${amica}, <a href="/work/myfrontier-app">MyFrontier</a>, <a href="/work/cvs-redesign">CVS</a>, <a href="/work/samsung-redesign">Samsung.com</a>, and ${wab}` },
+  { title: 'Product Design', desc: `Flows, prototypes, and motion for <a href="/work/bespoke-design-studio">Bespoke</a>, ${wab}, and <a href="/work/myfrontier-app">Frontier</a>` },
 ]
 ---
 
@@ -36,8 +40,12 @@ const skills = [
           I got my first computer at seven and never really looked up. That turned into 14 years across brand, editorial, and product, from Mashable and NowThis to leading client teams at Razorfish.
         </p>
         <p class="about-bio typo-body-lg">
-          I'm the person who notices when the spacing is off, when a transition feels wrong, or when a component system only works in the deck.
+          My work connects brand, interfaces, and motion. At Razorfish, I lead design teams and stay involved in the details, from component decisions to prototypes and developer handoff. I work remotely from Philadelphia.
         </p>
+        <div class="about-actions">
+          <a href="/assets/sam-stringer-hye-resume.pdf" class="ek-pill" download>Download résumé</a>
+          <ContactEmail class="ek-link about-email typo-body-lg" />
+        </div>
       </div>
       <div class="about-portrait-cell" data-no-reveal>
         <div class="about-orbit">
@@ -62,7 +70,7 @@ const skills = [
         {skills.map(s => (
           <li class="skill-cell">
             <h3 class="skill-title typo-headline-sm">{s.title}</h3>
-            <p class="skill-desc typo-body-lg">{s.desc}</p>
+            <p class="skill-desc typo-body-lg" set:html={s.desc} />
           </li>
         ))}
       </ul>
@@ -70,7 +78,7 @@ const skills = [
 
     <div class="about-row about-row--logos">
       <div class="about-row-body">
-        <h2 class="about-section-label typo-headline-lg">Selected clients</h2>
+        <h2 class="about-section-label typo-headline-lg">Selected experience</h2>
       </div>
       <div class="about-logos-wrap">
         <ClientLogos />
@@ -204,6 +212,27 @@ const skills = [
   .skill-desc {
     color: var(--color-text-primary);
     margin: 0;
+  }
+
+  .skill-desc :global(a) {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .about-email {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    color: var(--color-text-primary);
   }
 
   /* ── Shared ── */

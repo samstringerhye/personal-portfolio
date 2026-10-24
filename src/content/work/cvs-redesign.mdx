@@ -19,9 +19,10 @@ thumbnailAlt: "The CVS.com icon and illustration system: four rows of red line i
 thumbnailScene: "cvs"
 heroImage: "../../assets/work/cvs-redesign/cvs-header-2.jpg"
 featured: true
-sortOrder: 3
+sortOrder: 4
 tags: ["Visual Systems", "Commerce", "Typography", "Component Design"]
 ---
+import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -84,6 +85,9 @@ import brandDesktop from '../../assets/work/cvs-redesign/figma/exports/brand-des
   </Panel>
   </div>
   <Panel kind="page" ratio="6 / 5" src={pdpDesktop} alt="Product page: a CeraVe jar beside its price, coupons and fulfillment choices" caption="Coupons and stock information above Add to cart." />
+  <Panel kind="slot" caption="Detail: price and the coupon choices sit together, ahead of fulfillment.">
+    <EvidenceCrop src={pdpDesktop} x={2420} y={1240} width={1690} height={840} maxWidth="36rem" alt="Detail of the product page: $23.10 price, a Save $2 coupon, an ExtraBucks reward, and a CarePass offer" />
+  </Panel>
   <Panel kind="piece" span="full" ratio="970 / 400" tint="#ffffff" className="panel--fulfillment cvs-fulfillment" src={fulfillment} alt="How do you want to receive this: Pickup, Local delivery or Shipping" caption="Fulfillment selector with a two-hour pickup estimate, a shipping date, and unavailable local delivery." />
 </Gallery>
 

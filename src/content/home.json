@@ -4,7 +4,7 @@
     "headline": "Every pixel, on purpose.",
     "headlineTag": "h1",
     "headlineRole": "display-lg",
-    "body": "I'm Sam Stringer-Hye, an Associate Design Director at Razorfish. I'm the person who notices when the spacing is off, when a transition feels wrong, or when a component system only works in the deck.",
+    "body": "I'm Sam Stringer-Hye, an Associate Design Director at Razorfish. I lead teams designing digital products and the systems behind them, from interface decisions to developer handoff.",
     "bodyHighlights": ["Sam Stringer-Hye", "Associate Design Director", "Razorfish"],
     "bodyRole": "title-lg"
   },
@@ -36,7 +36,7 @@
       },
       {
         "title": "Scope calls",
-        "body": "When Amica added a ZIP-code editor after kickoff with no notice to design, I escalated it into a named scope decision with an owner instead of letting the team absorb it."
+        "body": "When a ZIP-code editor entered Amica's scope after kickoff, I raised it as an explicit scope decision with a named owner."
       }
     ]
   },
@@ -104,7 +104,7 @@
     ]
   },
   "contact": {
-    "headline": "Building a design system, or rebuilding one?"
+    "headline": "Let's talk about your team and the work ahead."
   },
   "offHours": {
     "headline": "Off hours",

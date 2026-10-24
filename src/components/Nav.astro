@@ -673,3 +673,11 @@ function isActive(href: string) {
     if (logo && getComputedStyle(logo).opacity === '0') showAllImmediate()
   }, 2000)
 </script>
+
+<script>
+  // Transparent over the homepage hero, then solid once content scrolls under the bar
+  const updateScrolled = () => document.documentElement.classList.toggle('nav-scrolled', window.scrollY > 8)
+  window.addEventListener('scroll', updateScrolled, { passive: true })
+  document.addEventListener('astro:page-load', updateScrolled)
+  updateScrolled()
+</script>
