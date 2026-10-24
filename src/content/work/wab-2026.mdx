@@ -43,6 +43,9 @@ import typeWeight from '../../assets/work/wab-2026/figma/decisions/location-type
 import customizationSelected from '../../assets/work/wab-2026/figma/decisions/customization-selected-2x.png'
 import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/customization-empty-groups-2x.png'
 import ComponentExamples from '../../components/ComponentExamples.astro'
+import bagExploreFilled from '../../assets/work/wab-2026/figma/icons/bag-explore-filled-4x.png'
+import bagExploreOutline from '../../assets/work/wab-2026/figma/icons/bag-explore-orange-outline-4x.png'
+import bagExploreSimplified from '../../assets/work/wab-2026/figma/icons/bag-explore-simplified-4x.png'
 import bagTabActive from '../../assets/work/wab-2026/figma/icons/bag-tab-active-4x.png'
 import bagTabInactive from '../../assets/work/wab-2026/figma/icons/bag-tab-inactive-4x.png'
 import bagToGo16 from '../../assets/work/wab-2026/figma/icons/bag-togo-16-4x.png'
@@ -117,9 +120,16 @@ import bagToGo32 from '../../assets/work/wab-2026/figma/icons/bag-togo-32-4x.png
   ]} caption="Customization and pickup confirmation, shown at phone height." />
 </Gallery>
 
-<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. I treated expressive artwork and functional icons differently: detailed stickers could carry brand character, while menu and navigation icons needed simpler shapes at small sizes. For the bag in the tab bar, I explored a filled version, then proposed simplifying it for legibility. The experience director backed the simpler brown bag with an orange dot.">
+<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. I treated expressive artwork and functional icons differently: detailed stickers could carry brand character, while menu and navigation icons needed simpler shapes at small sizes. For the bag icon, I explored filled and orange versions, then proposed simplifying it for legibility. The experience director backed the simpler brown bag with an orange dot.">
   <Panel kind="piece" ratio="1920 / 935" tint="#FFFFFF" className="wab-type-board" src={typographyBoard} alt="Typography board showing Alkaline Heavy, Unbounded, rewards messaging, and Frosted Berry lettering" />
   <IconBoard />
+  <Panel kind="slot" caption="Bag explorations from the menu flow, with an item count: two orange versions, then the simplified brown bag the experience director backed.">
+    <ComponentExamples examples={[
+      { image: bagExploreFilled, label: 'Filled', alt: 'Bag icon exploration: a solid orange paper bag with a brown outline and an orange count badge showing 1' },
+      { image: bagExploreOutline, label: 'Orange outline', alt: 'Bag icon exploration: an orange outline paper bag with an orange count badge showing 1' },
+      { image: bagExploreSimplified, label: 'Simplified', alt: 'Bag icon exploration: a brown outline paper bag with a circle seal and an orange count badge showing 1' },
+    ]} />
+  </Panel>
   <Panel kind="slot" caption="The simplified tab-bar bag: brown with an orange dot when active, an outline when inactive.">
     <ComponentExamples columns={2} examples={[
       { image: bagTabActive, label: 'Active', alt: 'Active tab-bar bag icon: a brown paper bag with an orange dot and a soft orange glow' },
