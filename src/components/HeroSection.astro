@@ -183,8 +183,13 @@ const heroWordEase = revealCfg.cssEase
     max-width: 36em;
   }
 
+  /* iOS Safari paints an animating word's blur and transform inside the word's own box. At this
+     tight line-height the glyphs and the blur spill past it and were clipped mid-slide, so the box
+     gets room above and below, cancelled by an equal negative margin so the lines don't move. */
   .hero-word {
     display: inline-block;
+    padding-block: 0.25em;
+    margin-block: -0.25em;
     animation: hero-word-in var(--heroWordDuration) var(--heroWordEase) both;
     animation-delay: calc(var(--heroWordStart) + var(--i) * var(--heroWordStagger));
   }
