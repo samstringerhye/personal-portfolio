@@ -26,6 +26,8 @@ dist/
 # Internal docs (keep local, not public)
 AUDIT.md
 RETROSPECTIVE.md
+# Includes screenshots of the password-protected Whataburger case
+reports/portfolio-audit-2026-10-23/
 
 # Working/reference directories
 inputs/
