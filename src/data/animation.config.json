@@ -77,9 +77,6 @@
       "highlightsHideEase": { "$ref": "sys.motion.gsapEasing.bounceIn" }
     }
   },
-  "footerLogo": {
-    "spinDuration": 12
-  },
   "dotGrid": {
     "spacing": 30,
     "radius": 1,
@@ -93,13 +90,6 @@
     "wheelMultiplier": 1
   },
   "nav": {
-    "petal": {
-      "fillIn": 0.2,
-      "anticipate": 0.15,
-      "burst": 0.25,
-      "settle": 0.6,
-      "reset": 0.3
-    },
     "entrance": {
       "gridDraw": 1.0,
       "navDraw": 0.8,

@@ -1,8 +1,5 @@
 ---
 import ContactEmail from './ContactEmail.astro'
-import { animations } from '../data/tokens'
-
-const logoSpin = `${animations.footerLogo.spinDuration}s`
 
 const year = new Date().getFullYear()
 // The build's date, so it changes only when the site does
@@ -13,12 +10,6 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
   <div class="footer-container">
     <!-- Name bar -->
     <div class="footer-bar">
-      <svg class="footer-logo" viewBox="0 0 1100 1100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M250.5 0C388.295 0 500 111.929 500 250V500H250.5C112.705 500 1 388.071 1 250C1 111.929 112.705 0 250.5 0Z" fill="#F22434"/>
-        <path d="M500 850C500 988.071 388.071 1100 250 1100C111.929 1100 -1.60836e-06 988.071 0 850C1.81059e-05 711.929 111.929 600 250 600H500V850Z" fill="#E5C800"/>
-        <path d="M850 0C988.071 6.03528e-06 1100 111.929 1100 250C1100 388.071 988.071 500 850 500H600V250C600 111.929 711.929 2.21346e-06 850 0Z" fill="#00CC55"/>
-        <path d="M850 600C988.071 600 1100 711.929 1100 850C1100 988.071 988.071 1100 850 1100C711.929 1100 600 988.071 600 850V600H850Z" fill="#2471F2"/>
-      </svg>
       <div class="footer-bar-text">
         <p class="footer-wordmark-text">Sam Stringer-Hye</p>
         <nav class="footer-links" aria-label="Footer links">
@@ -36,7 +27,7 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
   </div>
 </footer>
 
-<style define:vars={{ logoSpin }}>
+<style>
   .footer {
     margin-top: 0;
     position: relative;
@@ -83,32 +74,12 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
     transform-origin: left;
   }
 
-  /* The site mark, turning slowly beside the name; still under reduced motion */
-  .footer-logo {
-    flex-shrink: 0;
-    align-self: center;
-    width: var(--wordmark-size);
-    height: var(--wordmark-size);
-    animation: footer-logo-spin var(--logoSpin) linear infinite;
-  }
-
-  @keyframes footer-logo-spin {
-    to { transform: rotate(1turn); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .footer-logo {
-      animation: none;
-    }
-  }
-
   .footer-bar-text {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: var(--space-2);
-    padding-right: 0;
+    padding-inline: 0;
   }
 
   .footer-wordmark-text {
@@ -168,13 +139,6 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
       align-items: stretch;
     }
 
-    /* Swatch column matches the wordmark row only, not the full bar.
-       The wordmark box is its font-size (line-height 1) plus its block padding. */
-    .footer-logo {
-      align-self: flex-start;
-      margin-top: var(--space-4);
-    }
-
     .footer-bar-text {
       flex-direction: column;
       align-items: stretch;
@@ -191,8 +155,8 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
       gap: 0;
       border-top: var(--border-width-1) solid var(--color-rule);
       padding-block: var(--space-3);
-      /* Bleed past the text indent and the swatch column so the rule spans the whole bar */
-      margin-left: calc((var(--space-2) + var(--nav-height) / 6) * -1);
+      /* Bleed past the text indent so the rule spans the whole bar */
+      margin-left: calc(var(--space-2) * -1);
       padding-left: var(--space-2);
     }
 

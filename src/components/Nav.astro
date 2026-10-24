@@ -20,12 +20,6 @@ function isActive(href: string) {
 <header class="nav" id="site-nav">
   <nav class="nav-inner" aria-label="Main navigation">
     <a href="/" class="nav-logo" aria-label="Sam Stringer-Hye, home">
-      <svg class="nav-logo-icon" width="1100" height="1100" viewBox="0 0 1100 1100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M250.5 0C388.295 0 500 111.929 500 250V500H250.5C112.705 500 1 388.071 1 250C1 111.929 112.705 0 250.5 0Z" fill="#F22434"/>
-        <path d="M500 850C500 988.071 388.071 1100 250 1100C111.929 1100 -1.60836e-06 988.071 0 850C1.81059e-05 711.929 111.929 600 250 600H500V850Z" fill="#E5C800"/>
-        <path d="M850 0C988.071 6.03528e-06 1100 111.929 1100 250C1100 388.071 988.071 500 850 500H600V250C600 111.929 711.929 2.21346e-06 850 0Z" fill="#00CC55"/>
-        <path d="M850 600C988.071 600 1100 711.929 1100 850C1100 988.071 988.071 1100 850 1100C711.929 1100 600 988.071 600 850V600H850Z" fill="#2471F2"/>
-      </svg>
       Sam Stringer-Hye
     </a>
 
@@ -99,7 +93,6 @@ function isActive(href: string) {
     font-family: var(--font-serif);
     font-weight: 300;
     font-size: var(--text-200);
-    gap: var(--space-2);
     transition: background-color var(--duration-medium) ease;
     opacity: 0;
     transform: translateY(-12px);
@@ -117,14 +110,6 @@ function isActive(href: string) {
     transform-origin: top;
     z-index: 1;
   }
-
-  .nav-logo-icon {
-    width: 1.5rem;
-    height: auto;
-    flex-shrink: 0;
-    overflow: visible;
-  }
-
 
   .nav-links {
     display: flex;
@@ -304,69 +289,8 @@ function isActive(href: string) {
 </style>
 
 <script>
-  import gsap from 'gsap'
   import { accentRgba, animations } from '../data/tokens'
   import './contact-email'
-
-
-  // Petal directions: top-left, bottom-left, top-right, bottom-right (DOM order)
-  const petalOffsets = [
-    { x: -60, y: -60 },  // path 1: red top-left
-    { x: -60, y: 60 },   // path 2: yellow bottom-left
-    { x: 60, y: -60 },   // path 3: green top-right
-    { x: 60, y: 60 },    // path 4: blue bottom-right
-  ]
-
-  const canHover = window.matchMedia('(hover: hover)').matches
-
-  function initNavHover() {
-    if (!canHover) return
-    // Logo hover: the petals burst out and settle in their own colors (skip if user prefers reduced motion)
-    const logo = document.querySelector<HTMLElement>('.nav-logo')
-    if (logo && !logo.dataset.petalBound && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      logo.dataset.petalBound = 'true'
-      const paths = logo.querySelectorAll<SVGPathElement>('.nav-logo-icon path')
-      const petal = animations.nav.petal
-
-      logo.addEventListener('mouseenter', () => {
-        paths.forEach((path, i) => {
-          gsap.killTweensOf(path)
-          const { x, y } = petalOffsets[i]
-
-          const tl = gsap.timeline()
-          // 1. Anticipation: pull toward center
-          tl.to(path, {
-            x: -x * 0.3,
-            y: -y * 0.3,
-            duration: petal.anticipate,
-            ease: 'back.in(4)',
-          })
-          // 2. Burst outward
-          .to(path, {
-            x, y,
-            duration: petal.burst,
-            ease: 'power4.out',
-          })
-          // 3. Spring settle back to rest
-          .to(path, {
-            x: 0, y: 0,
-            duration: petal.settle,
-            ease: 'elastic.out(1, 0.4)',
-          })
-        })
-      })
-
-      logo.addEventListener('mouseleave', () => {
-        paths.forEach((path, i) => {
-          gsap.killTweensOf(path)
-          gsap.to(path, { x: 0, y: 0, duration: petal.reset, ease: 'back.out(2)' })
-        })
-      })
-    }
-  }
-
-  initNavHover()
-  document.addEventListener('astro:after-swap', initNavHover)
 
   type NavWindow = Window & {
     __navAfterSwapHandler?: () => void

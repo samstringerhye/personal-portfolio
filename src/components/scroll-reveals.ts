@@ -236,7 +236,6 @@ function initImageReveals() {
     if (el.closest('.carousel-track')) return
     if (el.closest('.work-track')) return
     if (el.closest('[data-no-reveal]')) return
-    if (el.classList.contains('nav-logo-icon')) return
     gsap.set(el, blurUp)
     gsap.to(el, {
       ...blurUpTo,

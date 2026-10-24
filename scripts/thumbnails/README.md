@@ -20,7 +20,8 @@ UI text reads at card size, and writes each card's hover flipbook (`*-frame-N.pn
 
 - `recompose32.mjs` builds the flat 3:2 composites (`*-thumbnail-32.*`), used for link previews and as the
   `thumbnail` fallback.
-- `favicons.mjs` builds `favicon.ico`, `apple-touch-icon.png`, and the Android icons from `public/favicon.svg`.
+- `favicons.mjs` writes `public/favicon.svg` from its own geometry, then builds `favicon.ico` (a 16px cut and
+  32px), `apple-touch-icon.png`, and the Android icons in the dark scheme. Edit the geometry there, not the SVG.
 
 Placement numbers in `balance.mjs` (band, gap) are measured from the card at 1440px wide, except
 Bespoke's, measured at 1250px (the narrowest card that overlays its text), where its tagline wraps to

@@ -118,7 +118,6 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `dotGrid.spacing` | px | `30` | Gap between dots in the interests section background grid |
 | `dotGrid.radius` | px | `1` | Dot radius in that grid |
 | `dotGrid.opacity` | 0–1 | `0.5` | Grid opacity before the reveal multiplier |
-| `footerLogo.spinDuration` | seconds | `12` | One full turn of the site mark beside the name in the footer (still under reduced motion) |
 
 ---
 
@@ -126,11 +125,6 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|
-| `petal.fillIn` | `0.2` | Logo petals turning white on hover |
-| `petal.anticipate` | `0.15` | Petals pulling toward the center before the burst |
-| `petal.burst` | `0.25` | Petals bursting outward |
-| `petal.settle` | `0.6` | Elastic settle back to rest |
-| `petal.reset` | `0.3` | Color and position reset on mouseleave |
 | `entrance.gridDraw` | `1.0` | Grid lines drawing down on the first visit |
 | `entrance.navDraw` / `navDrawAt` | `0.8` / `0.1` | Nav bottom line: duration / start time in the entrance timeline |
 | `entrance.logoDraw` / `logoDrawAt` | `0.6` / `0.2` | Logo border draw |
