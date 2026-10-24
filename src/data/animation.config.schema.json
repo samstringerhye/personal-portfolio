@@ -128,6 +128,7 @@
             "baseScale":     { "type": "number", "minimum": 0, "description": "Base scale multiplier for all dots" },
             "twistAmount":   { "type": "number", "description": "Spiral twist factor" },
             "zoom":          { "type": "number", "minimum": 1, "description": "Camera zoom level" },
+            "mobileZoomFactor": { "type": "number", "minimum": 0.1, "maximum": 2, "description": "Multiplier on zoom at 768px and below" },
             "maxDpr":        { "type": "number", "minimum": 0.5, "maximum": 3, "description": "Max device pixel ratio cap" },
             "cmyStagger":    { "$ref": "#/definitions/stagger", "description": "Delay between CMY color channels in hero dot wave (seconds)" },
             "accentOpacity": { "$ref": "#/definitions/opacity01", "description": "Opacity of accent color dot layers (0=invisible, 1=fully opaque)" },

@@ -300,6 +300,12 @@ html.ek .about-page .skill-desc {
   html.ek .about-page .skill-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  /* Stacked, the cards no longer need to match a neighbour's height: no empty band above the title */
+  html.ek .about-page .skill-cell,
+  html.ek .about-page .skill-cell:nth-child(n) {
+    min-height: 0;
+  }
 }
 
 @media (min-width: 64.0625rem) {

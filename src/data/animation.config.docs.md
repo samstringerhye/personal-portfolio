@@ -80,6 +80,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | Section.Key | Type | Value | What it controls |
 |-------------|------|-------|-----------------|
 | `hero.canvas.*` | various | — | WebGL dot grid parameters (spiral geometry, wave motion, sizing) |
+| `hero.canvas.mobileZoomFactor` | ratio | `0.75` | Multiplier on `zoom` at 768px and below. Lower draws the spiral smaller and denser behind the headline |
 | `hero.canvas.cmyStagger` | seconds | `0.1` | Delay between the hero dot layers in the wave (independent from text reveal stagger) |
 | `hero.canvas.accentOpacity` | 0–1 | `1` | Opacity of the red, green and blue dot layers (fully saturated). On a dark system scheme the layers are pure RGB, added together so overlaps read white, and the gray base dot is dropped |
 | `hero.canvas.pointer.radius` | CSS px | `280` | How far around the pointer the dots react (off under reduced motion) |

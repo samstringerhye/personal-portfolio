@@ -16,7 +16,7 @@ import {
 
 const cfg = animations.hero.canvas
 
-const MOBILE_FACTOR = 0.5
+const MOBILE_FACTOR = cfg.mobileZoomFactor
 
 /**
  * Initialize the hero canvas.
