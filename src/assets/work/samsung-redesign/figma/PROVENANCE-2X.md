@@ -58,3 +58,7 @@ Exported the selected desktop frames through native Figma at **2× PNG**. These 
 The native app offers Samsung Sharp Sans and SamsungOne, unlike the connector's rendering environment. Font replacement alone did not resolve clipping. The later container repairs and final current assets appear above. These intermediate files remain superseded and unused.
 
 The button board remains the previously labeled portfolio composition, not an original project screen. Sources and the earlier PDP swatch repair are documented in `docs/notes/samsung-figma-progression.md`. The Figma originals remain unchanged.
+
+## Earlier mobile configuration step
+
+`config-step-mobile-2x.png`: exported October 24, 2026 through Figma MCP at 2x (720 × 2042) from [OPTS-Revamp-MO-PD-v03-020720](https://www.figma.com/design/9AkssMJDoS6xnjSvnwrZER/OPTS-Revamp-MO-PD-v03-020720?node-id=0-292), node `0:292`. Paired on the page with the later desktop product page. The later mobile SimplePD (`a86UpyabCWzWkkPHDpnWec`, `0:3771`) was not used: its source swatches all render blue and a label clips.

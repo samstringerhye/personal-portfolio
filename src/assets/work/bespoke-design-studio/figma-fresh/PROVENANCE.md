@@ -82,3 +82,14 @@ The navigation section uses the full source configuration screen with numbered a
 | navigation-mobile.png | 1908:6308 |
 
 Exported from Dev Handoff - WIP in the same imported file, using each node's configured export settings. Presentation surfaces are white; backgrounds within the original design artwork remain unchanged.
+
+## Fixed-panel comparison
+
+Exported October 24, 2026 through Figma MCP at 2x, then encoded as WebP at quality 90 without resizing. Both frames come from the Dev Handoff - WIP page (1813:12915) and share the same kitchen render and panel position. No Figma canvas edits.
+
+| Asset | Node | Export pixels |
+| --- | --- | --- |
+| bespoke-fridge-panel-2x.webp | 1908:6262 | 2880 × 2048 |
+| bespoke-range-panel-2x.webp | 1813:21339 | 2880 × 2048 |
+
+The range frame shows placeholder prices; the caption says so.

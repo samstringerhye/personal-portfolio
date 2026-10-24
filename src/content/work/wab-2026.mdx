@@ -42,6 +42,12 @@ import typeColor from '../../assets/work/wab-2026/figma/decisions/location-type-
 import typeWeight from '../../assets/work/wab-2026/figma/decisions/location-type-weight.webp'
 import customizationSelected from '../../assets/work/wab-2026/figma/decisions/customization-selected-2x.png'
 import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/customization-empty-groups-2x.png'
+import ComponentExamples from '../../components/ComponentExamples.astro'
+import bagTabActive from '../../assets/work/wab-2026/figma/icons/bag-tab-active-4x.png'
+import bagTabInactive from '../../assets/work/wab-2026/figma/icons/bag-tab-inactive-4x.png'
+import bagToGo16 from '../../assets/work/wab-2026/figma/icons/bag-togo-16-4x.png'
+import bagToGo24 from '../../assets/work/wab-2026/figma/icons/bag-togo-24-4x.png'
+import bagToGo32 from '../../assets/work/wab-2026/figma/icons/bag-togo-32-4x.png'
 
 <Story
   client="Whataburger"
@@ -51,10 +57,10 @@ import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/custo
   made={['UI direction', 'App design system', 'Mobile app interfaces']}
   problem="Whataburger's app needed to carry the brand's personality through ordering. Early reviews exposed a tension: orange headlines, cards, and controls competed for attention. Customers still needed to recognize what they could tap, what they had selected, and what came next."
   decision="The team chose orange and cream as the base, keeping iconography and darker menu and card tones from the dark-brown direction. I refined how color, type weight, and icons communicated selection and action, then carried those rules into the app screens and app’s design system."
-  did="I led the UI design in partnership with an experience director. I designed the visual directions, used client feedback and customer testing to develop the selected direction, and built the interface screens and design system. The experience team defined the ordering requirements; I translated them into the UI."
+  did="I led the UI design in partnership with an experience director. I designed the visual directions, used client feedback and customer testing to develop the selected direction, and built the interface screens and design system. The experience team defined the ordering requirements; I translated them into the UI. The redesigned app is scheduled to launch in 2027."
 />
 
-<Gallery title="Visual directions and customer testing" note="Participants preferred dark brown, followed by orange and cream, then light neutrals. Preference for dark brown rose after participants saw its menu. This was a preference finding, not a measure of ordering success. The team chose orange and cream as the base because the full dark palette felt too Halloween-like, while retaining darker menu tones and iconography. That was a team judgment, not a tested result.">
+<Gallery title="Visual directions and customer testing" note="Participants preferred dark brown, followed by orange and cream, then light neutrals. Preference for dark brown rose after participants saw its menu. This was a preference finding, not a measure of ordering success. The team chose orange and cream as the base because the full dark palette felt too Halloween-like, while retaining darker menu tones and iconography. That was a team judgment, not a tested result. A later round of testing favored a peach background for the menu screens, and the team applied it.">
   <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionDark} alt="Dark-brown Whataburger direction with orange accents, burger photography, and menu examples" caption="Dark brown." />
   <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionVibrant} alt="Orange-and-cream Whataburger direction with product photography, display type, and app examples" caption="Orange and cream." />
   <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionModern} alt="Light-neutral Whataburger direction with orange accents and burger imagery" caption="Light neutrals." />
@@ -111,17 +117,30 @@ import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/custo
   ]} caption="Customization and pickup confirmation, shown at phone height." />
 </Gallery>
 
-<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. I treated expressive artwork and functional icons differently: detailed stickers could carry brand character, while menu and navigation icons needed simpler shapes at small sizes. The examples below show that distinction.">
+<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. I treated expressive artwork and functional icons differently: detailed stickers could carry brand character, while menu and navigation icons needed simpler shapes at small sizes. For the bag in the tab bar, I explored a filled version, then proposed simplifying it for legibility. The experience director backed the simpler brown bag with an orange dot.">
   <Panel kind="piece" ratio="1920 / 935" tint="#FFFFFF" className="wab-type-board" src={typographyBoard} alt="Typography board showing Alkaline Heavy, Unbounded, rewards messaging, and Frosted Berry lettering" />
   <IconBoard />
+  <Panel kind="slot" caption="The simplified tab-bar bag: brown with an orange dot when active, an outline when inactive.">
+    <ComponentExamples columns={2} examples={[
+      { image: bagTabActive, label: 'Active', alt: 'Active tab-bar bag icon: a brown paper bag with an orange dot and a soft orange glow' },
+      { image: bagTabInactive, label: 'Inactive', alt: 'Inactive tab-bar bag icon: a brown outline of a paper bag with a circle seal' },
+    ]} />
+  </Panel>
 </Gallery>
 
-<Gallery title="Apply shared rules across rewards, scan, and account" note="I turned the selected direction into a component library with button variants, inputs, navigation, and icon families. The screens below show those controls in use. I used those rules across the app while keeping the task hierarchy specific: points and offers in rewards, the QR code in scan, and settings in account.">
+<Gallery title="Build component families, then apply them" note="I turned the selected direction into a component library with button variants, inputs, navigation, and icon families. Each family carries its sizes and states, so designers pick a variant instead of redrawing it for each flow. The screens below show those controls in use. I used those rules across the app while keeping the task hierarchy specific: points and offers in rewards, the QR code in scan, and settings in account.">
   <Panel kind="screens" format="png" tint="transparent" className="wab-flow-panel" screens={[
     { src: rewards, alt: 'Whataburger rewards screen with points, offers, and reward items' },
     { src: scan, alt: 'Whataburger in-store scan screen with QR code and wallet' },
     { src: account, alt: 'Whataburger account screen with account settings and shared navigation' },
   ]} caption="Design examples: shared navigation with points, a scan code, and account settings taking priority in each screen." />
+  <Panel kind="slot" caption="The to-go bag icon as one family with a size property: 16, 24, and 32px.">
+    <ComponentExamples examples={[
+      { image: bagToGo16, label: '16px', alt: 'To-go bag icon at 16 pixels' },
+      { image: bagToGo24, label: '24px', alt: 'To-go bag icon at 24 pixels' },
+      { image: bagToGo32, label: '32px', alt: 'To-go bag icon at 32 pixels' },
+    ]} />
+  </Panel>
 </Gallery>
 
 <ProseGroup>

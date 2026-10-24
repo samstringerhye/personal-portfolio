@@ -33,6 +33,7 @@ import navAppliances from '../../assets/work/samsung-redesign/figma/nav-variant-
 import navFridges from '../../assets/work/samsung-redesign/figma/nav-variant-fridges-2x.png'
 import productCategory from '../../assets/work/samsung-redesign/figma/pcd-portfolio-final-2x.png'
 import productDetail from '../../assets/work/samsung-redesign/figma/pdp-portfolio-2x.png'
+import configStepMobile from '../../assets/work/samsung-redesign/figma/config-step-mobile-2x.png'
 
 <Story
   client="Samsung"
@@ -54,9 +55,14 @@ import productDetail from '../../assets/work/samsung-redesign/figma/pdp-portfoli
 <Gallery title="Category and product page layouts" note={["I designed the homepage, Product Family, category, and product detail layouts with the wider team. Approved wireframes and existing content gave us a starting point for the visual design.", "The product detail design changed when developers told us the backend required configuration on the product page. Earlier mobile designs put carrier, capacity, and color choices in a separate flow with a Next action. The later design brought those choices onto the product page, setting a technical constraint we had to account for in the design."]}>
   <Panel kind="page" ratio="1 / 1" format="png" src={productCategory} alt="Samsung washers and dryers category page with a QuickDrive product hero, appliance category links, and a Best Sellers section" caption="QuickDrive hero and Best Sellers on the washers and dryers page." />
   <Panel kind="page" ratio="1 / 1" format="png" src={productDetail} alt="Galaxy A50 product detail design exported from Figma, with product media beside trade-in, color, carrier, and capacity options" caption="Desktop Galaxy A50 design: buying options sit beside product media." />
-  <Panel kind="slot" caption="Detail: the trade-in, color, carrier, and capacity options.">
-    <EvidenceCrop src={productDetail} x={1500} y={1000} width={1300} height={1700} maxWidth="28rem" alt="Detail of the Galaxy A50 buying options: trade-in, color, carrier, and capacity" />
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="Earlier and later Galaxy A50 configuration">
+  <Panel kind="slot" span="half" caption="Earlier mobile design: configuration as its own step, with a progress bar and Next.">
+    <EvidenceCrop src={configStepMobile} x={0} y={0} width={720} height={2042} maxWidth="16rem" alt="Earlier Galaxy A50 mobile configuration step with Back, a progress bar, carrier, capacity, and color choices, and a Next button under the price" />
   </Panel>
+  <Panel kind="slot" span="half" caption="Later desktop design: trade-in, color, carrier, and capacity sit on the product page.">
+    <EvidenceCrop src={productDetail} x={1500} y={1000} width={1300} height={1700} maxWidth="36rem" alt="Detail of the later Galaxy A50 buying options on the product page: trade-in, color, carrier, and capacity" />
+  </Panel>
+  </div>
 </Gallery>
 
 <Gallery title="Use shared patterns across different page tasks" note="I built reusable buttons, cards, navigation items, and controls alongside the page designs, and organized their shared type and color styles in the design-system file.">

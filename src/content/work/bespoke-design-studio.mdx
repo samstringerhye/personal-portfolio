@@ -32,6 +32,8 @@ import ProseGroup from '../../components/ProseGroup.astro'
 import Metrics from '../../components/Metrics.astro'
 import '../../styles/bespoke-case-study.css'
 import yellowDesktop from '../../assets/work/bespoke-design-studio/figma-fresh/yellow-desktop-2x.png'
+import fridgePanel from '../../assets/work/bespoke-design-studio/figma-fresh/bespoke-fridge-panel-2x.webp'
+import rangePanel from '../../assets/work/bespoke-design-studio/figma-fresh/bespoke-range-panel-2x.webp'
 import yellowMobile from '../../assets/work/bespoke-design-studio/figma-fresh/yellow-mobile-2x.png'
 import configMobile from '../../assets/work/bespoke-design-studio/figma-fresh/config-mobile-2x.png'
 import BespokeOptions from '../../components/BespokeOptions.astro'
@@ -74,6 +76,10 @@ The refrigerator simulator launched in March 2021 and the kitchen simulator foll
 <Gallery title="Make room for more appliance choices" note={["Adding ranges, microwaves, dishwashers, and other appliances introduced different models, options, and compatibility rules. I fixed the configuration panel’s position so controls stayed in a predictable place when people switched appliances.", "I made the interior selector a text button to clarify its purpose, moved step navigation out of the menu, and chose Back instead of Reset so people could revise a choice without discarding their work. Category tabs supported movement between appliances while option tabs held each product’s decisions."]}>
   <BespokeOptions />
   <p className="evidence-note">Appliance artwork from the configurator, arranged for this page.</p>
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="The configuration panel for two appliances">
+  <Panel className="bespoke-panel" kind="page" span="half" ratio="1440 / 1024" src={fridgePanel} alt="Q2 2024 working design: the kitchen with a Clementine refrigerator, and the configuration panel on the right showing refrigerator color swatches and Save" caption="Refrigerator: model, depth, and color in the right-hand panel." />
+  <Panel className="bespoke-panel" kind="page" span="half" ratio="1440 / 1024" src={rangePanel} alt="Q2 2024 working design: the same kitchen with the configuration panel in the same position, showing gas, electric, and induction choices for the range" caption="Range: the panel keeps its place while the options change. Prices are placeholders." />
+  </div>
 </Gallery>
 
 <Gallery title="Guide the first pass, then allow revisions" note={["We considered an open flow that let people move freely between options. I chose a stepped first pass because we felt it would make each appliance easier to complete. That was a design judgment, not a tested result. After completing the relevant choices, shoppers could return to revise them.", "The sequence still allowed broader kitchen editing: switch appliance categories, retain choices for unchanged products, and review, edit, or remove saved appliances. Shoppers could check out saved items without completing every appliance. Compatibility rules also mattered: a range and cooktop, or a microwave and range hood, could not occupy the same space."]}>
