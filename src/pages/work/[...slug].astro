@@ -29,6 +29,7 @@ const { Content, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocke
   heroLayers={entry.data.thumbnailLayers}
   heroAlt={entry.data.thumbnailAlt}
   heroYear={entry.data.yearLabel ?? entry.data.year}
+  heroTags={entry.data.tags?.slice(0, 2)}
   heroTone={entry.data.thumbnailText}
   heroScene={entry.data.thumbnailScene}
 >

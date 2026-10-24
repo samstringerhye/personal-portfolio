@@ -24,6 +24,8 @@ interface Props {
   heroLayers?: { subject: ImageMetadata; background: string; heroOffset?: number; subjectBox?: SubjectBox; subjectBounds?: SubjectBox }
   heroAlt?: string
   heroYear?: number | string
+  // The homepage card's tags, shown beside the year on a device hero as on its card
+  heroTags?: string[]
   heroTone?: 'light' | 'dark'
   // A coded device scene: the hero is the live device, carried over from its homepage card
   heroScene?: SceneName
@@ -31,7 +33,7 @@ interface Props {
   gate?: { error?: boolean; rateLimited?: boolean }
 }
 
-const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, heroLayers, heroAlt, heroYear, heroTone, heroScene, gate } = Astro.props
+const { title, tagline, ogImage, jsonLd, prevSlug, prevTitle, prevLocked, nextSlug, nextTitle, nextLocked, noindex, heroLayers, heroAlt, heroYear, heroTags, heroTone, heroScene, gate } = Astro.props
 // The device hero has no password form, so a locked case study keeps the framed hero
 const deviceHero = heroScene && !gate
 ---
@@ -41,7 +43,7 @@ const deviceHero = heroScene && !gate
   <div class="cs-back" transition:persist="cs-back"><BackToWork /></div>
   <div class="case-study-layout">
     <article class="case-study-body">
-      {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} />}
+      {deviceHero && <DeviceHero scene={heroScene} label={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tags={heroTags} />}
       {heroLayers && !deviceHero && <CaseStudyHero subject={heroLayers.subject} background={heroLayers.background} heroOffset={heroLayers.heroOffset} subjectBox={heroLayers.subjectBox} subjectBounds={heroLayers.subjectBounds} alt={heroAlt ?? title} title={title} tagline={tagline} year={heroYear} tone={heroTone} gate={gate} />}
       {!gate && <div class="case-study-content"><slot /></div>}
     </article>
