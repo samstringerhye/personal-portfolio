@@ -103,9 +103,10 @@ html.ek main > :is(.hero, .interests-section) {
   margin-inline: calc(50% - 50vw);
 }
 
+/* Half a section of air around the marquee: personality, not a pause before contact */
 html.ek main > .interests-section {
   margin-top: var(--ek-section);
-  padding-block: var(--ek-section);
+  padding-block: calc(var(--ek-section) / 2);
 }
 
 /* Full-bleed sections keep their text on the page margin */

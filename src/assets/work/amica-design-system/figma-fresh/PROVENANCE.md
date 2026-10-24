@@ -117,3 +117,13 @@ Direct 2x PNG exports from AEM documentation file `g245YvCHKdVVcpQFRi8jy7`:
 - `hierarchy-sections-art-2x.png`: existing presentation artwork `13928:86`.
 
 All exports are 784 by 492 pixels. `SystemHierarchy.astro` renders the three frames with native portfolio-font labels and captions; no labels are baked into these exports. The artwork retains Amica's own typography. Presentation arrangement illustrates the system hierarchy rather than documenting an original project slide.
+
+## Token and spec evidence
+
+Exported October 24, 2026 through Figma MCP at 2x from [03. Amica AEM System Documentation](https://www.figma.com/design/g245YvCHKdVVcpQFRi8jy7/03.-Amica-AEM-System-Documentation), then cropped and encoded as WebP at quality 90. No Figma canvas edits.
+
+| Asset | Source node | Crop (2x pixels) |
+| --- | --- | --- |
+| token-action-2x.webp | 9341:8320, Documentation / Color / Content | x 1696, y 1674, 1080 × 582 |
+| token-feedback-2x.webp | 9341:8320 | x 396, y 2314, 1124 × 726 |
+| button-spec-2x.webp | 9963:115072, Documentation / Button | x 780, y 3180, 1730 × 870 |

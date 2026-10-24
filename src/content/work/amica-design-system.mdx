@@ -21,6 +21,9 @@ sortOrder: 0
 tags: ["Design System", "Design Leadership", "AEM", "React"]
 ---
 import EvidenceCrop from '../../components/EvidenceCrop.astro'
+import tokenAction from '../../assets/work/amica-design-system/figma-fresh/token-action-2x.webp'
+import tokenFeedback from '../../assets/work/amica-design-system/figma-fresh/token-feedback-2x.webp'
+import buttonSpec from '../../assets/work/amica-design-system/figma-fresh/button-spec-2x.webp'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -62,6 +65,14 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
     { image: componentsArt, label: 'Components', caption: 'Selection cards combine the type, color, and control rules.', alt: 'Auto and Home selection cards from the Amica system' },
     { image: sectionsArt, label: 'Sections', caption: 'The section combines selection cards with ZIP entry and a quote action.', alt: 'Product Bundle Hero combining selection cards, ZIP entry, and a quote action' },
   ]} />
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="Content color tokens by purpose">
+  <Panel kind="slot" span="half" caption="Actions and links use content/action, teal 800.">
+    <EvidenceCrop src={tokenAction} x={0} y={0} width={1080} height={582} maxWidth="30rem" alt="Amica color documentation, Action and accent table: content/action maps to color/teal/800, content/brand to teal/600, content/accent to teal/200" />
+  </Panel>
+  <Panel kind="slot" span="half" caption="Success messages use content/success, green 700.">
+    <EvidenceCrop src={tokenFeedback} x={0} y={0} width={1124} height={726} maxWidth="30rem" alt="Amica color documentation, Feedback table: content/success maps to color/green/700, info to blue/600, warning to orange/800, error to red/700" />
+  </Panel>
+  </div>
 </Gallery>
 
 <Gallery title="Define the states, not just the default" note={["Within a component family, I kept the name simple and used properties for type, size, state, layout, and media. The quote-flow audit showed why this mattered: products reused many of the same forms, but the AEM and React libraries differed in focus, processing, validation, and responsive states. Matching the default appearance covered only part of the work.", "I also moved repeated decisions into shared rules. Buttons and links had different hand-entered values for disabled opacity. I tied them to the Core UI Kit’s disabled token so they inherited the same rule. Future changes could then start at that shared value."]}>
@@ -96,6 +107,12 @@ I organized the work into component refinement, migration and connection, docume
 
 Copied specifications could name a valid token that the component did not use. We generated specifications from the actual bindings, then checked the assembled page examples for clipped labels, missing content, and responsive behavior. The library, documentation, and pages all needed to agree.
 </ProseGroup>
+
+<Gallery title="Specs that name the tokens a component uses" note="The documentation lists each state's size, padding, gap, radius, fill, and label tokens, so development reads the same values the component carries.">
+  <Panel kind="slot" caption="Button documentation, primary button: default and hover states with their tokens.">
+    <EvidenceCrop src={buttonSpec} x={0} y={0} width={1730} height={870} maxWidth="48rem" alt="Amica button documentation: default and hover primary buttons, each with a spec table for size 68 by 56, padding, gap, radius, surface/brand fill, label style, and content/default label color; hover adds a 5 percent neutral overlay" />
+  </Panel>
+</Gallery>
 
 <Gallery title="Check shared components in a complete section" note="The Product Bundle Hero combines selection cards, ZIP entry, and a quote action. These desktop and mobile examples show composition and responsive arrangement.">
   <Panel kind="slot" caption="The same section combines product selection and quote entry across desktop and mobile.">

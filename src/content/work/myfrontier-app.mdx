@@ -23,6 +23,7 @@ featured: true
 sortOrder: 3
 tags: ["Mobile App", "Design System", "Motion Design", "UX"]
 ---
+import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -34,6 +35,7 @@ import supportLanding from '../../assets/work/myfrontier-app/figma/support-landi
 import scheduleAppointment from '../../assets/work/myfrontier-app/figma/schedule-appointment-handoff-2x.png'
 import myAccount from '../../assets/work/myfrontier-app/figma/my-account-handoff-2x.png'
 import addPaymentMethod from '../../assets/work/myfrontier-app/figma/add-payment-method-handoff-2x.png'
+import firstPaymentMethod from '../../assets/work/myfrontier-app/figma/first-payment-method-2x.webp'
 
 <Story
   client="Frontier"
@@ -53,7 +55,7 @@ import addPaymentMethod from '../../assets/work/myfrontier-app/figma/add-payment
   ]} caption="Original and redesigned Home: a different hierarchy for existing account tasks, with bottom navigation and a personalized greeting." />
 </Gallery>
 
-<Gallery title="Billing, support, and appointment scheduling" note="The redesign launched in November 2022. Billing shows the balance, payment action and Auto Pay options. Support groups help topics and service orders, with date and time selection for appointments.">
+<Gallery title="Billing, support, and appointment scheduling" note="The redesign launched as version 4.0.1 on November 21, 2022. Billing shows the balance, payment action and Auto Pay options. Support groups help topics and service orders, with date and time selection for appointments.">
   <div class="gallery-row" style="--gallery-columns: 2; --gallery-item-min: 24rem" role="region" aria-label="Two screen comparisons">
   <Panel kind="screens" format="png" className="panel--frontier" span="half" screens={[
     { src: billingZero, alt: 'My billing: a $480.88 credit balance, Auto Pay enrollment and Make a payment action' },
@@ -64,15 +66,18 @@ import addPaymentMethod from '../../assets/work/myfrontier-app/figma/add-payment
   ]} caption="Support topics and open tickets, followed by appointment date and time selection." />
   </div>
 </Gallery>
-<Gallery title="Account settings and payment methods" note={["Beta feedback exposed a missing path: adding a first payment method. The examples below show an account with saved methods and the card-or-bank choice, rather than the first-method empty state.", "We also explored moving all payment-method controls into Manage Billing. That change affected other payment paths; I don’t have confirmation that it shipped."]}>
+<Gallery title="Account settings and payment methods" note={["The beta brief flagged a missing path: Manage Billing had no place to add a payment method, so a customer without one had nowhere to start.", "The handoff fixed it where customers meet it first. With no saved method, the Auto Pay prompt shows No Payment Method and makes Add Payment Method the main action. Payment methods also moved from My Account into Manage Billing. Beta testing was still flagging the payment-method menu that November, so the final release may differ."]}>
   <Panel kind="screens" format="png" span="full" className="panel--frontier" screens={[
     { src: myAccount, alt: 'My account screen with contact details, password and security controls, and saved payment methods' },
     { src: addPaymentMethod, alt: 'Add payment method screen offering credit or debit card and bank account options' },
-  ]} caption="Account settings with saved methods, and the card-or-bank choice." />
+  ]} caption="Earlier design: saved methods under My Account, and the card-or-bank choice." />
+  <Panel kind="slot" caption="Handoff design: with no saved method, the Auto Pay prompt leads with Add Payment Method.">
+    <EvidenceCrop src={firstPaymentMethod} x={0} y={0} width={880} height={1731} maxWidth="20rem" alt="Annotated handoff screen: a Set up Auto Pay sheet showing Payment method: No Payment Method, with a red Add Payment Method button and Nevermind below" />
+  </Panel>
 </Gallery>
 
 
-<Gallery title="Launch, confirmation, and loading animations" note="Four loops cover app launch, payment, setup and confirmation. The loading sequence appears below.">
+<Gallery title="Launch, confirmation, and loading animations" note="Each loop marks a moment in the app: launch, the Auto Pay and paperless billing prompts, and a completed installation. The loading sequence appears below.">
   <Panel kind="slot" className="panel--frontier-motion">
     <div class="lottie-grid" style="--lottie-bg: transparent; gap: 0">
       <div style="background: #FF0037">
@@ -80,16 +85,16 @@ import addPaymentMethod from '../../assets/work/myfrontier-app/figma/add-payment
         <p className="motion-caption">App launch</p>
       </div>
       <div style="background: #FF0037">
-        <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Payment confirmation" maxWidth="100%" controls />
-        <p className="motion-caption">Payment confirmation</p>
+        <LottiePlayer src="src/lottie/Lottie-Coin.json" label="Auto Pay prompt" maxWidth="100%" controls />
+        <p className="motion-caption">Auto Pay prompt</p>
       </div>
       <div style="background: #FF0037">
-        <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Setup complete" maxWidth="100%" controls />
-        <p className="motion-caption">Setup complete</p>
+        <LottiePlayer src="src/lottie/Lottie-Leaf.json" label="Paperless billing prompt" maxWidth="100%" controls />
+        <p className="motion-caption">Paperless billing prompt</p>
       </div>
       <div style="background: #FF0037">
-        <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Confirmation" maxWidth="100%" controls />
-        <p className="motion-caption">Confirmation</p>
+        <LottiePlayer src="src/lottie/Lottie-Confirmation.json" label="Installation complete" maxWidth="100%" controls />
+        <p className="motion-caption">Installation complete</p>
       </div>
     </div>
   </Panel>

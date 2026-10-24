@@ -15,7 +15,7 @@ Companion documentation for all animation settings. Values are in seconds unless
 | `initialBlur` | px | `6` | Starting blur amount — text sharpens to 0 during reveal |
 | `ease` | GSAP ease | `power4.out` | Easing curve for the motion (references semantic token) |
 | `cssEase` | CSS easing | `cubic-bezier(0.23, 1, 0.32, 1)` | The same curve as `ease`, for reveals that run in CSS (the homepage headline) |
-| `scrollStart` | ScrollTrigger | `top 70%` | When the element's top hits this viewport position, animation fires |
+| `scrollStart` | ScrollTrigger | `top 90%` | When the element's top hits this viewport position, animation fires. Set low so text starts appearing as it enters view, not after it has been on screen |
 | `cmyStagger` | seconds | `0.04` | How far each color channel trails the text: the first follows, the second 0.04s later, the third 0.08s after |
 | `cmyOpacity` | 0–1 | `0.4` | How visible the trailing CMY color layers are |
 

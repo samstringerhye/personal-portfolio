@@ -249,7 +249,7 @@ function initImageReveals() {
 /* ── Home page reveal animations ── */
 
 function initHomeReveals() {
-  const start = 'top 70%'
+  const start = cfg.scrollStart
   const duration = homeCfg.duration
   const ease = 'power3.out'
 

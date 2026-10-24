@@ -36,7 +36,8 @@ const rows = jobs.map(j => ({
         <div class="xp-body">
           <h3 class="xp-title typo-headline-sm">{job.title}</h3>
           <p class="xp-company typo-body-lg">{job.company}</p>
-          {job.highlights?.[0] && <p class="xp-note typo-body-lg">{job.highlights[0]}</p>}
+          {/* Only the current role carries a note; the résumé has the full history */}
+          {job.current && job.highlights?.[0] && <p class="xp-note typo-body-lg">{job.highlights[0]}</p>}
         </div>
       </li>
     ))}
@@ -63,7 +64,7 @@ const rows = jobs.map(j => ({
   .xp-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
+    gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
