@@ -149,7 +149,7 @@ html.ek .tl-job {
   }
 }
 
-/* Footer: the palette mark on the page margin, like the nav's logo, with the copyright under it */
+/* Footer: the name on the page margin, like the nav's, with the copyright under it */
 html.ek .footer-bottom {
   padding-inline: 0;
 }
@@ -347,18 +347,13 @@ html.ek .skill-grid {
 }
 
 @media (--2x) {
-  /* Phone footer: the logo and wordmark side by side, the links on their own line at the page
-     margin like everything else */
+  /* Phone footer: the name, then the links on their own line, all at the page margin */
   html.ek .footer-bar {
     flex-wrap: wrap;
   }
 
   html.ek .footer-bar-text {
     display: contents;
-  }
-
-  html.ek .footer-wordmark-text {
-    padding-left: var(--space-2);
   }
 
   html.ek .footer-links {

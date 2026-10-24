@@ -221,14 +221,6 @@
       },
       "additionalProperties": false
     },
-    "footerLogo": {
-      "type": "object",
-      "description": "The site mark beside the name in the footer",
-      "properties": {
-        "spinDuration": { "type": "number", "minimum": 1, "maximum": 120, "description": "Seconds per full turn" }
-      },
-      "additionalProperties": false
-    },
     "dotGrid": {
       "type": "object",
       "description": "Background dot grid overlay parameters",
@@ -258,9 +250,8 @@
     },
     "nav": {
       "type": "object",
-      "description": "Nav logo hover, first-visit entrance and the Work link's smooth scroll",
+      "description": "Nav first-visit entrance and the Work link's smooth scroll",
       "properties": {
-        "petal":        { "$ref": "#/definitions/seconds", "description": "Logo petal burst on hover" },
         "entrance":     { "$ref": "#/definitions/seconds", "description": "First-visit grid and nav draw-in; *At keys are timeline positions" },
         "scrollToWork": { "$ref": "#/definitions/duration", "description": "Smooth scroll to the work list" }
       },
