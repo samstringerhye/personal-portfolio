@@ -132,6 +132,7 @@ type SwapEvent = Event & { newDocument: Document; viewTransition: ViewTransition
 const persistId = (el: Element) => el.getAttribute('data-astro-transition-persist')
 let moving: HTMLElement | null = null
 let frozen: HTMLElement | null = null
+let settling = 0
 let pausedAnimations: Animation[] = []
 let playingVideos: HTMLVideoElement[] = []
 
@@ -140,6 +141,7 @@ let playingVideos: HTMLVideoElement[] = []
 // change on: through the scroll it keeps following, so it is already the pose the hero's identical
 // place gives it and doesn't jump when it resumes there
 function freezeScene(scene: HTMLElement, pose = true) {
+  clearTimeout(settling)
   if (pose) scene.dataset.deviceFreeze = ''
   if (frozen === scene) return
   if (frozen) resumeScene(frozen)
@@ -263,7 +265,10 @@ if (!mw.__deviceScenesBound) {
       scene.style.viewTransitionName = ''
       delete document.documentElement.dataset.deviceNav
       delete document.documentElement.dataset.deviceCarried
-      resumeScene(scene)
+      // The pose picks up at once; the screens hold their frame a moment longer, so nothing on them
+      // changes as the page arrives
+      delete scene.dataset.deviceFreeze
+      settling = window.setTimeout(() => resumeScene(scene), animations.workCards.deviceNav.settle * 1000)
     })
   })
 }
