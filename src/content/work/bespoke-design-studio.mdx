@@ -5,7 +5,7 @@ year: 2024
 yearLabel: "2021–2024"
 role: "Lead designer"
 agency: "Razorfish"
-tagline: "An appliance configurator for Bespoke kitchens and refrigerators."
+tagline: "Leading interface design as a refrigerator configurator grew into a kitchen planning tool."
 thumbnail: "../../assets/work/bespoke-design-studio/bespoke-design-studio-thumbnail-32.jpeg"
 thumbnailLayers:
   subject: "../../assets/work/bespoke-design-studio/bespoke-design-studio-subject-32.png"
@@ -22,8 +22,9 @@ thumbnailScene: "bespoke"
 heroImage: "../../assets/work/bespoke-design-studio/scene-2-1.png"
 featured: true
 sortOrder: 2
-tags: ["Design System", "E-commerce", "Interactive", "Motion Design"]
+tags: ["Product Design", "Configuration", "E-commerce", "Interaction Design"]
 ---
+import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -53,37 +54,48 @@ import fridgeSummary from '../../assets/work/bespoke-design-studio/figma-fresh/f
   did="I was the primary designer and made the core interface decisions, with support from other designers and collaboration across UX, creative, project management, and development. I started as a Senior Designer and continued the work as an Associate Design Director."
 />
 
-<Gallery title="Kitchen preview and mobile controls" note={["The refrigerator simulator launched in March 2021, followed by the kitchen simulator that September. During refrigerator development, I challenged a depth-selection step that offered no visual feedback and questioned whether its step indicators added useful guidance.", "When the staging implementation dimmed the kitchen behind the color popup, I requested that it remain visible so shoppers could judge finishes against their surroundings. The creative team raised the same concern. The kitchen designs below carry that priority into a larger configuration flow."]}>
+<ProseGroup>
+## From the 2021 launches to later iterations
+
+The refrigerator simulator launched in March 2021 and the kitchen simulator followed in September. The order-rate results below cover March 2022 through February 2023. The designs below come from August 2023 iterations and Q2 2024 working files, not the 2021 launches.
+</ProseGroup>
+
+<Gallery title="Keep the kitchen visible while choosing finishes" note={["During refrigerator development, I challenged a depth-selection step that offered no visual feedback and questioned whether its step indicators added useful guidance.", "When the staging implementation dimmed the kitchen behind the color popup, I requested that it remain visible so shoppers could judge finishes against their surroundings. The creative team raised the same concern. The kitchen designs below carry that priority into a larger configuration flow."]}>
   <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
   <Panel className="bespoke-panel" kind="screens" span="half" screens={[
     { src: configMobile, alt: '2024 mobile kitchen setup with appliance-category icons and a Back button' },
-  ]} caption="Appliance selection." />
+  ]} caption="Q2 2024 working design: appliance-category selection." />
   <Panel className="bespoke-panel" kind="screens" span="half" screens={[
     { src: yellowMobile, alt: 'August 2023 mobile color selection with the kitchen above the option tabs and swatches' },
-  ]} caption="Color selection." />
+  ]} caption="August 2023 iteration: keep the kitchen visible above the finish controls." />
   </div>
 </Gallery>
 
-<Gallery title="Appliance categories and configuration controls" note={["Adding ranges, microwaves, dishwashers, and other appliances introduced different models, options, and compatibility rules. I fixed the configuration panel’s position so controls stayed in a predictable place when people switched appliances.", "I made the interior selector a text button to clarify its purpose, moved step navigation out of the menu, and chose Back instead of Reset so people could revise a choice without discarding their work. Category tabs supported movement between appliances while option tabs held each product’s decisions."]}>
+<Gallery title="Make room for more appliance choices" note={["Adding ranges, microwaves, dishwashers, and other appliances introduced different models, options, and compatibility rules. I fixed the configuration panel’s position so controls stayed in a predictable place when people switched appliances.", "I made the interior selector a text button to clarify its purpose, moved step navigation out of the menu, and chose Back instead of Reset so people could revise a choice without discarding their work. Category tabs supported movement between appliances while option tabs held each product’s decisions."]}>
   <BespokeOptions />
+  <p className="evidence-note">Appliance artwork from the configurator, arranged for this page.</p>
 </Gallery>
 
-<Gallery title="Configuration steps and compatibility rules" note={["We considered an open flow that let people move freely between options. I chose a stepped first pass because we felt it would make each appliance easier to complete. That was a design judgment, not a tested result. After completing the relevant choices, shoppers could return to revise them.", "The sequence still allowed broader kitchen editing: switch appliance categories, retain choices for unchanged products, and review, edit, or remove saved appliances. Shoppers could check out saved items without completing every appliance. Compatibility rules also mattered: a range and cooktop, or a microwave and range hood, could not occupy the same space."]}>
+<Gallery title="Guide the first pass, then allow revisions" note={["We considered an open flow that let people move freely between options. I chose a stepped first pass because we felt it would make each appliance easier to complete. That was a design judgment, not a tested result. After completing the relevant choices, shoppers could return to revise them.", "The sequence still allowed broader kitchen editing: switch appliance categories, retain choices for unchanged products, and review, edit, or remove saved appliances. Shoppers could check out saved items without completing every appliance. Compatibility rules also mattered: a range and cooktop, or a microwave and range hood, could not occupy the same space."]}>
   <BespokeOptionFlow />
+  <p className="evidence-note">Q2 2024 working designs of the model, depth, and finish steps. Prices are placeholders.</p>
   <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
   <Panel className="bespoke-panel" kind="screens" span="half" ratio="4 / 5" screens={[
     { src: panelMobile, alt: 'August 2023 mobile color step with one refrigerator door selected above the swatches' },
-  ]} caption="Mobile color selection with the active refrigerator door above the finish swatches." />
+  ]} caption="August 2023 iteration: the active refrigerator door sits above its finish swatches." />
   <Panel className="bespoke-panel" kind="bleed" span="half" ratio="4 / 5" src={fridgeCloseup} alt="Kitchen visualization with the upper-right refrigerator door outlined in blue" caption="A blue outline marks the refrigerator door selected for a finish change." />
   </div>
 </Gallery>
 
 <Gallery title="Saved designs and purchase review" note="I separated saving an appliance from reviewing it for purchase, so shoppers could keep building their kitchen before checking availability and adding products to the cart.">
-  <Panel className="bespoke-panel" kind="page" ratio="1440 / 1024" src={yellowDesktop} alt="August 2023 kitchen iteration with all refrigerator panels selected in yellow and Save enabled" caption="All refrigerator panels in yellow; Save enabled." />
+  <Panel className="bespoke-panel" kind="page" ratio="1440 / 1024" src={yellowDesktop} alt="August 2023 kitchen iteration with all refrigerator panels selected in yellow and Save enabled" caption="August 2023 iteration: selected refrigerator panels remain visible while Save stays separate from purchase review." />
+  <Panel kind="slot" caption="Control detail: finish choices and the enabled Save action.">
+    <EvidenceCrop src={yellowDesktop} x={2040} y={125} width={800} height={1880} maxWidth="24rem" alt="Finish selector and Save action beside the configured kitchen" />
+  </Panel>
   <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
   <Panel className="bespoke-panel" kind="screens" span="half" ratio="1 / 1" screens={[
     { src: fridgeSummary, alt: 'Q2 2024 mobile Your Bespoke design summary with availability, placeholder prices, and Add to cart' },
-  ]} />
+  ]} caption="Q2 2024 working design: review availability before Add to cart. Prices are placeholders." />
   <Panel className="bespoke-panel bespoke-kitchen-crop" kind="bleed" span="half" ratio="1 / 1" src={kitchenRender} alt="2023 kitchen environment with a refrigerator, wall oven, cooktop, and range hood" caption="Kitchen preview with a refrigerator, wall oven, cooktop, and range hood." />
   </div>
 </Gallery>

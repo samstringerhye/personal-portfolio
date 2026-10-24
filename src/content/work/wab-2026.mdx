@@ -4,7 +4,7 @@ client: "Whataburger"
 year: 2026
 role: "Lead UI Designer"
 agency: "Razorfish"
-tagline: "Giving Whataburger's brand character room while keeping ordering actions clear."
+tagline: "Leading UI direction from brand exploration to ordering screens and a shared design system."
 thumbnail: "../../assets/work/wab-2026/wab-thumbnail-32.jpeg"
 thumbnailScene: "whataburger"
 thumbnailLayers:
@@ -18,8 +18,9 @@ unlisted: false
 passwordProtected: true
 thumbnailAlt: "A 3D iPhone showing the Whataburger app icon, with a second iPhone behind it"
 thumbnailText: "dark"
-tags: ["Design System", "Design Tokens", "Mobile App", "Visual Design", "Component Architecture"]
+tags: ["UI Direction", "Mobile App", "Visual Design", "Design System"]
 ---
+import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -49,31 +50,39 @@ import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/custo
   year={2026}
   made={['UI direction', 'App design system', 'Mobile app interfaces']}
   problem="Whataburger's app needed to carry the brand's personality through ordering. Early reviews exposed a tension: orange headlines, cards, and controls competed for attention. Customers still needed to recognize what they could tap, what they had selected, and what came next."
-  decision="The team chose orange and cream as the base, keeping iconography and darker menu and card tones from the dark-brown direction. I refined how color, type weight, and icons communicated selection and action, then carried those rules into the app screens and Project Pele design system."
+  decision="The team chose orange and cream as the base, keeping iconography and darker menu and card tones from the dark-brown direction. I refined how color, type weight, and icons communicated selection and action, then carried those rules into the app screens and app’s design system."
   did="I led the UI design in partnership with an experience director. I designed the visual directions, used client feedback and customer testing to develop the selected direction, and built the interface screens and design system. The experience team defined the ordering requirements; I translated them into the UI."
 />
 
-<Gallery title="Home screen exploration" note="The home exploration brought ordering, quick reorders, and menu discovery together. This in-hand mockup shows an earlier stage of that work.">
-  <Panel kind="bleed" className="wab-home-panel" ratio="16 / 9" src={lifestyleHome} alt="Earlier Whataburger home concept shown in hand with a Howdy greeting and bottom navigation" />
-</Gallery>
-
-<Gallery title="Visual directions and customer testing" note="Customer testing ranked dark brown first, orange and cream second, and light neutrals third. Preference for dark brown rose after customers saw its menu. The team chose orange and cream as the base, keeping the iconography and darker menu and card tones from dark brown. The full dark palette felt too Halloween-like to the team.">
+<Gallery title="Visual directions and customer testing" note="Participants preferred dark brown, followed by orange and cream, then light neutrals. Preference for dark brown rose after participants saw its menu. This was a preference finding, not a measure of ordering success. The team chose orange and cream as the base because the full dark palette felt too Halloween-like, while retaining darker menu tones and iconography. That was a team judgment, not a tested result.">
   <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionDark} alt="Dark-brown Whataburger direction with orange accents, burger photography, and menu examples" caption="Dark brown." />
   <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionVibrant} alt="Orange-and-cream Whataburger direction with product photography, display type, and app examples" caption="Orange and cream." />
   <Panel kind="piece" ratio="16 / 9" tint="#FFFFFF" className="wab-direction-board" src={directionModern} alt="Light-neutral Whataburger direction with orange accents and burger imagery" caption="Light neutrals." />
 </Gallery>
 
-<Gallery title="Location selection and order controls" note={["Choosing a palette did not settle how to use it. I explored removing the orange fill from selected location cards, using an orange outline and shadow instead, and giving the order action more room. I also explored darker pill tabs to reduce the amount of orange on screen.", "The review surfaced a tradeoff: I wanted less competing color, while the experience director wanted to retain more orange in the selected card. We considered how the outline and shadow could carry that signal. These explorations show the distinction between a selected location, an active tab, and the action to order."]}>
-  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={locationFill} alt="Location exploration with a peach-filled selected card, orange underlined Nearby tab, and orange Order Here button" caption="Tinted selection card." span="half" />
-  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={locationOutline} alt="Location exploration with a white selected card, orange outline and shadow, brown Nearby pill, and outlined Order Here button" caption="Outlined selection card." span="half" />
+<Gallery title="Home screen exploration" note="The home exploration brought ordering, quick reorders, and menu discovery together. This in-hand mockup shows an earlier stage of that work.">
+  <Panel kind="bleed" className="wab-home-panel" ratio="16 / 9" src={lifestyleHome} alt="Earlier Whataburger home concept shown in hand with a Howdy greeting and bottom navigation" />
 </Gallery>
 
-<Gallery title="Location details and type hierarchy" note="I revised the location details to rely on type size and weight instead of light-brown text for hierarchy. The service labels became heavier, while addresses and hours used the same dark text color. The comparison also captures an open question from the review: the team still debated the color of the selected day.">
-  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={typeColor} alt="Location detail with a light-brown address and hours, regular-weight service labels, and an orange selected day" caption="Hierarchy through color." span="half" />
-  <Panel kind="piece" ratio="804 / 1748" tint="transparent" className="wab-unframed" span="half" src={typeWeight} alt="Revised location detail with dark address and hours, bold service labels, and a green selected day under review" caption="Hierarchy through type weight." span="half" />
+<Gallery title="Separate selection from the order action" note={["Choosing a palette did not settle how to use it. I explored removing the orange fill from selected location cards, using an orange outline and shadow instead, and giving the order action more room. I also explored darker pill tabs to reduce the amount of orange on screen.", "The review surfaced a tradeoff: I wanted less competing color, while the experience director wanted to retain more orange in the selected card. We considered how the outline and shadow could carry that signal. These are review alternatives, not a confirmed before-and-after release. The outlined option also reduces emphasis on Order Here, making the balance between selection and action part of the tradeoff."]}>
+  <Panel kind="slot" span="half" caption="Exploration: tinted selection, underlined active tab, filled order action.">
+    <EvidenceCrop src={locationFill} x={0} y={900} width={804} height={848} maxWidth="26rem" alt="Exploration: tinted selection, underlined active tab, filled order action." />
+  </Panel>
+  <Panel kind="slot" span="half" caption="Exploration: outlined selection, dark active tab, outlined order action.">
+    <EvidenceCrop src={locationOutline} x={0} y={900} width={804} height={848} maxWidth="26rem" alt="Exploration: outlined selection, dark active tab, outlined order action." />
+  </Panel>
 </Gallery>
 
-<Gallery title="Ingredient customization and order confirmation" note={["The ordering requirements gave those visual distinctions a purpose. Customization needed to show the base recipe, the customer's changes, and additions that affected price. The ingredient strip kept selected items visible, using labels for extra, light, and quantity changes. Empty categories retained an anchor so customers could return to them.", "I carried the type and card rules into customization and confirmation. The team's quick-order notes raised the same concern: fewer steps still needed recognizable actions, selected states, and a path to handle unavailable food or payment issues."]}>
+<Gallery title="Use type weight instead of lighter text" note="I revised the location details to rely on type size and weight instead of light-brown text for hierarchy. The service labels became heavier, while addresses and hours used the same dark text color. The comparison also captures an open question from the review: the team still debated the color of the selected day.">
+  <Panel kind="slot" span="half" caption="Earlier treatment: lighter text separates address and hours.">
+    <EvidenceCrop src={typeColor} x={0} y={620} width={804} height={1128} maxWidth="26rem" alt="Earlier treatment: lighter text separates address and hours." />
+  </Panel>
+  <Panel kind="slot" span="half" caption="Revised exploration: dark text and heavier service labels; selected-day color remains under review.">
+    <EvidenceCrop src={typeWeight} x={0} y={620} width={804} height={1128} maxWidth="26rem" alt="Revised exploration: dark text and heavier service labels; selected-day color remains under review." />
+  </Panel>
+</Gallery>
+
+<Gallery title="Ingredient customization and order confirmation" note={["The ordering requirements gave those visual distinctions a purpose. Customization needed to show the base recipe, the customer's changes, and additions that affected price. The ingredient strip kept selected items visible, using labels for extra, light, and quantity changes. Empty categories retained an anchor so customers could return to them.", "I carried the type and card rules into customization and confirmation. The examples below show portion changes, empty-category anchors, and pickup confirmation. The requirements also covered price changes and recovery from unavailable food or payment issues; these examples don't cover those paths."]}>
   <Panel kind="slot" tint="#FFFFFF" className="wab-ingredient-panel" caption="Changed portions stay visible: EX marks extra pickles, X3 marks three bacon portions, and LT marks light mustard.">
     <img class="case-study-image wab-ingredient-desktop" src={customizationSelected.src} width={customizationSelected.width} height={customizationSelected.height} style="width: 664px;" alt="Ingredient strip showing extra pickles, three bacon portions, light mustard, and an empty cheese category" loading="lazy" />
     <div class="wab-ingredient-mobile" role="img" aria-label="Ingredient strip showing extra pickles, three bacon portions, light mustard, and an empty cheese category" style="--ingredient-columns: 3; --ingredient-ratio: 442.6666666666667 / 252; --ingredient-header: 16%;">
@@ -102,21 +111,21 @@ import customizationEmpty from '../../assets/work/wab-2026/figma/decisions/custo
   ]} caption="Customization and pickup confirmation, shown at phone height." />
 </Gallery>
 
-<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. After exploring a filled bag, I proposed simplifying the icon for legibility; the experience director supported the simpler brown bag with an orange dot. That distinction shaped how I treated expressive artwork and functional icons within the same system.">
+<Gallery title="Brand typography and iconography" note="Script greetings, display type, and food stickers gave the app its character. Small controls needed a different level of detail. I treated expressive artwork and functional icons differently: detailed stickers could carry brand character, while menu and navigation icons needed simpler shapes at small sizes. The examples below show that distinction.">
   <Panel kind="piece" ratio="1920 / 935" tint="#FFFFFF" className="wab-type-board" src={typographyBoard} alt="Typography board showing Alkaline Heavy, Unbounded, rewards messaging, and Frosted Berry lettering" />
   <IconBoard />
 </Gallery>
 
-<Gallery title="Component library and app screens" note="I turned the selected direction into a component library with button variants, inputs, navigation, and icon families. The library separates reusable controls from the screens that combine them. Designers can select an icon size or navigation state within its family instead of recreating it for each flow. I used those rules across the app while keeping the task hierarchy specific: points and offers in rewards, the QR code in scan, and settings in account.">
+<Gallery title="Apply shared rules across rewards, scan, and account" note="I turned the selected direction into a component library with button variants, inputs, navigation, and icon families. The screens below show those controls in use. I used those rules across the app while keeping the task hierarchy specific: points and offers in rewards, the QR code in scan, and settings in account.">
   <Panel kind="screens" format="png" tint="transparent" className="wab-flow-panel" screens={[
     { src: rewards, alt: 'Whataburger rewards screen with points, offers, and reward items' },
     { src: scan, alt: 'Whataburger in-store scan screen with QR code and wallet' },
     { src: account, alt: 'Whataburger account screen with account settings and shared navigation' },
-  ]} />
+  ]} caption="Design examples: shared navigation with points, a scan code, and account settings taking priority in each screen." />
 </Gallery>
 
 <ProseGroup>
 ## Lessons from color, type, and selection states
 
-The project sharpened how I use brand elements in an interface. A color or shadow needed to communicate an action or a selection. A type change needed to establish hierarchy. I would bring those questions into the first round of exploration, before extending a direction across the app.
+I would bring action and selection states into the first round of visual exploration, before extending a direction across the app. Reviewing those states together makes the tension between brand expression and task hierarchy explicit.
 </ProseGroup>

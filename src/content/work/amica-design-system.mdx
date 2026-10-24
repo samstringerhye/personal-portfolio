@@ -20,6 +20,7 @@ featured: true
 sortOrder: 0
 tags: ["Design System", "Design Leadership", "AEM", "React"]
 ---
+import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
@@ -55,15 +56,15 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
   did="I joined mid-project as design lead. I shaped the system structure and component decisions, delegated refinement and documentation, set review priorities, and guided responsive fixes. Collaborating designers developed and documented components; I directed that work and reviewed it across the system."
 />
 
-<Gallery title="Design system structure" note={["I developed the system’s structure while the team continued designing pages. Amica’s brand foundations and an existing component library gave us a starting point. I challenged categories such as Utility and Media & Content because they blurred the distinction between an individual component and a larger page section. I organized the library around Foundations, Components, and Sections, with templates showing how those parts came together.", "I refined that structure through the page work. In the Topic Hub, I updated the header components and separated them into a stack so the team could update each part more easily. When a treatment appeared across templates, I asked the team to make the change in the shared component. That kept page-level decisions connected to the library we were developing.", "Extending the system into React also meant mapping colors by purpose. A green used for a link needed an action token, even when a success color looked closer. We documented the source color, its shared value, and its intended role together so the mapping explained the decision as well as the appearance."]}>
+<Gallery title="Connect foundations, components, and page sections" note={["I developed the system’s structure while the team continued designing pages. Amica’s brand foundations and an existing component library gave us a starting point. I challenged categories such as Utility and Media & Content because they blurred the distinction between an individual component and a larger page section. I organized the library around Foundations, Components, and Sections, with templates showing how those parts came together.", "I refined that structure through the page work. In the Topic Hub, I updated the header components and separated them into a stack so the team could update each part more easily. When a treatment appeared across templates, I asked the team to make the change in the shared component. That kept page-level decisions connected to the library we were developing.", "Extending the system into React also meant mapping colors by purpose. A green used for a link needed an action token, even when a success color looked closer. We documented the source color, its shared value, and its intended role together so the mapping explained the decision as well as the appearance."]}>
   <SystemHierarchy examples={[
     { image: foundationsArt, label: 'Foundations', caption: 'Rhymes typography and brand colors.', alt: 'Amica Rhymes type sample and three Amica brand color swatches' },
-    { image: componentsArt, label: 'Components', caption: 'Auto and Home selection cards.', alt: 'Auto and Home selection cards from the Amica system' },
-    { image: sectionsArt, label: 'Sections', caption: 'Selection cards, ZIP entry, and a quote button.', alt: 'Product Bundle Hero combining selection cards, ZIP entry, and a quote action' },
+    { image: componentsArt, label: 'Components', caption: 'Selection cards combine the type, color, and control rules.', alt: 'Auto and Home selection cards from the Amica system' },
+    { image: sectionsArt, label: 'Sections', caption: 'The section combines selection cards with ZIP entry and a quote action.', alt: 'Product Bundle Hero combining selection cards, ZIP entry, and a quote action' },
   ]} />
 </Gallery>
 
-<Gallery title="Component properties and states" note={["Within a component family, I kept the name simple and used properties for type, size, state, layout, and media. The quote-flow audit showed why this mattered: products reused many of the same forms, but the AEM and React libraries differed in focus, processing, validation, and responsive states. Matching the default appearance covered only part of the work.", "I also moved repeated decisions into shared rules. Buttons and links had different hand-entered values for disabled opacity. I tied them to the Core UI Kit’s disabled token so they inherited the same rule. Future changes could then start at that shared value."]}>
+<Gallery title="Define the states, not just the default" note={["Within a component family, I kept the name simple and used properties for type, size, state, layout, and media. The quote-flow audit showed why this mattered: products reused many of the same forms, but the AEM and React libraries differed in focus, processing, validation, and responsive states. Matching the default appearance covered only part of the work.", "I also moved repeated decisions into shared rules. Buttons and links had different hand-entered values for disabled opacity. I tied them to the Core UI Kit’s disabled token so they inherited the same rule. Future changes could then start at that shared value."]}>
   <Panel kind="slot">
     <ComponentExamples examples={[
       { image: cardDefault, label: 'Default', alt: 'Default insurance selection card with an empty checkbox' },
@@ -86,8 +87,18 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
   </Panel>
 </Gallery>
 
-<Gallery title="Documentation and developer handoff" note={["I separated published libraries, reference documentation, internal working files, and client-facing material. I directed the team to move finished work into the client share and made that the development reference. That distinction mattered while component refinement and page delivery continued together.", "I organized the work into component refinement, migration and connection, documentation, and review. Collaborating designers owned focused parts of that work; I set priorities and reviewed how the pieces came together.", "The documentation needed the same discipline as the components. Copied specification text could name a valid token that the component did not actually use. We generated those specifications from the component’s bindings, then checked the assembled page examples visually for clipped labels, missing content, and responsive behavior. The library, its documentation, and the pages all needed to agree."]}>
-  <Panel kind="slot" caption="Product Bundle Hero.">
+<ProseGroup>
+## Keep the handoff tied to the component
+
+I separated published libraries, reference documentation, internal working files, and client-facing material. I directed the team to move finished work into the client share and made that the development reference while refinement and page delivery continued together.
+
+I organized the work into component refinement, migration and connection, documentation, and review. Collaborating designers owned focused parts of that work; I set priorities and reviewed how the pieces came together.
+
+Copied specifications could name a valid token that the component did not use. We generated specifications from the actual bindings, then checked the assembled page examples for clipped labels, missing content, and responsive behavior. The library, documentation, and pages all needed to agree.
+</ProseGroup>
+
+<Gallery title="Check shared components in a complete section" note="The Product Bundle Hero combines selection cards, ZIP entry, and a quote action. These desktop and mobile examples show composition and responsive arrangement.">
+  <Panel kind="slot" caption="The same section combines product selection and quote entry across desktop and mobile.">
     <ComponentExamples columns={2} layout="section" examples={[
       { image: bundleDesktop, label: 'Desktop · Populated example', alt: 'Desktop Product Bundle Hero presentation with distinct Auto, Home, Renters, Condo, and Life illustrations and labels above ZIP entry and a quote action' },
       { image: bundleMobile, label: 'Mobile · Populated example', alt: 'Mobile Product Bundle Hero presentation with Auto, Home, Renters, Condo, and Life selection cards arranged in two rows above ZIP entry and a quote action' },
@@ -96,16 +107,14 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
 </Gallery>
 
 <Gallery title="Quote form layout options" note={["In the product-dropdown exploration, the Wedding & Event label clipped. I presented the existing layout as Option A, a wider-field layout with the action underneath as Option B, and a wider dropdown with a narrower ZIP field and inline action as Option C. Amica selected C. I traded space between the inputs so the full product name could fit while the quote action stayed beside them.", "The team confirmed that the arrangement should hold through 1024px. That kept the solution within the agreed responsive behavior instead of adding a breakpoint for this layout. Amica approved the direction, and the selected option shipped.", "I led this refinement within the agency’s visual-reskin scope. Amica’s in-house team owned the broader Quote Start redesign."]}>
-  <Panel kind="slot">
-    <ComponentExamples columns={2} examples={[
-      { image: quoteA, label: 'A · Existing layout', alt: 'Original quote-start card with Wedding & Event truncated to Wedding & Ev... and the Get a quote action inline with ZIP entry' },
-      { image: quoteB, label: 'B · Wider fields, action below', alt: 'Quote-start alternative with Wedding & Event visible in full, a wider ZIP field, and a full-width Get a quote action underneath' },
-    ]} />
+  <Panel kind="slot" span="half" caption="A · Existing controls: Wedding &amp; Event clips while ZIP entry and the action stay inline.">
+    <EvidenceCrop src={quoteA} x={55} y={470} width={990} height={200} alt="Detail of Option A: clipped Wedding and Event label, ZIP field, and inline quote button" />
   </Panel>
-  <Panel kind="slot" caption="C · Selected layout.">
-    <div style="padding: clamp(16px, 3vw, 32px)">
-      <img class="case-study-image" src={quoteC.src} width={quoteC.width} height={quoteC.height} loading="lazy" decoding="async" alt="Approved Option C quote-start card with the full Wedding & Event label, narrower ZIP entry, and Get a quote action on the same row" style={`display: block; width: min(100%, ${quoteC.width / 2}px); height: auto; margin-inline: auto;`} />
-    </div>
+  <Panel kind="slot" span="half" caption="B · Wider fields show the full label, but move the action to a second row.">
+    <EvidenceCrop src={quoteB} x={55} y={470} width={990} height={300} alt="Detail of Option B: full Wedding and Event label and wider ZIP field above a full-width quote button" />
+  </Panel>
+  <Panel kind="slot" caption="C · Amica selected the narrower ZIP field and inline action. The arrangement holds through 1024px.">
+    <EvidenceCrop src={quoteC} x={80} y={670} width={1490} height={310} alt="Detail of selected Option C: full product label, narrower ZIP field, and inline quote button" />
   </Panel>
 </Gallery>
 

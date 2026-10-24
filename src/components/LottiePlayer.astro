@@ -16,9 +16,11 @@ interface Props {
   nativeLoop?: boolean
   /** Max width constraint */
   maxWidth?: string
+  /** Visible playback control for case-study motion evidence. */
+  controls?: boolean
 }
 
-const { src, label, loop = true, autoplay = true, nativeLoop = false, maxWidth = '200px' } = Astro.props
+const { src, label, loop = true, autoplay = true, nativeLoop = false, maxWidth = '200px', controls = false } = Astro.props
 
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -33,6 +35,7 @@ try {
 ---
 
 {animationData && (
+  <div class="lottie-example">
   <div
     class="lottie-player"
     data-animation={animationData}
@@ -43,12 +46,25 @@ try {
     aria-label={label}
     style={`max-width: ${maxWidth}; margin: 0 auto;`}
   />
+  {controls && <button class="lottie-toggle" type="button" disabled aria-label={`Play ${label}`}>Play</button>}
+  </div>
 )}
 
 <style>
   .lottie-player {
     width: 100%;
     aspect-ratio: 1;
+  }
+  .lottie-toggle {
+    display: block;
+    min-height: var(--touch-target);
+    margin: var(--space-2) auto;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    cursor: pointer;
   }
 </style>
 
@@ -73,6 +89,10 @@ try {
     instances.clear()
     document.querySelectorAll<HTMLElement>('.lottie-player[data-initialized]').forEach(el => {
       delete el.dataset.initialized
+    })
+    document.querySelectorAll<HTMLButtonElement>('.lottie-toggle').forEach(button => {
+      button.onclick = null
+      button.disabled = true
     })
   }
 
@@ -113,6 +133,7 @@ try {
         animationData: animData,
       })
       instances.add(anim)
+      let playbackTween: any = null
       // Lottie completes JSON setup asynchronously. totalFrames is still zero immediately
       // after loadAnimation, so creating the frame tween there targets frame -1.
       const ready = () => {
@@ -134,8 +155,31 @@ try {
             onUpdate: () => anim.goToAndStop(obj.frame, true),
           })
           tweens.add(tween)
+          playbackTween = tween
         } else {
           anim.play()
+        }
+        const button = el.parentElement?.querySelector<HTMLButtonElement>('.lottie-toggle')
+        if (button) {
+          let playing = !prefersReduced && el.dataset.autoplay === 'true'
+          const updateControl = () => {
+            button.textContent = playing ? 'Pause' : 'Play'
+            button.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${el.getAttribute('aria-label')}`)
+          }
+          button.disabled = false
+          updateControl()
+          button.onclick = () => {
+            playing = !playing
+            if (playbackTween) {
+              playing ? playbackTween.resume() : playbackTween.pause()
+            } else if (playing) {
+              anim.loop = el.dataset.loop === 'true'
+              anim.play()
+            } else {
+              anim.pause()
+            }
+            updateControl()
+          }
         }
       }
       if (anim.isLoaded) ready()
@@ -186,4 +230,5 @@ try {
   deferLottie()
   document.addEventListener('astro:page-load', deferLottie)
   document.addEventListener('astro:before-swap', destroyLottie)
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', initLottie)
 </script>

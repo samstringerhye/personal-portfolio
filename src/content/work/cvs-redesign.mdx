@@ -4,7 +4,7 @@ client: "CVS"
 year: 2022
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "Type system, icon grid, and component library for CVS.com's e-commerce platform."
+tagline: "Shaping the shared visual rules behind category browsing, product selection, and fulfillment."
 thumbnail: "../../assets/work/cvs-redesign/cvs-redesign-thumbnail-32.jpeg"
 thumbnailLayers:
   subject: "../../assets/work/cvs-redesign/cvs-redesign-subject-32.png"
@@ -20,7 +20,7 @@ thumbnailScene: "cvs"
 heroImage: "../../assets/work/cvs-redesign/cvs-header-2.jpg"
 featured: true
 sortOrder: 3
-tags: ["Design System", "E-commerce", "Accessibility", "Typography"]
+tags: ["Visual Systems", "Commerce", "Typography", "Component Design"]
 ---
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
@@ -32,15 +32,11 @@ import homeMobile from '../../assets/work/cvs-redesign/figma/home-mobile.webp'
 import beautyMobile from '../../assets/work/cvs-redesign/figma/beauty-mobile.webp'
 import nailPolishMobile from '../../assets/work/cvs-redesign/figma/nail-polish-mobile.webp'
 import productCardLoreal from '../../assets/work/cvs-redesign/figma/product-cards-no-shadow/product-card-loreal.svg?url'
-import productCardAveeno from '../../assets/work/cvs-redesign/figma/product-cards-no-shadow/product-card-aveeno.svg?url'
 import productCardCerave from '../../assets/work/cvs-redesign/figma/product-cards-no-shadow/product-card-cerave.svg?url'
-import productCardLaRochePosay from '../../assets/work/cvs-redesign/figma/product-cards-no-shadow/product-card-la-roche-posay.svg?url'
 import sparks from '../../assets/work/cvs-redesign/figma/exports/spark-family.svg?url'
 import iconGrid from '../../assets/work/cvs-redesign/figma/exports/spark-construction.svg?url'
 import pdpDesktop from '../../assets/work/cvs-redesign/figma/exports/pdp-desktop-3x.png'
 import fulfillment from '../../assets/work/cvs-redesign/figma/exports/fulfillment-3x.png'
-import minicartMobile from '../../assets/work/cvs-redesign/figma/minicart-mobile.webp'
-import filtersMobile from '../../assets/work/cvs-redesign/figma/exports/filters-mobile-3x.png'
 import navDesktop from '../../assets/work/cvs-redesign/figma/exports/nav-desktop.webp'
 import navMobile from '../../assets/work/cvs-redesign/figma/exports/nav-mobile.webp'
 import searchMobile from '../../assets/work/cvs-redesign/figma/exports/search-mobile.webp'
@@ -57,12 +53,12 @@ import brandDesktop from '../../assets/work/cvs-redesign/figma/exports/brand-des
   did="I shaped these decisions with a team of designers across the visual system and shop components, including the type hierarchy, circular Spark grid, category colors, and fulfillment patterns."
 />
 
-<Gallery title="Shop typography and content hierarchy" note="I helped define a shared hierarchy in CVS Health Sans with the design team. We kept the roles of headlines, subheads, and body copy consistent as campaign imagery and category content changed. That gave the homepage, department pages, and product listings a common structure.">
+<Gallery title="Keep type roles consistent as category content changes" note="I helped define a shared hierarchy in CVS Health Sans with the design team. We kept the roles of headlines, subheads, and body copy consistent as campaign imagery and category content changed. That gave the homepage, department pages, and product listings a common structure.">
   <Panel kind="page" ratio="6 / 5" src={homeDesktop} alt="CVS Shop homepage: a back-to-school hero and the ExtraBucks welcome" caption="Seasonal campaign and ExtraBucks welcome message." />
   <div class="gallery-row" style="--gallery-columns: 3" role="region" aria-label="3 related images">
-  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame cvs-phone-trio" src={homeMobile} alt="The shop homepage on a phone, with a back-to-school offer" caption="Back-to-school campaign." />
-  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame cvs-phone-trio" src={beautyMobile} alt="The Beauty department on a phone, with the ExtraCare BeautyClub card" caption="ExtraCare BeautyClub card." />
-  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame cvs-phone-trio" src={nailPolishMobile} alt="Nail polish on a phone, with quick filters and product cards" caption="Nail polish listing with quick filters." />
+  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame cvs-phone-trio" src={homeMobile} alt="The shop homepage on a phone, with a back-to-school offer" caption="Homepage: a campaign headline leads, with shopping content below." />
+  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame cvs-phone-trio" src={beautyMobile} alt="The Beauty department on a phone, with the ExtraCare BeautyClub card" caption="Beauty: category content changes while headline, supporting copy, and action retain distinct roles." />
+  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame cvs-phone-trio" src={nailPolishMobile} alt="Nail polish on a phone, with quick filters and product cards" caption="Product listing: category heading, quick filters, and product information form the browsing hierarchy." />
   </div>
 </Gallery>
 <Gallery title="Shop navigation and search" note="The type and category-color rules I shaped with the team carry into navigation and search. Department links give shoppers a path through the catalog, while search brings relevant suggestions and products into the same view.">
@@ -73,40 +69,30 @@ import brandDesktop from '../../assets/work/cvs-redesign/figma/exports/brand-des
   </div>
 </Gallery>
 
-<Gallery title="Spark graphics and construction grid" note="I helped shape the Spark family with the design team around a shared circular grid. We used that geometry to give varied page accents a consistent character and draw attention to key messages.">
-  <Panel kind="piece" ratio="1716 / 1100" tint="#ffffff" className="cvs-spark-family" src={sparks} alt="CVS Sparks arranged in a grid" />
+<Gallery title="Build varied Sparks from shared geometry" note="I helped shape the Spark family with the design team around a shared circular grid. We used that geometry to give varied page accents a consistent character and draw attention to key messages.">
+  <Panel kind="piece" ratio="1716 / 1100" tint="#ffffff" className="cvs-spark-family" src={sparks} alt="CVS Sparks arranged in a grid" caption="Different accents share the circular construction logic shown below." />
   <Panel kind="piece" ratio="16 / 9" tint="#ffffff" className="cvs-spark-construction" src={iconGrid} alt="One red Spark centered on a complete circular construction grid, with dashed guides on all four sides" caption="Curve, ray, and spacing guides." />
 </Gallery>
 
-<Gallery title="Product cards, filters, and fulfillment" note="I helped shape the product and fulfillment patterns with the team. We kept price, savings, and availability close to the cart action, and brought pickup, local delivery, and shipping into browsing. Fulfillment choice and stock availability also guide which products appear in the shop.">
-  <div class="gallery-row" style="--gallery-columns: 4" role="region" aria-label="Four CVS product cards">
-  <Panel kind="slot" span="half" className="cvs-card-frame" caption="L’Oréal Paris Revitalift." >
+<Gallery title="Keep price, savings, and fulfillment near the action" note="I helped shape the product and fulfillment patterns with the team. We kept price, savings, and availability close to the cart action, and brought pickup, local delivery, and shipping into browsing. Fulfillment choice and stock availability also guide which products appear in the shop.">
+  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="Standard and sponsored CVS product cards">
+  <Panel kind="slot" span="half" className="cvs-card-frame" caption="Standard card: price and savings lead into Add to cart, with fulfillment options below." >
     <img src={productCardLoreal} alt="L’Oréal moisturizer: complete listing card with price, savings, cart action, and fulfillment" class="cvs-card-art" loading="lazy" decoding="async" />
   </Panel>
-  <Panel kind="slot" span="half" className="cvs-card-frame" caption="Aveeno Daily Moisturizing Lotion." >
-    <img src={productCardAveeno} alt="Aveeno lotion: complete listing card with price, savings, cart action, and fulfillment" class="cvs-card-art" loading="lazy" decoding="async" />
-  </Panel>
-  <Panel kind="slot" span="half" tint="#CFF5FC" className="cvs-card-frame" caption="Sponsored CeraVe Moisturizing Cream." >
+  <Panel kind="slot" span="half" tint="#CFF5FC" className="cvs-card-frame" caption="Sponsored card: the distinct surface preserves the same information and action order." >
     <img src={productCardCerave} alt="Sponsored CeraVe cream: complete listing card with price, savings, cart action, and fulfillment" class="cvs-card-art" loading="lazy" decoding="async" />
-  </Panel>
-  <Panel kind="slot" span="half" className="cvs-card-frame" caption="La Roche-Posay Cicaplast Balm." >
-    <img src={productCardLaRochePosay} alt="La Roche-Posay balm: complete listing card with price, savings, cart action, and fulfillment" class="cvs-card-art" loading="lazy" decoding="async" />
   </Panel>
   </div>
   <Panel kind="page" ratio="6 / 5" src={pdpDesktop} alt="Product page: a CeraVe jar beside its price, coupons and fulfillment choices" caption="Coupons and stock information above Add to cart." />
   <Panel kind="piece" span="full" ratio="970 / 400" tint="#ffffff" className="panel--fulfillment cvs-fulfillment" src={fulfillment} alt="How do you want to receive this: Pickup, Local delivery or Shipping" caption="Fulfillment selector with a two-hour pickup estimate, a shipping date, and unavailable local delivery." />
-  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
-  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame" src={filtersMobile} alt="Filters and sort on a phone" />
-  <Panel kind="piece" span="half" ratio="375 / 812" tint="#ffffff" className="cvs-phone-frame" src={minicartMobile} alt="Added to your basket, with savings and ExtraBucks earned" caption="Mobile mini-cart with basket confirmation, savings, and ExtraBucks earned." />
-  </div>
 </Gallery>
 
-<Gallery title="Brand page templates" note="Brand pages need room for their own imagery and voice. The shared type and component rules I helped shape with the team give that content a consistent shopping structure.">
-  <Panel kind="page" ratio="4 / 5" src={brandDesktop} alt="Neutrogena brand page with a product-led hero, category shortcuts, campaign imagery, and product cards" caption="Neutrogena brand page." />
+<Gallery title="Let brand content vary within the shopping structure" note="Brand pages need room for their own imagery and voice. The shared type and component rules I helped shape with the team give that content a consistent shopping structure.">
+  <Panel kind="page" ratio="4 / 5" src={brandDesktop} alt="Neutrogena brand page with a product-led hero, category shortcuts, campaign imagery, and product cards" caption="Neutrogena supplies its own campaign imagery; category shortcuts and product cards retain the shop structure." />
 </Gallery>
 
 <ProseGroup>
-## Design system summary and follow-on work
+## Shared rules, distinct category content
 
-The shared rules let category content change without changing how the interface organized it. That balance between consistency and variation guided the work I shaped with the team, from the visual language to product selection and fulfillment. According to [project teammate Joseph Agresta](https://portfolio.josephagresta.com/portfolio_page/cvs-shop-experience/), the broader team’s work led to eight follow-on projects and helped establish Razorfish as CVS’s digital agency of record.
+My contribution sat in the shared visual decisions: type hierarchy, Spark geometry, category colors, and product and fulfillment patterns. I shaped those with the design team, keeping the shopping structure consistent while giving categories and brands room for their own content.
 </ProseGroup>

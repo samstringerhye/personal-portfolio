@@ -68,13 +68,12 @@ const csWordEase = reveal.cssEase
     }
   }
 
-  /* Phones: the device, then the title, like the homepage card. The top padding clears the sticky
-     back button (CaseStudyLayout) */
+  /* Phones: reserve the scene's painted area before the title. The work link has its own row. */
   .cs-device-hero {
     display: flex;
     flex-direction: column;
     gap: var(--cs-caption-gap);
-    padding-block: calc(var(--touch-target) + var(--cs-heading-gap)) 0;
+    padding-block: 0;
   }
 
   .cs-device-hero-stage {
@@ -93,12 +92,13 @@ const csWordEase = reveal.cssEase
     /* The homepage card's caption (editorial.css) under its art; the title lands where the card's
        did when the page changes */
     .cs-device-hero-stage {
-      margin-bottom: 0;
+      margin-bottom: var(--cs-heading-gap);
     }
 
-    /* Bring the title into the empty space below the Samsung tablet scene. */
-    .cs-device-hero-stage:has(.device-scene-host[data-device="galaxy-tab-s8-ultra"]) {
-      margin-bottom: calc(-1 * var(--space-6));
+    /* Homepage scenes bleed by 10%; the bottom bleed crossed the stacked hero's title. Keep the
+       side bleed so the devices hold their size. */
+    .cs-device-hero-stage :global(.device-scene) {
+      inset: -10% -10% 0;
     }
 
   }
@@ -110,7 +110,8 @@ const csWordEase = reveal.cssEase
   }
 
   /* The device first, then the title and tagline, as on the homepage card it zooms from */
-  .cs-device-hero-text > * {
+  /* :global so the ScrollCue's own root follows the tagline too */
+  .cs-device-hero-text > :global(*) {
     order: 2;
   }
 

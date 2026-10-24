@@ -1,7 +1,7 @@
 ---
 /**
- * A scroll cue below the case-study hero title. It disappears as soon as the page moves and stays
- * decorative, so it is hidden from screen readers.
+ * An in-flow action below the case-study introduction. Its own space keeps it clear of metadata
+ * and artwork. Scrolling respects the reader's reduced-motion preference.
  */
 ---
 
@@ -14,10 +14,8 @@
 
 <style>
   .scroll-cue {
-    position: fixed;
-    left: 50%;
-    bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
-    z-index: var(--z-nav);
+    position: relative;
+    margin-top: var(--space-3);
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
@@ -26,7 +24,6 @@
     padding: 0 1.1rem;
     border: 0;
     border-radius: 999px;
-    translate: -50% 0;
     color: #FFFFFF;
     background: rgba(11, 33, 64, 0.8);
     -webkit-backdrop-filter: blur(10px);

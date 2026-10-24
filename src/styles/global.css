@@ -351,15 +351,11 @@ html.nav-open {
   top: 0;
 }
 
-/* Back to the work list: an arrow in a circle that stays under the nav for the whole case study.
-   Its wrapper takes no height, so the page lays out as if it weren't there. */
+/* Reserve a row for the work link. A zero-height sticky wrapper covered case-study evidence. */
 .cs-back {
   grid-column: 1 / -1;
-  position: sticky;
-  top: calc(var(--nav-height) + var(--space-3));
-  z-index: calc(var(--z-nav, 100) - 1);
-  height: 0;
-  pointer-events: none;
+  position: relative;
+  padding-block: var(--space-2);
 }
 
 .back-to-work {
