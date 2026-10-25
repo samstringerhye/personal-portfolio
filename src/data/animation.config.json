@@ -133,6 +133,9 @@
     "loopRepeatDelay": 0.5
   },
   "caseStudy": {
+    "scrollCue": {
+      "fadeOver": 200
+    },
     "buttonStates": {
       "hold": 1.6,
       "transition": 0.25

@@ -46,10 +46,10 @@
     animation: scroll-cue-bob 1.6s var(--easing-standard) infinite;
   }
 
+  /* Keeps its entrance animation, so scrolling back up brings it straight back instead of replaying it */
   .scroll-cue.is-gone {
     opacity: 0 !important;
     visibility: hidden;
-    animation: none;
   }
 
   @keyframes scroll-cue-in {
@@ -73,10 +73,16 @@
 </style>
 
 <script>
-  // Shown only while the page is at the top; the case study below takes over from there
+  import { animations } from '../data/tokens'
+
+  // Fades out with the first stretch of scrolling (it follows the scroll, so reduced motion is fine);
+  // once fully faded the case study below takes over and it stops taking clicks
   const update = () => {
-    const gone = window.scrollY > 24
-    document.querySelectorAll('.scroll-cue').forEach(el => el.classList.toggle('is-gone', gone))
+    const fade = Math.max(0, 1 - window.scrollY / animations.caseStudy.scrollCue.fadeOver)
+    document.querySelectorAll<HTMLElement>('.scroll-cue').forEach(el => {
+      el.style.opacity = fade < 1 ? String(fade) : ''
+      el.classList.toggle('is-gone', fade === 0)
+    })
   }
   const bind = () => {
     document.querySelectorAll<HTMLButtonElement>('.scroll-cue').forEach(button => {

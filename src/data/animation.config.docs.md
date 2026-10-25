@@ -168,6 +168,7 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 
 | Key | Default | What it controls |
 |-----|---------|-----------------|
+| `scrollCue.fadeOver` | `200` | Pixels of page scroll over which the hero's Scroll button fades out (ScrollCue), so it eases away with the page instead of vanishing |
 | `beforeAfter.itemDuration` / `itemStagger` | `0.5` / `0.08` | Before/after list items fading up (BeforeAfterStats) |
 | `beforeAfter.countDuration` | `2` | Stats counting up from zero |
 | `tokenTiers.duration` / `stagger` | `0.5` / `0.12` | Amica token tiers fading up |
