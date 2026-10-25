@@ -113,10 +113,8 @@
       const event = e as any
       const originalLoader = event.loader
       event.loader = async () => {
-        // A work card's Flip zoom (work-transition.ts) or a device carried across the page
-        // (device-scene/mount.ts) handles its own transition
-        const { flipNav, deviceNav } = document.documentElement.dataset
-        if (flipNav === 'true' || deviceNav === 'true') {
+        // A device carried across the page (device-scene/mount.ts) handles its own transition
+        if (document.documentElement.dataset.deviceNav === 'true') {
           await originalLoader()
           return
         }

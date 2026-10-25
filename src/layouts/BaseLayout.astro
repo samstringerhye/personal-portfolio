@@ -259,7 +259,7 @@ const typoCss = `:root {
     <link rel="preload" href="/fonts/perfectlynineties-light.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Persisted so the router keeps these faces on swap; re-creating them unloads the headline
-         font mid-zoom -->
+         font mid-transition -->
     <style is:inline data-astro-transition-persist="font-faces">
       /* DM Sans variable (opsz 9–40, wght 100–1000), self-hosted from Google Fonts' files (OFL) */
       @font-face {
@@ -313,6 +313,9 @@ const typoCss = `:root {
     </main>
     {!hideFooter && <Footer />}
     <RGBShutter />
+    <script>
+      import '../components/back-to-work'
+    </script>
     <script>
       // Defer GSAP + Lenis loading until browser is idle (~1s TBT savings)
       type GlobalInitState = Window & {

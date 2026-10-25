@@ -3,9 +3,6 @@
  * the work cards, but at some widths and viewport heights (a sideways tablet, a short laptop window)
  * the title wraps or the art crops until the two meet. Then the hero stacks instead: the art framed
  * above, the title on the project's color below (`cs-hero--stacked`, global.css), as on phones.
- *
- * Shared by the hero itself and by work-transition.ts's measuring copy, so the card-to-hero zoom
- * lands on the same layout.
  */
 import type { SubjectBox } from './narrow-art'
 

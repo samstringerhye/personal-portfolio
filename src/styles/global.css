@@ -290,8 +290,7 @@ html.nav-open {
 }
 
 .work-list-card,
-.cs-hero,
-[data-copy-wrap] {
+.cs-hero {
   --narrow-frame-height: 75cqw;
   --narrow-window-width: calc(100cqw - 2 * var(--narrow-art-pad));
   --narrow-window-height: calc(var(--narrow-frame-height) - 2 * var(--narrow-art-pad));
@@ -315,23 +314,20 @@ html.nav-open {
   );
 }
 
-/* Heroes and the zoom copy fit the subject to their image box's real height (cqh: the box is a size
-   container): 75cqw on phones, whatever the art is given when a wide hero stacks (hero-fit.ts) */
-.cs-hero,
-[data-copy-wrap] {
+/* Heroes fit the subject to their image box's real height (cqh: the box is a size container):
+   75cqw on phones, whatever the art is given when a wide hero stacks (hero-fit.ts) */
+.cs-hero {
   --narrow-frame-height: 100cqh;
 }
 
-/* Case study hero frame. Shared by the hero itself and the homepage's hidden zoom target, so the
-   card-to-hero transition always lands exactly on the hero. Full content width, as tall as the
-   viewport allows, never taller than 3:2. */
+/* Case study hero frame: full content width, as tall as the viewport allows, never taller than
+   3:2. */
 .cs-hero-size {
   width: 100%;
   height: min(calc(100svh - var(--nav-height)), 66.667vw);
 }
 
-/* Case study hero text. Global (not scoped) so the homepage can measure these sizes for the
-   card-to-hero zoom. Year top-left, title and tagline bottom-left, like the work cards. */
+/* Case study hero text. Year top-left, title and tagline bottom-left, like the work cards. */
 .cs-hero {
   position: relative;
   grid-column: 1 / -1;
@@ -503,58 +499,6 @@ html.nav-open {
   max-width: none;
   padding-top: 0;
   background: var(--hero-bg);
-}
-
-/* The card ↔ hero zoom's copy (work-transition.ts) lays its art out like the card and hero at
-   every width, including mid-zoom: full frame when wide, the framed subject when narrow */
-[data-copy-wrap] {
-  container-type: size;
-}
-
-[data-copy-pic] {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: drop-shadow(0 18px 22px rgba(11, 13, 27, 0.22));
-}
-
-@container (max-width: 780px) {
-  [data-copy-pic] {
-    inset: auto;
-    left: var(--narrow-art-left);
-    top: var(--narrow-art-top);
-    width: var(--narrow-art-width);
-    height: var(--narrow-art-height);
-    max-width: none;
-    filter: none;
-  }
-}
-
-/* Zooming between a narrow card and a stacked hero: framed the whole way */
-[data-copy-wrap][data-stacked] [data-copy-pic] {
-  inset: auto;
-  left: var(--narrow-art-left);
-  top: var(--narrow-art-top);
-  width: var(--narrow-art-width);
-  height: var(--narrow-art-height);
-  max-width: none;
-  filter: none;
-}
-
-/* During a card ↔ hero zoom (work-transition.ts sets data-flip-nav), skip the router's root
-   crossfade. Its frozen before/after snapshots would show the moving copy twice (ghosting) and
-   hide the live zoom until the crossfade ends. */
-html[data-flip-nav]::view-transition-group(root),
-html[data-flip-nav]::view-transition-old(root),
-html[data-flip-nav]::view-transition-new(root) {
-  /* With no animations left, the view transition ends as soon as it starts */
-  animation: none !important;
-}
-
-html[data-flip-nav]::view-transition-old(root) {
-  display: none;
 }
 
 /* A device carried between its card and its case study hero (device-scene/mount.ts): it glides to
