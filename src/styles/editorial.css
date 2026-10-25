@@ -1140,8 +1140,9 @@ html.ek .cs-hero {
 /* Wide heroes fit the art, text and bottom scroll cue inside the first viewport. */
 @container (min-width: 781px) {
   html.ek .cs-hero.cs-hero .cs-hero-size {
+    --cs-hero-height: min(calc(100cqw * 3 / 4), max(18rem, calc(100svh - var(--nav-height) - 2 * var(--touch-target) - 11rem - var(--cs-scroll-cue-reserve))));
     flex: none;
-    height: min(calc(100cqw * 3 / 4), max(18rem, calc(100svh - var(--nav-height) - 2 * var(--touch-target) - 11rem - var(--cs-scroll-cue-reserve))));
+    height: var(--cs-hero-height);
     min-height: 0;
     max-height: none;
     margin-top: var(--touch-target);
@@ -1172,8 +1173,21 @@ html.ek .cs-hero {
 
 @container (max-width: 780px) {
   html.ek .cs-hero.cs-hero .cs-hero-size {
-    height: min(75cqw, max(12rem, calc(100svh - var(--nav-height) - var(--touch-target) - 12rem - var(--cs-scroll-cue-reserve))));
+    --cs-hero-height: min(75cqw, max(12rem, calc(100svh - var(--nav-height) - var(--touch-target) - 12rem - var(--cs-scroll-cue-reserve))));
+    height: var(--cs-hero-height);
   }
+}
+
+/* Password gate (PasswordGate.astro): the box keeps the hero's size but grows to fit the form */
+html.ek .cs-hero.cs-hero.is-gated .cs-hero-size {
+  height: auto;
+  min-height: var(--cs-hero-height);
+  container-type: normal;
+}
+
+html.ek .cs-hero.is-gated .cs-hero-gate {
+  position: relative;
+  min-height: inherit;
 }
 
 html.ek .cs-hero-tagline {
@@ -1375,13 +1389,6 @@ html.ek .case-study-content > .story {
 }
 
 html.ek .case-study-content > .gallery {
-  row-gap: var(--cs-block-gap);
-}
-
-/* A gallery inside a section body (remark-case-study-sections.mjs) has no grid to subgrid from */
-html.ek .cs-section-body > .gallery {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
   row-gap: var(--cs-block-gap);
 }
 

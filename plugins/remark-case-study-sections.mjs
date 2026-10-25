@@ -2,7 +2,8 @@
 //   <div class="cs-section"><div class="cs-section-head">…</div><div class="cs-section-body">…</div></div>
 // so on desktop the head can stay pinned in the left 4 columns while the section's text and images
 // scroll past in the other 8. A section starts at a <ProseGroup> that opens with an h2 or h3, or at a
-// <ZigzagSection>. In a section with visuals, the first paragraph joins the heading in the head.
+// <ZigzagSection>, and a <Gallery> (titled on its own) ends it. In a section with visuals, the first
+// paragraph joins the heading in the head.
 // Full-width blocks (carousels, the outcome bar) sit after body parts, across all 12 columns.
 //   <div class="cs-section"><div class="cs-section-pin">head, body</div>carousel, body…</div>
 
@@ -87,6 +88,10 @@ export default function remarkCaseStudySections() {
       else carried = section.head
       section = null
     }
+    const flushCarried = () => {
+      if (carried.length) out.push(div('cs-section', [div('cs-section-head prose-group', carried)]))
+      carried = []
+    }
 
     for (const node of tree.children) {
       const opens = (isEl(node, 'ProseGroup') && opensWithHeading(node)) || isEl(node, 'ZigzagSection')
@@ -95,6 +100,10 @@ export default function remarkCaseStudySections() {
         const s = start(node)
         section = { ...s, head: [...carried, ...s.head] }
         carried = []
+      } else if (isEl(node, 'Gallery')) {
+        close()
+        flushCarried()
+        out.push(node)
       } else if (section) {
         section.items.push(node)
       } else {
@@ -102,7 +111,7 @@ export default function remarkCaseStudySections() {
       }
     }
     close()
-    if (carried.length) out.push(div('cs-section', [div('cs-section-head prose-group', carried)]))
+    flushCarried()
     tree.children = out
   }
 }
