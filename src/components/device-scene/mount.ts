@@ -153,13 +153,13 @@ function markNav(root: HTMLElement) {
 }
 
 // Where the case study hero's stage starts below the top of the viewport (DeviceHero.astro): the nav,
-// the All work row (.cs-back), then the page margin beside the title on desktop or the gap above the
-// device when stacked. Resolved through a probe so the CSS values stay in one place
+// then the page margin beside the title on desktop, or the floating All work button's clearance above
+// the device when stacked. Resolved through a probe so the CSS values stay in one place
 function heroStageTop(): number {
   const desktop = window.matchMedia('(min-width: 64.0625rem)').matches
   const probe = document.createElement('div')
   probe.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0'
-  probe.innerHTML = `<div style="height:var(--nav-height)"></div><div class="cs-back"><a class="back-to-work" style="display:flex"></a></div><div style="height:${desktop ? 'var(--page-margin)' : 'var(--cs-caption-gap)'}"></div>`
+  probe.innerHTML = `<div style="height:var(--nav-height)"></div><div style="height:${desktop ? 'var(--page-margin)' : 'calc(var(--touch-target) + var(--cs-heading-gap))'}"></div>`
   document.body.append(probe)
   const top = probe.getBoundingClientRect().height
   probe.remove()

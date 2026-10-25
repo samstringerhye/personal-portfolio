@@ -84,10 +84,11 @@ const csWordEase = reveal.cssEase
     padding-block: 0;
   }
 
+  /* Stacked, the device starts below the floating All work button (CaseStudyLayout) */
   .cs-device-hero-stage {
     order: 1;
     position: relative;
-    margin-top: var(--cs-caption-gap);
+    margin-top: calc(var(--touch-target) + var(--cs-heading-gap));
   }
 
   .cs-device-hero-text {
