@@ -785,6 +785,12 @@ html.ek .cs-section-head {
   margin: 0;
 }
 
+/* A lead-in lifted into the head (remark-case-study-sections.mjs) sits as far below the heading as
+   body text does */
+html.ek .case-study-body .cs-section-head.prose-group {
+  gap: var(--cs-heading-gap);
+}
+
 html.ek .cs-section-body {
   display: flex;
   flex-direction: column;
@@ -1104,7 +1110,7 @@ html.ek .case-study-body .cs-meta-value {
    at every width. hero-fit.ts marks wide heroes cs-hero--stacked to get this layout. */
 html.ek .cs-hero .cs-hero-text,
 html.ek .cs-hero--light .cs-hero-text {
-  background: var(--ek-surface);
+  background: var(--color-bg-primary);
   color: var(--color-text-primary);
 }
 
@@ -1138,12 +1144,12 @@ html.ek .cs-hero {
 /* Wide heroes fit the art, text and bottom scroll cue inside the first viewport. */
 @container (min-width: 781px) {
   html.ek .cs-hero.cs-hero .cs-hero-size {
-    --cs-hero-height: min(calc(100cqw * 3 / 4), max(18rem, calc(100svh - var(--nav-height) - 2 * var(--touch-target) - 11rem - var(--cs-scroll-cue-reserve))));
+    --cs-hero-height: min(calc(100cqw * 3 / 4), max(18rem, calc(100svh - var(--nav-height) - var(--touch-target) - var(--cs-hero-clear) - 11rem - var(--cs-scroll-cue-reserve))));
     flex: none;
     height: var(--cs-hero-height);
     min-height: 0;
     max-height: none;
-    margin-top: var(--touch-target);
+    margin-top: var(--cs-hero-clear);
   }
 
   html.ek .case-study-body .cs-hero .cs-hero-media img.cs-hero-subject {
@@ -1171,7 +1177,7 @@ html.ek .cs-hero {
 
 @container (max-width: 780px) {
   html.ek .cs-hero.cs-hero .cs-hero-size {
-    --cs-hero-height: min(75cqw, max(12rem, calc(100svh - var(--nav-height) - var(--touch-target) - 12rem - var(--cs-scroll-cue-reserve))));
+    --cs-hero-height: min(75cqw, max(12rem, calc(100svh - var(--nav-height) - var(--cs-hero-clear) - 12rem - var(--cs-scroll-cue-reserve))));
     height: var(--cs-hero-height);
   }
 }

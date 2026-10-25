@@ -102,14 +102,12 @@ const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, tit
     filter: none;
   }
 
-  /* Locked case study: the art and title crossfade with the form (PasswordGate) */
-  :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject),
-  :global(.cs-hero:has([data-password-gate])) :global(.cs-hero-text) {
+  /* Locked case study: the art crossfades with the form (PasswordGate); the title stays */
+  :global(.cs-hero:has([data-password-gate])) :global(img.cs-hero-subject) {
     transition: opacity var(--duration-medium) var(--easing-standard);
   }
 
-  :global(.cs-hero.is-gated) :global(img.cs-hero-subject),
-  :global(.cs-hero.is-gated) :global(.cs-hero-text) {
+  :global(.cs-hero.is-gated) :global(img.cs-hero-subject) {
     opacity: 0;
   }
 </style>
