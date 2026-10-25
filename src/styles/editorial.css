@@ -21,7 +21,7 @@ html.ek {
 
   --ek-hairline: #E6EAEE;
   /* Page-colored surfaces (nav, pills, text blocks), strong pill border, prose link underline */
-  --ek-surface: #FFFFFF;
+  --ek-surface: var(--color-bg-primary);
   --ek-line-strong: #C9D1DA;
   --ek-link-line: #A9B4C0;
   --ek-panel: #F7F8FA;
@@ -1114,17 +1114,8 @@ html.ek .cs-hero--light .cs-hero-text {
   color: var(--color-text-primary);
 }
 
-html.ek .cs-hero .cs-hero-back,
-html.ek .cs-hero--light .cs-hero-back {
-  color: var(--color-text-primary);
-}
-
 html.ek .cs-hero .cs-hero-text {
   padding: var(--cs-heading-gap) 0 0;
-}
-
-html.ek .cs-hero .cs-hero-back {
-  padding-inline: 0;
 }
 
 /* The hero art rounds like the cards */
@@ -1161,10 +1152,6 @@ html.ek .cs-hero {
     max-width: none;
     translate: none;
     filter: none;
-  }
-
-  html.ek .cs-hero.cs-hero .cs-hero-back {
-    padding: 0;
   }
 
   html.ek .cs-hero.cs-hero .cs-hero-text {
@@ -1941,7 +1928,6 @@ html.ek .footer {
     --prose-code-bg: #162033;
 
     --ek-hairline: #1E2A3D;
-    --ek-surface: #0B1220;
     --ek-line-strong: #34445C;
     --ek-link-line: #5E7186;
     --ek-panel: #101929;

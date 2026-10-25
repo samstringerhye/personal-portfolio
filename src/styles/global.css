@@ -412,22 +412,6 @@ html.nav-open {
   display: none;
 }
 
-.cs-hero .cs-hero-back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: var(--space-6);
-  text-decoration: none;
-}
-
-.cs-hero--light .cs-hero-back {
-  color: white;
-}
-
-.cs-back-bar {
-  padding-block: var(--space-3);
-}
-
 .cs-hero-text {
   bottom: 0;
   max-width: min(56rem, 62%);
@@ -468,12 +452,6 @@ html.nav-open {
   /* The All work button gets its own strip above the panel, so it never sits on the art */
   .cs-hero-size {
     margin-top: var(--cs-hero-clear);
-  }
-
-  .cs-hero .cs-hero-back,
-  .cs-hero--light .cs-hero-back {
-    padding: 0 var(--content-inset-sm);
-    color: var(--color-text-primary);
   }
 }
 
