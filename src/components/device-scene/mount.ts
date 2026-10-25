@@ -131,41 +131,12 @@ type NavEvent = Event & { sourceElement?: Element; from: URL; to: URL }
 type SwapEvent = Event & { newDocument: Document; viewTransition: ViewTransition }
 const persistId = (el: Element) => el.getAttribute('data-astro-transition-persist')
 let moving: HTMLElement | null = null
-let frozen: HTMLElement | null = null
-let settling = 0
-let pausedAnimations: Animation[] = []
-let playingVideos: HTMLVideoElement[] = []
-
-// Hold the screens' frame while the page scrolls into alignment and the shared element moves between
-// its card and case-study hero. The 3D pose (data-device-freeze, model.ts) is held only from the page
-// change on: through the scroll it keeps following, so it is already the pose the hero's identical
-// place gives it and doesn't jump when it resumes there
-function freezeScene(scene: HTMLElement, pose = true) {
-  clearTimeout(settling)
-  if (pose) scene.dataset.deviceFreeze = ''
-  if (frozen === scene) return
-  if (frozen) resumeScene(frozen)
-  frozen = scene
-  // Screen tours wait on this before their next change (shared.ts whenUnheld)
-  scene.dataset.deviceHold = ''
-  scene.dispatchEvent(new Event('device-hold'))
-  pausedAnimations = scene.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running' || animation.pending)
-  pausedAnimations.forEach(animation => animation.pause())
-  playingVideos = [...scene.querySelectorAll('video')].filter(video => !video.paused)
-  playingVideos.forEach(video => video.pause())
-}
-
-function resumeScene(scene: HTMLElement) {
-  if (frozen !== scene) return
-  delete scene.dataset.deviceFreeze
-  delete scene.dataset.deviceHold
-  pausedAnimations.forEach(animation => animation.play())
-  pausedAnimations = []
-  playingVideos.forEach(video => { void video.play().catch(() => {}) })
-  playingVideos = []
-  scene.dispatchEvent(new Event('device-resume'))
-  frozen = null
-}
+// The 3D pose (model.ts) holds from the page change until the view transition ends, so scroll
+// parallax can't move it mid-swap; through the align scroll before it keeps following, so it is
+// already the pose the hero's identical place gives it. The screens never stop: the live element
+// carries straight across, its tour, video and animations playing as they were
+const holdPose = (scene: HTMLElement) => { scene.dataset.deviceFreeze = '' }
+const releasePose = (scene: HTMLElement) => { delete scene.dataset.deviceFreeze }
 
 // The scene that will travel: the clicked card's, or the hero's on the way back to the homepage
 function travelling(e: NavEvent): HTMLElement | null {
@@ -208,11 +179,7 @@ function alignThenGo(e: MouseEvent) {
   const target = Math.min(max, Math.max(0, window.scrollY + stage.getBoundingClientRect().top - heroStageTop()))
   if (Math.abs(target - window.scrollY) < 4) return
   e.preventDefault()
-  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link })).catch(error => {
-    resumeScene(scene)
-    throw error
-  })
-  freezeScene(scene, false)
+  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link }))
   const lenis = (window as Window & { __siteLenis?: { scrollTo: (t: number, o: object) => void } | null }).__siteLenis
   const duration = animations.workCards.deviceNav.align
   if (lenis) {
@@ -235,7 +202,7 @@ if (!mw.__deviceScenesBound) {
     const scene = travelling(e as NavEvent)
     if (!scene) return
     moving = scene
-    freezeScene(scene)
+    holdPose(scene)
     scene.style.viewTransitionName = 'device'
     markNav(document.documentElement)
   })
@@ -265,10 +232,7 @@ if (!mw.__deviceScenesBound) {
       scene.style.viewTransitionName = ''
       delete document.documentElement.dataset.deviceNav
       delete document.documentElement.dataset.deviceCarried
-      // The pose picks up at once; the screens hold their frame a moment longer, so nothing on them
-      // changes as the page arrives
-      delete scene.dataset.deviceFreeze
-      settling = window.setTimeout(() => resumeScene(scene), animations.workCards.deviceNav.settle * 1000)
+      releasePose(scene)
     })
   })
 }

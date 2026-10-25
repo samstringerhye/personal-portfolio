@@ -355,8 +355,7 @@
             "align": { "$ref": "#/definitions/duration", "description": "Homepage scrolling the clicked card to where its hero's device sits, before the page changes" },
             "move": { "$ref": "#/definitions/duration", "description": "Device gliding to its new place" },
             "fadeIn": { "$ref": "#/definitions/duration", "description": "The two pages crossfading, the old out as the new one in, on the same curve" },
-            "fadeInDelay": { "$ref": "#/definitions/duration", "description": "Direct visits only: wait before the hero's words slide in" },
-            "settle": { "$ref": "#/definitions/duration", "description": "After the device lands, how long its screens stay on the frame they left on before their tours, videos and animations go on" }
+            "fadeInDelay": { "$ref": "#/definitions/duration", "description": "Direct visits only: wait before the hero's words slide in" }
           },
           "additionalProperties": false
         },

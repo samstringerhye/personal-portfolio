@@ -283,8 +283,7 @@
       "align": 0.55,
       "move": 0.7,
       "fadeIn": 0.4,
-      "fadeInDelay": 0.15,
-      "settle": 1.5
+      "fadeInDelay": 0.15
     },
     "tours": {
       "moves": {

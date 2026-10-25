@@ -3,7 +3,7 @@
 // with no steps). Timings live in animations.workCards.tours; reduced motion holds on the first
 // screen.
 import { animations } from '../../data/tokens'
-import { DEVICES, whenUnheld, type DeviceName } from './shared'
+import { DEVICES, type DeviceName } from './shared'
 import { addBrowser } from './browser'
 
 type Point = readonly [number, number]
@@ -154,7 +154,7 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
   show(first)
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   // The video plays only while its card is on screen, and not at all under reduced motion
-  const vio = video && !reduced ? new IntersectionObserver(([e]) => { if (e.isIntersecting) whenUnheld(art).then(() => video!.play().catch(() => {})); else video!.pause() }, { threshold: 0.2 }) : null
+  const vio = video && !reduced ? new IntersectionObserver(([e]) => { if (e.isIntersecting) video!.play().catch(() => {}); else video!.pause() }, { threshold: 0.2 }) : null
   vio?.observe(art)
   if (!tour.steps.length || reduced) return () => { ro.disconnect(); vio?.disconnect() }
 
@@ -197,8 +197,6 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
 
   async function loop() {
     for (const step of tour.steps) {
-      if (!on) return
-      await whenUnheld(art)
       if (!on) return
       await run[Object.keys(step)[0]](step)
     }

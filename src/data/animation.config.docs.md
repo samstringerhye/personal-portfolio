@@ -110,7 +110,6 @@ Seven of these durations (all the `0.25` values) reference `sys.motion.duration.
 | `workCards.deviceNav.move` | seconds | `0.7` | Device gliding between its homepage card and its case study hero |
 | `workCards.deviceNav.fadeIn` | seconds | `0.4` | The rest of the page crossfading around the carried device: the old page out as the new one in, on the same curve, so the title and tagline that land in the same place hold (the color shutter sits this out) |
 | `workCards.deviceNav.fadeInDelay` | seconds | `0.15` | Direct visits to a case study with a device: wait before the hero's words slide in. Arriving from a card, the text is already there and doesn't animate |
-| `workCards.deviceNav.settle` | seconds | `1.5` | After the carried device lands, its screens hold the frame they left the card on for this long before their tours, videos and animations go on, so nothing on them changes as the page arrives. The 3D pose picks up straight away |
 | `workCards.tours.*` | seconds | — | CVS.com, Samsung.com and Bespoke card tours; see [their section](#workcardstours-device-scenetoursts) |
 | `workCards.myfrontier.*` | seconds | — | MyFrontier card tour; see [its section](#workcardsmyfrontier-device-scenemyfrontierts) |
 | `interests.scrollDuration` | seconds | `480` | Total duration of the infinite scrolling interests marquee |
