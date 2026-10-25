@@ -147,7 +147,8 @@ const deviceHero = heroScene && !gate
     cursor: grabbing;
   }
 
-  .case-study-body img:where(:not(.device-screen)):where(:not(.device-frame)):where(:not(.browser-screen)):where(:not(.mosaic-media)) {
+  /* Not coded device scenes: their screens are laid out by their own tours */
+  .case-study-body img:where(:not(.device-screen)):where(:not(.device-frame)):where(:not(.browser-screen)):where(:not(.mosaic-media)):where(:not(.device-scene *)) {
     display: block;
     width: 100%;
     height: auto;
@@ -207,7 +208,7 @@ const deviceHero = heroScene && !gate
       grid-column: 1 / -1;
     }
 
-    .case-study-body img {
+    .case-study-body img:where(:not(.device-scene *)) {
       max-height: none;
     }
 
@@ -281,8 +282,9 @@ const deviceHero = heroScene && !gate
     if (!body) return
 
     body.querySelectorAll<HTMLImageElement>('img').forEach(img => {
-      // Device frames are transparent by design and sized by their own component; padding them shrinks the bezel
-      if (img.classList.contains('mosaic-media') || img.classList.contains('device-frame') || img.classList.contains('device-screen') || img.classList.contains('has-transparency') || img.dataset.transparencyChecked) return
+      // Device frames are transparent by design and sized by their own component; padding them shrinks the bezel.
+      // Coded device screens (device-scene) are laid out by their own tour, and arrive mid-play from the homepage
+      if (img.closest('.device-scene') || img.classList.contains('mosaic-media') || img.classList.contains('device-frame') || img.classList.contains('device-screen') || img.classList.contains('has-transparency') || img.dataset.transparencyChecked) return
 
       const check = () => {
         if (!img.naturalWidth) return
