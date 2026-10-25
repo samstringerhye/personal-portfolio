@@ -423,13 +423,9 @@ html.ek .section-rule::after {
 }
 
 /* ── Nav: serif name, quiet sans links, underline for the current page ── */
+/* Transparent on every page and at every scroll position; the page runs under the name and links */
 html.ek .nav {
   background: transparent;
-}
-
-/* Solid once the page scrolls, so text and artwork don't run under the name and links */
-html.ek.nav-scrolled .nav {
-  background: var(--color-bg-primary);
 }
 
 /* The phone menu is a page of its own: a solid bar over it while it's open */
