@@ -198,9 +198,6 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
   async function loop() {
     for (const step of tour.steps) {
       if (!on) return
-      while (art.hasAttribute('data-device-freeze') && on) {
-        await new Promise<void>(resolve => art.addEventListener('device-resume', () => resolve(), { once: true }))
-      }
       await run[Object.keys(step)[0]](step)
     }
   }

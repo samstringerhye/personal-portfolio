@@ -131,33 +131,12 @@ type NavEvent = Event & { sourceElement?: Element; from: URL; to: URL }
 type SwapEvent = Event & { newDocument: Document; viewTransition: ViewTransition }
 const persistId = (el: Element) => el.getAttribute('data-astro-transition-persist')
 let moving: HTMLElement | null = null
-let frozen: HTMLElement | null = null
-let pausedAnimations: Animation[] = []
-let playingVideos: HTMLVideoElement[] = []
-
-// Hold the exact device and screen frame while the page scrolls into alignment and the shared
-// element moves between its card and case-study hero.
-function freezeScene(scene: HTMLElement) {
-  if (frozen === scene) return
-  if (frozen) resumeScene(frozen)
-  frozen = scene
-  scene.dataset.deviceFreeze = ''
-  pausedAnimations = scene.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running' || animation.pending)
-  pausedAnimations.forEach(animation => animation.pause())
-  playingVideos = [...scene.querySelectorAll('video')].filter(video => !video.paused)
-  playingVideos.forEach(video => video.pause())
-}
-
-function resumeScene(scene: HTMLElement) {
-  if (frozen !== scene) return
-  delete scene.dataset.deviceFreeze
-  pausedAnimations.forEach(animation => animation.play())
-  pausedAnimations = []
-  playingVideos.forEach(video => { void video.play().catch(() => {}) })
-  playingVideos = []
-  scene.dispatchEvent(new Event('device-resume'))
-  frozen = null
-}
+// The 3D pose (model.ts) holds from the page change until the view transition ends, so scroll
+// parallax can't move it mid-swap; through the align scroll before it keeps following, so it is
+// already the pose the hero's identical place gives it. The screens never stop: the live element
+// carries straight across, its tour, video and animations playing as they were
+const holdPose = (scene: HTMLElement) => { scene.dataset.deviceFreeze = '' }
+const releasePose = (scene: HTMLElement) => { delete scene.dataset.deviceFreeze }
 
 // The scene that will travel: the clicked card's, or the hero's on the way back to the homepage
 function travelling(e: NavEvent): HTMLElement | null {
@@ -174,12 +153,13 @@ function markNav(root: HTMLElement) {
 }
 
 // Where the case study hero's stage starts below the top of the viewport (DeviceHero.astro): the nav,
-// then the page margin beside the title on desktop, or the back button's clearance above the device
-// on phones. Resolved through a probe so the CSS values stay in one place
+// then the page margin beside the title on desktop, or the floating All work button's clearance above
+// the device when stacked. Resolved through a probe so the CSS values stay in one place
 function heroStageTop(): number {
   const desktop = window.matchMedia('(min-width: 64.0625rem)').matches
   const probe = document.createElement('div')
-  probe.style.cssText = `position:absolute;visibility:hidden;height:calc(var(--nav-height) + ${desktop ? 'var(--page-margin)' : 'var(--touch-target) + var(--cs-heading-gap) + var(--cs-caption-gap)'})`
+  probe.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0'
+  probe.innerHTML = `<div style="height:var(--nav-height)"></div><div style="height:${desktop ? 'var(--page-margin)' : 'calc(var(--touch-target) + var(--cs-heading-gap))'}"></div>`
   document.body.append(probe)
   const top = probe.getBoundingClientRect().height
   probe.remove()
@@ -199,11 +179,7 @@ function alignThenGo(e: MouseEvent) {
   const target = Math.min(max, Math.max(0, window.scrollY + stage.getBoundingClientRect().top - heroStageTop()))
   if (Math.abs(target - window.scrollY) < 4) return
   e.preventDefault()
-  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link })).catch(error => {
-    resumeScene(scene)
-    throw error
-  })
-  freezeScene(scene)
+  const go = () => import('astro:transitions/client').then(({ navigate }) => navigate(link.href, { sourceElement: link }))
   const lenis = (window as Window & { __siteLenis?: { scrollTo: (t: number, o: object) => void } | null }).__siteLenis
   const duration = animations.workCards.deviceNav.align
   if (lenis) {
@@ -226,7 +202,7 @@ if (!mw.__deviceScenesBound) {
     const scene = travelling(e as NavEvent)
     if (!scene) return
     moving = scene
-    freezeScene(scene)
+    holdPose(scene)
     scene.style.viewTransitionName = 'device'
     markNav(document.documentElement)
   })
@@ -245,6 +221,9 @@ if (!mw.__deviceScenesBound) {
     // clear it once the transition has played (page-load can come sooner)
     if (!moving) return
     markNav(doc.documentElement)
+    // The same element lands on the next page: global.css shows it solid instead of crossfading
+    const id = persistId(moving)
+    if (id && doc.querySelector(`[data-astro-transition-persist="${id}"]`)) doc.documentElement.dataset.deviceCarried = ''
     // The card's text already sits where the hero's does: no entrance to replay
     doc.querySelector('.cs-device-hero')?.setAttribute('data-carried', '')
     const scene = moving
@@ -252,7 +231,8 @@ if (!mw.__deviceScenesBound) {
     ;(e as SwapEvent).viewTransition.finished.finally(() => {
       scene.style.viewTransitionName = ''
       delete document.documentElement.dataset.deviceNav
-      resumeScene(scene)
+      delete document.documentElement.dataset.deviceCarried
+      releasePose(scene)
     })
   })
 }

@@ -351,11 +351,33 @@ html.nav-open {
   top: 0;
 }
 
-/* Reserve a row for the work link. A zero-height sticky wrapper covered case-study evidence. */
+/* Back to the work list: an arrow in a circle that stays under the nav for the whole case study.
+   Its wrapper takes no height, so the page lays out as if it weren't there. Reading down the page it
+   slides up behind the nav so it doesn't sit on the evidence, and returns on any scroll up
+   (BackToWork.astro sets data-away) */
 .cs-back {
   grid-column: 1 / -1;
-  position: relative;
-  padding-block: var(--space-2);
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-3));
+  z-index: calc(var(--z-nav, 100) - 1);
+  height: 0;
+  pointer-events: none;
+}
+
+.cs-back .back-to-work {
+  transition: transform var(--duration-medium) var(--easing-standard), opacity var(--duration-medium) var(--easing-standard);
+}
+
+.cs-back[data-away]:not(:focus-within) .back-to-work {
+  transform: translateY(calc(-100% - var(--space-3)));
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-back .back-to-work {
+    transition: none;
+  }
 }
 
 .back-to-work {
@@ -548,6 +570,17 @@ html[data-device-nav]::view-transition-old(root) {
 html[data-device-nav]::view-transition-new(root) {
   animation: var(--device-nav-fadeIn) ease both device-nav-in !important;
   mix-blend-mode: plus-lighter;
+}
+
+/* The device is the same live element on both pages, in the same place: show it solid rather than
+   crossfading its frozen snapshot into itself (mount.ts sets data-device-carried). A device with no
+   match on the next page (a locked case study) still fades out */
+html[data-device-carried]::view-transition-old(device) {
+  display: none;
+}
+
+html[data-device-carried]::view-transition-new(device) {
+  animation: none;
 }
 
 html[data-device-nav]::view-transition-group(device) {
