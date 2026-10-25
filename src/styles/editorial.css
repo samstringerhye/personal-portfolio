@@ -575,12 +575,28 @@ html.ek .work-list-item .work-list-card .work-list-media[data-layered] .work-lis
 
 /* Meta, then title and tagline as one pair, then the way in. Each step a bigger gap than the
    one inside it */
+/* The caption's spacing, shared with the case study's device hero (DeviceHero.astro), which copies
+   the caption so the text holds still between them. Tighter on phones, so the hero fits the screen */
+html.ek {
+  --caption-top: var(--space-4);
+  --caption-meta-gap: var(--space-3);
+  --caption-actions-gap: var(--space-5);
+}
+
+@media (max-width: 48rem) {
+  html.ek {
+    --caption-top: var(--space-2);
+    --caption-meta-gap: var(--space-2);
+    --caption-actions-gap: var(--space-3);
+  }
+}
+
 html.ek .work-list-item .work-list-card .work-list-caption {
   display: flex;
   flex-direction: column;
   gap: 0;
   min-height: var(--work-caption-height);
-  padding: var(--space-4) 0 0;
+  padding: var(--caption-top) 0 0;
   background: none;
 }
 
@@ -594,7 +610,7 @@ html.ek .work-list-item .work-list-card :is(.work-list-meta, .work-list-text) {
 /* Keep the case-study caption copy transparent over the page */
 html.ek .work-list-item .work-list-card .work-list-text {
   gap: var(--space-2);
-  margin-top: var(--space-3);
+  margin-top: var(--caption-meta-gap);
   background: transparent;
 }
 
@@ -665,11 +681,11 @@ html.ek .work-list-item .work-list-card .work-list-media[data-scene] {
 /* Phones: a wider stage, so the hero's title and Scroll button fit above the browser's toolbar */
 @media (max-width: 48rem) {
   html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage) {
-    aspect-ratio: 1.25;
+    aspect-ratio: 1.4;
   }
 
   html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage):where(:has(.device-scene-host):not(:has(.device-scene-host:not([data-device="iphone-17-pro"])))) {
-    aspect-ratio: 1.05;
+    aspect-ratio: 1.2;
   }
 }
 
@@ -701,7 +717,7 @@ html.ek .work-list-item .work-list-card .work-list-actions {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2) var(--space-3);
-  margin-top: var(--space-5);
+  margin-top: var(--caption-actions-gap);
 }
 
 html.ek .work-list-item .work-list-card .work-list-cta {
