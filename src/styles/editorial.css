@@ -1850,6 +1850,11 @@ html.ek .case-study-body .panel--slot .lottie-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  /* The scope list reads in lines, too long for half the width */
+  html.ek .story-fact:has(.story-scope) {
+    grid-column: 1 / -1;
+  }
+
   html.ek .story-text {
     grid-column: 1 / -1;
   }
