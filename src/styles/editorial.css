@@ -662,6 +662,17 @@ html.ek .work-list-item .work-list-card .work-list-media[data-scene] {
   }
 }
 
+/* Phones: a wider stage, so the hero's title and Scroll button fit above the browser's toolbar */
+@media (max-width: 48rem) {
+  html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage) {
+    aspect-ratio: 1.25;
+  }
+
+  html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage):where(:has(.device-scene-host):not(:has(.device-scene-host:not([data-device="iphone-17-pro"])))) {
+    aspect-ratio: 1.05;
+  }
+}
+
 /* Keep the tighter three-phone composition on both ends of the tablet transition. */
 @media (min-width: 48.0625rem) and (max-width: 64rem) {
   html.ek :is(.work-list-item .work-list-card .work-list-media[data-scene], .cs-device-hero-stage):has(.device-scene[data-device-scene="myfrontier"]) {

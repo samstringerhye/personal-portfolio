@@ -159,7 +159,7 @@ function heroStageTop(): number {
   const desktop = window.matchMedia('(min-width: 64.0625rem)').matches
   const probe = document.createElement('div')
   probe.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0'
-  probe.innerHTML = `<div style="height:var(--nav-height)"></div><div style="height:${desktop ? 'var(--page-margin)' : 'calc(var(--touch-target) + var(--cs-heading-gap))'}"></div>`
+  probe.innerHTML = `<div style="height:var(--nav-height)"></div><div style="height:${desktop ? 'var(--page-margin)' : 'calc(var(--cs-back-top) + var(--touch-target))'}"></div>`
   document.body.append(probe)
   const top = probe.getBoundingClientRect().height
   probe.remove()

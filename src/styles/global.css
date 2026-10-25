@@ -352,10 +352,21 @@ html.nav-open {
    Its wrapper takes no height, so the page lays out as if it weren't there. Reading down the page it
    slides up behind the nav so it doesn't sit on the evidence, and returns on any scroll up
    (BackToWork.astro sets data-away) */
+:root {
+  /* The floating All work button's gap under the nav; tighter on phones, where height is short */
+  --cs-back-top: var(--space-3);
+}
+
+@media (max-width: 48rem) {
+  :root {
+    --cs-back-top: var(--space-1);
+  }
+}
+
 .cs-back {
   grid-column: 1 / -1;
   position: sticky;
-  top: calc(var(--nav-height) + var(--space-3));
+  top: calc(var(--nav-height) + var(--cs-back-top));
   z-index: calc(var(--z-nav, 100) - 1);
   height: 0;
   pointer-events: none;
