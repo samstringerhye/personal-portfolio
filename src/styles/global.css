@@ -330,6 +330,9 @@ html.nav-open {
   position: relative;
   grid-column: 1 / -1;
   container-type: inline-size;
+  /* Room above the art for the floating All work button (.cs-back): its offset under the nav, its
+     height, and the same gap again below it */
+  --cs-hero-clear: calc(var(--touch-target) + 2 * var(--space-3));
 }
 
 .cs-hero-year,
@@ -462,10 +465,9 @@ html.nav-open {
     padding: var(--space-3) var(--content-inset-sm);
   }
 
-  /* The back arrow gets its own strip above the panel, like .cs-back-bar on heroes without art,
-     so it never sits on the subject */
+  /* The All work button gets its own strip above the panel, so it never sits on the art */
   .cs-hero-size {
-    margin-top: var(--touch-target);
+    margin-top: var(--cs-hero-clear);
   }
 
   .cs-hero .cs-hero-back,
