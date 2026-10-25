@@ -23,8 +23,7 @@ interface Props {
 const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, title, tagline, year, tone = 'dark', gate } = Astro.props
 ---
 
-<!-- Same layers and text as the homepage card, so the card's zoom lands on an identical hero.
-     Text styles live in global.css (.cs-hero-*) so the homepage can measure them. -->
+<!-- Same layers and text as the homepage card. Text styles live in global.css (.cs-hero-*). -->
 <div
   class:list={['cs-hero', { 'cs-hero--light': tone === 'light', 'is-gated': gate && (gate.error || gate.rateLimited) }]}
   style={`--hero-bg: ${background}; ${narrowArtStyle(subjectBox, subjectBounds)}`}
@@ -116,8 +115,6 @@ const { subject, background, heroOffset = 0, subjectBox, subjectBounds, alt, tit
 </style>
 
 <script>
-  // Card ↔ hero zoom (also registers the reverse zoom back to the homepage)
-  import './work-transition-loader'
   import { fitHero, heroFitData } from './hero-fit'
 
   // Stack the hero whenever its title would meet the art: on load, on resize, and once the web fonts

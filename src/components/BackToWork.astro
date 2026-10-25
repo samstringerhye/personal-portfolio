@@ -1,5 +1,5 @@
 ---
-// Goes to the homepage work list. Any link to "/" also plays the hero → card zoom (work-transition.ts).
+// Goes to the homepage work list, or back in history when the case study was opened from it (back-to-work.ts).
 interface Props {
   class?: string
 }
@@ -13,6 +13,8 @@ const { class: className } = Astro.props
 </a>
 
 <script>
+  import './back-to-work'
+
   // The button floats over the case study, so it steps out of the way while reading down the page
   // (past the hero) and comes back on any scroll up. global.css .cs-back[data-away]
   let lastY = window.scrollY

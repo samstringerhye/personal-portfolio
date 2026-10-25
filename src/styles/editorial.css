@@ -539,8 +539,7 @@ html.ek .work-list-item + .work-list-item {
 }
 
 /* No text on the art: the narrow card layout (art framed on the project color, text below) at every
-   width. work-transition.ts reads this layout from the computed styles, so the card-to-hero zoom
-   follows it. */
+   width. */
 /* Card art frames: the viewport height less the nav, the margins and the caption's room (more lines
    of tagline on phones). Heroes stay 4:3 on desktop and 2:3 on phones and small tablets */
 html.ek .work-list-card {
@@ -1102,7 +1101,7 @@ html.ek .case-study-body .cs-meta-value {
 }
 
 /* Hero: the art framed on the project color, the back link above it and the title below on the page,
-   at every width. hero-fit.ts marks wide heroes cs-hero--stacked so the zoom lands on this layout. */
+   at every width. hero-fit.ts marks wide heroes cs-hero--stacked to get this layout. */
 html.ek .cs-hero .cs-hero-text,
 html.ek .cs-hero--light .cs-hero-text {
   background: var(--ek-surface);
@@ -1122,9 +1121,8 @@ html.ek .cs-hero .cs-hero-back {
   padding-inline: 0;
 }
 
-/* The hero art and the card-to-hero zoom copy round like the cards, so the zoom lands cleanly */
-html.ek .cs-hero .cs-hero-media,
-html.ek [data-copy-wrap] {
+/* The hero art rounds like the cards */
+html.ek .cs-hero .cs-hero-media {
   border-radius: var(--ek-window-radius);
 }
 
