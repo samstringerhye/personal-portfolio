@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets'
 import { Icon } from 'astro-icon/components'
-import { boundsAttr, narrowArtStyle } from './narrow-art'
+import { narrowArtStyle } from './narrow-art'
 import DeviceScene from './DeviceScene.astro'
 import ContactEmail from './ContactEmail.astro'
 import type { HeadingTag, TypographyRole } from '../types/typography'
@@ -43,9 +43,6 @@ const featured = (await getCollection('work'))
           <div
             class="work-list-media"
             data-layered={entry.data.thumbnailLayers ? '' : undefined}
-            data-slug={entry.data.thumbnailLayers ? entry.id : undefined}
-            data-hero-offset={entry.data.thumbnailLayers?.heroOffset}
-            data-subject-bounds={entry.data.thumbnailLayers ? boundsAttr(entry.data.thumbnailLayers.subjectBounds ?? entry.data.thumbnailLayers.subjectBox) : undefined}
             data-frames={entry.data.thumbnailLayers?.frames?.length && !entry.data.thumbnailScene ? '' : undefined}
             data-scene={entry.data.thumbnailScene ? '' : undefined}
           >
@@ -190,8 +187,7 @@ const featured = (await getCollection('work'))
     transition: transform var(--duration-long) var(--easing-standard, ease);
   }
 
-  /* ── Layered cards: a background layer plus a transparent subject (the page transition zooms
-     these same layers into the case study hero) ── */
+  /* ── Layered cards: a background layer plus a transparent subject ── */
 
   .work-list-plane {
     position: absolute;
@@ -408,7 +404,7 @@ const featured = (await getCollection('work'))
         show(-1)
       }
 
-      // Back to the rest frame before the card zooms into its case study
+      // Back to the rest frame before the card opens its case study
       card.addEventListener('pointerdown', stop)
       if (hover) {
         card.addEventListener('mouseenter', start)
