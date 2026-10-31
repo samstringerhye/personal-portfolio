@@ -6,25 +6,10 @@
       "sourceType": "well-known",
       "computedHash": "e8118284a6365753790d44bb2758a6032b3af27fa84696428d9233f2be0f4e78"
     },
-    "anthropics-mcp-integration": {
-      "source": "smithery/ai",
-      "sourceType": "well-known",
-      "computedHash": "99cfef49810cb80a39762a79dbb6a80d486ea56cfa1a81ed10cae0a5a296b496"
-    },
-    "anthropics-pdf": {
-      "source": "smithery/ai",
-      "sourceType": "well-known",
-      "computedHash": "cfbc539377088ca7e44a813b30c306327385bbd973cd7a721e1743f60837dd62"
-    },
     "anthropics-webapp-testing": {
       "source": "smithery/ai",
       "sourceType": "well-known",
       "computedHash": "cf8e5916d474886bd67b09691247f43f331523008b7d366064bc607ab42d6302"
-    },
-    "github-refactor": {
-      "source": "smithery/ai",
-      "sourceType": "well-known",
-      "computedHash": "87789a786b96f99ba0680e89345a975106e10e7db1071c7cdc2e76d507c449d6"
     },
     "github-web-design-reviewer": {
       "source": "smithery/ai",
@@ -36,20 +21,10 @@
       "sourceType": "well-known",
       "computedHash": "e2bb99e7e1f80bcfd752cb5ee9c8b6a320e225b3a7a80c120497608776422aa3"
     },
-    "smithery-ai-cli": {
-      "source": "smithery/ai",
-      "sourceType": "well-known",
-      "computedHash": "7cab2f8127200968431097ad21060cbb8b579983b8bb6c603825cc1bcc268388"
-    },
     "tech-leads-club-perf-astro": {
       "source": "smithery/ai",
       "sourceType": "well-known",
       "computedHash": "287f1c9f65e36ddc35cd19190a38d1353290d73d13e312bd27f6909c3f4f4e4c"
-    },
-    "web-design-reviewer": {
-      "source": "github/awesome-copilot",
-      "sourceType": "github",
-      "computedHash": "10c6fad8b4f01dbeae969009d81d6c306c8a96d56077cad9bfe2a73a38f5dcbe"
     }
   }
 }
