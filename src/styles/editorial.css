@@ -400,11 +400,15 @@ html.ek .section-rule::after {
 }
 
 /* ── Nav: serif name, quiet sans links, underline for the current page ── */
-/* No bar: a shade in the page's color behind the name and links, fading out below them, so content
-   running under the nav stays clear of the text without a hard edge */
+/* Clear at the top of the page. Once the page scrolls (Nav.astro sets data-scrolled), a flat shade
+   in the page's color sits behind the name and links, so content running under them stays readable */
 html.ek .nav {
-  --nav-shade: color-mix(in srgb, var(--color-bg-primary) 85%, transparent);
-  background: var(--nav-shade);
+  background: transparent;
+  transition: background-color var(--duration-short) ease;
+}
+
+html.ek .nav[data-scrolled] {
+  background: color-mix(in srgb, var(--color-bg-primary) 85%, transparent);
 }
 
 /* The phone menu is a page of its own: a solid bar over it while it's open */
@@ -412,21 +416,8 @@ html.ek.nav-open .nav {
   background: var(--color-bg-primary);
 }
 
+html.ek .nav::after,
 html.ek .nav::before {
-  display: none;
-}
-
-/* The shade's soft lower edge */
-html.ek .nav::after {
-  top: 100%;
-  bottom: auto;
-  height: var(--space-4);
-  background: linear-gradient(to bottom, var(--nav-shade), transparent);
-  transform: none;
-  pointer-events: none;
-}
-
-html.ek.nav-open .nav::after {
   display: none;
 }
 

@@ -522,3 +522,15 @@ function isActive(href: string) {
   document.addEventListener('astro:after-swap', showAllImmediate)
 </script>
 
+<script>
+  // Marks the nav once the page has scrolled, for its shade (editorial.css). A page change brings a
+  // new nav element, so the mark is set again after each swap
+  function markScrolled() {
+    document.getElementById('site-nav')?.toggleAttribute('data-scrolled', window.scrollY > 8)
+  }
+
+  markScrolled()
+  window.addEventListener('scroll', markScrolled, { passive: true })
+  document.addEventListener('astro:after-swap', markScrolled)
+  document.addEventListener('astro:page-load', markScrolled)
+</script>
