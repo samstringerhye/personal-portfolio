@@ -27,12 +27,13 @@ import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
+import ProseGroup from '../../components/ProseGroup.astro'
 import buttonFamily from '../../assets/work/samsung-redesign/figma/button-family-visual-2x.png'
 import navDesktop from '../../assets/work/samsung-redesign/figma/nav-portfolio-desktop-2x.png'
 import navAppliances from '../../assets/work/samsung-redesign/figma/nav-variant-appliances-2x.png'
 import navFridges from '../../assets/work/samsung-redesign/figma/nav-variant-fridges-2x.png'
-import productCategory from '../../assets/work/samsung-redesign/figma/pcd-portfolio-final-2x.png'
-import productDetail from '../../assets/work/samsung-redesign/figma/pdp-portfolio-2x.png'
+import productCategory from '../../assets/work/samsung-redesign/figma/pcd-portfolio-final-top-2x.png'
+import productDetail from '../../assets/work/samsung-redesign/figma/pdp-portfolio-top-2x.png'
 import configStepMobile from '../../assets/work/samsung-redesign/figma/config-step-mobile-2x.png'
 
 <Story
@@ -41,20 +42,19 @@ import configStepMobile from '../../assets/work/samsung-redesign/figma/config-st
   agency="Razorfish"
   year="2020–2021"
   made={['Navigation and product-page visual design', 'Contributions to Cart, Offers, My Samsung, and Support', 'Reusable components and shared styles']}
-  outcome="I helped shape Samsung.com’s visual design across product discovery, shopping, account, and support experiences."
   problem="Samsung was consolidating regional sites into a shared global platform. The wider redesign aimed to connect product discovery and shopping, bringing brand content and commerce into the same experience. The visual system had to carry across product families and page types."
   decision="I paired product imagery with category labels, shaped the navigation’s visual hierarchy, and adjusted type spacing in response to team research. I also designed page layouts and built the reusable components and shared styles that supported them."
   did="As a Senior Designer at Razorfish from 2020 to 2021, I designed the homepage, global navigation, Product Family, category, and product detail layouts with the wider team. I also contributed to Cart, Offers, My Samsung, and Support. Alongside the page work, I created the design-system file and built reusable components and shared styles."
 />
 
-<Gallery title="Pair product images with category labels" note={["The team’s usability research found that product images helped people recognize categories and find products. It also flagged small, low contrast navigation text and category names people struggled to interpret.", "I used those findings to shape the imagery layout, visual hierarchy, and type spacing. Pairing product images with category labels gave shoppers two cues for recognizing a product group. The spacing work addressed how people scanned the menu and distinguished its levels."]}>
-  <Panel kind="page" ratio="1440 / 656" format="png" src={navDesktop} alt="Documented Samsung desktop navigation variant with category links beside Galaxy S20, Galaxy Z Flip, Galaxy 5G, and Galaxy Buds product cards" caption="Documented desktop variant: Galaxy images sit beside category labels to provide a second recognition cue." />
-  <Panel kind="screens" className="panel--navigation" tint="#FFFFFF" format="png" screens={[{ src: navAppliances, alt: 'Documented mobile appliance navigation variant with category links beside featured product collections' }, { src: navFridges, alt: 'Documented mobile refrigerator navigation variant with labeled images of smart, French style, American style, classic, and one-door refrigerators' }]} caption="Mobile variants: appliance categories lead into labeled refrigerator types." />
+<Gallery title="Pair product images with category labels" note={["The team’s usability research found that product images helped people recognize categories and find products. It also flagged small, low-contrast navigation text and category names people struggled to interpret.", "I used those findings to shape the imagery layout, visual hierarchy, and type spacing. Pairing product images with category labels gave shoppers two cues for recognizing a product group. The spacing work addressed how people scanned the menu and distinguished its levels."]}>
+  <Panel kind="page" ratio="1440 / 656" format="png" src={navDesktop} alt="Samsung desktop navigation with category links beside Galaxy S20, Galaxy Z Flip, Galaxy 5G, and Galaxy Buds product cards" caption="Desktop navigation: Galaxy images sit beside category labels as a second recognition cue." />
+  <Panel kind="screens" className="panel--navigation" tint="#FFFFFF" format="png" screens={[{ src: navAppliances, alt: 'Mobile appliance navigation with category links beside featured product collections' }, { src: navFridges, alt: 'Mobile refrigerator navigation with labeled images of smart, French style, American style, classic, and one-door refrigerators' }]} caption="Mobile variants: appliance categories lead into labeled refrigerator types." />
 </Gallery>
 
-<Gallery title="Category and product page layouts" note={["I designed the homepage, Product Family, category, and product detail layouts with the wider team. Approved wireframes and existing content gave us a starting point for the visual design.", "The product detail design changed when developers told us the backend required configuration on the product page. Earlier mobile designs put carrier, capacity, and color choices in a separate flow with a Next action. The later design brought those choices onto the product page, setting a technical constraint we had to account for in the design."]}>
-  <Panel kind="page" ratio="1 / 1" format="png" src={productCategory} alt="Samsung washers and dryers category page with a QuickDrive product hero, appliance category links, and a Best Sellers section" caption="QuickDrive hero and Best Sellers on the washers and dryers page." />
-  <Panel kind="page" ratio="1 / 1" format="png" src={productDetail} alt="Galaxy A50 product detail design exported from Figma, with product media beside trade-in, color, carrier, and capacity options" caption="Desktop Galaxy A50 design: buying options sit beside product media." />
+<Gallery title="Bring configuration onto the product page" note={["I designed the homepage, Product Family, category, and product detail layouts with the wider team. Approved wireframes and existing content gave us a starting point for the visual design.", "The product detail design changed when developers told us the backend required configuration on the product page. Earlier mobile designs put carrier, capacity, and color choices in a separate flow with a Next action. The later design brought those choices onto the product page."]}>
+  <Panel kind="page" ratio="1 / 1" src={productCategory} alt="Samsung washers and dryers category page with a QuickDrive product hero, appliance category links, and a Best Sellers section" caption="QuickDrive hero and Best Sellers on the washers and dryers page." />
+  <Panel kind="page" ratio="1 / 1" src={productDetail} alt="Galaxy A50 product detail design with product media beside trade-in, color, carrier, and capacity options" caption="Desktop Galaxy A50 design: buying options sit beside product media." />
   <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="Earlier and later Galaxy A50 configuration">
   <Panel kind="slot" span="half" caption="Earlier mobile design: configuration as its own step, with a progress bar and Next.">
     <EvidenceCrop src={configStepMobile} x={0} y={0} width={720} height={2042} maxWidth="16rem" alt="Earlier Galaxy A50 mobile configuration step with Back, a progress bar, carrier, capacity, and color choices, and a Next button under the price" />
@@ -66,5 +66,11 @@ import configStepMobile from '../../assets/work/samsung-redesign/figma/config-st
 </Gallery>
 
 <Gallery title="Use shared patterns across different page tasks" note="I built reusable buttons, cards, navigation items, and controls alongside the page designs, and organized their shared type and color styles in the design-system file.">
-  <Panel kind="page" ratio="1200 / 760" tint="#FFFFFF" format="png" src={buttonFamily} alt="Visual arrangement of six Samsung button variants: blue and black filled buttons, an outlined button, icon links, and an underlined text button" caption="Portfolio arrangement of shared-library button variants: filled actions, outlined actions, icon links, and text links." />
+  <Panel kind="page" ratio="1200 / 760" tint="#FFFFFF" format="png" src={buttonFamily} alt="Six Samsung button variants: blue and black filled buttons, an outlined button, icon links, and an underlined text button" caption="Shared-library button variants: filled actions, outlined actions, icon links, and text links." />
 </Gallery>
+
+<ProseGroup>
+## Lessons from a shared global platform
+
+Many teams design a platform this size at once, and research, engineering, and content each change the design as they learn more. I learned to treat those inputs as part of the design work and to bring them in early. I also learned to build shared components alongside the pages, so each layout tests the system while it is still easy to change.
+</ProseGroup>

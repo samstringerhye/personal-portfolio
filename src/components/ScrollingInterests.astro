@@ -7,7 +7,7 @@ interface Props {
   textRole?: TypographyRole
 }
 
-const { interests, textRole = 'display' } = Astro.props as Props
+const { interests, textRole = 'display-lg' } = Astro.props as Props
 const text = interests.join(' \u00b7 ') + ' \u00b7 '
 const copies = 4
 const dg = animations.dotGrid
@@ -56,6 +56,10 @@ const dg = animations.dotGrid
     pointer-events: none;
     will-change: transform;
     animation: dot-drift 2s linear infinite;
+  }
+
+  :global(html[data-motion='paused']) .interests-section::before {
+    animation-play-state: paused;
   }
 
   /* The dots fade out toward the top and bottom of the band. A fixed overlay in the page color, not
@@ -110,14 +114,19 @@ const dg = animations.dotGrid
 </style>
 
 <script>
+  import { motionPaused, onMotionChange } from './motion-pause'
+
   let interestsTweens: any[] = []
   let interestsObserver: IntersectionObserver | null = null
+  let stopMotionListener: (() => void) | null = null
 
   function cleanupScrollingInterests() {
     interestsTweens.forEach(t => t.kill())
     interestsTweens = []
     interestsObserver?.disconnect()
     interestsObserver = null
+    stopMotionListener?.()
+    stopMotionListener = null
   }
 
   async function initScrollingInterests() {
@@ -175,11 +184,15 @@ const dg = animations.dotGrid
       interestsTweens.push(tween)
     })
 
-    // Pause/resume infinite tweens based on visibility
+    // The rows run only while on screen and while the footer's pause is off
+    let inView = false
+    const apply = () => interestsTweens.forEach(t => inView && !motionPaused() ? t.play() : t.pause())
     interestsObserver = new IntersectionObserver(([entry]) => {
-      interestsTweens.forEach(t => entry.isIntersecting ? t.play() : t.pause())
+      inView = entry.isIntersecting
+      apply()
     }, { threshold: 0 })
     interestsObserver.observe(section)
+    stopMotionListener = onMotionChange(apply)
   }
 
   function deferInit() {

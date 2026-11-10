@@ -69,6 +69,7 @@ try {
 </style>
 
 <script>
+  import { motionPaused, onMotionChange } from './motion-pause'
   import { animations } from '../data/tokens'
 
   let observer: IntersectionObserver | null = null
@@ -95,6 +96,10 @@ try {
       button.disabled = true
     })
   }
+
+  // Whether each player is on screen, and the callback that pauses or resumes it when that changes
+  const visible = new WeakMap<HTMLElement, boolean>()
+  const onVisibility = new WeakMap<HTMLElement, () => void>()
 
   // The player and gsap load only once an animation nears the viewport
   let depsPromise: Promise<{ lottie: any; gsap: any }> | null = null
@@ -159,9 +164,24 @@ try {
         } else {
           anim.play()
         }
+        // Playback runs only while the player is on screen and hasn't been paused by its button
+        let playing = !prefersReduced && el.dataset.autoplay === 'true'
+        const applyPlayback = () => {
+          const active = playing && visible.get(el) !== false && !motionPaused()
+          if (playbackTween) {
+            active ? playbackTween.resume() : playbackTween.pause()
+          } else if (active) {
+            anim.loop = el.dataset.loop === 'true'
+            anim.play()
+          } else {
+            anim.pause()
+          }
+        }
+        onVisibility.set(el, applyPlayback)
+        onMotionChange(() => { if (el.isConnected) applyPlayback() })
+        if (visible.get(el) === false) applyPlayback()
         const button = el.parentElement?.querySelector<HTMLButtonElement>('.lottie-toggle')
         if (button) {
-          let playing = !prefersReduced && el.dataset.autoplay === 'true'
           const updateControl = () => {
             button.textContent = playing ? 'Pause' : 'Play'
             button.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${el.getAttribute('aria-label')}`)
@@ -170,14 +190,7 @@ try {
           updateControl()
           button.onclick = () => {
             playing = !playing
-            if (playbackTween) {
-              playing ? playbackTween.resume() : playbackTween.pause()
-            } else if (playing) {
-              anim.loop = el.dataset.loop === 'true'
-              anim.play()
-            } else {
-              anim.pause()
-            }
+            applyPlayback()
             updateControl()
           }
         }
@@ -199,6 +212,8 @@ try {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const el = entry.target as HTMLElement
+        visible.set(el, entry.isIntersecting)
+        onVisibility.get(el)?.()
         if (entry.isIntersecting && !el.dataset.initialized) {
           el.dataset.initialized = 'true'
           startPlayer(el, prefersReduced)

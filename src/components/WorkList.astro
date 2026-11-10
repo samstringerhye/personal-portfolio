@@ -16,7 +16,7 @@ interface Props {
 }
 
 const {
-  headline = 'Selected Work',
+  headline = 'Selected work',
   headingTag = 'h2', headingRole = 'headline-lg',
   cardTitleTag = 'h3', cardTitleRole = 'headline-sm',
 } = Astro.props as Props
@@ -87,6 +87,10 @@ const featured = (await getCollection('work'))
             {entry.data.thumbnailScene && (
               <div class="work-list-scene">
                 <DeviceScene scene={entry.data.thumbnailScene} label={entry.data.thumbnailAlt ?? entry.data.title} />
+                {/* The scene needs scripts to build; without them the card art stands in */}
+                <noscript>
+                  <Image class="work-list-fallback" src={entry.data.thumbnail} alt="" layout="full-width" sizes="(max-width: 768px) 100vw, 66vw" format="webp" loading="lazy" />
+                </noscript>
               </div>
             )}
           </div>
@@ -113,7 +117,7 @@ const featured = (await getCollection('work'))
               </span>
             )}
             {entry.data.passwordProtected && (
-              <ContactEmail class="ek-link work-list-request typo-body-md" label="Request a private walkthrough" subject={`Walkthrough request: ${entry.data.title}`} />
+              <ContactEmail class="ek-link work-list-request typo-body-sm" label="Request a private walkthrough" subject={`Walkthrough request: ${entry.data.title}`} />
             )}
             </div>
           </div>

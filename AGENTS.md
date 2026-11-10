@@ -34,7 +34,7 @@ When writing copy, read it back as if you're a skeptical creative director who's
 
 ## Project Overview
 
-Portfolio site for Sam Stringer-Hye, an Associate Design Director at Razorfish (13+ years experience). The project is in an **active prototyping/pre-build phase** — content has been extracted from an existing Squarespace site, and a new custom-built site is being developed with interactive prototypes.
+Portfolio site for Sam Stringer-Hye, an Associate Design Director at Razorfish (14 years experience). The project is in an **active prototyping/pre-build phase** — content has been extracted from an existing Squarespace site, and a new custom-built site is being developed with interactive prototypes.
 
 ## Case Studies
 
@@ -42,7 +42,7 @@ Portfolio site for Sam Stringer-Hye, an Associate Design Director at Razorfish (
 | --- | --- | --- | --- |
 | Amica.com Design System | Amica | Assoc. Design Director | 2026 |
 | Samsung Bespoke Design Studio | Samsung | Assoc. Design Director | 2024 |
-| MyFrontier App Redesign | Frontier | Assoc. Design Director | 2022 |
+| MyFrontier App Redesign | Frontier | Senior Designer | 2022 |
 | Samsung.com Redesign | Samsung | Senior Designer | 2020 |
 | CVS Shop Website Redesign | CVS | Assoc. Design Director | 2022 |
 

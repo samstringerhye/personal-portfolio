@@ -4,7 +4,7 @@ client: "Amica"
 year: 2026
 role: "Associate Design Director"
 agency: "Razorfish"
-tagline: "Leading component structure, responsive decisions, and design handoff across AEM and React."
+tagline: "Component structure, responsive decisions, and design handoff for a rebuild across AEM and React."
 thumbnail: "../../assets/work/amica-design-system/amica-design-system-thumbnail-32.png"
 thumbnailLayers:
   subject: "../../assets/work/amica-design-system/amica-design-system-subject-32.png"
@@ -53,7 +53,6 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
   agency="Razorfish"
   year={2026}
   made={['Design-team direction and review', 'Component architecture across AEM and React', 'Responsive refinement and handoff']}
-  outcome="I set the structure for Amica.com’s design system and led the team’s component, documentation, and handoff decisions during the rebuild."
   problem="Amica.com’s rebuild brought a new brand direction into interfaces across AEM and React. The team already had brand foundations and a component library, but needed clearer rules for what belonged in a component, how larger sections reused it, and which files development should follow."
   decision="I organized the system around Foundations, Components, and Sections, used properties to contain variations within component families, and separated work in progress from the material we shared for implementation."
   did="I joined mid-project as design lead. I shaped the system structure and component decisions, delegated refinement and documentation, set review priorities, and guided responsive fixes. Collaborating designers developed and documented components; I directed that work and reviewed it across the system."
@@ -86,13 +85,13 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
   </Panel>
   <Panel kind="slot" caption="Buttons and ZIP inputs.">
     <picture>
-      <source media="(max-width: 767px)" srcset={controlsMobile.src} width={controlsMobile.width} height={controlsMobile.height} />
+      <source media="(max-width: 768px)" srcset={controlsMobile.src} width={controlsMobile.width} height={controlsMobile.height} />
       <img class="case-study-image" src={controls.src} width={controls.width} height={controls.height} loading="lazy" decoding="async" alt="Amica primary and secondary buttons in default, focused, and disabled states, followed by ZIP inputs in default, filled, and error states" style={`display: block; width: min(100%, ${controls.width / 2}px); height: auto; margin-inline: auto;`} />
     </picture>
   </Panel>
   <Panel kind="slot" caption="Collapsed and expanded accordion states.">
     <picture>
-      <source media="(max-width: 767px)" srcset={accordionMobile.src} width={accordionMobile.width} height={accordionMobile.height} />
+      <source media="(max-width: 768px)" srcset={accordionMobile.src} width={accordionMobile.width} height={accordionMobile.height} />
       <img class="case-study-image" src={accordion.src} width={accordion.width} height={accordion.height} loading="lazy" decoding="async" alt="Amica accordion in collapsed and expanded states, with a home-insurance coverage question, plus and minus toggles, and the expanded content area" style={`display: block; width: min(100%, ${accordion.width / 2}px); height: auto; margin-inline: auto;`} />
     </picture>
   </Panel>
@@ -101,14 +100,14 @@ import accordionMobile from '../../assets/work/amica-design-system/figma-fresh/a
 <ProseGroup>
 ## Keep the handoff tied to the component
 
-I separated published libraries, reference documentation, internal working files, and client-facing material. Finished work moved into the client share. When developers started building from that file, they could also see the team's internal notes, so I pushed for a separate dev handoff file as the source of truth. The dev team had access the next day.
+I separated published libraries, reference documentation, internal working files, and client-facing material. Finished work moved into the client share. When developers started building from that file, they could also see the team’s internal notes, so I pushed for a separate dev handoff file as the source of truth. The dev team had access the next day.
 
 I organized the work into component refinement, migration and connection, documentation, and review. Collaborating designers owned focused parts of that work; I set priorities, assigned component builds, and had three designers audit my library branch before we published it.
 
-Copied specifications could name a valid token that the component did not use. We generated specifications from the actual bindings, then checked the assembled page examples for clipped labels, missing content, and responsive behavior. The library, documentation, and pages all needed to agree.
+Copied specifications could name a valid token that the component did not use. We generated specifications from the actual bindings, then checked the assembled page examples for clipped labels, missing content, and responsive behavior. The library, documentation, and pages all needed to agree. The site launched on October 2, 2026.
 </ProseGroup>
 
-<Gallery title="Specs that name the tokens a component uses" note="The documentation lists each state's size, padding, gap, radius, fill, and label tokens, so development reads the same values the component carries.">
+<Gallery title="Name the tokens each component uses" note="The documentation lists each state’s size, padding, gap, radius, fill, and label tokens, so development reads the same values the component carries.">
   <Panel kind="slot" caption="Button documentation, primary button: default and hover states with their tokens.">
     <EvidenceCrop src={buttonSpec} x={0} y={0} width={1730} height={870} maxWidth="48rem" alt="Amica button documentation: default and hover primary buttons, each with a spec table for size 68 by 56, padding, gap, radius, surface/brand fill, label style, and content/default label color; hover adds a 5 percent neutral overlay" />
   </Panel>
@@ -123,7 +122,7 @@ Copied specifications could name a valid token that the component did not use. W
   </Panel>
 </Gallery>
 
-<Gallery title="Quote form layout options" note={["In the product-dropdown exploration, the Wedding & Event label clipped. I presented the existing layout as Option A, a wider-field layout with the action underneath as Option B, and a wider dropdown with a narrower ZIP field and inline action as Option C. Amica selected C. I traded space between the inputs so the full product name could fit while the quote action stayed beside them.", "The team confirmed that the arrangement should hold through 1024px. That kept the solution within the agreed responsive behavior instead of adding a breakpoint for this layout. Amica approved the direction, and the selected option shipped.", "I led this refinement within the agency’s visual-reskin scope. Amica’s in-house team owned the broader Quote Start redesign."]}>
+<Gallery title="Trade field width to fit the full product name" note={["In the product-dropdown exploration, the Wedding & Event label clipped. I presented the existing layout as Option A, a wider-field layout with the action underneath as Option B, and a wider dropdown with a narrower ZIP field and inline action as Option C. Amica selected C. I traded space between the inputs so the full product name could fit while the quote action stayed beside them.", "The team confirmed that the arrangement should hold through 1024px. That kept the solution within the agreed responsive behavior instead of adding a breakpoint for this layout. The selected option shipped.", "I led this refinement within the agency’s visual-reskin scope. Amica’s in-house team owned the broader Quote Start redesign."]}>
   <Panel kind="slot" span="half" caption="A · Existing controls: Wedding &amp; Event clips while ZIP entry and the action stay inline.">
     <EvidenceCrop src={quoteA} x={55} y={470} width={990} height={200} alt="Detail of Option A: clipped Wedding and Event label, ZIP field, and inline quote button" />
   </Panel>
@@ -138,7 +137,5 @@ Copied specifications could name a valid token that the component did not use. W
 <ProseGroup>
 ## Lessons from component reuse and handoff
 
-Amica launched on October 2, 2026.
-
-On the next project, I would agree the component structure, shared rules, and development reference at kickoff. I would also bring representative pages into review earlier, with realistic content, narrow layouts, and interaction states. Those examples expose what an isolated component can miss. Amica taught me to treat reuse and handoff as ongoing design work, with every shared change checked where the team actually uses it.
+On the next project, I would agree on the component structure, shared rules, and development reference at kickoff. I would also bring representative pages into review earlier, with realistic content, narrow layouts, and interaction states. Those examples expose what an isolated component can miss. Amica taught me to treat reuse and handoff as ongoing design work, with every shared change checked where the team actually uses it.
 </ProseGroup>

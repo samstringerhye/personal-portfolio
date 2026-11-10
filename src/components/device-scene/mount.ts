@@ -65,8 +65,21 @@ type Live = { faces: HTMLElement[]; wanted: boolean; building: boolean; stop: ((
 // A failed build tries again after these waits, then the flat screen stays
 const RETRIES = [1000, 4000]
 
+// Data Saver and low-memory phones keep the lead device's flat screen instead of downloading
+// three.js and the models, the rule the homepage dot field follows (HeroSection.astro)
+function modelsWorthIt() {
+  const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number }
+  if (nav.connection?.saveData) return false
+  if (nav.deviceMemory && nav.deviceMemory <= 2) return false
+  return true
+}
+
 async function build(scene: HTMLElement, state: Live) {
   if (state.building || state.stop) return
+  if (!modelsWorthIt()) {
+    scene.dataset.ready = ''
+    return
+  }
   state.building = true
   // A lost context (iOS takes them back) tears the arrangement down; build it again
   const lost = () => {

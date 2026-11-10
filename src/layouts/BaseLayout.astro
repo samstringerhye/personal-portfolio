@@ -340,6 +340,9 @@ const typoCss = `:root {
         !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
         !window.matchMedia('(pointer: coarse)').matches
 
+      // The CSS failsafes show any content the entrance animations would have revealed
+      const reportInitFailure = (e: unknown) => console.warn('Failed to load animation modules', e)
+
       async function initCore() {
         const [lenisMod, { default: gsap }, { ScrollTrigger }, { animations }] = await Promise.all([
           wantsLenis() ? import('lenis') : null,
@@ -435,9 +438,9 @@ const typoCss = `:root {
       }
 
       if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => initCore(), { timeout: 1500 })
+        requestIdleCallback(() => initCore().catch(reportInitFailure), { timeout: 1500 })
       } else {
-        setTimeout(initCore, 100)
+        setTimeout(() => initCore().catch(reportInitFailure), 100)
       }
     </script>
 

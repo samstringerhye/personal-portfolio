@@ -97,7 +97,7 @@ for (const [src, f, out, pad, zone] of [
 // Amica: logo centered on teal
 {
   const LOGO_W = 900
-  let svg = readFileSync(`${repo}/public/_protected-embeds/amica-prototype/icons/amica-logo.svg`, 'utf8')
+  let svg = readFileSync(`${repo}/scripts/thumbnails/amica-logo.svg`, 'utf8')
   const vb = svg.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number)
   const logoH = Math.round(LOGO_W * vb[3] / vb[2])
   svg = svg.replace(/<svg[^>]*>/, `<svg xmlns="http://www.w3.org/2000/svg" width="${LOGO_W}" height="${logoH}" viewBox="${vb.join(' ')}" fill="none">`).replace(/var\(--fill-0,\s*white\)/g, '#FFFFFF')

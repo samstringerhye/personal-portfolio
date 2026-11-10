@@ -4,8 +4,8 @@
   "description": "Portfolio of Sam Stringer-Hye, Associate Design Director",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#EFF4F5",
-  "theme_color": "#0B0D1B",
+  "background_color": "#FEFDFC",
+  "theme_color": "#FEFDFC",
   "icons": [
     {
       "src": "/favicon.svg",

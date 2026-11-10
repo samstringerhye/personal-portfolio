@@ -4,12 +4,12 @@
     "headline": "Every pixel, on purpose.",
     "headlineTag": "h1",
     "headlineRole": "display-lg",
-    "body": "I'm Sam Stringer-Hye, an Associate Design Director at Razorfish. I lead teams designing digital products and the systems behind them, from interface decisions to developer handoff.",
+    "body": "I’m Sam Stringer-Hye, an Associate Design Director at Razorfish. I lead teams designing digital products and the systems behind them, from interface decisions to developer handoff.",
     "bodyHighlights": ["Sam Stringer-Hye", "Associate Design Director", "Razorfish"],
     "bodyRole": "title-lg"
   },
   "work": {
-    "headline": "Selected Work",
+    "headline": "Selected work",
     "headingTag": "h2",
     "headingRole": "headline-lg",
     "cardTitleTag": "h3",
@@ -32,11 +32,7 @@
       },
       {
         "title": "AI adoption",
-        "body": "As an AI advocate for Razorfish's creative team, I built our AI roadmap, surveyed designers on their tools, and brought AI into client work, from a component audit to first-draft pages built with Claude."
-      },
-      {
-        "title": "Scope calls",
-        "body": "When a ZIP-code editor entered Amica's scope after kickoff, I raised it as an explicit scope decision with a named owner."
+        "body": "As an AI advocate for Razorfish’s creative team, I built our AI roadmap, surveyed designers on their tools, and brought AI into client work, from a component audit to first-draft pages built with Claude."
       }
     ]
   },
@@ -58,7 +54,7 @@
         "startDate": "2021-10",
         "endDate": null,
         "highlights": [
-          "Leads Razorfish design teams on client work for Amica, Samsung, CVS, and Frontier, from discovery through design systems and developer handoff."
+          "Lead Razorfish design teams on client work for Amica, Samsung, CVS, and Frontier, from discovery through design systems and developer handoff."
         ]
       },
       {
@@ -68,7 +64,7 @@
         "startDate": "2018-06",
         "endDate": "2021-10",
         "highlights": [
-          "Set the visual direction for Samsung.com's global navigation across 12+ markets, and designed prototypes and motion for SmartThings, Barclays, and Pilot Flying J."
+          "Set the visual direction for Samsung.com’s global navigation across 12+ markets, and designed prototypes and motion for SmartThings, Barclays, and Pilot Flying J."
         ]
       },
       {
@@ -78,7 +74,7 @@
         "startDate": "2016-08",
         "endDate": "2018-06",
         "highlights": [
-          "Designed new-business pitch work for Walmart and McDonald's, and an interactive prototype for Google's editorial platform."
+          "Designed new-business pitch work for Walmart and McDonald’s, and an interactive prototype for Google’s editorial platform."
         ]
       },
       {
@@ -88,7 +84,7 @@
         "startDate": "2014-03",
         "endDate": "2016-08",
         "highlights": [
-          "Led art direction for Mashable's Snapchat Discover launch, and a team of animators, illustrators, editors, and producers across six channels."
+          "Led art direction for Mashable’s Snapchat Discover launch, and led a team of animators, illustrators, editors, and producers across six channels."
         ]
       },
       {
@@ -104,14 +100,14 @@
     ]
   },
   "contact": {
-    "headline": "Let's talk about your team and the work ahead."
+    "headline": "Let’s talk about your team and the work ahead."
   },
   "offHours": {
     "headline": "Off hours",
     "items": [
       { "label": "Vinylhead", "draft": "A photo of the record on the platter this week, and one line on it." },
       { "label": "Homelabber", "draft": "A photo of the rack, and one line on what it runs." },
-      { "label": "Horror fiend", "draft": "This month's horror pick, and one line on why." }
+      { "label": "Horror fiend", "draft": "This month’s horror pick, and one line on why." }
     ]
   },
   "interests": {

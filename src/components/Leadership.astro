@@ -70,6 +70,16 @@ const HeadingTag = headingTag as any
     background: var(--ek-panel, var(--color-bg-alt));
   }
 
+  /* An odd card out takes the full row instead of leaving a gap beside it */
+  .ld-item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    min-height: 0;
+  }
+
+  .ld-item:last-child:nth-child(odd) .ld-text {
+    max-width: var(--prose-measure);
+  }
+
   .ld-text {
     display: flex;
     flex-direction: column;

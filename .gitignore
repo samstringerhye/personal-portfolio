@@ -35,7 +35,7 @@ oldwbapp/
 output/
 bento-Inspiration/
 .playwright-cli/
-# Root working folder only; the embed's videos/ under public/ is deployed
+# Root working folder
 /videos/
 # Source device models; compressed copies live in public/motion/models/
 /3d models/

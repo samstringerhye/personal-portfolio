@@ -3,7 +3,7 @@ title: "Samsung Bespoke Appliance Configurator"
 client: "Samsung"
 year: 2024
 yearLabel: "2021–2024"
-role: "Lead designer"
+role: "Lead Designer"
 agency: "Razorfish"
 tagline: "Leading interface design as a refrigerator configurator grew into a kitchen planning tool."
 thumbnail: "../../assets/work/bespoke-design-studio/bespoke-design-studio-thumbnail-32.jpeg"
@@ -17,7 +17,7 @@ thumbnailLayers:
     - "../../assets/work/bespoke-design-studio/bespoke-design-studio-subject-32.png"
     - "../../assets/work/bespoke-design-studio/bespoke-design-studio-frame-2.png"
 heroImageAlt: "iPad and iPhone showing the Bespoke Design Studio configurator: a rendered kitchen beside a Choose Colors panel with finish swatches for all four fridge door zones"
-thumbnailAlt: "The Bespoke configurator's Choose Type step, with the Bespoke 4-Door French Door starting at $2499 at the top of the list"
+thumbnailAlt: "The Bespoke configurator’s Choose Type step, with the Bespoke 4-Door French Door starting at $2499 at the top of the list"
 thumbnailScene: "bespoke"
 heroImage: "../../assets/work/bespoke-design-studio/scene-2-1.png"
 featured: true
@@ -46,12 +46,12 @@ import fridgeSummary from '../../assets/work/bespoke-design-studio/figma-fresh/f
 
 <Story
   client="Samsung"
-  role="Lead designer"
+  role="Lead Designer"
   agency="Razorfish"
   year="2021–2024"
   made={['Configurator UX and UI', 'Refrigerator and kitchen experiences', 'Navigation and interaction design']}
-  outcome="Bespoke Design Studio lets shoppers choose appliance models, mix door finishes, and see their choices together in a kitchen. I led the interface design as the experience grew from a refrigerator configurator into a full kitchen planning tool."
-  problem="The project began during COVID, when shoppers couldn’t easily visit stores. Bespoke refrigerators had interchangeable door panels, making color and finish central to the purchase. The simulator needed to help people judge those choices without standing in front of the product."
+  outcome="From March 2022 through February 2023, the refrigerator experience recorded a 2.51% order rate against a 0.87% benchmark, and the kitchen experience 3.72% against a 0.82% benchmark. Those results belong to the whole product team. I led the interface design as the experience grew from a refrigerator configurator into a kitchen planning tool."
+  problem="Bespoke Design Studio lets shoppers choose appliance models, mix door finishes, and see their choices together in a kitchen. The project began during COVID, when shoppers couldn’t easily visit stores. Bespoke refrigerators had interchangeable door panels, making color and finish central to the purchase. The simulator needed to help people judge those choices without standing in front of the product."
   decision="Keep the product visible while people configure it. As the studio expanded to other appliances, combine a guided first pass with ways to revisit choices without starting over."
   did="I was the primary designer and made the core interface decisions, with support from other designers and collaboration across UX, creative, project management, and development. I started as a Senior Designer and continued the work as an Associate Design Director."
 />
@@ -63,7 +63,7 @@ The refrigerator simulator launched in March 2021 and the kitchen simulator foll
 </ProseGroup>
 
 <Gallery title="Keep the kitchen visible while choosing finishes" note={["During refrigerator development, I challenged a depth-selection step that offered no visual feedback and questioned whether its step indicators added useful guidance.", "When the staging implementation dimmed the kitchen behind the color popup, I requested that it remain visible so shoppers could judge finishes against their surroundings. The creative team raised the same concern. The kitchen designs below carry that priority into a larger configuration flow."]}>
-  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
+  <div class="gallery-row" style="--gallery-columns: 2">
   <Panel className="bespoke-panel" kind="screens" span="half" screens={[
     { src: configMobile, alt: '2024 mobile kitchen setup with appliance-category icons and a Back button' },
   ]} caption="Q2 2024 working design: appliance-category selection." />
@@ -82,10 +82,10 @@ The refrigerator simulator launched in March 2021 and the kitchen simulator foll
   </div>
 </Gallery>
 
-<Gallery title="Guide the first pass, then allow revisions" note={["We considered an open flow that let people move freely between options. I chose a stepped first pass because we felt it would make each appliance easier to complete. That was a design judgment, not a tested result. After completing the relevant choices, shoppers could return to revise them.", "The sequence still allowed broader kitchen editing: switch appliance categories, retain choices for unchanged products, and review, edit, or remove saved appliances. Shoppers could check out saved items without completing every appliance. Compatibility rules also mattered: a range and cooktop, or a microwave and range hood, could not occupy the same space."]}>
+<Gallery title="Guide the first pass, then allow revisions" note={["We considered an open flow that let people move freely between options. I chose a stepped first pass because I expected it to make each appliance easier to complete. That was a design judgment, not a tested result. After completing the relevant choices, shoppers could return to revise them.", "The sequence still allowed broader kitchen editing: switch appliance categories, retain choices for unchanged products, and review, edit, or remove saved appliances. Shoppers could check out saved items without completing every appliance. Compatibility rules also mattered: a range and cooktop, or a microwave and range hood, could not occupy the same space."]}>
   <BespokeOptionFlow />
   <p className="evidence-note">Q2 2024 working designs of the model, depth, and finish steps. Prices are placeholders.</p>
-  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
+  <div class="gallery-row" style="--gallery-columns: 2">
   <Panel className="bespoke-panel" kind="screens" span="half" ratio="4 / 5" screens={[
     { src: panelMobile, alt: 'August 2023 mobile color step with one refrigerator door selected above the swatches' },
   ]} caption="August 2023 iteration: the active refrigerator door sits above its finish swatches." />
@@ -93,12 +93,12 @@ The refrigerator simulator launched in March 2021 and the kitchen simulator foll
   </div>
 </Gallery>
 
-<Gallery title="Saved designs and purchase review" note="I separated saving an appliance from reviewing it for purchase, so shoppers could keep building their kitchen before checking availability and adding products to the cart.">
+<Gallery title="Separate saving from purchase review" note="I separated saving an appliance from reviewing it for purchase, so shoppers could keep building their kitchen before checking availability and adding products to the cart.">
   <Panel className="bespoke-panel" kind="page" ratio="1440 / 1024" src={yellowDesktop} alt="August 2023 kitchen iteration with all refrigerator panels selected in yellow and Save enabled" caption="August 2023 iteration: selected refrigerator panels remain visible while Save stays separate from purchase review." />
   <Panel kind="slot" caption="Control detail: finish choices and the enabled Save action.">
     <EvidenceCrop src={yellowDesktop} x={2040} y={125} width={800} height={1880} maxWidth="24rem" alt="Finish selector and Save action beside the configured kitchen" />
   </Panel>
-  <div class="gallery-row" style="--gallery-columns: 2" role="region" aria-label="2 related images">
+  <div class="gallery-row" style="--gallery-columns: 2">
   <Panel className="bespoke-panel" kind="screens" span="half" ratio="1 / 1" screens={[
     { src: fridgeSummary, alt: 'Q2 2024 mobile Your Bespoke design summary with availability, placeholder prices, and Add to cart' },
   ]} caption="Q2 2024 working design: review availability before Add to cart. Prices are placeholders." />
@@ -106,7 +106,7 @@ The refrigerator simulator launched in March 2021 and the kitchen simulator foll
   </div>
 </Gallery>
 
-<Gallery title="Proposed navigation changes" note="I proposed opening up the sequence after shoppers chose a model: move directly between depth and color, switch appliances without Next, and make off-screen tabs easier to discover.">
+<Gallery title="Open the sequence after the model choice" note="I proposed opening up the sequence after shoppers chose a model: move directly between depth and color, switch appliances without Next, and make off-screen tabs easier to discover.">
   <BespokeNavigation />
 </Gallery>
 
@@ -117,7 +117,7 @@ Both experiences exceeded their order-rate benchmarks.
 </ProseGroup>
 
 <Metrics items={[
-  { value: '2.51%', label: 'Refrigerator order rate, compared with a 0.87% target' },
+  { value: '2.51%', label: 'Refrigerator order rate, compared with a 0.87% benchmark' },
   { value: '3.72%', label: 'Kitchen order rate, compared with a 0.82% benchmark' },
 ]} />
 

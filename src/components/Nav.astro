@@ -125,15 +125,6 @@ function isActive(href: string) {
     transition: background-color var(--duration-medium) ease;
   }
 
-  /* The active tab's fill: the page's accent, set on <html> by the script below before each page swap */
-  :global(html[data-accent='1']) .nav-links { --nav-active: var(--color-accent-1); }
-  :global(html[data-accent='2']) .nav-links { --nav-active: var(--color-accent-2); }
-  :global(html[data-accent='3']) .nav-links { --nav-active: var(--color-accent-3); }
-
-  :global(.nav-links li:has(> .nav-link.active)) {
-    background-color: var(--nav-active, transparent);
-  }
-
   .nav-links li::before {
     content: '';
     position: absolute;
@@ -289,7 +280,7 @@ function isActive(href: string) {
 </style>
 
 <script>
-  import { accentRgba, animations } from '../data/tokens'
+  import { animations } from '../data/tokens'
   import './contact-email'
 
   type NavWindow = Window & {
@@ -401,43 +392,6 @@ function isActive(href: string) {
   initNav()
   document.addEventListener('astro:after-swap', navWindow.__navAfterSwapHandler)
 
-  // Cycle accent color on the active nav link
-  const ACTIVE_COLORS = accentRgba(1)
-  let activeColorIndex = Math.floor(Math.random() * ACTIVE_COLORS.length)
-
-  // The homepage and its case studies are one place as far as the highlight goes (Home and Work trade it
-  // as the list scrolls, and a case study keeps Work lit), so the color holds across them, including
-  // through the card-to-hero transition. Other pages take the next color.
-  let lastGroup = ''
-  let lastIndex = 0
-
-  // The tab's fill comes from html[data-accent] in CSS, not from inline styles, and the incoming page
-  // gets its accent before the swap: a fill applied after the swap leaves the new tab uncolored for a
-  // frame or two, which showed as a flicker. The same attribute lets page accents (like the hero name)
-  // match the active tab.
-  function chooseAccent(root: ParentNode): number | null {
-    const activeLink = root.querySelector<HTMLElement>('.nav-link.active')
-    if (!activeLink) return null
-    const href = activeLink.getAttribute('href')
-    const group = href === '/' || href === '/#work' ? 'work' : (href ?? '')
-    const keep = group === 'work' && lastGroup === 'work'
-    const index = keep ? lastIndex : activeColorIndex
-    if (!keep) activeColorIndex = (activeColorIndex + 1) % ACTIVE_COLORS.length
-    lastGroup = group
-    lastIndex = index
-    return index
-  }
-
-  const initialAccent = chooseAccent(document)
-  if (initialAccent !== null) document.documentElement.dataset.accent = String(initialAccent + 1)
-
-  document.addEventListener('astro:before-swap', (e) => {
-    const incoming = (e as Event & { newDocument: Document }).newDocument.documentElement
-    const index = chooseAccent((e as Event & { newDocument: Document }).newDocument)
-    const accent = index !== null ? String(index + 1) : document.documentElement.dataset.accent
-    if (accent) incoming.dataset.accent = accent
-  })
-
   // On the homepage, the Work tab takes the highlight while the work list sits under the nav.
   // Visual only: Home keeps aria-current, since this is still the homepage.
   let removeWorkSpy: (() => void) | null = null
@@ -520,81 +474,51 @@ function isActive(href: string) {
 </script>
 
 <script>
-  import gsap from 'gsap'
   import { animations } from '../data/tokens'
 
   const ENTRANCE_KEY = 'entrance-played'
   const entranceTiming = animations.nav.entrance
+  // GSAP's power3.out and power3.inOut as CSS curves: the entrance runs on the Web Animations API,
+  // so the first load doesn't wait on GSAP
+  const EASE_OUT = 'cubic-bezier(0.165, 0.84, 0.44, 1)'
+  const EASE_IN_OUT = 'cubic-bezier(0.77, 0, 0.175, 1)'
 
+  // The resting state, set inline; an entrance animates up to it
   function showAllImmediate() {
-    gsap.set('.nav-logo, .nav-link', { opacity: 1, y: 0 })
+    document.querySelectorAll<HTMLElement>('.nav-logo, .nav-link').forEach(el => {
+      el.style.opacity = '1'
+      el.style.transform = 'none'
+    })
     document.querySelectorAll<HTMLElement>('.grid-overlay, .nav, .nav-logo, .nav-links li').forEach(el => {
       el.style.setProperty('--line-draw', '1')
     })
-    // Show first section rule immediately on repeat visits
     const firstRule = document.querySelector<HTMLElement>('.section-rule')
-    if (firstRule) gsap.set(firstRule, { scaleX: 1 })
+    if (firstRule) firstRule.style.transform = 'scaleX(1)'
   }
 
   function playEntrance() {
-    if (sessionStorage.getItem(ENTRANCE_KEY)) {
-      showAllImmediate()
-      return
-    }
+    const seen = sessionStorage.getItem(ENTRANCE_KEY)
     sessionStorage.setItem(ENTRANCE_KEY, '1')
+    showAllImmediate()
+    if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.set('.nav-logo, .nav-link', { opacity: 1, y: 0 })
-      document.querySelectorAll<HTMLElement>('.grid-overlay, .nav, .nav-logo, .nav-links li').forEach(el => {
-        el.style.setProperty('--line-draw', '1')
-      })
-      const firstRule = document.querySelector<HTMLElement>('.section-rule')
-      if (firstRule) gsap.set(firstRule, { scaleX: 1 })
-      return
-    }
+    // fill: backwards holds each element at its hidden start until its turn
+    const fadeIn = (el: HTMLElement, duration: number, delay: number) =>
+      el.animate([{ opacity: 0, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'none' }],
+        { duration: duration * 1000, delay: delay * 1000, easing: EASE_OUT, fill: 'backwards' })
 
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-
-    // 1. Grid vertical lines draw down from top
-    const overlay = document.querySelector<HTMLElement>('.grid-overlay')
-    if (overlay) {
-      tl.fromTo(overlay, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.gridDraw }, 0)
-    }
-
-    // 2. Nav bottom horizontal line draws from left
-    const nav = document.querySelector<HTMLElement>('.nav')
-    if (nav) {
-      tl.fromTo(nav, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.navDraw }, entranceTiming.navDrawAt)
-    }
-
-    // 3. Logo right border draws down + logo content fades in
     const logo = document.querySelector<HTMLElement>('.nav-logo')
-    if (logo) {
-      tl.fromTo(logo, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.logoDraw }, entranceTiming.logoDrawAt)
-    }
-    tl.to('.nav-logo', { opacity: 1, y: 0, duration: entranceTiming.logoFade }, entranceTiming.logoFadeAt)
+    if (logo) fadeIn(logo, entranceTiming.logoFade, entranceTiming.logoFadeAt)
+    document.querySelectorAll<HTMLElement>('.nav-link').forEach((link, i) =>
+      fadeIn(link, entranceTiming.linkFade, entranceTiming.linkFadeAt + i * entranceTiming.linkStagger))
 
-    // 4. Nav link borders draw down + links fade in staggered
-    const linkItems = document.querySelectorAll<HTMLElement>('.nav-links li')
-    linkItems.forEach((li, i) => {
-      tl.fromTo(li, { '--line-draw': 0 }, { '--line-draw': 1, duration: entranceTiming.linkDraw }, entranceTiming.linkDrawAt + i * entranceTiming.linkStagger)
-    })
-    tl.to('.nav-link', { opacity: 1, y: 0, duration: entranceTiming.linkFade, stagger: entranceTiming.linkStagger }, entranceTiming.linkFadeAt)
-
-    // 5. First section rule (below hero) draws from left on load
-    const firstRule = document.querySelector<HTMLElement>('.section-rule')
-    if (firstRule) {
-      tl.to(firstRule, { scaleX: 1, duration: entranceTiming.ruleDraw, ease: 'power3.inOut' }, entranceTiming.ruleDrawAt)
-    }
+    // First section rule (below hero) draws from left on load
+    document.querySelector<HTMLElement>('.section-rule')?.animate(
+      [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      { duration: entranceTiming.ruleDraw * 1000, delay: entranceTiming.ruleDrawAt * 1000, easing: EASE_IN_OUT, fill: 'backwards' })
   }
 
   playEntrance()
   document.addEventListener('astro:after-swap', showAllImmediate)
-
-  // Safety net: if GSAP entrance fails silently, show nav after 2s
-  setTimeout(() => {
-    const logo = document.querySelector<HTMLElement>('.nav-logo')
-    if (logo && getComputedStyle(logo).opacity === '0') showAllImmediate()
-  }, 2000)
 </script>
 

@@ -310,6 +310,13 @@ const heroWordEase = revealCfg.cssEase
     return true
   }
 
+  // Leaving the homepage stops the dot field's worker instead of leaving it running behind the next page
+  document.addEventListener('astro:before-swap', () => {
+    cleanupCanvas?.()
+    cleanupCanvas = null
+    mountedRoot = null
+  })
+
   // Waits for an idle moment, so the dot field doesn't compete with the headline's reveal
   document.addEventListener('astro:page-load', () => {
     if (!canvasWorthIt()) return

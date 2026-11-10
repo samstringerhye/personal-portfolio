@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 interface Props {
   src: ImageMetadata
@@ -14,10 +15,18 @@ const { src, x, y, width, height, alt, maxWidth = '48rem' } = Astro.props
 if (x < 0 || y < 0 || width <= 0 || height <= 0 || x + width > src.width || y + height > src.height) {
   throw new Error(`EvidenceCrop: crop exceeds source bounds for ${src.src}`)
 }
+// The whole source is scaled so the cropped region lands at the box's width, at 1x and 2x,
+// instead of sending the original to show a fraction of it
+const boxPx = parseFloat(maxWidth) * (maxWidth.endsWith('rem') ? 16 : 1)
+const scale = src.width / width
+const sourceWidths = [...new Set([1, 2].map((density) => Math.min(src.width, Math.ceil(boxPx * density * scale))))]
+const images = await Promise.all(sourceWidths.map((w) => getImage({ src, width: w, format: 'webp' })))
+const srcset = images.map((image, i) => `${image.src} ${sourceWidths[i]}w`).join(', ')
+const sizes = `calc(min(92vw, ${maxWidth}) * ${scale.toFixed(3)})`
 ---
 <div class="evidence-crop" style={`aspect-ratio: ${width} / ${height}; max-width: ${maxWidth}`}>
-  <img src={src.src} alt={alt} width={src.width} height={src.height} loading="lazy" decoding="async"
-    style={`width: ${src.width / width * 100}%; left: ${-x / width * 100}%; top: ${-y / height * 100}%`} />
+  <img src={images[images.length - 1].src} srcset={srcset} sizes={sizes} alt={alt} width={src.width} height={src.height} loading="lazy" decoding="async"
+    style={`width: ${scale * 100}%; left: ${-x / width * 100}%; top: ${-y / height * 100}%`} />
 </div>
 <style>
   .evidence-crop {

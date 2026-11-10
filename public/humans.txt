@@ -10,10 +10,10 @@ Built with help from Claude Code by Anthropic.
 
 /* SITE */
 Framework: Astro
-Animation: GSAP, Lenis
+Animation: GSAP, Lenis, Three.js
 Fonts: DM Sans, Perfectly Nineties
-Hosting: Cloudflare Pages
-Last updated: 2026-03-10
+Hosting: Cloudflare Workers
+Last updated: 2026-11-09
 
 /* NOTE */
 If you're reading this, you're my kind of person.

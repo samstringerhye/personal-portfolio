@@ -8,7 +8,7 @@
  * - video: a muted loop filling the panel; plays in view, holds its poster for reduced motion
  * - slot: anything else (a Lottie grid), filling the panel
  */
-import { Image } from 'astro:assets'
+import { Image, Picture } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 
 type Src = ImageMetadata | string
@@ -42,7 +42,8 @@ const aspect = ratio ?? (kind === 'screens' || kind === 'slot' ? undefined : hal
 const style = [tint && `--panel-tint: ${tint}`, aspect && `--panel-ratio: ${aspect}`, kind === 'screens' && `--n: ${screens.length}`]
   .filter(Boolean)
   .join('; ')
-const sizes = half ? '(max-width: 768px) 92vw, 46vw' : '(max-width: 768px) 92vw, 90vw'
+// The page column stops growing at 1600px (BaseLayout), so wider screens don't ask for a larger file
+const sizes = half ? '(max-width: 768px) 92vw, min(46vw, 800px)' : '(max-width: 768px) 92vw, min(90vw, 1600px)'
 const screenSizes = '(max-width: 768px) 92vw, 20rem'
 const isLocal = (s: Src): s is ImageMetadata => typeof s !== 'string'
 // Fresh PNG exports retain their native pixel ceiling instead of generating larger derivatives.
@@ -57,7 +58,9 @@ const pngWidths = (s: ImageMetadata, widths: number[]) => format === 'png'
       <div class="panel-screens" role={screens.length > 1 ? "region" : undefined} aria-label={screens.length > 1 ? "Screen comparison" : undefined}>
         {screens.map((s) => (
           isLocal(s.src)
-            ? <Image src={s.src} format={format} alt={s.alt} widths={pngWidths(s.src, [400, 750, 1080])} sizes={screenSizes} class="panel-screen" />
+            ? (format
+              ? <Image src={s.src} format={format} alt={s.alt} widths={pngWidths(s.src, [400, 750, 1080])} sizes={screenSizes} class="panel-screen" />
+              : <Picture src={s.src} formats={['avif']} fallbackFormat="webp" alt={s.alt} widths={[400, 750, 1080]} sizes={screenSizes} class="panel-screen" pictureAttributes={{ class: 'panel-picture' }} />)
             : <img src={s.src} alt={s.alt} class="panel-screen" loading="lazy" decoding="async" />
         ))}
       </div>
@@ -68,7 +71,9 @@ const pngWidths = (s: ImageMetadata, widths: number[]) => format === 'png'
     ) : src && (
       <>
         {isLocal(src)
-          ? <Image src={src} format={format} alt={alt} widths={pngWidths(src, [640, 1080, 1600, 2200, 2880])} sizes={sizes} class:list={['panel-media', srcDark && 'panel-media--light']} />
+          ? (format
+            ? <Image src={src} format={format} alt={alt} widths={pngWidths(src, [640, 1080, 1600, 2200, 2880])} sizes={sizes} class:list={['panel-media', srcDark && 'panel-media--light']} />
+            : <Picture src={src} formats={['avif']} fallbackFormat="webp" alt={alt} widths={[640, 1080, 1600, 2200, 2880]} sizes={sizes} class:list={['panel-media', srcDark && 'panel-media--light']} pictureAttributes={{ class: 'panel-picture' }} />)
           : <img src={src} alt={alt} class:list={['panel-media', srcDark && 'panel-media--light']} loading="lazy" decoding="async" />}
         {srcDark && (isLocal(srcDark)
           ? <Image src={srcDark} format={format} alt={alt} widths={pngWidths(srcDark, [640, 1080, 1600, 2200, 2880])} sizes={sizes} class="panel-media panel-media--dark" />
@@ -78,6 +83,11 @@ const pngWidths = (s: ImageMetadata, widths: number[]) => format === 'png'
   </div>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
+
+<style is:global>
+  /* The picture wrapper adds the AVIF source only; its image is laid out as the field's own child */
+  .panel-picture { display: contents; }
+</style>
 
 <script>
   // Loops play while in view; reduced motion keeps the poster

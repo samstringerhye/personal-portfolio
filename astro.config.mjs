@@ -27,13 +27,16 @@ export default defineConfig({
     '/work': '/#work',
     // The résumé page became the homepage Experience section and its PDF download
     '/resume': '/#experience',
+    // The blog is down until there is more writing; its posts wait in docs/writing/.
+    // public/_redirects sends the old post URLs home too
+    '/blog': '/',
   },
-  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/work/wab-2026') && !page.includes('/colophon') && !page.includes('/blog') }), icon()],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/work/wab-2026') && !page.includes('/colophon') }), icon()],
 
   image: {
     service: sharpImageService(),
     endpoint: isDev ? undefined : { entrypoint: './src/image-endpoint.ts' },
-    quality: 90,
+    quality: 80,
     layout: 'constrained',
     responsiveStyles: true,
   },

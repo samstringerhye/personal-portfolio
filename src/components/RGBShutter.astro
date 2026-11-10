@@ -22,7 +22,6 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    will-change: opacity;
     background-color: var(--color-bg-primary);
   }
 
@@ -36,10 +35,11 @@
 </style>
 
 <script>
-  import gsap from 'gsap'
   import { animations } from '../data/tokens'
 
   const cfg = animations.pageTransition
+  // GSAP's power2.inOut as a CSS curve: the veil runs on the Web Animations API, so no page waits on GSAP
+  const EASE = 'cubic-bezier(0.645, 0.045, 0.355, 1)'
 
   type ShutterWindow = Window & {
     __shutterPrepHandler?: (e: Event) => void
@@ -60,6 +60,13 @@
       document.removeEventListener('astro:after-swap', w.__shutterSwapHandler)
     }
 
+    function fade(el: HTMLElement, to: number, delay = 0): Promise<void> {
+      const from = getComputedStyle(el).opacity
+      el.style.opacity = String(to)
+      return el.animate([{ opacity: from }, { opacity: to }], { duration: cfg.duration * 1000, delay: delay * 1000, easing: EASE, fill: 'backwards' })
+        .finished.then(() => {}, () => {})
+    }
+
     function coverAnimation(): Promise<void> {
       if (prefersReduced()) return Promise.resolve()
 
@@ -68,19 +75,11 @@
 
       // The page's own background, so the fade reads as the page going quiet, not a color
       el.style.backgroundColor = getComputedStyle(document.body).backgroundColor
-      gsap.set(el, { opacity: 0 })
 
       const container = document.getElementById('page-shutter')
       if (container) container.style.pointerEvents = 'all'
 
-      return new Promise((resolve) => {
-        gsap.to(el, {
-          opacity: 1,
-          duration: cfg.duration,
-          ease: cfg.ease,
-          onComplete: resolve,
-        })
-      })
+      return fade(el, 1)
     }
 
     function uncoverAnimation(): Promise<void> {
@@ -88,24 +87,15 @@
       const container = document.getElementById('page-shutter')
 
       if (prefersReduced()) {
-        if (el) gsap.set(el, { opacity: 0 })
+        if (el) el.style.opacity = '0'
         if (container) container.style.pointerEvents = 'none'
         return Promise.resolve()
       }
 
       if (!el) return Promise.resolve()
 
-      return new Promise((resolve) => {
-        gsap.to(el, {
-          opacity: 0,
-          duration: cfg.duration,
-          ease: cfg.ease,
-          delay: cfg.exitDelay,
-          onComplete: () => {
-            if (container) container.style.pointerEvents = 'none'
-            resolve()
-          },
-        })
+      return fade(el, 0, cfg.exitDelay).then(() => {
+        if (container) container.style.pointerEvents = 'none'
       })
     }
 
@@ -119,8 +109,8 @@
           return
         }
         w.__shutterActive = true
-        await coverAnimation()
-        await originalLoader()
+        // The next page loads while the veil comes down
+        await Promise.all([coverAnimation(), originalLoader()])
       }
     }
 

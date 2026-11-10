@@ -10,8 +10,8 @@ PAGES=(
   "/work/cvs-redesign"
   "/work/myfrontier-app"
   "/work/samsung-redesign"
-  "/blog"
-  "/blog/yes-this-site-was-built-with-ai"
+  "/work/amica-design-system"
+  "/about"
   "/colophon"
 )
 

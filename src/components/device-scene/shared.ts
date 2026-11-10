@@ -1,6 +1,6 @@
 // Shared by the main thread and the renderer, kept apart so importing it doesn't pull in three.js
 
-export type DeviceName = 'iphone-17-pro' | 'macbook-air-m2' | 'macbook-air-15' | 'ipad-mini-6' | 'galaxy-z-fold8' | 'galaxy-s22-ultra' | 'galaxy-tab-s8-ultra'
+export type DeviceName = 'iphone-17-pro' | 'macbook-air-m2' | 'macbook-air-15' | 'galaxy-z-fold8' | 'galaxy-s22-ultra' | 'galaxy-tab-s8-ultra'
 
 export interface DeviceSpec {
   /** GLB under /motion/models/ */
@@ -22,7 +22,7 @@ export interface DeviceSpec {
   realWidth: number
   /** Display width over height, for the flat fallback before (or without) the model */
   aspect: number
-  /** Body materials repainted (material name to color): the laptops and the iPad in one gray, the
+  /** Body materials repainted (material name to color): the laptops in one gray, the
       phones and the tablet in a finish they were sold in */
   finish?: Record<string, string>
   /** Satin finishes, material name to roughness: modeled as a mirror with a fine noise bump, they
@@ -56,11 +56,6 @@ export const DEVICES: Record<DeviceName, DeviceSpec> = {
   // its lid open about 110°. Space gray as modeled
   'macbook-air-15': {
     model: 'macbook-air-15.glb', display: 'VNZklasZKSWjWUk', glass: [], front: 1, roll: 0, pitch: 0.35, screenWidth: 1440, realWidth: 0.3266, aspect: 1.55,
-  },
-  // DatSketch, CC BY 4.0
-  'ipad-mini-6': {
-    model: 'ipad-mini-6.glb', display: 'Screen', glass: [], front: -1, roll: Math.PI / 2, screenWidth: 1200, realWidth: 0.1766, aspect: 1.511,
-    finish: { BaseColor: '#c4c7cc', BaseColorMatte: '#c4c7cc', BaseColorLogo: '#c4c7cc' },
   },
   // zhe_kan, CC BY-NC-SA 4.0. Unfolded; the display is two panels either side of the hinge
   'galaxy-z-fold8': {

@@ -14,6 +14,7 @@ const clients = [
   { name: 'Amica', logo: '/logos/amica.svg', h: 36 },
   { name: 'NowThis', logo: '/logos/nowthis.svg', h: 64 },
 ]
+// The track repeats to fill the loop; only the first set is read out
 const copies = 4
 
 // Each logo's width at its height, so the browser lays out the marquee before the files load: from
@@ -28,15 +29,14 @@ const widthAt = (logo: string, h: number) => {
 }
 ---
 
-<div class="client-logos" aria-label="Selected clients">
+<div class="client-logos" role="group" aria-label="Clients">
   <div class="client-logos-track">
     {Array.from({ length: copies }, (_, copy) =>
       clients.map(c => (
-        <img src={c.logo} alt={c.name} class="client-logo" width={widthAt(c.logo, c.h)} height={c.h} style={`height: ${c.h}px;`} loading={copy === 0 ? 'eager' : 'lazy'} />
+        <img src={c.logo} alt={copy === 0 ? c.name : ''} aria-hidden={copy === 0 ? undefined : 'true'} class="client-logo" width={widthAt(c.logo, c.h)} height={c.h} style={`height: ${c.h}px;`} loading={copy === 0 ? 'eager' : 'lazy'} />
       ))
     )}
   </div>
-  <p class="visually-hidden">{clients.map(c => c.name).join(', ')}</p>
 </div>
 
 <style>
@@ -101,15 +101,19 @@ const widthAt = (logo: string, h: number) => {
 
 <script>
   import { animations } from '../data/tokens'
+  import { motionPaused, onMotionChange } from './motion-pause'
 
   let logoTween: any = null
   let logoObserver: IntersectionObserver | null = null
+  let stopMotionListener: (() => void) | null = null
 
   function cleanupClientLogos() {
     logoTween?.kill()
     logoTween = null
     logoObserver?.disconnect()
     logoObserver = null
+    stopMotionListener?.()
+    stopMotionListener = null
   }
 
   async function initClientLogos() {
@@ -143,10 +147,15 @@ const widthAt = (logo: string, h: number) => {
 
     logoTween.pause()
 
+    // Runs only while on screen and while the footer's pause is off
+    let inView = false
+    const apply = () => inView && !motionPaused() ? logoTween?.play() : logoTween?.pause()
     logoObserver = new IntersectionObserver(([entry]) => {
-      entry.isIntersecting ? logoTween.play() : logoTween.pause()
+      inView = entry.isIntersecting
+      apply()
     }, { threshold: 0 })
     logoObserver.observe(container)
+    stopMotionListener = onMotionChange(apply)
   }
 
   function deferInit() {

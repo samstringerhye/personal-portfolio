@@ -22,7 +22,11 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
     <!-- Bottom bar -->
     <div class="footer-bottom">
       <p class="footer-copyright typo-ui-caps">&copy; {year} · Updated {updated}</p>
-      <a href="/colophon" class="footer-colophon-link typo-ui-caps">Colophon</a>
+      <div class="footer-bottom-actions">
+        <!-- Shown by its script, and only where motion is allowed to run -->
+        <button class="footer-motion-toggle typo-ui-caps" type="button" aria-pressed="false" hidden>Pause motion</button>
+        <a href="/colophon" class="footer-colophon-link typo-ui-caps">Colophon</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -113,6 +117,30 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
     transition: opacity var(--duration-short) ease;
   }
 
+  .footer-bottom-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .footer-motion-toggle {
+    min-height: var(--touch-target);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-secondary, var(--color-text-primary));
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .footer-motion-toggle:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.3em;
+    }
+  }
+
   .footer-colophon-link {
     display: inline-flex;
     align-items: center;
@@ -123,12 +151,9 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
   }
 
   @media (hover: hover) {
+    /* The hover underline comes from editorial.css; a lighter fade keeps the text above 4.5:1 */
     .footer-links :global(.footer-link):hover {
-      opacity: var(--opacity-50);
-    }
-
-    .footer-colophon-link:hover {
-      opacity: var(--opacity-50);
+      opacity: var(--opacity-80);
     }
   }
 
@@ -173,3 +198,24 @@ const updated = new Date(__BUILD_DATE__).toLocaleDateString('en-US', { month: 'l
   }
 </style>
 
+
+<script>
+  import { motionPaused, onMotionChange, restoreMotionPaused, setMotionPaused } from './motion-pause'
+
+  function initMotionToggle() {
+    restoreMotionPaused()
+    const button = document.querySelector<HTMLButtonElement>('.footer-motion-toggle')
+    if (!button) return
+    // Reduced motion already holds everything still, so there is nothing to pause
+    button.hidden = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const sync = () => {
+      button.setAttribute('aria-pressed', String(motionPaused()))
+      button.textContent = motionPaused() ? 'Play motion' : 'Pause motion'
+    }
+    sync()
+    button.onclick = () => setMotionPaused(!motionPaused())
+    onMotionChange(sync)
+  }
+
+  document.addEventListener('astro:page-load', initMotionToggle)
+</script>

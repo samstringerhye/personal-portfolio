@@ -45,6 +45,9 @@ export async function initScrollReveals() {
   revealCtx?.revert()
   revealCtx = null
 
+  // Hands the hidden states over from the CSS failsafe in global.css
+  document.documentElement.dataset.revealsReady = ''
+
   if (prefersReduced()) {
     document.querySelectorAll<HTMLElement>('[data-reveal]').forEach(el => {
       gsap.set(el, { opacity: 1, y: 0, filter: 'none', textShadow: 'none' })

@@ -5,6 +5,7 @@
 import { animations } from '../../data/tokens'
 import { DEVICES, type DeviceName } from './shared'
 import { addBrowser } from './browser'
+import { motionPaused, onMotionChange } from '../motion-pause'
 
 type Point = readonly [number, number]
 type Step =
@@ -201,9 +202,13 @@ export function mountTour(art: HTMLElement, name: TourName, kind: DeviceName): (
       await run[Object.keys(step)[0]](step)
     }
   }
-  let on = false, running = false, stopped = false
-  const io = new IntersectionObserver(([e]) => { on = e.isIntersecting && !stopped; if (on && !running) start() }, { threshold: 0.4 })
+  // The tour plays while its screen is in view, and holds at the end of a step when the footer's
+  // pause is on (motion-pause.ts)
+  let on = false, running = false, stopped = false, inView = false
+  const update = () => { on = inView && !stopped && !motionPaused(); if (on && !running) start() }
+  const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; update() }, { threshold: 0.4 })
   io.observe(art)
+  const stopMotionListener = onMotionChange(update)
   async function start() { running = true; while (on) await loop(); running = false }
-  return () => { stopped = true; on = false; io.disconnect(); ro.disconnect(); vio?.disconnect(); video?.pause() }
+  return () => { stopped = true; on = false; io.disconnect(); ro.disconnect(); vio?.disconnect(); video?.pause(); stopMotionListener() }
 }

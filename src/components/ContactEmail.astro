@@ -1,6 +1,7 @@
 ---
 // The address is assembled in the browser, so it never appears in the HTML or the source for scrapers to read.
 // The link reads "Email me" (or the address, with showAddress) and its destination is filled in.
+// Until then it points at LinkedIn, so it is a focusable, working link without the script.
 interface Props {
   class?: string
   // Show the address as the link text once it is filled in (still absent from the HTML)
@@ -13,7 +14,7 @@ interface Props {
 const { class: className, showAddress, subject, label = 'Email me' } = Astro.props
 ---
 
-<a data-contact-email data-show-address={showAddress ? '' : undefined} data-contact-subject={subject} class={className}>{label}</a>
+<a href="https://linkedin.com/in/samstringerhye" data-contact-email data-show-address={showAddress ? '' : undefined} data-contact-subject={subject} class={className}>{label}</a>
 
 <script>
   import './contact-email'

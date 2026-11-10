@@ -9,11 +9,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     <div class="colophon-row">
     <div class="colophon-body">
 
-      <h2 class="typo-headline-lg">Tech Stack</h2>
+      <h2 class="typo-headline-lg">Tech stack</h2>
       <p>
-        Built with <strong>Astro</strong> for static-first delivery with vanilla TypeScript islands for interactive components.
-        The hero runs on <strong>Three.js</strong>. Animations powered by <strong>GSAP</strong> (ScrollTrigger, SplitText).
-        Smooth scrolling via <strong>Lenis</strong>. Deployed on <strong>Cloudflare Workers</strong>.
+        I built the site with <strong>Astro</strong>: static pages first, with plain TypeScript for the interactive parts.
+        <strong>Three.js</strong> draws the hero and the devices. <strong>GSAP</strong> (ScrollTrigger, SplitText) drives the scroll reveals,
+        and <strong>Lenis</strong> smooths wheel scrolling. The site runs on <strong>Cloudflare Workers</strong>.
       </p>
 
       <h2 class="typo-headline-lg">Typography</h2>
@@ -21,14 +21,14 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         <strong>Perfectly Nineties</strong> handles display and headline type, paired with
         <strong>DM Sans</strong> for body text, titles, labels, and UI elements.
         The serif carries the editorial voice; the sans keeps long text readable.
-        The 5×3 typescale grid (display, headline, title, body, label × lg/md/sm) follows M3 conventions.
+        The type scale has nine roles: two display, two headline, one title, two body, and two for UI.
       </p>
 
-      <h2 class="typo-headline-lg">Design Language</h2>
+      <h2 class="typo-headline-lg">Design language</h2>
       <p>
-        Every dot in the hero is drawn three times, in red, green and blue, each a beat behind the last, so each one reads as a pixel's three subpixels.
-        The same three colors run through the scroll reveals, hover effects and carousel shadows.
-        My first sketch was cyan, magenta and yellow ink. It ended up as light, which suits a site that opens with "Every pixel, on purpose."
+        Every dot in the hero is drawn three times, each a beat behind the last. On a light page the three layers are cyan, magenta, and yellow ink,
+        which multiply toward black where they overlap. On a dark page they are red, green, and blue light, so each dot reads as a pixel’s three subpixels.
+        The same colors run through the scroll reveals and hover effects.
       </p>
 
       <h2 class="typo-headline-lg">Credits</h2>
@@ -39,29 +39,25 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         <a href="https://sketchfab.com/3d-models/iphone-17-pro-4541aa8a28324b33a2baaf81d263aaec"><strong>iPhone 17 Pro</strong></a> by <a href="https://sketchfab.com/Ranguel">Ranguel</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.<br />
         <a href="https://sketchfab.com/3d-models/macbook-air-m2-786fa23d402a4f90ae36c4168997f9cc"><strong>MacBook Air M2</strong></a> by <a href="https://sketchfab.com/rtql8d">rtql8d</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.<br />
         <a href="https://sketchfab.com/3d-models/apple-macbook-air-15-space-gray-2023-e8d82e341c794141a2561c2c9d01d79e"><strong>Apple Macbook Air 15 (Space Gray) 2023</strong></a> by <a href="https://sketchfab.com/akshatmittal">akshatmittal</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.<br />
-        <a href="https://sketchfab.com/3d-models/ipad-mini-6-2021-f363c2b1c74a462588db184bd4fb024e"><strong>iPad Mini 6 2021</strong></a> by <a href="https://sketchfab.com/DatSketch">DatSketch</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.<br />
         <a href="https://sketchfab.com/3d-models/samsung-galaxy-s22-ultra-a95eec5181a24bcd8a8452df50b29f3a"><strong>Samsung Galaxy S22 Ultra</strong></a> and <a href="https://sketchfab.com/3d-models/galaxy-tab-s8-ultra-58228e3dc88743abb977d34717bb291e"><strong>Galaxy Tab S8 Ultra</strong></a> by <a href="https://sketchfab.com/DatSketch">DatSketch</a>, licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>.<br />
         <a href="https://sketchfab.com/3d-models/samsung-galaxy-z-fold8-dfbcbd3143e644608c758edaa0289db3"><strong>SAMSUNG Galaxy Z Fold8</strong></a> by <a href="https://sketchfab.com/zhe_kan">zhe_kan</a>, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. The adapted model this site serves is shared under the same license.
       </p>
       <p>
-        Changes: each model is compressed, the MacBook Air M2 gets a screen-sized display set into its glass, and the iPad and Fold are repainted in neutral gray. The phones and the Galaxy tablet are repainted in finishes they were sold in, with satin surfaces in place of the files’ textured ones. The Fold file keeps only the unfolded phone, and the Galaxy phone and tablet leave out the S Pens modeled beside them.
+        Changes: each model is compressed, the MacBook Air M2 gets a screen-sized display set into its glass, and the Fold is repainted in neutral gray. The phones and the Galaxy tablet are repainted in finishes they were sold in, with satin surfaces in place of the files’ textured ones. The Fold file keeps only the unfolded phone, and the Galaxy phone and tablet leave out the S Pens modeled beside them.
       </p>
       <p>
         The iPhone home screens on the Whataburger card come from the iOS 27 kit in <a href="https://developer.apple.com/design/resources/">Apple Design Resources</a>, with the Whataburger icon in place of a sample app.
-      </p>
-      <p>
-        The iBook, Rio and Dreamcast controller around the photo on the About page are modeled in code with three.js. Where WebGL isn't available, flat icons from <a href="https://github.com/microsoft/fluentui-emoji"><strong>Fluent Emoji</strong></a> by Microsoft (<a href="https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE">MIT License</a>) stand in.
       </p>
 
       <h2 class="typo-headline-lg">Accessibility</h2>
       <p>
         With <code>prefers-reduced-motion</code> set, animations stop or reduce to a static state. The MyFrontier motion examples also have a play/pause control.
         The mobile menu works from the keyboard, holds focus while open and closes with Escape. Content images carry alt text.
-        These are behaviors I build and check for; the site hasn't had a formal accessibility audit.
+        These are behaviors I build and check for; the site hasn’t had a formal accessibility audit.
       </p>
 
       <p style="margin-top: var(--space-5);">
-        <a href="/#work" class="colophon-work-link typo-ui-caps">View work →</a>
+        <a href="/#work" class="colophon-work-link typo-ui-caps">All work →</a>
       </p>
     </div>
     </div>

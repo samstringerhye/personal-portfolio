@@ -73,7 +73,6 @@ a {
   text-decoration: none;
 }
 
-.blog-post-body a,
 .case-study-body a,
 .colophon-body a {
   text-decoration: underline;
@@ -243,6 +242,17 @@ html.nav-open {
 [data-reveal] {
   opacity: 0;
   filter: blur(6px);
+  /* Shows the content if the reveal script never starts (a failed chunk, a script error) */
+  animation: reveal-failsafe 0s 5s forwards;
+}
+
+/* Set by scroll-reveals.ts once it owns these elements */
+html[data-reveals-ready] [data-reveal] {
+  animation: none;
+}
+
+@keyframes reveal-failsafe {
+  to { opacity: 1; filter: none; }
 }
 
 /* Reduced motion */

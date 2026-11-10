@@ -2,7 +2,7 @@
 title: "MyFrontier App Redesign"
 client: "Frontier"
 year: 2022
-role: "Designer"
+role: "Senior Designer"
 agency: "Razorfish"
 tagline: "Redesigning Frontier’s customer app around everyday account management and self-service."
 thumbnail: "../../assets/work/myfrontier-app/myfrontier-app-thumbnail-32.png"
@@ -21,13 +21,14 @@ thumbnailScene: "myfrontier"
 heroImage: "../../assets/work/myfrontier-app/frontier-app-kv.png"
 featured: true
 sortOrder: 3
-tags: ["Mobile App", "Design System", "Motion Design", "UX"]
+tags: ["Mobile App", "Motion Design", "UX"]
 ---
 import EvidenceCrop from '../../components/EvidenceCrop.astro'
 import Story from '../../components/Story.astro'
 import Gallery from '../../components/Gallery.astro'
 import Panel from '../../components/Panel.astro'
 import LottiePlayer from '../../components/LottiePlayer.astro'
+import ProseGroup from '../../components/ProseGroup.astro'
 import oldDashboard from '../../assets/work/myfrontier-app/figma/old-dashboard-2x.png'
 import billingZero from '../../assets/work/myfrontier-app/figma/billing-zero-handoff-2x.png'
 import dashboard from '../../assets/work/myfrontier-app/figma/dashboard-handoff-2x.png'
@@ -39,29 +40,29 @@ import firstPaymentMethod from '../../assets/work/myfrontier-app/figma/first-pay
 
 <Story
   client="Frontier"
-  role="Designer"
+  role="Senior Designer"
   agency="Razorfish"
   year={2022}
   made={['Mobile app design', 'Motion: launch, prompt, confirmation, and loading animations']}
-  problem="Frontier’s brief was to improve customer satisfaction and retention, reduce support calls and bring its new brand into the app. Research found that customers struggled with routine tasks, scattered help and confusing labels."
-  decision="We organized Home and navigation around bills, payments, account settings and support so customers could find and complete routine tasks in the app. We used consistent layouts and controls across those screens."
-  did="I designed screens and interactions for billing, account management and support, applying Frontier’s new brand across those parts of the app."
+  problem="Frontier’s brief was to bring its new brand into the app and make self-service easier. Research found that customers struggled with routine tasks, scattered help, and confusing labels."
+  decision="We organized Home and navigation around bills, payments, account settings, and support so customers could find and complete routine tasks in the app. We used consistent layouts and controls across those screens."
+  did="I designed screens and interactions for billing, account management, and support, applying Frontier’s new brand across those parts of the app."
 />
 
-<Gallery title="Home screen before and after" note="The original Home already included billing alongside network status and account tools. The redesign changes their hierarchy, adds a personalized greeting, and replaces the stacked account tools with bottom navigation. The body shows handoff designs; the hero uses a separate screen set and sample account content.">
+<Gallery title="Home screen before and after" note="The original Home already included billing alongside network status and account tools. The redesign changes their hierarchy, adds a personalized greeting, and replaces the stacked account tools with bottom navigation.">
   <Panel kind="screens" format="png" span="full" className="panel--frontier panel--frontier-comparison" screens={[
     { src: oldDashboard, alt: 'Before: original Frontier app Home with network status and account tools' },
     { src: dashboard, alt: 'After: redesigned Frontier app Home with a personalized greeting and payment summary' },
   ]} caption="Original and redesigned Home: a different hierarchy for existing account tasks, with bottom navigation and a personalized greeting." />
 </Gallery>
 
-<Gallery title="Billing, support, and appointment scheduling" note="The redesign launched as version 4.0.1 on November 21, 2022. Billing shows the balance, payment action and Auto Pay options. Support groups help topics and service orders, with date and time selection for appointments.">
-  <div class="gallery-row" style="--gallery-columns: 2; --gallery-item-min: 24rem" role="region" aria-label="Two screen comparisons">
+<Gallery title="Billing, support, and appointment scheduling" note="The redesign launched as version 4.0.1 on November 21, 2022. Billing shows the balance, payment action, and Auto Pay options. Support groups help topics and service orders, with date and time selection for appointments.">
+  <div class="gallery-row" style="--gallery-columns: 2; --gallery-item-min: 24rem">
   <Panel kind="screens" format="png" className="panel--frontier" span="half" screens={[
-    { src: billingZero, alt: 'My billing: a $480.88 credit balance, Auto Pay enrollment and Make a payment action' },
+    { src: billingZero, alt: 'My billing: a $480.88 credit balance, Auto Pay enrollment, and Make a payment action' },
   ]} caption="Billing handoff design: a credit balance, payment action, and Auto Pay enrollment." />
   <Panel kind="screens" format="png" className="panel--frontier" span="half" screens={[
-    { src: supportLanding, alt: 'Support landing page with help topics, service order status and contact options' },
+    { src: supportLanding, alt: 'Support landing page with help topics, service order status, and contact options' },
     { src: scheduleAppointment, alt: 'Schedule appointment: choose a date and time range before continuing' },
   ]} caption="Support topics and open tickets, followed by appointment date and time selection." />
   </div>
@@ -102,3 +103,9 @@ import firstPaymentMethod from '../../assets/work/myfrontier-app/figma/first-pay
     <LottiePlayer src="src/lottie/Lottie-Loading.json" label="Loading sequence" nativeLoop maxWidth="700px" controls />
   </Panel>
 </Gallery>
+
+<ProseGroup>
+## Lessons from designing everyday tasks
+
+Most of this app is routine: checking a balance, paying a bill, booking a visit. The work taught me to judge a screen by the task it supports, and to design for the customer who arrives with nothing set up as carefully as for the one whose account is in order. I now review first-time, empty, and error states alongside the main flow. I hold motion to the same standard: each animation should mark a moment in the task.
+</ProseGroup>

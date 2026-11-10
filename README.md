@@ -36,16 +36,16 @@ the protected case study. In production set it as a Worker secret, never in the 
 
 | Path | What |
 | --- | --- |
-| `src/pages/` | Routes (home, about, resume, colophon, blog, `work/` case studies, RSS) |
-| `src/content/` | Collections: `work/` case studies (MDX), `blog/`, `home.json`; schema in `src/content.config.ts` |
+| `src/pages/` | Routes (home, about, colophon, `work/` case studies) |
+| `src/content/` | `work/` case studies (MDX) and `home.json`; schema in `src/content.config.ts` |
 | `src/components/`, `src/layouts/` | UI components and page layouts |
-| `src/styles/` | Global CSS, custom media, Amica tokens |
+| `src/styles/` | Global CSS, custom media, per-case-study styles |
 | `src/data/` | Design tokens (`tokens.json`), animation config, and their schemas |
 | `src/assets/` | Images processed by Astro (case study art, about) |
 | `src/lottie/` | Lottie animations |
-| `src/middleware.ts` | Password gate and protected-embed serving |
+| `src/middleware.ts` | Password gate for protected case studies |
 | `plugins/` | Custom rehype plugin (lazy images) |
-| `public/` | Static files served as-is: fonts, icons, `_headers`, robots, protected embeds |
+| `public/` | Static files served as-is: fonts, icons, `_headers`, `_redirects`, robots |
 | `scripts/` | `pagespeed.sh` and the work-card art generators (`scripts/thumbnails/README.md`) |
 | `docs/` | Design notes, UX review, plans, session logs, QA write-ups |
 | `.agents/`, `.claude/` | Local agent skills and editor launch config |

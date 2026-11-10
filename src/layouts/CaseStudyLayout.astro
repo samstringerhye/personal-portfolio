@@ -181,7 +181,9 @@ const deviceHero = heroScene && !gate
     padding: 0 var(--space-3) var(--space-3);
     color: white;
     text-align: center;
-    font-size: var(--text-100);
+    /* White on Frontier red is 3.96:1, which passes only as large text: 19px bold */
+    font-size: 1.1875rem;
+    font-weight: var(--font-weight-bold);
   }
 
   /* ── Lottie grid: 4 columns, 2 on phones ── */

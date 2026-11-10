@@ -251,10 +251,6 @@
         "restYaw": -0.42,
         "restPitch": 0.05
       },
-      "ipad-mini-6": {
-        "restYaw": -0.42,
-        "restPitch": 0.08
-      },
       "galaxy-z-fold8": {
         "restYaw": -0.42,
         "restPitch": 0.08

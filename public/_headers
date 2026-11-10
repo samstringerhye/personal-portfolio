@@ -10,11 +10,8 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /fonts/*
-  Cache-Control: public, max-age=31536000
+  Cache-Control: public, max-age=31536000, immutable
 
-# Embedded prototypes (public/_protected-embeds/) are framed by the case study page itself
-# and need X-Frame-Options: SAMEORIGIN instead of the DENY above. Cloudflare's _headers
-# matching merges same-named headers from every matching rule rather than having the more
-# specific one win, so a rule here would just append SAMEORIGIN alongside DENY and the
-# browser falls back to the stricter value. The actual override happens in code instead —
-# see src/middleware.ts, serveEmbeddedAsset, which sets the header explicitly on the response.
+# Device models, screens and Lottie files keep their names between deploys, so a day, then revalidate
+/motion/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
